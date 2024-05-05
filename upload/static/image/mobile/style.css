@@ -2,7 +2,7 @@
 /*----- color -----*/
 body {
 --dz-BG-body:#eee;/*全局body背景*/
---dz-BG-color:#2B7ACD;/*主色调背景*/
+--dz-BG-color:#FE9500;/*主色调背景*/
 --dz-BG-0:#ffffff;
 --dz-BG-1:#333;/*深色背景*/
 --dz-BG-2:#FF5656;/*高亮色*/
@@ -11,7 +11,7 @@ body {
 --dz-BG-5:#f3f3f3;/*浅色背景*/
 --dz-BG-6:#ccc;/*深灰色背景*/
 --dz-BG-n:#A0C8EA;/*浅蓝色背景*/
---dz-FC-color:#2B7ACD;/*主色调*/
+--dz-FC-color:#FE9500;/*主色调*/
 --dz-FC-fff:#fff;
 --dz-FC-333:#333;
 --dz-FC-666:#666;

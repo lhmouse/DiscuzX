@@ -10,13 +10,13 @@ textarea, input, select, .html { padding: 6px 10px; font-size: 100%; border: 1px
 .st-d textarea, .st-d input, .st-d select, .st-d .html {border-color: #999; background: #181818; color: #fff;}
 textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;}
 .txt, select, .vmiddle { vertical-align:middle; }
-.txt:hover, .txt:focus, textarea:hover, textarea:focus{ border-color:#2b7acd; background:#F5F9FD; outline: 0;box-shadow: 0 0 3px 2px rgba(43, 122, 205, 0.4);}
+.txt:hover, .txt:focus, textarea:hover, textarea:focus{ border-color:#FE9500; background:#F5F9FD; outline: 0;box-shadow: 0 0 3px 2px rgba(43, 122, 205, 0.4);}
 .st-d .txt:hover, .st-d .txt:focus, .st-d textarea:hover, .st-d textarea:focus{ border-color:#eaeaea; background:#181818;}
 .hover:hover { background:#F5F9FD; }
 	.hover:hover .addchildboard, .hover:hover .deleterow { color: #F5F9FD; }
 .txtnobd{ border:1px solid #FFF; background:#FFF; cursor:pointer; }
 .radio, .checkbox, .pr, .pc { border:none; background:none; vertical-align:middle;margin-right: 4px; margin-left: 4px; }
-.btn{ margin:10px;border: 0;padding: 6px 14px;background: #2b7acd;color: #fff; cursor:pointer;vertical-align: middle;}
+.btn{ margin:10px;border: 0;padding: 6px 14px;background: #FE9500;color: #fff; cursor:pointer;vertical-align: middle;}
 .st-d .btn {background: #181818;color: #fff;}
 	.btn:hover { text-decoration: none; background-color: #428ad7;}
 	.st-d .btn:hover {background-color: #282828;}
@@ -104,9 +104,9 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .st-l .itemtitle h3 { color:#000;}
 .itemtitle ul { display: flex; flex-wrap: wrap; }
 .itemtitle ul li>a { display: block; text-decoration: none; padding: 15px 5px; margin-right: 15px; color: #333; border-bottom: 2px solid transparent; }
-.itemtitle ul li.current>a { color: #2b7acd; border-bottom-color: #2b7acd; }
+.itemtitle ul li.current>a { color: #FE9500; border-bottom-color: #FE9500; }
 .st-d .itemtitle ul li.current>a { color: #999; border-bottom-color: #999; }
-.itemtitle ul li a:hover { color: #2b7acd; background: #f7f7f7; }
+.itemtitle ul li a:hover { color: #FE9500; background: #f7f7f7; }
 .st-d .itemtitle ul li a:hover { color: #eaeaea; background: #282828;}
 .itemtitle ul li.current>a span, .itemtitle ul li.hasdropmenu>a span { display: flex; flex-direction: row; align-items: center; }
 .itemtitle ul li.current>a span em, .itemtitle ul li.hasdropmenu>a span em { display: block; width: 0; height: 0; margin-left: 8px; border-top: 5px solid; border-bottom: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; }
@@ -114,9 +114,9 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .itemtitle ul.stepstat li { display: flex; align-items: center; }
 .itemtitle ul.stepstat span { display: flex; width: 20px; height: 20px; border-radius: 10px; background: #ddd; color: #000; justify-content: center; align-items: center; margin-right: 10px; }
 .itemtitle ul.stepstat li:not(:first-child)::before { display: block; content: ""; width: 100px; height: 3px; background: #ddd; margin: 0 10px; }
-.itemtitle ul.stepstat li.current { color: #2b7acd; }
-.itemtitle ul.stepstat li.current span { background: #2b7acd; color: #fff; }
-.itemtitle ul.stepstat li.current:not(:first-child)::before { background: #2b7acd; }
+.itemtitle ul.stepstat li.current { color: #FE9500; }
+.itemtitle ul.stepstat li.current span { background: #FE9500; color: #fff; }
+.itemtitle ul.stepstat li.current:not(:first-child)::before { background: #FE9500; }
 @media (max-width: 575px) {
 	.itemtitle ul.stepstat { justify-content: space-around; }
 	.itemtitle ul.stepstat li:not(:first-child)::before { display: none; }
@@ -128,7 +128,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .st-d .dropmenu>a, .dropmenu>ul>li>a { color:#999;}
 .dropmenu a:focus { outline: 0; background: #f7f7f7; }
 .st-d .dropmenu a:focus { background: #282828; }
-.dropmenu a.current { background: #2b7acd; color: #fff; }
+.dropmenu a.current { background: #FE9500; color: #fff; }
 .st-d .dropmenu a.current {background: #282828;}
 
 .tips{ margin-left:15px; color:#999; }
