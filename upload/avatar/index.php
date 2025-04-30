@@ -10,7 +10,7 @@ const DISABLEDEFENSE = true;
 const APPTYPEID = 199;
 require_once '../source/class/class_core.php';
 $discuz = C::app();
-$discuz->init_db = $discuz->init_user = $discuz->init_session = $discuz->init_cron = $discuz->init_misc = $discuz->init_mobile = false;
+$discuz->init_user = $discuz->init_session = $discuz->init_cron = $discuz->init_misc = $discuz->init_mobile = false;
 $discuz->init();
 
 header('Cache-Control: max-age=86400');
