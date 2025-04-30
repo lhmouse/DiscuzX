@@ -65,7 +65,7 @@ class block_permission {
 		if(!is_array($bids)) $bids = [$bids];
 		if($bids) {
 			$uid = intval($uid);
-			table_common_block_permission::t()->delete_by_bid_uid_inheritedtplname($bids, $users, empty($inheritedtplname) ? true : $inheritedtplname);
+			table_common_block_permission::t()->delete_by_bid_uid_inheritedtplname($bids, $uid, empty($inheritedtplname) ? true : $inheritedtplname);
 			if($uid) {
 				table_common_block_favorite::t()->delete_by_uid_bid($uid, $bids);
 				$this->_update_member_allowadmincp([$uid]);
