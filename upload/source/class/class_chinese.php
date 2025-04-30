@@ -53,6 +53,7 @@ class Chinese {
 	}
 
 	function _hex2bin($hexdata) {
+		$bindata = '';
 		for($i = 0; $i < strlen($hexdata); $i += 2) {
 			$bindata .= chr(hexdec(substr($hexdata, $i, 2)));
 		}
