@@ -1678,7 +1678,7 @@ class QRsplit {
 		if($ret < 0)
 			return -1;
 
-		return $run;
+		return $p;
 	}
 
 	public function eat8() {
@@ -1749,11 +1749,7 @@ class QRsplit {
 					$length = $this->eatAn();
 					break;
 				case QR_MODE_KANJI:
-					if($hint == QR_MODE_KANJI)
-						$length = $this->eatKanji();
-					else
-						$length = $this->eat8();
-					break;
+					$length = $this->eatKanji();
 				default:
 					$length = $this->eat8();
 					break;
