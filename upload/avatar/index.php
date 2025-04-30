@@ -25,7 +25,7 @@ if(!filter_var($url, FILTER_VALIDATE_URL)) {
 	$c->conntimeout = 2;
 	$c->timeout = 2;
 	$c->request(['url' => $url]);
-	if($c->curlstatus['http_code'] != 200) {
+	if(!in_array($c->curlstatus['http_code'], [200, 301, 302])) {
 		$url = '../data/avatar/noavatar.svg';
 	}
 }
