@@ -1,0 +1,92 @@
+{
+  "Title": "Discuz! Plugin",
+  "Version": "X5.0",
+  "Time": "2024-01-01 00:00",
+  "From": "Discuz! Board",
+  "Data": {
+    "plugin": {
+      "available": "1",
+      "adminid": "0",
+      "name": "name",
+      "identifier": "sample",
+      "description": "description",
+      "datatables": "",
+      "directory": "sample/",
+      "copyright": "copyright",
+      "version": "version",
+      "__modules": [
+        {
+          "name": "thread",
+          "param": "",
+          "menu": "",
+          "url": "",
+          "type": "12",
+          "adminid": "0",
+          "displayorder": "0",
+          "navtitle": "",
+          "navicon": "",
+          "navsubname": "",
+          "navsuburl": ""
+        },
+        {
+          "name": "hook",
+          "param": "",
+          "menu": "",
+          "url": "",
+          "type": "11",
+          "adminid": "0",
+          "displayorder": "0",
+          "navtitle": "",
+          "navicon": "",
+          "navsubname": "",
+          "navsuburl": ""
+        },
+        {
+          "name": "hook",
+          "param": "",
+          "menu": "",
+          "url": "",
+          "type": "28",
+          "adminid": "0",
+          "displayorder": "0",
+          "navtitle": "",
+          "navicon": "",
+          "navsubname": "",
+          "navsuburl": ""
+        },
+        {
+          "name": "admin",
+          "param": "",
+          "menu": "admin",
+          "url": "",
+          "type": "3",
+          "adminid": "0",
+          "displayorder": "0",
+          "navtitle": "",
+          "navicon": "",
+          "navsubname": "",
+          "navsuburl": ""
+        }
+      ]
+    },
+    "version": "X5.0",
+    "var": [
+      {
+        "displayorder": "0",
+        "title": "var_title",
+        "description": "var_desc",
+        "variable": "usergroups",
+        "type": "groups",
+        "extra": ""
+      }
+    ],
+    "license": "license",
+    "intro": "intro",
+    "installfile": "install.php",
+    "uninstallfile": "uninstall.php",
+    "upgradefile": "upgrade.php",
+    "checkfile": "check.php",
+    "enablefile": "enable.php",
+    "disablefile": "disable.php"
+  }
+}
