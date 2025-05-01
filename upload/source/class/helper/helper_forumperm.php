@@ -76,7 +76,7 @@ class helper_forumperm {
 
 		static $member_tags = null;
 		if($member_tags === null) {
-			$member_tags = table_common_tagitem::t()->select($tagperm, $_G['uid'], 'uid');
+			$member_tags = table_common_tagitem::t()->select(0, $_G['uid'], 'uid');
 		}
 
 		foreach($member_tags as $row) {
