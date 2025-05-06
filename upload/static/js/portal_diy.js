@@ -893,10 +893,6 @@ spaceDiy.extend({
 					} else {
 						schecked = ' checked';
 					}
-					if(document.diyform.issubadmin.value == 1) {
-						schecked = ' disabled';
-						dchecked = ' checked';
-					}
 					showDialog('<form name="selectsave" action="" method="get">' +
 						'<label><input type="radio" value="0" name="savemod"'+schecked+' />' + $L('diy_save_all') + '</label>' +
 						'<label><input type="radio" value="1" name="savemod"'+dchecked+' />' + $L('diy_save_this') + '</label>' +

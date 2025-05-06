@@ -146,6 +146,8 @@ class account {
 		$this->setInvite($uid);
 		include_once libfile('function/stat');
 		updatestat('register');
+		require_once libfile('cache/userstats', 'function');
+		build_cache_userstats();
 		return '';
 	}
 

@@ -778,7 +778,7 @@ class table_forum_thread extends discuz_table {
 		}
 		$conditions['users'] = trim($conditions['users'] ?? '');
 		if(!empty($conditions['users'])) {
-			$wherearr[] = $prefix.DB::field('author', explode(' ', trim($conditions['users'])));
+			$wherearr[] = $prefix.DB::field('author', explode(',', trim($conditions['users'])));
 			$this->_urlparam[] = "users={$conditions['users']}";
 		}
 
