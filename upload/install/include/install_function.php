@@ -1432,10 +1432,6 @@ function dfopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE, $
 			'verify_peer_name' => false,
 			'peer_name' => $host
 		);
-		if(version_compare(PHP_VERSION, '5.6.0', '<')) {
-			$context['ssl']['SNI_enabled'] = true;
-			$context['ssl']['SNI_server_name'] = $host;
-		}
 	}
 	if(ini_get('allow_url_fopen')) {
 		$context['http'] = array(

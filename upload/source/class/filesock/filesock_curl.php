@@ -15,9 +15,7 @@ class filesock_curl extends filesock_base {
 
 	public function __construct($param = []) {
 		parent::__construct($param);
-		if(version_compare(PHP_VERSION, '7.2', '>=')) {
-			$this->allowmultiip = true;
-		}
+		$this->allowmultiip = true;
 	}
 
 	public function request($param = []) {

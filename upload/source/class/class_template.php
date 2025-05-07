@@ -543,11 +543,7 @@ class template {
 	}
 
 	function echopolyfill($str) {
-		$str = str_replace(' or ', ' ?? ', $str);
-		if(str_contains($str, ' ?? ') && version_compare(PHP_VERSION, '7.0', '<')) {
-			$str = preg_replace('/^(.+)\s\?\?\s(.+)$/', "isset(\\1) ? (\\1) : (\\2)", $str);
-		}
-		return $str;
+		return str_replace(' or ', ' ?? ', $str);
 	}
 
 	function transamp($str) {

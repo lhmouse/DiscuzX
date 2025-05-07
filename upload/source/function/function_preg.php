@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('IN_DISCUZ') || (PHP_VERSION < '7.0.0')) {
+if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 

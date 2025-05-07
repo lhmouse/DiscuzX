@@ -185,7 +185,7 @@ class pay_wechat extends pay_base {
 			return true;
 		}
 		// openssl (PHP >= 7.1 support AEAD)
-		if(PHP_VERSION_ID >= 70100 && in_array('aes-256-gcm', openssl_get_cipher_methods())) {
+		if(in_array('aes-256-gcm', openssl_get_cipher_methods())) {
 			return true;
 		}
 		return false;
@@ -515,7 +515,7 @@ class pay_wechat extends pay_base {
 			return sodium_crypto_aead_aes256gcm_decrypt($ciphertext, $associateddata, $noncestr, $this->settings['v3_key']);
 		}
 		// openssl (PHP >= 7.1 support AEAD)
-		if(PHP_VERSION_ID >= 70100 && in_array('aes-256-gcm', openssl_get_cipher_methods())) {
+		if(in_array('aes-256-gcm', openssl_get_cipher_methods())) {
 			$ctext = substr($ciphertext, 0, -16);
 			$authTag = substr($ciphertext, -16);
 

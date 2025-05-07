@@ -37,7 +37,7 @@ Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree
 | 产品名称 | 产品介绍 | 完整版本号            |
 |----------|--------|------------------|
 | Discuz!ᵂ | 为无服务器的用户提供快速建站的 SaaS 版本 | X5.1.02.SaaS     |
-| Discuz! 企飞版 | 为企业用户提供的定制化版本 | X5.0.16.Business |
+| Discuz! 企飞版 | 为企业用户提供的定制化版本 | X5.0.17.Business |
 | Discuz! 开发者预览版 | 为有服务器的用户提供的私有化部署版本 | X5.0.0.Open      |
 
 ### 声明

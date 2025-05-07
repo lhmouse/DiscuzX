@@ -51,16 +51,12 @@ if(!function_exists('dhtmlspecialchars')) {
 					$string = preg_replace('/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/', '&\\1', $string);
 				}
 			} else {
-				if(PHP_VERSION < '5.4.0') {
-					$string = htmlspecialchars($string, $flags);
+				if(strtolower(CHARSET) == 'utf-8') {
+					$charset = 'UTF-8';
 				} else {
-					if(strtolower(CHARSET) == 'utf-8') {
-						$charset = 'UTF-8';
-					} else {
-						$charset = 'ISO-8859-1';
-					}
-					$string = htmlspecialchars($string, $flags, $charset);
+					$charset = 'ISO-8859-1';
 				}
+				$string = htmlspecialchars($string, $flags, $charset);
 			}
 		}
 		return $string;
@@ -233,7 +229,7 @@ function uc_fopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE,
 		curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
 		// 在提供 IP 地址的同时, 当请求主机名并非一个合法 IP 地址, 且 PHP 版本 >= 5.5.0 时, 使用 CURLOPT_RESOLVE 设置固定的 IP 地址与域名关系
 		// 在不支持的 PHP 版本下, 继续采用原有不支持 SNI 的流程
-		if(!empty($ip) && filter_var($ip, FILTER_VALIDATE_IP) && !filter_var($host, FILTER_VALIDATE_IP) && version_compare(PHP_VERSION, '5.5.0', 'ge')) {
+		if(!empty($ip) && filter_var($ip, FILTER_VALIDATE_IP) && !filter_var($host, FILTER_VALIDATE_IP)) {
 			curl_setopt($ch, CURLOPT_RESOLVE, ["$host:$port:$ip"]);
 			curl_setopt($ch, CURLOPT_URL, $scheme.'://'.$host.':'.$port.$path);
 		} else {
@@ -301,10 +297,6 @@ function uc_fopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE,
 			'verify_peer_name' => false,
 			'peer_name' => $host
 		];
-		if(version_compare(PHP_VERSION, '5.6.0', '<')) {
-			$context['ssl']['SNI_enabled'] = true;
-			$context['ssl']['SNI_server_name'] = $host;
-		}
 	}
 	if(ini_get('allow_url_fopen')) {
 		$context['http'] = [

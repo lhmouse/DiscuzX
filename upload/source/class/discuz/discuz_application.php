@@ -488,7 +488,7 @@ class discuz_application extends discuz_base {
 	}
 
 	private function _init_db() {
-		if($this->init_db) {
+		if($this->init_db || $this->init_setting) {
 			if($this->config['db']['driver'] == 'pdo' && class_exists('PDO')) {
 				$driver = 'db_driver_pdo';
 				if(getglobal('config/db/slave')) {

@@ -322,16 +322,12 @@ function dhtmlspecialchars($string, $flags = null) {
 		if($flags === null) {
 			$string = str_replace(['&', '"', '<', '>'], ['&amp;', '&quot;', '&lt;', '&gt;'], $string);
 		} else {
-			if(PHP_VERSION < '5.4.0') {
-				$string = htmlspecialchars($string, $flags);
+			if(strtolower(CHARSET) == 'utf-8') {
+				$charset = 'UTF-8';
 			} else {
-				if(strtolower(CHARSET) == 'utf-8') {
-					$charset = 'UTF-8';
-				} else {
-					$charset = 'ISO-8859-1';
-				}
-				$string = htmlspecialchars($string, $flags, $charset);
+				$charset = 'ISO-8859-1';
 			}
+			$string = htmlspecialchars($string, $flags, $charset);
 		}
 	}
 	return $string;
@@ -369,7 +365,7 @@ function dheader($string, $replace = true, $http_response_code = 0) {
 		}
 	}
 	$string = str_replace(["\r", "\n"], ['', ''], $string);
-	if(empty($http_response_code) || PHP_VERSION < '4.3') {
+	if(empty($http_response_code)) {
 		@header($string, $replace);
 	} else {
 		@header($string, $replace, $http_response_code);
@@ -399,14 +395,8 @@ function dsetcookie($var, $value = '', $life = 0, $prefix = 1, $httponly = false
 	}
 
 	$life = $life > 0 ? getglobal('timestamp') + $life : ($life < 0 ? getglobal('timestamp') - 31536000 : 0);
-	$path = $httponly && PHP_VERSION < '5.2.0' ? $config['cookiepath'].'; HttpOnly' : $config['cookiepath'];
-
 	$secure = $_G['isHTTPS'];
-	if(PHP_VERSION < '5.2.0') {
-		setcookie($var, $value, $life, $path, $config['cookiedomain'], $secure);
-	} else {
-		setcookie($var, $value, $life, $path, $config['cookiedomain'], $secure, $httponly);
-	}
+	setcookie($var, $value, $life, $config['cookiepath'], $config['cookiedomain'], $secure, $httponly);
 }
 
 function getcookie($key) {
@@ -2722,12 +2712,8 @@ function currentlang() {
 }
 
 function dpreg_replace($pattern, $replacement, $subject, $limit = -1, &$count = null) {
-	if(PHP_VERSION < '7.0.0') {
-		return preg_replace($pattern, $replacement, $subject, $limit, $count);
-	} else {
-		require_once libfile('function/preg');
-		return _dpreg_replace($pattern, $replacement, $subject, $limit, $count);
-	}
+	require_once libfile('function/preg');
+	return _dpreg_replace($pattern, $replacement, $subject, $limit, $count);
 }
 
 function delay_task($op, $key, $func = [], $ttl = 86400) {

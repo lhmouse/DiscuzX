@@ -221,18 +221,11 @@ class db_driver_mysqli {
 	}
 
 	function begin_transaction() {
-		if(PHP_VERSION < '5.5') {
-			return $this->curlink->autocommit(false);
-		}
 		return $this->curlink->begin_transaction();
 	}
 
 	function commit() {
-		$cr = $this->curlink->commit();
-		if(PHP_VERSION < '5.5') {
-			$this->curlink->autocommit(true);
-		}
-		return $cr;
+		return $this->curlink->commit();
 	}
 
 	function rollback() {
