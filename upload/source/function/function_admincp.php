@@ -531,9 +531,9 @@ function showtips($tips, $id = 'tips', $display = TRUE, $title = '') {
 	}
 	unset($tmp);
 	$title = $title ? $title : 'tips';
-	showtableheader('<i class="tips_title"></i>'.cplang($title), 'tips', 'id="'.$id.'"'.(!$display ? ' style="display: none;"' : ''), 0);
-	showtablerow('', 'class="tipsblock" s="1"', '<ul id="'.$id.'lis">'.$tips.'</ul>');
-	showtablefooter();
+	showboxheader('<i class="tips_title"></i>'.cplang($title), 'tips', 'id="'.$id.'"'.(!$display ? ' style="display: none;"' : ''), 0);
+	showboxrow('', 'class="tipsblock" s="1"', '<ul id="'.$id.'lis">'.$tips.'</ul>');
+	showboxfooter();
 }
 
 function showformheader($action, $extra = '', $name = 'cpform', $method = 'post', $autocomplete = 'on') {

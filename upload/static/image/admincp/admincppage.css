@@ -239,7 +239,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .dropmenu a:focus { outline: 0; background: var(--admincp-bgf7); }
 .dropmenu a.current { background: var(--admincp-color); color:  var(--admincp-ff); }
 
-.tips{ background-color: var(--admincp-bgc); margin: 5px 0 5px 0 !important; color:#999; }
+.tips{ margin: 5px 0 5px 0 !important; color:#999; }
     .tips .tipsblock { border: 0 !important; }
     .tips .partition { border-bottom: none !important; }
 .tips2{ line-height:180%; color:#999; word-break:break-all; }
