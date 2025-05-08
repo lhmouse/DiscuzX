@@ -130,7 +130,9 @@ class table_forum_post extends discuz_table {
 	}
 
 	public function count_by_fid_invisible($tableid, $fid, $invisible) {
-		return DB::result_first('SELECT COUNT(*) FROM %t WHERE fid=%d AND invisible=%d', [self::get_tablename($tableid), $fid, $invisible]);
+		$fid = dintval($fid, true);
+		$fidsql = is_array($fid) && $fid ? 'fid IN(%n)' : 'fid=%d';
+		return DB::result_first('SELECT COUNT(*) FROM %t WHERE '.$fidsql.' AND invisible=%d', [self::get_tablename($tableid), $fid, $invisible]);
 	}
 
 	public function count_by_dateline($tableid, $dateline) {

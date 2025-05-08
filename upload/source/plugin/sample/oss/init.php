@@ -13,13 +13,13 @@ if(!defined('IN_DISCUZ')) {
 class oss_plugin_sample {
 
 	/*
-	 * 如需支持单一类型
+	 * 濡傞渶鏀寔鍗曚竴绫诲瀷
 	 */
 	const Name = 'oss_name';
 	const Desc = 'oss_desc';
 
 	/*
-	 * 如需支持多个类型
+	 * 濡傞渶鏀寔澶氫釜绫诲瀷
 	 */
 	/*
 	const SubType = [

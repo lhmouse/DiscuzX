@@ -421,6 +421,12 @@ class block_thread extends discuz_block {
 					'monthviews' => $data['views']
 				]
 			];
+
+			if($_G['setting']['ftp']['on'] == 2) {
+				$list[$data['tid']]['picflag'] = '0';
+				$list[$data['tid']]['pic'] = $_G['setting']['attachurl'].$list[$data['tid']]['pic'];
+			}
+
 			if($highlight && $data['highlight']) {
 				$list[$data['tid']]['fields']['showstyle'] = $this->getthreadstyle($data['highlight']);
 			}

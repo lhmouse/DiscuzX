@@ -293,7 +293,7 @@ var popup = {
 
 var dialog = {
 	init : function() {
-		$(document).on('touchstart', '.dialog', function() {
+		$(document).on('click', '.dialog', function() {
 			var obj = $(this);
 			popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
 			$.ajax({
@@ -317,7 +317,7 @@ var dialog = {
 
 var formdialog = {
 	init : function() {
-		$(document).on('touchstart', '.formdialog', function() {
+		$(document).on('click', '.formdialog', function() {
 			popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
 			var obj = $(this);
 			var formobj = $(this.form);

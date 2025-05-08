@@ -4,6 +4,9 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+//自定语言包卸载
+//i18n('rm', 'mylang');
+
 $createSql = <<<EOF
 DROP TABLE IF EXISTS cdb_sample_test;
 EOF;

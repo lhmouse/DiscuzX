@@ -375,6 +375,12 @@ class block_groupthread extends discuz_block {
 					'groupurl' => 'forum.php?mod=group&fid='.$data['fid'],
 				]
 			];
+
+			if($_G['setting']['ftp']['on'] == 2) {
+				$list[$data['tid']]['picflag'] = '0';
+				$list[$data['tid']]['pic'] = $_G['setting']['attachurl'].$list[$data['tid']]['pic'];
+			}
+
 			if($highlight && $data['highlight']) {
 				$list[$data['tid']]['fields']['showstyle'] = $bt->getthreadstyle($data['highlight']);
 			}

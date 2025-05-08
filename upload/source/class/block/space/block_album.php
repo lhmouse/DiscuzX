@@ -121,12 +121,18 @@ class block_album extends discuz_block {
 
 		$query = table_home_album::t()->fetch_all_by_block($aids, $bannedids, $uids, $catid, $startrow, $items, $orderby);
 		foreach($query as $data) {
+			if($_G['setting']['ftp']['on'] == 2) {
+				$data['picflag'] = '0';
+				$data['pic'] = $_G['setting']['attachurl'].'album/'.$data['pic'];
+			} else {
+				$data['pic'] = 'album/'.$data['pic'];
+			}
 			$list[] = [
 				'id' => $data['albumid'],
 				'idtype' => 'albumid',
 				'title' => cutstr($data['albumname'], $titlelength, ''),
 				'url' => "home.php?mod=space&uid={$data['uid']}&do=album&id={$data['albumid']}",
-				'pic' => 'album/'.$data['pic'],
+				'pic' => $data['pic'],
 				'picflag' => $data['picflag'],
 				'summary' => '',
 				'fields' => [

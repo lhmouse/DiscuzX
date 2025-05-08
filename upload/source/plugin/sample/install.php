@@ -4,6 +4,9 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+//自定语言包安装
+//i18n('set', 'mylang', DISCUZ_PLUGIN('sample').'/mylang');
+
 $createSql = <<<EOF
 
 DROP TABLE IF EXISTS cdb_sample_test;

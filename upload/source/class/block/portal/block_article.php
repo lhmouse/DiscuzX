@@ -300,6 +300,12 @@ class block_article extends discuz_block {
 			} else {
 				$data['picflag'] = $data['remote'] == '1' ? '2' : '1';
 			}
+
+			if($_G['setting']['ftp']['on'] == 2) {
+				$data['picflag'] = '0';
+				$data['pic'] = $_G['setting']['attachurl'].$data['pic'];
+			}
+
 			$list[] = [
 				'id' => $data['aid'],
 				'idtype' => 'aid',

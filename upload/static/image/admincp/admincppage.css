@@ -122,6 +122,48 @@ a{ color:var(--admincp-alink); text-decoration:none; }
 	a img{ border:none; }
 em, cite, th{ font-style:normal; font-weight:normal; }
 
+.xs0 { font-size: 10px; -webkit-text-size-adjust: none; }
+.xs1 { font-size: 12px !important; }
+.xs2 { font-size: 14px !important; }
+.xs3 { font-size: 16px !important; }
+.xg1, .xg1 a { color: var(--admincp-fc) !important; }
+.xg1 .xi2 { color: var(--admincp-color) !important; }
+.xg2 { color: var(--admincp-fb) !important; }
+.xi1, .onerror { color: var(--admincp-f60) !important; }
+.xi2, .xi2 a, .xi3 a { color: var(--admincp-alink) !important; }
+.xw0 { font-weight: 400; }
+.xw1 { font-weight: 700; }
+.bbda { border-bottom: 1px dashed var(--admincp-bordera) !important; }
+.btda { border-top: 1px dashed var(--admincp-bordera) !important; }
+.bbs { border-bottom: 1px solid var(--admincp-bordera) !important; }
+.bts { border-top: 1px dashed var(--admincp-bordera) !important; }
+.bw0 { border: none !important; }
+.bw0_all, .bw0_all th, .bw0_all td { border: none !important; }
+.bg0_c { background-color: transparent !important; }
+.bg0_i { background-image: none !important; }
+.bg0_all { background: none !important; }
+.mtn { margin-top: 5px !important; }
+.mbn { margin-bottom: 5px !important; }
+.mtm { margin-top: 10px !important; }
+.mbm { margin-bottom: 10px !important; }
+.mtw { margin-top: 20px !important; }
+.mbw { margin-bottom: 20px !important; }
+.ptn { padding-top: 5px !important; }
+.pbn { padding-bottom: 5px !important; }
+.ptm { padding-top: 10px !important; }
+.pbm { padding-bottom: 10px !important; }
+.ptw { padding-top: 20px !important; }
+.pbw { padding-bottom: 20px !important; }
+.vm { vertical-align: middle; }
+.vm * { vertical-align: middle; }
+.hm { text-align: center; }
+.z { float: left; } .y { float: right; }
+hr { display: block; clear: both; }
+    hr.l { height: 1px; border: none; background: var(--admincp-bordera); color: var(--admincp-bordera); }
+    hr.l2 { height: 2px; }
+    hr.l3 { height: 3px; }
+    hr.da { height: 0; border: none; border-top: 1px dashed var(--admincp-bordera); background: transparent; color: transparent; }
+
 textarea, input, select, .html { padding: 6px 10px; font-size: 100%; border: 1px solid; border-color: var(--admincp-borderc); background: var(--admincp-bgc); color: var(--admincp-fa); resize: none; border-radius: 3px; }
 textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;}
 .txt, select, .vmiddle { vertical-align:middle; }
