@@ -240,12 +240,12 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 @media (max-width: 1000px) {
 	.pluginlist .w1000hide { display: none; }
 }
-@media (max-width: 1300px) {
+@media (max-width: 1240px) {
 	.pluginlist .w1300hide { display: none; }
 }
-@media (min-width: 600px) and (max-width: 1300px) {
-	.d-13 { flex-basis: 90%; }
-	.d-23 { flex-basis: 90%; }
+@media (min-width: 600px) and (max-width: 1240px) {
+	.d-13 { flex-basis: 100%; }
+	.d-23 { flex-basis: 100%; }
 }
 
 .cpcontainer { background:  var(--admincp-bgf); padding:5px 10px; color: var(--admincp-fa); font-size: 12px; background-clip: border-box; border-radius: 0px 0px 8px 8px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);}
