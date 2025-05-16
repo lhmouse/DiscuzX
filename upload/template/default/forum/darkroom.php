@@ -1,6 +1,18 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
 <div id="pt" class="bm cl">
+	<div style="float:right; margin-top: 5px; margin-right: 10px;">
+		<form id="darkroomSearchForm" method="get" action="forum.php">
+			<input type="hidden" name="mod" value="misc" />
+			<input type="hidden" name="action" value="showdarkroom" />
+			<!--{if $username}-->
+			<input type="text" id="searchUsername" name="username" value="$username" class="px vm"/>
+			<!--{else}-->
+			<input type="text" id="searchUsername" name="username" placeholder="{lang darkroom_search_placeholder}" class="px vm"/>
+			<!--{/if}-->
+			<button type="submit" class="pn pnc" style="width: 40px">{lang darkroom_search}</button>
+		</form>
+	</div>
 	<div class="z">
 		<a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a> <em>&rsaquo;</em>
 		<a href="forum.php?mod=misc&action=showdarkroom">{lang darkroom}</a>
@@ -35,9 +47,15 @@
 </div>
 <!--{/if}-->
 <!--{else}-->
+<!--{if $username}-->
+	<tr>
+		<td colspan="6" align="center">{lang darkroom_no_search_result}</td>
+	</tr>
+<!--{else}-->
 	<tr>
 		<td colspan="6" align="center">{lang darkroom_no_users}</td>
 	</tr>
+<!--{/if}-->
 </table>
 <!--{/if}-->
 </div>

@@ -12,6 +12,31 @@ if(!defined('IN_DISCUZ')) {
 
 include_once libfile('class/member');
 if($_G['setting']['darkroom']) {
+	if(getgpc('username')) {
+		$username = trim(dhtmlspecialchars(getgpc('username')));
+		$user = C::t('common_member')->fetch_by_username($username);
+		$crimelist = [];
+		$search_no_result = 0;
+
+		if($user && ($user['groupid'] == 4 || $user['groupid'] == 5)) {
+			$uid = $user['uid'];
+			foreach(table_common_member_crime::t()->fetch_all_by_uid_action($uid, [4, 5]) as $crime) {
+				$crime['action'] = lang('forum/template', crime_action_ctl::$actions[$crime['action']]);
+				$crime['dateline'] = dgmdate($crime['dateline'], 'u');
+				$crime['username'] = $user['username'];
+				$crime['groupexpiry'] = $user['groupexpiry'] ? dgmdate($user['groupexpiry'], 'u') : lang('forum/misc', 'never_expired');
+				$crimelist[] = $crime;
+			}
+		}
+
+		if(empty($crimelist)) {
+			$search_no_result = 1;
+		}
+
+		// 加载模板并显示结果
+		include_once template('forum/darkroom');
+		exit;
+	}
 	$limit = $_G['tpp'];
 	$cid = getgpc('cid') ? dintval($_GET['cid']) : 0;
 	$crimelist = [];
