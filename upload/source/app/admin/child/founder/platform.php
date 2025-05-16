@@ -18,7 +18,7 @@ if($do == 'list') {
 
 	showformheader('founder&operation=platform&do=update');
 	showtableheader();
-	showsubtitle(['', 'display_order', 'platform_name']);
+	showsubtitle(['', 'display_order', 'platform_name', '']);
 
 	$adminscript = preg_replace('#\?platform=\w+#', '', ADMINSCRIPT);
 	foreach(table_common_admincp_menu_platform::t()->fetch_all_data() as $menuData) {

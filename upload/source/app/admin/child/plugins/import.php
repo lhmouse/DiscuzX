@@ -19,6 +19,7 @@ if(submitcheck('importsubmit') || isset($_GET['dir'])) {
 		$count = 0;
 		$noextra = false;
 		$currentlang = currentlang();
+		$urls = [];
 		while($f = $d->read()) {
 			if(preg_match('/^discuz\_plugin_'.$_GET['dir'].'(\_\w+)?\.(xml|json)$/', $f, $a)) {
 				$extratxt = $extra = substr($a[1], 1);
@@ -30,6 +31,10 @@ if(submitcheck('importsubmit') || isset($_GET['dir'])) {
 					$noextra = true;
 				}
 				$url = ADMINSCRIPT.'?action=plugins&operation=import&dir='.$_GET['dir'].'&installtype='.rawurlencode($extra);
+				if(!empty($urls[$url])) {
+					continue;
+				}
+				$urls[$url] = true;
 				$xmls .= '&nbsp;<input type="button" class="btn" onclick="location.href=\''.$url.'\'" value="'.($extra ? $extratxt : $lang['plugins_import_default']).'">&nbsp;';
 				$count++;
 			}

@@ -28,14 +28,9 @@ class wechat_connection {
 			return [];
 		}
 
-		$result = $this->getLocalAccessToken($appid, $appsecret, $code);
+		$result = $this->getRemoteAccessToken($appid, $appsecret, $code);
 		if(empty($result)) {
-			$result = $this->getRemoteAccessToken($appid, $appsecret, $code);
-			if(empty($result)) {
-				return [];
-			} else {
-				return $result;
-			}
+			return [];
 		} else {
 			return $result;
 		}
@@ -51,7 +46,7 @@ class wechat_connection {
 			return [];
 		}
 
-		$result = $this->getRemoteRefreshAccessToken($appid, $appsecret, $refresh_token);
+		$result = $this->getRemoteAccessToken($appid, $appsecret, $refresh_token);
 		if(empty($result)) {
 			return [];
 		} else {

@@ -31,6 +31,7 @@ if(method_exists('menu', 'platform_add')) {
 	<navbar><![CDATA[
 <form style="float:right">欢迎访问xxxx后台</form>
 ]]></navbar>
+	<menubar><![CDATA[About me]]></menubar>
 	<defaultId><![CDATA[plugin_sample:admin:a]]></defaultId>
 	<menu>
 		<menuId>主菜单1</menuId>

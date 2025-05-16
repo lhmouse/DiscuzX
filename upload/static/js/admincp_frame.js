@@ -118,6 +118,17 @@ function switchplatform(platform, newwindow) {
     }
 }
 
+function addplatform(platform, name) {
+	showMenu({'ctrlid':'frameuinfo', 'pos':'34'});
+	document.querySelector('div.platform_box').insertAdjacentHTML('beforeend',
+		'<a href="javascript:;" platform="'+platform+'" onclick="switchplatform(\'' + platform + '\', 0)"><i class="dzicon platform"></i> ' + htmlspecialchars(name) + '</a>')
+}
+
+function removeplatform(platform) {
+	var obj = document.querySelector('div.platform_box [platform='+platform+']');
+	obj.parentNode.removeChild(obj);
+}
+
 (function () {
     var prevnav = prevtab = menunav = navt = navkey = headerST = null;
 

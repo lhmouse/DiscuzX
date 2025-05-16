@@ -25,7 +25,7 @@ class tag {
 			$tagarray = array_unique(explode(' ', $tags));
 		}
 		$tagcount = 0;
-		$return = '';
+		$return = null;
 		foreach($tagarray as $tagname) {
 			$tagname = trim($tagname);
 			if(preg_match('/^([\x7f-\xff_-]|\w|\s){2,20}$/', $tagname)) {
@@ -170,7 +170,7 @@ class tag {
 			}
 			if($blogidarray) {
 				foreach($blogidarray as $key => $var) {
-					table_home_blogfield::t()->update($key, ['tag' => $var.$newid.','.$newtag.'\t']);
+					table_home_blogfield::t()->update($key, ['tag' => $var.$newid.','.$newtag."\t"]);
 				}
 			}
 		} else {

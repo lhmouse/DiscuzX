@@ -57,7 +57,7 @@ class helper_forumperm {
 	private function get_verify() {
 		global $_G;
 
-		if($_G['setting']['verify']['enabled']) {
+		if($_G['setting']['verify']['enabled'] && $_G['uid']) {
 			getuserprofile('verify1');
 			foreach($_G['setting']['verify'] as $vid => $verify) {
 				if(!$verify['available']) {
@@ -75,7 +75,7 @@ class helper_forumperm {
 		global $_G;
 
 		static $member_tags = null;
-		if($member_tags === null) {
+		if($member_tags === null && $_G['uid']) {
 			$member_tags = table_common_tagitem::t()->select(0, $_G['uid'], 'uid');
 		}
 

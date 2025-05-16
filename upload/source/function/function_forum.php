@@ -47,6 +47,9 @@ function formulaperm($formula) {
 			loadcache('usergroups');
 			$usergroups = [];
 			foreach($formula['viewtype_gids'] as $gid) {
+				if(empty($_G['cache']['usergroups'][$gid]['grouptitle'])) {
+					continue;
+				}
 				$usergroups[] = $_G['cache']['usergroups'][$gid]['grouptitle'];
 			}
 			showmessage('forum_member_error', NULL, ['groups' => implode(',', $usergroups)], ['login' => 1]);

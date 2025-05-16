@@ -88,13 +88,16 @@ $shownotice
 						<!--{if !empty($_G['cache']['admin']['platform']) && count($_G['cache']['admin']['platform']) > 1}-->
 						<div class="platform_box">
 						<!--{loop $_G['cache']['admin']['platform'] $platform $platform_data}-->
-						<a href="javascript:;" onclick="switchplatform('$platform', <!--{if !empty($platform_data['location'])}-->1<!--{else}-->0<!--{/if}-->)"><i class="dzicon platform"></i> {$platform_data['name']}</a>
+						<a href="javascript:;" platform="$platform" onclick="switchplatform('$platform', <!--{if !empty($platform_data['location'])}-->1<!--{else}-->0<!--{/if}-->)"><i class="dzicon platform"></i> {$platform_data['name']}</a>
 						<!--{/loop}-->
 						</div>
 						<!--{/if}-->
+						<!--{if PLATFORM == 'system'}-->
 						<div class="platform_box">
 							<a href="javascript:;" id="mitframeapps" target="main">{echo cplang('mitframe_apps');}</a>
 						</div>
+						<!--{/if}-->
+						{$menuData['menubar']}
 					</div>
 				</div>
 			</div>
