@@ -1020,6 +1020,16 @@ function copycode(obj) {
 	setCopy(obj.textContent, $L('copy_clipboard_success'));
 }
 
+function submitpostpw(pid, tid) {
+	var obj = document.getElementById('postpw_' + pid);
+	setcookie('postpw_' + pid, hex_md5(obj.value));
+	if(!tid) {
+		location.href = location.href;
+	} else {
+		location.href = 'forum.php?mod=viewthread&tid='+tid;
+	}
+}
+
 function $C(classname, ele, tag) {
     var returns = [];
     ele = ele || document;

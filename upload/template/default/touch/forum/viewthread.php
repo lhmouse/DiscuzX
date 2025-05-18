@@ -206,6 +206,10 @@
 					<div class="quote">{lang message_ishidden_hiddenreplies}</div>
 				<!--{elseif $post['first'] && $_G['forum_threadpay']}-->
 					<!--{template forum/viewthread_pay}-->
+				<!--{elseif $_G['forum_discuzcode']['passwordlock'][$post['pid']]}-->
+					<script type="text/javascript" src="{$_G['setting']['jspath']}md5.js?{VERHASH}"></script>
+					<div class="locked">{lang message_password_exists} {lang pleaseinputpw}<input type="text" id="postpw_$post[pid]" class="px pl5" /></div>
+					<button class="pn vm" type="button" onclick="submitpostpw($post[pid]{if $_GET['from'] == 'preview'},{$post[tid]}{else}{/if})"><strong>{lang submit}</strong></button>
 				<!--{else}-->
 					<!--{if $_G['setting']['bannedmessages'] & 1 && (($post['authorid'] && !$post['username']) || ($post['groupid'] == 4 || $post['groupid'] == 5))}-->
 						<div class="quote">{lang admin_message_banned}</div>
