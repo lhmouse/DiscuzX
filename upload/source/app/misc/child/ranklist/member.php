@@ -164,7 +164,7 @@ if($_GET['view'] == 'credit') {
 
 } else {
 	if(!$ranklist_setting['membershow']) {
-		header('Location: misc.php?mod=ranklist&type=member&view=beauty');
+		header('Location: misc.php?mod=ranklist&type=member&view=credit');
 	}
 	$announcement = $ranklist_setting['membershowannouncement'];
 	$gettype = 'bid';
