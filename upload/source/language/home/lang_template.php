@@ -401,6 +401,7 @@ $lang = [
 	'del_favorite' => '删除选中收藏',
 	'collection_favorite' => '添加到淘帖',
 	'del_select_favorite_confirm' => '确定要删除选中的收藏吗？',
+	'no_select_favorite' => '请勾选要删除的收藏',
 	'favorite_album' => '相册',
 	'favorite_all' => '全部收藏',
 	'favorite_article' => '文章',
