@@ -11,12 +11,12 @@
 <div class="tip">
 	<dt id="messagetext">
 		<p>$show_message</p>
-        <!--{if $_G['forcemobilemessage']}-->
-        <p>
+		<!--{if $_G['forcemobilemessage']}-->
+		<p>
 			<a href="{$_G['setting']['mobile']['pageurl']}" class="mtn">{lang continue}</a><br />
 			<a href="javascript:history.back();">{lang goback}</a>
 		</p>
-        <!--{/if}-->
+		<!--{/if}-->
 		<!--{if $url_forward && !$_GET['loc']}-->
 		<script type="text/javascript">
 			setTimeout(function() {
@@ -25,9 +25,9 @@
 		</script>
 		<!--{elseif $allowreturn}-->
 		<dd><input type="button" class="close pn" onclick="popup.close();" value="{lang close}"></dd>
-        <!--{if $param['mobileextrajs']}-->
-        {$param['mobileextrajs']}
-        <!--{/if}-->
+		<!--{if $param['mobileextrajs']}-->
+		{$param['mobileextrajs']}
+		<!--{/if}-->
 		<!--{/if}-->
 	</dt>
 </div>
@@ -38,17 +38,17 @@
 	<div class="my"><a href="index.php"><i class="dm-house"></i></a></div>
 </div>
 <div class="jump_c">
-	<p>$show_message</p>
+	<div>$show_message</div>
 	<!--{if $_G['forcemobilemessage']}-->
-	<p class="mt10">
+	<div class="mt10">
 		<a href="{$_G['setting']['mobile']['pageurl']}">{lang continue}</a><br />
 		<a href="javascript:history.back();">{lang goback}</a>
-	</p>
+	</div>
 	<!--{/if}-->
 	<!--{if $url_forward}-->
-	<p><a href="$url_forward" class="grey">{lang message_forward_mobile}</a></p>
+	<div><a href="$url_forward" class="grey">{lang message_forward_mobile}</a></div>
 	<!--{elseif $allowreturn}-->
-	<p><a href="javascript:history.back();" class="grey">{lang message_go_back}</a></p>
+	<div><a href="javascript:history.back();" class="grey">{lang message_go_back}</a></div>
 	<!--{/if}-->
 </div>
 <!--{/if}-->
