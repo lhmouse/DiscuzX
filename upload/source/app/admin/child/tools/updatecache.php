@@ -92,7 +92,11 @@ if($step == 1) {
 		blockclass_cache();
 	}
 	if(in_array('csscache', $type)) {
-		updatecache(['setting', 'styles']);
+		if(in_array('data', $type)) {
+			updatecache(['styles']);
+		}else{
+			updatecache(['setting', 'styles']);
+		}
 		loadcache('style_default', true);
 		if(!in_array('data', $type)) {
 			updatecache('updatediytemplate');
