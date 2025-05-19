@@ -14,22 +14,22 @@ function scrollTopBody() {
 
 function checkAll(type, form, value, checkall, changestyle) {
 	var checkall = checkall ? checkall : 'chkall';
-	for(var i = 0; i < form.elements.length; i++) {
+	for (var i = 0; i < form.elements.length; i++) {
 		var e = form.elements[i];
-		if(type == 'option' && e.type == 'radio' && e.value == value && e.disabled != true) {
+		if (type == 'option' && e.type == 'radio' && e.value == value && e.disabled != true) {
 			e.checked = true;
-		} else if(type == 'value' && e.type == 'checkbox' && e.getAttribute('chkvalue') == value) {
+		} else if (type == 'value' && e.type == 'checkbox' && e.getAttribute('chkvalue') == value) {
 			e.checked = form.elements[checkall].checked;
-			if(changestyle) {
+			if (changestyle) {
 				multiupdate(e);
 			}
-		} else if(type == 'prefix' && e.name && e.name != checkall && (!value || (value && e.name.match(value)))) {
+		} else if (type == 'prefix' && e.name && e.name != checkall && (!value || (value && e.name.match(value)))) {
 			e.checked = form.elements[checkall].checked;
-			if(changestyle) {
-				if(e.parentNode && e.parentNode.tagName.toLowerCase() == 'li') {
+			if (changestyle) {
+				if (e.parentNode && e.parentNode.tagName.toLowerCase() == 'li') {
 					e.parentNode.className = e.checked ? 'checked' : '';
 				}
-				if(e.parentNode.parentNode && e.parentNode.parentNode.tagName.toLowerCase() == 'div') {
+				if (e.parentNode.parentNode && e.parentNode.parentNode.tagName.toLowerCase() == 'div') {
 					e.parentNode.parentNode.className = e.checked ? 'item checked' : 'item';
 				}
 			}
@@ -41,48 +41,49 @@ function altStyle(obj, disabled) {
 	function altStyleClear(obj) {
 		var input, lis, i;
 		lis = obj.parentNode.getElementsByTagName('li');
-		for(i=0; i < lis.length; i++){
+		for (i = 0; i < lis.length; i++) {
 			lis[i].className = '';
 		}
 	}
+
 	var disabled = !disabled ? 0 : disabled;
-	if(disabled) {
+	if (disabled) {
 		return;
 	}
 
 	var input, lis, i, cc, o;
 	cc = 0;
 	lis = obj.getElementsByTagName('li');
-	for(i=0; i < lis.length; i++){
-		lis[i].onclick = function(e) {
+	for (i = 0; i < lis.length; i++) {
+		lis[i].onclick = function (e) {
 			o = BROWSER.ie ? event.srcElement.tagName : e.target.tagName;
 			altKey = BROWSER.ie ? window.event.altKey : e.altKey;
-			if(cc) {
+			if (cc) {
 				return;
 			}
 			cc = 1;
 			input = this.getElementsByTagName('input')[0];
-			if(input.getAttribute('type') == 'checkbox' || input.getAttribute('type') == 'radio') {
-				if(input.getAttribute('type') == 'radio') {
+			if (input.getAttribute('type') == 'checkbox' || input.getAttribute('type') == 'radio') {
+				if (input.getAttribute('type') == 'radio') {
 					altStyleClear(this);
 				}
 
-				if(BROWSER.ie || o != 'INPUT' && input.onclick) {
+				if (BROWSER.ie || o != 'INPUT' && input.onclick) {
 					input.click();
 				}
-				if(this.className != 'checked') {
+				if (this.className != 'checked') {
 					this.className = 'checked';
 					input.checked = true;
 				} else {
 					this.className = '';
 					input.checked = false;
 				}
-				if(altKey && input.name.match(/^multinew\[\d+\]/)) {
+				if (altKey && input.name.match(/^multinew\[\d+\]/)) {
 					miid = input.id.split('|');
 					mi = 0;
-					while($(miid[0] + '|' + mi)) {
+					while ($(miid[0] + '|' + mi)) {
 						$(miid[0] + '|' + mi).checked = input.checked;
-						if(input.getAttribute('type') == 'radio') {
+						if (input.getAttribute('type') == 'radio') {
 							altStyleClear($(miid[0] + '|' + mi).parentNode);
 						}
 						$(miid[0] + '|' + mi).parentNode.className = input.checked ? 'checked' : '';
@@ -91,7 +92,7 @@ function altStyle(obj, disabled) {
 				}
 			}
 		};
-		lis[i].onmouseup = function(e) {
+		lis[i].onmouseup = function (e) {
 			cc = 0;
 		}
 	}
@@ -99,26 +100,31 @@ function altStyle(obj, disabled) {
 
 var addrowdirect = 0;
 var addrowkey = 0;
+
 function addrow(obj, type) {
 	var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
-	if(!addrowdirect) {
+	if (!addrowdirect) {
 		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex);
 	} else {
 		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex + 1);
 	}
 	var typedata = rowtypedata[type];
-	for(var i = 0; i <= typedata.length - 1; i++) {
+	for (var i = 0; i <= typedata.length - 1; i++) {
 		var cell = row.insertCell(i);
 		cell.colSpan = typedata[i][0];
 		var tmp = typedata[i][1];
-		if(typedata[i][2]) {
+		if (typedata[i][2]) {
 			cell.className = typedata[i][2];
 		}
-		tmp = tmp.replace(/\{(n)\}/g, function($1) {return addrowkey;});
-		tmp = tmp.replace(/\{(\d+)\}/g, function($1, $2) {return addrow.arguments[parseInt($2) + 1];});
+		tmp = tmp.replace(/\{(n)\}/g, function ($1) {
+			return addrowkey;
+		});
+		tmp = tmp.replace(/\{(\d+)\}/g, function ($1, $2) {
+			return addrow.arguments[parseInt($2) + 1];
+		});
 		cell.innerHTML = tmp;
 	}
-	addrowkey ++;
+	addrowkey++;
 	addrowdirect = 0;
 }
 
@@ -127,10 +133,11 @@ function deleterow(obj) {
 	var tr = obj.parentNode.parentNode.parentNode;
 	table.deleteRow(tr.rowIndex);
 }
-function dropmenu(obj){
-	showMenu({'ctrlid':obj.id, 'menuid':obj.id + 'child', 'evt':'mouseover'});
+
+function dropmenu(obj) {
+	showMenu({'ctrlid': obj.id, 'menuid': obj.id + 'child', 'evt': 'mouseover'});
 	$(obj.id + 'child').style.top = (parseInt($(obj.id + 'child').style.top) - Math.max(document.body.scrollTop, document.documentElement.scrollTop)) + 'px';
-	if(BROWSER.ie > 6 || !BROWSER.ie) {
+	if (BROWSER.ie > 6 || !BROWSER.ie) {
 		$(obj.id + 'child').style.left = (parseInt($(obj.id + 'child').style.left) - Math.max(document.body.scrollLeft, document.documentElement.scrollLeft)) + 'px';
 	}
 }
@@ -138,40 +145,41 @@ function dropmenu(obj){
 function insertunit(obj, text, textend) {
 	obj.focus();
 	textend = isUndefined(textend) ? '' : textend;
-	if(!isUndefined(obj.selectionStart)) {
+	if (!isUndefined(obj.selectionStart)) {
 		var opn = obj.selectionStart + 0;
-		if(textend != '') {
+		if (textend != '') {
 			text = text + obj.value.substring(obj.selectionStart, obj.selectionEnd) + textend;
 		}
 		obj.value = obj.value.substr(0, obj.selectionStart) + text + obj.value.substr(obj.selectionEnd);
 		obj.selectionStart = opn + strlen(text);
 		obj.selectionEnd = opn + strlen(text);
-	} else if(document.selection && document.selection.createRange) {
+	} else if (document.selection && document.selection.createRange) {
 		var sel = document.selection.createRange();
-		if(textend != '') {
+		if (textend != '') {
 			text = text + sel.text + textend;
 		}
 		sel.text = text.replace(/\r?\n/g, '\r\n');
 		sel.moveStart('character', -strlen(text));
 	} else {
-	       obj.value += text;
+		obj.value += text;
 	}
 	obj.focus();
 }
 
 var heightag = BROWSER.chrome ? 4 : 0;
+
 function textareakey(obj, event) {
-	if(event.keyCode == 9) {
+	if (event.keyCode == 9) {
 		insertunit(obj, '\t');
 		doane(event);
 	}
 }
 
 function textareasize(obj, op) {
-	if(!op) {
+	if (!op) {
 
 	} else {
-		if(obj.style.position == 'absolute') {
+		if (obj.style.position == 'absolute') {
 			obj.style.position = '';
 			obj.style.width = '';
 			obj.parentNode.style.height = '';
@@ -187,22 +195,22 @@ function textareasize(obj, op) {
 
 function showanchor(obj) {
 	var navs = $('submenu').getElementsByTagName('li');
-	for(var i = 0; i < navs.length; i++) {
-		if(navs[i].id.substr(0, 4) == 'nav_' && navs[i].id != obj.id) {
-			if($(navs[i].id.substr(4))) {
+	for (var i = 0; i < navs.length; i++) {
+		if (navs[i].id.substr(0, 4) == 'nav_' && navs[i].id != obj.id) {
+			if ($(navs[i].id.substr(4))) {
 				navs[i].className = '';
 				$(navs[i].id.substr(4)).style.display = 'none';
-				if($(navs[i].id.substr(4) + '_tips')) $(navs[i].id.substr(4) + '_tips').style.display = 'none';
+				if ($(navs[i].id.substr(4) + '_tips')) $(navs[i].id.substr(4) + '_tips').style.display = 'none';
 			}
 		}
 	}
 	obj.className = 'current';
 	currentAnchor = obj.id.substr(4);
 	$(currentAnchor).style.display = '';
-	if($(currentAnchor + '_tips')) $(currentAnchor + '_tips').style.display = '';
-	if($(currentAnchor + 'form')) {
+	if ($(currentAnchor + '_tips')) $(currentAnchor + '_tips').style.display = '';
+	if ($(currentAnchor + 'form')) {
 		$(currentAnchor + 'form').anchor.value = currentAnchor;
-	} else if($('cpform')) {
+	} else if ($('cpform')) {
 		$('cpform').anchor.value = currentAnchor;
 	}
 }
@@ -212,17 +220,17 @@ function updatecolorpreview(obj) {
 }
 
 function entersubmit(e, name) {
-	if(loadUserdata('is_blindman')) {
+	if (loadUserdata('is_blindman')) {
 		return false;
 	}
 	e = e ? e : event;
-	if(e.keyCode != 13) {
+	if (e.keyCode != 13) {
 		return;
 	}
 	var tag = BROWSER.ie ? e.srcElement.tagName : e.target.tagName;
-	if(tag != 'TEXTAREA') {
+	if (tag != 'TEXTAREA') {
 		doane(e);
-		if($('submit_' + name).offsetWidth) {
+		if ($('submit_' + name).offsetWidth) {
 			$('formscrolltop').value = document.documentElement.scrollTop;
 			$('submit_' + name).click();
 		}
@@ -231,15 +239,15 @@ function entersubmit(e, name) {
 
 function parsetag(tag) {
 	var parse = function (tds) {
-		for(var i = 0; i < tds.length; i++) {
-			if(tds[i].getAttribute('s') == '1') {
-				tds[i].innerHTML = tds[i].innerHTML.replace(/(^|>)([^<]+)(?=<|$)/ig, function($1, $2, $3) {
-					if(tag && $3.toLowerCase().indexOf(tag.toLowerCase()) != -1) {
+		for (var i = 0; i < tds.length; i++) {
+			if (tds[i].getAttribute('s') == '1') {
+				tds[i].innerHTML = tds[i].innerHTML.replace(/(^|>)([^<]+)(?=<|$)/ig, function ($1, $2, $3) {
+					if (tag && $3.toLowerCase().indexOf(tag.toLowerCase()) != -1) {
 						re = new RegExp(tag, "ig");
 						$3 = $3.replace(re, '<font class="highlight">$&</font>');
 					}
 					return $2 + $3;
-					});
+				});
 			}
 		}
 	};
@@ -252,16 +260,18 @@ function sdisplay(id, obj) {
 	display(id);
 }
 
-if(ISFRAME) {
+if (ISFRAME) {
 	try {
 		_attachEvent(document.documentElement, 'keydown', parent.resetEscAndF5);
-	} catch(e) {}
+	} catch (e) {
+	}
 }
 
 var multiids = new Array();
+
 function multiupdate(obj) {
 	v = obj.value;
-	if(obj.checked) {
+	if (obj.checked) {
 		multiids[v] = v;
 	} else {
 		multiids[v] = null;
@@ -270,8 +280,8 @@ function multiupdate(obj) {
 
 function getmultiids() {
 	var ids = '', comma = '';
-	for(i in multiids) {
-		if(multiids[i] != null) {
+	for (i in multiids) {
+		if (multiids[i] != null) {
 			ids += comma + multiids[i];
 			comma = ',';
 		}
@@ -281,13 +291,13 @@ function getmultiids() {
 
 
 function toggle_group(oid, obj, conf, op) {
-	obj = obj ? obj : $('a_'+oid);
-    op = op ? op : '';
-	if(!conf) {
-		var conf = {'show':'[-]','hide':'[+]'};
+	obj = obj ? obj : $('a_' + oid);
+	op = op ? op : '';
+	if (!conf) {
+		var conf = {'show': '[-]', 'hide': '[+]'};
 	}
 	var obody = $(oid);
-	if(obody.style.display == 'none' || op == 'show') {
+	if (obody.style.display == 'none' || op == 'show') {
 		obody.style.display = '';
 		obj.innerHTML = conf.show;
 	} else {
@@ -295,23 +305,25 @@ function toggle_group(oid, obj, conf, op) {
 		obj.innerHTML = conf.hide;
 	}
 }
+
 function show_all() {
 	var tbodys = $("cpform").getElementsByTagName('tbody');
-	for(var i = 0; i < tbodys.length; i++) {
+	for (var i = 0; i < tbodys.length; i++) {
 		var re = /^group_(\d+)$/;
 		var matches = re.exec(tbodys[i].id);
-		if(matches != null) {
+		if (matches != null) {
 			tbodys[i].style.display = '';
 			$('a_group_' + matches[1]).innerHTML = '[-]';
 		}
 	}
 }
+
 function hide_all() {
 	var tbodys = $("cpform").getElementsByTagName('tbody');
-	for(var i = 0; i < tbodys.length; i++) {
+	for (var i = 0; i < tbodys.length; i++) {
 		var re = /^group_(\d+)$/;
 		var matches = re.exec(tbodys[i].id);
-		if(matches != null) {
+		if (matches != null) {
 			tbodys[i].style.display = 'none';
 			$('a_group_' + matches[1]).innerHTML = '[+]';
 		}
@@ -320,10 +332,10 @@ function hide_all() {
 
 function show_all_hook(prefix, tagname) {
 	var tbodys = $("cpform").getElementsByTagName(tagname);
-	for(var i = 0; i < tbodys.length; i++) {
+	for (var i = 0; i < tbodys.length; i++) {
 		var re = new RegExp('^' + prefix + '(.+)$');
 		var matches = re.exec(tbodys[i].id);
-		if(matches != null) {
+		if (matches != null) {
 			tbodys[i].style.display = '';
 			$('a_' + prefix + matches[1]).innerHTML = '[-]';
 		}
@@ -332,10 +344,10 @@ function show_all_hook(prefix, tagname) {
 
 function hide_all_hook(prefix, tagname) {
 	var tbodys = $("cpform").getElementsByTagName(tagname);
-	for(var i = 0; i < tbodys.length; i++) {
+	for (var i = 0; i < tbodys.length; i++) {
 		var re = new RegExp('^' + prefix + '(.+)$');
 		var matches = re.exec(tbodys[i].id);
-		if(matches != null) {
+		if (matches != null) {
 			tbodys[i].style.display = 'none';
 			$('a_' + prefix + matches[1]).innerHTML = '[+]';
 		}
@@ -344,11 +356,11 @@ function hide_all_hook(prefix, tagname) {
 
 function srchforum() {
 	var fname = $('srchforumipt').value.toLowerCase();
-	if(!fname) return false;
+	if (!fname) return false;
 	var inputs = $("cpform").getElementsByTagName('input');
-	for(var i = 0; i < inputs.length; i++) {
-		if(inputs[i].name.match(/^name\[\d+\]$/)) {
-			if(inputs[i].value.toLowerCase().indexOf(fname) !== -1) {
+	for (var i = 0; i < inputs.length; i++) {
+		if (inputs[i].name.match(/^name\[\d+\]$/)) {
+			if (inputs[i].value.toLowerCase().indexOf(fname) !== -1) {
 				inputs[i].parentNode.parentNode.parentNode.parentNode.style.display = '';
 				inputs[i].parentNode.parentNode.parentNode.style.background = '#eee';
 				window.scrollTo(0, fetchOffset(inputs[i]).top - 100);
@@ -360,11 +372,11 @@ function srchforum() {
 }
 
 function setfaq(obj, id) {
-	if(!$(id)) {
+	if (!$(id)) {
 		return;
 	}
 	$(id).style.display = '';
-	if(!obj.onmouseout) {
+	if (!obj.onmouseout) {
 		obj.onmouseout = function () {
 			$(id).style.display = 'none';
 		}
@@ -372,14 +384,14 @@ function setfaq(obj, id) {
 }
 
 function floatbottom(id) {
-	if(!$(id)) {
+	if (!$(id)) {
 		return;
 	}
 	$(id).style.position = 'fixed';
 	$(id).style.bottom = '0';
 	$(id).parentNode.style.paddingBottom = '15px';
-	if(!BROWSER.ie || BROWSER.ie && BROWSER.ie > 6) {
-		window.onscroll = function() {
+	if (!BROWSER.ie || BROWSER.ie && BROWSER.ie > 6) {
+		window.onscroll = function () {
 			var scrollLeft = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
 			$(id).style.marginLeft = '-' + scrollLeft + 'px';
 		};
@@ -388,50 +400,54 @@ function floatbottom(id) {
 }
 
 function multisubmit(id, msg, url) {
-    var max = $(id).multi.value.split(',').length;
-    if(multiStep >= max) {
-        parent.showDialog('<div class=infotitle2 style="padding:5px 10px">' + msg + '</div>', 'info', $L('admincp_notice'));
-        setTimeout(function() {location.reload();parent.location.reload();}, 3000);
-        return;
-    }
-    parent.showDialog('<div class=infotitle1 style=\"padding:5px 10px\">' + $L('admincp_submit_waiting') + '</div>', 'info', $L('admincp_notice'));
-    var re = /multinew\[(\d+)\]/;
-    var x = '';
-    for (var i = 0; i < $(id).elements.length; i++) {
-        var matches = re.exec($(id).elements[i].name);
-        if(matches != null) {
-            if(parseInt(matches[1]) != parseInt(multiStep)) {
-                $(id).elements[i].disabled = true;
-            } else {
-                $(id).elements[i].disabled = false;
-            }
-        }
+	var max = $(id).multi.value.split(',').length;
+	if (multiStep >= max) {
+		parent.showDialog('<div class=infotitle2 style="padding:5px 10px">' + msg + '</div>', 'info', $L('admincp_notice'));
+		setTimeout(function () {
+			location.reload();
+			parent.location.reload();
+		}, 3000);
+		return;
 	}
-    $(id).submit();
-    return false;
+	parent.showDialog('<div class=infotitle1 style=\"padding:5px 10px\">' + $L('admincp_submit_waiting') + '</div>', 'info', $L('admincp_notice'));
+	var re = /multinew\[(\d+)\]/;
+	var x = '';
+	for (var i = 0; i < $(id).elements.length; i++) {
+		var matches = re.exec($(id).elements[i].name);
+		if (matches != null) {
+			if (parseInt(matches[1]) != parseInt(multiStep)) {
+				$(id).elements[i].disabled = true;
+			} else {
+				$(id).elements[i].disabled = false;
+			}
+		}
+	}
+	$(id).submit();
+	return false;
 }
 
 function multiselect(id) {
-    var multi = '', d = '';
-    var re = /multi\[\]/;
-    for (var i = 0; i < $(id).elements.length; i++) {
-        var matches = re.exec($(id).elements[i].name);
-        if(matches != null) {
-            if($(id).elements[i].checked) {
-                multi += d + $(id).elements[i].value;
-                d = ',';
-            }
-        }
-    }
-    var newlocation = location.href.replace(/multi=(.+?)$/g, 'multi=' + multi);
-    if(newlocation == location.href) {
-        location.href = document.location.origin + document.location.pathname + document.location.search + '&multi=' + multi + '#' + document.location.hash;
-    } else {
-        location.href = newlocation;
-    }
+	var multi = '', d = '';
+	var re = /multi\[\]/;
+	for (var i = 0; i < $(id).elements.length; i++) {
+		var matches = re.exec($(id).elements[i].name);
+		if (matches != null) {
+			if ($(id).elements[i].checked) {
+				multi += d + $(id).elements[i].value;
+				d = ',';
+			}
+		}
+	}
+	var newlocation = location.href.replace(/multi=(.+?)$/g, 'multi=' + multi);
+	if (newlocation == location.href) {
+		location.href = document.location.origin + document.location.pathname + document.location.search + '&multi=' + multi + '#' + document.location.hash;
+	} else {
+		location.href = newlocation;
+	}
 }
 
 var sethtml_id = null;
+
 function sethtml(id) {
 	$(id).className = 'txt html';
 	$(id).contentEditable = true;
@@ -450,12 +466,12 @@ function sethtml(id) {
 	btn.id = id + '_c';
 	btn.type = 'button';
 	btn.className = 'htmlbtn c';
-	if(curvalue.search(/<font/ig) !== -1) {
+	if (curvalue.search(/<font/ig) !== -1) {
 		btn.className = 'htmlbtn c current';
 	}
-	btn.onclick = function() {
+	btn.onclick = function () {
 		$(id + '_c_frame').src = 'static/image/admincp/getcolor.htm?||sethtml_color';
-		showMenu({'ctrlid' : id + '_c'});
+		showMenu({'ctrlid': id + '_c'});
 		sethtml_id = id;
 	};
 	$(id).parentNode.appendChild(btn);
@@ -464,13 +480,13 @@ function sethtml(id) {
 	btn.id = id + '_b';
 	btn.type = 'button';
 	btn.className = 'htmlbtn b';
-	if(curvalue.search(/<b>/ig) !== -1) {
+	if (curvalue.search(/<b>/ig) !== -1) {
 		btn.className = 'htmlbtn b current';
 	}
-	btn.onclick = function() {
+	btn.onclick = function () {
 		var oldvalue = $(id).innerHTML;
 		$(id).innerHTML = preg_replace(['<b>', '</b>'], '', $(id).innerHTML);
-		if(oldvalue == $(id).innerHTML) {
+		if (oldvalue == $(id).innerHTML) {
 			$(id + '_b').className = 'htmlbtn b current';
 			$(id).innerHTML = '<b>' + $(id).innerHTML + '</b>';
 		} else {
@@ -484,13 +500,13 @@ function sethtml(id) {
 	btn.id = id + '_i';
 	btn.type = 'button';
 	btn.className = 'htmlbtn i';
-	if(curvalue.search(/<i>/ig) !== -1) {
+	if (curvalue.search(/<i>/ig) !== -1) {
 		btn.className = 'htmlbtn i current';
 	}
-	btn.onclick = function() {
+	btn.onclick = function () {
 		var oldvalue = $(id).innerHTML;
 		$(id).innerHTML = preg_replace(['<i>', '</i>'], '', $(id).innerHTML);
-		if(oldvalue == $(id).innerHTML) {
+		if (oldvalue == $(id).innerHTML) {
 			$(id + '_i').className = 'htmlbtn i current';
 			$(id).innerHTML = '<i>' + $(id).innerHTML + '</i>';
 		} else {
@@ -505,13 +521,13 @@ function sethtml(id) {
 	btn.type = 'button';
 	btn.style.textDecoration = 'underline';
 	btn.className = 'htmlbtn u';
-	if(curvalue.search(/<u>/ig) !== -1) {
+	if (curvalue.search(/<u>/ig) !== -1) {
 		btn.className = 'htmlbtn u current';
 	}
-	btn.onclick = function() {
+	btn.onclick = function () {
 		var oldvalue = $(id).innerHTML;
 		$(id).innerHTML = preg_replace(['<u>', '</u>'], '', $(id).innerHTML);
-		if(oldvalue == $(id).innerHTML) {
+		if (oldvalue == $(id).innerHTML) {
 			$(id + '_u').className = 'htmlbtn u current';
 			$(id).innerHTML = '<u>' + $(id).innerHTML + '</u>';
 		} else {
@@ -524,7 +540,7 @@ function sethtml(id) {
 
 function sethtml_color(color) {
 	$(sethtml_id).innerHTML = preg_replace(['<font[^>]+?>', '</font>'], '', $(sethtml_id).innerHTML);
-	if(color != 'transparent') {
+	if (color != 'transparent') {
 		$(sethtml_id + '_c').className = 'htmlbtn c current';
 		$(sethtml_id).innerHTML = '<font color=' + color + '>' + $(sethtml_id).innerHTML + '</font>';
 	} else {
@@ -539,76 +555,76 @@ function uploadthreadtypexml(formobj, formaction) {
 }
 
 function showretheader(title, jsmenu) {
-    if(ISFRAME && !parent.document.getElementById('leftmenu') && !parent.parent.document.getElementById('leftmenu')) {
-        document.write('<div class="retheader">' +
-            '<a id="retheader" onmouseover="showMenu({\'ctrlid\':this.id})" href="' + document.location.origin + document.location.pathname + document.location.search + '&frames=yes">' +
-            '<i></i> ' + title + '</a>' +
-            '</div><div id="retheader_menu" style="display:none"></div>');
-        appendscript(jsmenu);
-    }
+	if (ISFRAME && !parent.document.getElementById('leftmenu') && !parent.parent.document.getElementById('leftmenu')) {
+		document.write('<div class="retheader">' +
+		    '<a id="retheader" onmouseover="showMenu({\'ctrlid\':this.id})" href="' + document.location.origin + document.location.pathname + document.location.search + '&frames=yes">' +
+		    '<i></i> ' + title + '</a>' +
+		    '</div><div id="retheader_menu" style="display:none"></div>');
+		appendscript(jsmenu);
+	}
 }
 
 function perm_search(type, kw) {
-    let id = 'permitem_menu';
-    if(!$(id)) {
-        var div = document.createElement('div');
-        div.id = id;
-        div.style.display = 'none';
-        div.innerHTML = '';
-        $('append_parent').parentNode.appendChild(div);
-    }
-    showMenu({'menuid':id, 'duration': 3, 'pos': '00', 'mtype': 'win'});
-    ajaxget(admincpfilename + '?action=forums&mod=forum&operation=perm_get_item&itemtype=' + type + '&kw=' + encodeURIComponent ($(kw).value), id);
+	let id = 'permitem_menu';
+	if (!$(id)) {
+		var div = document.createElement('div');
+		div.id = id;
+		div.style.display = 'none';
+		div.innerHTML = '';
+		$('append_parent').parentNode.appendChild(div);
+	}
+	showMenu({'menuid': id, 'duration': 3, 'pos': '00', 'mtype': 'win'});
+	ajaxget(admincpfilename + '?action=forums&mod=forum&operation=perm_get_item&itemtype=' + type + '&kw=' + encodeURIComponent($(kw).value), id);
 }
 
 function perm_enter(event, obj) {
-    let theEvent = event|| window.event;
-    let keyCode = theEvent.keyCode || theEvent.which || theEvent.charCode;
-    if (keyCode == 13) {
-        obj.nextElementSibling.click();
-        doane(event);
-    }
+	let theEvent = event || window.event;
+	let keyCode = theEvent.keyCode || theEvent.which || theEvent.charCode;
+	if (keyCode == 13) {
+		obj.nextElementSibling.click();
+		doane(event);
+	}
 }
 
 function perm_show_item(data) {
-    var type = data['type'];
-    let id = 'permitem_menu';
-    $(type + '_show').innerHTML = '';
-    if(data['data'].length) {
-        for (i in data['data']) {
-            var a = document.createElement('a');
-            let id = data['data'][i][0];
-            let name = data['data'][i][1];
-            let addname = data['data'][i][3] ? data['data'][i][3] : data['data'][i][1];
-            let t = data['data'][i][2];
-            a.onclick = function () {
-                perm_add_item('g' + type, id, type, [addname, t + id]);
-            };
-            a.href = 'javascript:;';
-            a.innerHTML = name;
-            $(type + '_show').appendChild(a);
-        }
-    } else {
-        $(type + '_show').innerHTML = '<a>' + $L('admincp_perm_item_no_data') + '</a>';
-    }
-    setMenuPosition(null, id, '00');
+	var type = data['type'];
+	let id = 'permitem_menu';
+	$(type + '_show').innerHTML = '';
+	if (data['data'].length) {
+		for (i in data['data']) {
+			var a = document.createElement('a');
+			let id = data['data'][i][0];
+			let name = data['data'][i][1];
+			let addname = data['data'][i][3] ? data['data'][i][3] : data['data'][i][1];
+			let t = data['data'][i][2];
+			a.onclick = function () {
+				perm_add_item('g' + type, id, type, [addname, t + id]);
+			};
+			a.href = 'javascript:;';
+			a.innerHTML = name;
+			$(type + '_show').appendChild(a);
+		}
+	} else {
+		$(type + '_show').innerHTML = '<a>' + $L('admincp_perm_item_no_data') + '</a>';
+	}
+	setMenuPosition(null, id, '00');
 }
 
 function perm_add_item(row, id, t, r) {
-    toggle_group('g' + t, null, null, 'show');
-    if(document.querySelector('input[name=chkall' + t + id + ']')) {
-        return;
-    }
+	toggle_group('g' + t, null, null, 'show');
+	if (document.querySelector('input[name=chkall' + t + id + ']')) {
+		return;
+	}
 
-    var row = $(row).insertRow(-1);
-    row.insertCell(0).innerHTML = '<input class="checkbox" type="checkbox" name="chkall' + t + id + '" onclick="checkAll(\'value\', this.form, \'' + t + id + '\', \'chkall' + t + id + '\')" id="chkall' + t + '_' + id + '">';
-    row.insertCell(1).innerHTML = r[0];
-    row.insertCell(2).innerHTML = r[1];
-    row.cells[2].className = 'lightfont';
-    row.insertCell(3).innerHTML = '<input class="checkbox" type="checkbox" name="viewperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
-    row.insertCell(4).innerHTML = '<input class="checkbox" type="checkbox" name="postperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
-    row.insertCell(5).innerHTML = '<input class="checkbox" type="checkbox" name="replyperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
-    row.insertCell(6).innerHTML = '<input class="checkbox" type="checkbox" name="getattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
-    row.insertCell(7).innerHTML = '<input class="checkbox" type="checkbox" name="postattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
-    row.insertCell(8).innerHTML = '<input class="checkbox" type="checkbox" name="postimageperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	var row = $(row).insertRow(-1);
+	row.insertCell(0).innerHTML = '<input class="checkbox" type="checkbox" name="chkall' + t + id + '" onclick="checkAll(\'value\', this.form, \'' + t + id + '\', \'chkall' + t + id + '\')" id="chkall' + t + '_' + id + '">';
+	row.insertCell(1).innerHTML = r[0];
+	row.insertCell(2).innerHTML = r[1];
+	row.cells[2].className = 'lightfont';
+	row.insertCell(3).innerHTML = '<input class="checkbox" type="checkbox" name="viewperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	row.insertCell(4).innerHTML = '<input class="checkbox" type="checkbox" name="postperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	row.insertCell(5).innerHTML = '<input class="checkbox" type="checkbox" name="replyperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	row.insertCell(6).innerHTML = '<input class="checkbox" type="checkbox" name="getattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	row.insertCell(7).innerHTML = '<input class="checkbox" type="checkbox" name="postattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	row.insertCell(8).innerHTML = '<input class="checkbox" type="checkbox" name="postimageperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
 }

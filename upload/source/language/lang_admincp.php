@@ -744,6 +744,7 @@ $lang =
 	'home_serversoftware' => '服务器软件',
 	'home_database' => '服务器数据库',
 	'home_memory' => '服务器内存接口',
+	'home_memory_advice' => '<span class="xg1">(建议配置内存接口减缓数据库压力)</span>',
 	'home_upload_perm' => '上传许可',
 	'home_database_size' => '当前数据库尺寸',
 	'home_attach_size' => '当前附件尺寸',
@@ -760,6 +761,7 @@ $lang =
 	'home_forever' => '永远鸣谢',
 	'home_benchmark' => '<span title="单位秒，数值越少代表速度越快">性能测试</span>',
 	'home_benchmark_run' => '测试',
+	'home_benchmark_advice' => '<span class="xg1">(请检查是否开启了 JIT 功能)</span>',
 
 	'setting' => '全局设置',
 	'setting_tips' => '<li>以红色虚线标示的选项，表示该选项和系统效率、负载能力与资源消耗有关(提高效率、或降低效率)，建议依据自身服务器情况进行调整。</li>',

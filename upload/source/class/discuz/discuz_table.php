@@ -76,6 +76,9 @@ class discuz_table extends discuz_base {
 	}
 
 	public function insert($data, $return_insert_id = false, $replace = false, $silent = false) {
+		if($replace && !empty($data[$this->_pk])) {
+			$this->clear_cache($data[$this->_pk]);
+		}
 		return DB::insert($this->_table, $data, $return_insert_id, $replace, $silent);
 	}
 

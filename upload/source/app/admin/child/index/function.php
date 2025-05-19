@@ -280,13 +280,18 @@ function show_sysinfo() {
 		cplang('home_attach_size'),
 		$attachsize
 	]);
+	$advice = '';
 	if(isset($_GET['benchmark']) && FORMHASH == $_GET['formhash']) {
 		$times = 3;
 		$r = 0;
 		for($i = 0; $i < $times; $i++) {
 			$r += get_benchmark();
 		}
-		$benchmark = sprintf('%1.6f', $r / $times).'s';
+		$benchmark = sprintf('%1.6f', $r / $times);
+		if($benchmark > 2) {
+			$advice = ' '.cplang('home_benchmark_advice');
+		}
+		$benchmark .= 's';
 	} else {
 		$append = (isset($_GET['attachsize']) ? '&attachsize' : '').(isset($_GET['dbsize']) ? '&dbsize' : '');
 		$benchmark = '<a href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&benchmark'.$append.'">[ '.$lang['home_benchmark_run'].' ]</a>';
@@ -294,7 +299,7 @@ function show_sysinfo() {
 	$meminfo = memory('check');
 	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
 		cplang('home_benchmark'),
-		$benchmark
+		$benchmark.$advice
 	]);
 	showboxfooter();
 }
@@ -514,7 +519,7 @@ function get_memicon() {
 function get_meminfo() {
 	$n = memory('check');
 	if(!$n) {
-		return cplang('none');
+		return cplang('none').' '.cplang('home_memory_advice');
 	}
 	if($n == 'Redis') {
 		$v = memory('info', 'server');

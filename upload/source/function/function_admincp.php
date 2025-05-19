@@ -282,7 +282,9 @@ function showmenu($key, $menus, $return = 0) {
 function updatemenu($key) {
 	require appfile('module/menu', 'admin');
 	$s = showmenu($key, $menu[$key], 1);
-	echo '<script type="text/JavaScript">parent.$(\'menu_'.$key.'\').innerHTML = \''.str_replace("'", "\'", $s).'\';parent.initCpMenus(\'leftmenu\');parent.initCpMap();</script>';
+	echo '<script type="text/JavaScript">if(parent.$(\'menu_'.$key.'\')) {
+		parent.$(\'menu_'.$key.'\').innerHTML = \''.str_replace("'", "\'", $s).'\';parent.reloadmenu(\'nav ul #menu_plugin a\');
+	}</script>';
 }
 
 function cpmsg_error($message, $url = '', $extra = '', $halt = TRUE) {

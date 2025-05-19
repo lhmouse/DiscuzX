@@ -31,6 +31,7 @@ function run_toggle(target, styles, source) {
 				source.removeEventListener('transitionend', nextstep);
 				run_toggle(target, styles, source);
 			}
+
 			source.addEventListener('transitionend', nextstep);
 		}
 	}

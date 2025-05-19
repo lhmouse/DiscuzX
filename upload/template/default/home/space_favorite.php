@@ -36,7 +36,7 @@
 				<h1 class="mt">{lang favorite}</h1>
 <!--{/if}-->
 			<!--{if $list}-->
-			<form method="post" autocomplete="off" name="delform" id="delform" action="home.php?mod=spacecp&ac=favorite&op=delete&type=$_GET[type]&checkall=1" >
+			<form method="post" autocomplete="off" name="delform" id="delform" action="home.php?mod=spacecp&ac=favorite&op=delete&type=$_GET[type]&checkall=1">
 			<input type="hidden" name="formhash" value="{FORMHASH}" />
 			<input type="hidden" name="delfavorite" value="true" />
 			<ul id="favorite_ul" class="">

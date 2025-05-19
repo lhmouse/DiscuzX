@@ -414,6 +414,9 @@ function threadclasscount($fid, $id = 0, $idtype = '', $count = null) {
 	$threadclasscount = dunserialize($threadclasscount['cachevalue']);
 	if($count !== null) {
 		if($typeflag) {
+			if(isset($threadclasscount[$idtype][$id]) && $threadclasscount[$idtype][$id] == $count) {
+				return true;
+			}
 			$threadclasscount[$idtype][$id] = $count;
 			table_common_cache::t()->insert([
 				'cachekey' => 'threadclasscount_'.$fid,
