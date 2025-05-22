@@ -14,7 +14,7 @@ class payment {
 
 	public static function enable() {
 
-		$channels = table_common_setting::t()->fetch_all_setting(['ec_wechat', 'ec_alipay', 'ec_qpay'], true);
+		$channels = table_common_setting::t()->fetch_all_setting(['ec_wechat', 'ec_alipay', 'ec_qpay', 'payment_channels'], true);
 		if($channels['ec_alipay']['on']) {
 			return true;
 		}
@@ -24,6 +24,13 @@ class payment {
 		if($channels['ec_qpay']['on']) {
 			return true;
 		}
+		if(!empty($channels['payment_channels'])) {
+			foreach($channels['payment_channels'] as $channel => $val) {
+				if(!empty($val['enable'])) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -31,6 +38,12 @@ class payment {
 		$channels = self::channels_setting();
 		$param['enable'] = 1;
 		$channels[$channel] = $param;
+		table_common_setting::t()->update_setting('payment_channels', $channels);
+	}
+
+	public static function channels_switch($channel, $boolean) {
+		$channels = self::channels_setting();
+		$channels[$channel]['enable'] = $boolean;
 		table_common_setting::t()->update_setting('payment_channels', $channels);
 	}
 
@@ -78,7 +91,7 @@ class payment {
 		}
 		if(!empty($channels['payment_channels'])) {
 			foreach($channels['payment_channels'] as $channel => $val) {
-				$result[$channel] = $val;
+				$result[$val['id']] = $val;
 			}
 		}
 
@@ -372,6 +385,21 @@ class payment {
 		global $_G;
 		require_once libfile('function/misc');
 
+		/*
+		writelog('pmtlog', implode("\t", clearlogstring(array(
+			$_G['timestamp'],
+			$channel,
+			$status,
+			$order_id,
+			$uid,
+			$_G['clientip'],
+			$_G['remoteport'],
+			$error,
+			is_array($data) ? json_encode($data) : $data
+		))));
+		*/
+
+		// logger start
 		if($_G['setting']['log']['pmt']) {
 			$errorlog = [
 				'dateline' => $_G['timestamp'],
@@ -387,5 +415,6 @@ class payment {
 			$member_log = getuserbyuid($uid);
 			logger('pmt', $member_log, $uid, $errorlog);
 		}
+		// logger end
 	}
 }

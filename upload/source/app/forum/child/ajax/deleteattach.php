@@ -22,6 +22,10 @@ if(isset($_GET['aids']) && isset($_GET['formhash']) && formhash() == $_GET['form
 			table_forum_attachment_n::t()->delete_attachment('aid:'.$aid, $aid);
 			table_forum_attachment::t()->delete($aid);
 			dunlink($attach);
+			if($_G['setting']['ftp']['on'] == 2) {
+				ftpcmd('delete', 'forum/'.$attach['attachment']);
+				ftpcmd('delete', 'forum/'.getimgthumbname($attach['attachment']));
+			}
 			$count++;
 		}
 	}

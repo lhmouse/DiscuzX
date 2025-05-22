@@ -113,7 +113,7 @@ function ftpupload($aids, $uid = 0) {
 		$remoteaids = [];
 		foreach(table_forum_attachment_n::t()->fetch_all_attachment($attachtable, $aids, 0) as $attach) {
 			if(ftpperm(fileext($attach['filename']), $attach['filesize'])) {
-				if(ftpcmd('upload', 'forum/'.$attach['attachment']) && (!$attach['thumb'] || ftpcmd('upload', 'forum/'.getimgthumbname($attach['attachment'])))) {
+				if($_G['setting']['ftp']['on'] == 2 || ftpcmd('upload', 'forum/'.$attach['attachment']) && (!$attach['thumb'] || ftpcmd('upload', 'forum/'.getimgthumbname($attach['attachment'])))) {
 					dunlink($attach);
 					$remoteaids[$attach['aid']] = $attach['aid'];
 					if($attach['picid']) {

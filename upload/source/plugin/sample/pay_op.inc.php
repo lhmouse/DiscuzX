@@ -21,6 +21,14 @@ switch($_GET['op']) {
 		//删除自定义支付通道
 		payment::channels_delete('sample');
 		break;
+	case 'open':
+		//开启自定义支付通道
+		payment::channels_switch('sample', 1);
+		break;
+	case 'close':
+		//关闭自定义支付通道
+		payment::channels_switch('sample', 0);
+		break;
 
 }
 

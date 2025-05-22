@@ -418,7 +418,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 		.ckbox li { float: left; margin: 5px 10px 5px 0; white-space: nowrap; width: 162px; height: 20px; }
 	.partition, .partition2{ color: var(--admincp-fa); }
 
-	.tb2 .partition { padding: 8px 10px; font-size: 14px; border: 0; border-radius: 8px 8px 0 0; border-bottom: 1px dotted var(--admincp-borderc); }
+	.tb2 .partition { padding: 15px 10px; font-size: 14px; border: 0; border-radius: 8px 8px 0 0; border-bottom: 1px dotted var(--admincp-borderc); color: var(--admincp-color); font-weight: 700;}
 
 	.dblist{}
 		.dblist li{ float:left; margin-bottom:5px; width:33%; height:20px; white-space:nowrap; cursor:pointer; }

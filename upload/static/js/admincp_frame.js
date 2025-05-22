@@ -262,17 +262,22 @@ var _framemenu = (function () {
 	});
 
 	function tabNew(tab, tabHref) {
-		var tabName = '', tabId = '';
+		var tabName = '', tabId = '', customMode = false;
 		if(typeof tabHref == 'undefined') {
 			tabHref = tab.href;
 			tabName = tab.childNodes[1] ? tab.childNodes[1].innerHTML : tab.innerHTML;
 			tabId = tab.id;
 		} else {
+			customMode = true;
 			tabName = tab;
 			tabId = 't' + Math.random(4);
 		}
 		switchtab(tab);
 		if (!isleftmenu() || document.body.clientWidth < 575) {
+			if(customMode) {
+				window.open(tabHref);
+				return;
+			}
 			let customTitle = tabName;
 			let cpurl = tabHref;
 			$('admincpnav').innerHTML = customTitle

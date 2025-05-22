@@ -31,5 +31,6 @@ if($fid) {
 		$_G['group']['attachextensions'] = $forumattachextensions;
 	}
 }
-$upload = new forum_upload(0, empty($_GET['simple']) ? 0 : 1);
+$ftpcmd = !empty($_GET['simple']) || $_G['setting']['ftp']['on'] == 2 ? 1 : 0;
+$upload = new forum_upload(0, $ftpcmd);
 	

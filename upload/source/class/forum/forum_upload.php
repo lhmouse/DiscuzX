@@ -35,6 +35,9 @@ class forum_upload {
 
 
 		$upload = new discuz_upload();
+		if($ftpcmd && !ftpperm(fileext($_FILES['Filedata']['name']), $_FILES['Filedata']['size'])) {
+			$ftpcmd = 0;
+		}
 		$upload->ftpcmd = $ftpcmd;
 		$upload->init($_FILES['Filedata'], 'forum');
 		$this->attach = &$upload->attach;
@@ -141,6 +144,9 @@ class forum_upload {
 			if($_G['setting']['thumbsource'] || !$_G['setting']['thumbstatus']) {
 				list($width, $height) = @getimagesize($upload->attach['target']);
 			}
+		}
+		if($thumb && $upload->ftpcmd && $_G['setting']['ftp']['on'] == 2) {
+			ftpcmd('upload', 'forum/'.getimgthumbname($upload->attach['attachment']));
 		}
 		if($_GET['type'] != 'image' && $upload->attach['isimage']) {
 			$upload->attach['isimage'] = -1;
