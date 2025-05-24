@@ -256,7 +256,7 @@ class discuz_ftp {
 		if($this->config['on'] == 2) {
 			return 1;
 		}
-		return @ftp_close($this->connectid);
+		return $this->connectid ? @ftp_close($this->connectid) : 0;
 	}
 
 	function ftp_delete($path) {
@@ -265,7 +265,7 @@ class discuz_ftp {
 			return $this->ossConnect->deleteFile($path);
 		}
 		$path = discuz_ftp::clear($path);
-		return @ftp_delete($this->connectid, $path);
+		return $this->connectid ? @ftp_delete($this->connectid, $path) : 0;
 	}
 
 	function ftp_get($local_file, $remote_file, $mode, $resumepos = 0) {
