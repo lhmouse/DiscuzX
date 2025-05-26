@@ -167,7 +167,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 			table_forum_forum::t()->update_commoncredits(intval($mygroupid[0]));
 		}
 	}
-	$modthread = C::m('forum_thread');
+	$modthread = C::m('\forum\model_thread');
 	$bfmethods = $afmethods = [];
 
 	$params = [
@@ -218,18 +218,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 		}
 	}
 
-	if($special == 1) {
-
-
-	} elseif($special == 3) {
-
-
-	} elseif($special == 4) {
-	} elseif($special == 5) {
-
-
-	} elseif($specialextra) {
-
+	if($specialextra) {
 		@include_once DISCUZ_PLUGIN($_G['setting']['threadplugins'][$specialextra]['module']).'.class.php';
 		$classname = 'threadplugin_'.$specialextra;
 		if(class_exists($classname) && method_exists($threadpluginclass = new $classname, 'newthread_submit')) {
@@ -238,11 +227,9 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 		$special = 127;
 		$params['special'] = 127;
 		$params['message'] .= chr(0).chr(0).chr(0).$specialextra;
-
 	}
 
 	$params['typeexpiration'] = getgpc('typeexpiration');
-
 
 	// 原创声明 0未声明、1声明原创、-1非原创
 	if(!empty($original)) {

@@ -39,7 +39,7 @@ if(!submitcheck('submit')) {
 			foreach($apis as $plugin) {
 				$pluginlist['witframe'][$plugin['path']] = $title.'<div class="boxbody">'.showboxrow('', ['class="dcol"', 'class="dcol d-1"', 'class="plugin_control"'],
 						[
-							'<img src="'.$plugin['appIcon'].'" width="80" height="80" align="left" />',
+							'<img src="'.$plugin['appIcon'].'" onerror="this.src=\''.STATICURL.'image/admincp/plugin_logo.png\';this.onerror=null" width="80" height="80" align="left" />',
 							'<h3 class="light" style="font-size:16px">'.dhtmlspecialchars($plugin['appName']).' <span class="smallfont">(<a href="'.$plugin['appUrl'].'" style="color: #555;" target="_blank">'.$plugin['path'].'</a>)</span></h3>'.
 							'<p><span class="light">'.($plugin['sellerName'] ? cplang('author').': '.dhtmlspecialchars($plugin['sellerName']) : '').'</p>'.
 							'<p><a href="'.ADMINSCRIPT.'?action=plugins&operation=witframeConfig&do='.$plugin['path'].'">'.$lang['config'].'</a></p>'

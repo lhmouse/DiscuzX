@@ -47,7 +47,7 @@ if(empty($thread)) {
 	showmessage('thread_nonexistence');
 } elseif($thread['price'] > 0 && $thread['special'] == 0 && !$_G['uid']) {
 	showmessage('group_nopermission', NULL, ['grouptitle' => $_G['group']['grouptitle']], ['login' => 1]);
-} elseif($thread['readperm'] && $thread['readperm'] > $_G['group']['readaccess']){
+} elseif($thread['readperm'] && $thread['readperm'] > $_G['group']['readaccess']) {
 	showmessagenoperm('replyperm', $_G['forum']['fid']);
 }
 
@@ -324,7 +324,7 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 
 } else {
 
-	$modpost = C::m('forum_post', $_G['tid']);
+	$modpost = C::m('\forum\model_post', $_G['tid']);
 	$bfmethods = $afmethods = [];
 
 	if(!empty($content) && $content != '{}') {

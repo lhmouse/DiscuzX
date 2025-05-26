@@ -33,13 +33,6 @@ Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree
 - [插件](https://addon.dismall.com/plugins/list-2-210-0-0-1.html)
 - [模板](https://addon.dismall.com/templates/list-2-212-0-0-1.html)
 
-### X5/MitFrame 系列产品版本号更新对照表
-| 产品名称 | 产品介绍 | 完整版本号            |
-|----------|--------|------------------|
-| Discuz!ᵂ | 为无服务器的用户提供快速建站的 SaaS 版本 | X5.1.02.SaaS     |
-| Discuz! 企飞版 | 为企业用户提供的定制化版本 | X5.0.17.Business |
-| Discuz! 开发者预览版 | 为有服务器的用户提供的私有化部署版本 | X5.0.0.Open      |
-
 ### 声明
 您可以 Fork 本站代码，但未经许可 **禁止** 在本产品的整体或任何部分基础上以发展任何派生版本、修改版本或第三方版本用于 **重新分发** 
 

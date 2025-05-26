@@ -15,7 +15,7 @@ const DISCUZ_ROOT_STATIC = DISCUZ_ROOT;
 const DISCUZ_CORE_DEBUG = false;
 const DISCUZ_TABLE_EXTENDABLE = false;
 
-if(PHP_VERSION_ID < 80000){
+if(PHP_VERSION_ID < 80000) {
 	exit('PHP version must be greater than 8.0, current version: '.PHP_VERSION);
 }
 
@@ -61,11 +61,15 @@ class core {
 	}
 
 	protected static function _make_obj($name, $type, $extendable = false, $p = []) {
-		$pluginid = null;
+		$pluginid = $cname = null;
 		if($name[0] === '#') {
 			[, $pluginid, $name] = explode('#', $name);
+		} elseif($name[0] === '\\' && class_exists($name)) {
+			$cname = $name;
 		}
-		$cname = $type.'_'.$name;
+		if($cname === null) {
+			$cname = $type.'_'.$name;
+		}
 		if(!isset(self::$_tables[$cname])) {
 			if(!class_exists($cname, false)) {
 				if($pluginid) {

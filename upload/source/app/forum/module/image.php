@@ -25,6 +25,7 @@ if(!$nocache && !$_G['setting']['ftp']['on']) {
 	}
 }
 
+//优化第三方云存储,流量不走服务器,减轻压力。
 $oss = null;
 $oss_config = getglobal('setting/oss');
 if($_G['setting']['ftp']['on'] == 2) {

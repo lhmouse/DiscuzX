@@ -333,49 +333,26 @@ if(!submitcheck('editsubmit')) {
 			$message .= '[groupid='.intval($mygid).']'.$mygname.'[/groupid]';
 		}
 	}
-	$modpost = C::m('forum_post', $_G['tid'], $pid);
+	$modpost = C::m('\forum\model_post', $_G['tid'], $pid);
 
 	$modpost->param('redirecturl', "forum.php?mod=viewthread&tid={$_G['tid']}&page={$_GET['page']}&extra=$extra".($vid && $isfirstpost ? "&vid=$vid" : '')."#pid$pid");
 
 	if(empty($_GET['delete'])) {
 
-
 		if($isfirstpost) {
-
-
-			if($thread['special'] == 1 && ($_G['group']['alloweditpoll'] || $isorigauthor) && !empty($_GET['polls'])) {
-
-			} elseif($thread['special'] == 3 && $isorigauthor) {
-
-
-			} elseif($thread['special'] == 4 && $_G['group']['allowpostactivity']) {
-
-
-			} elseif($thread['special'] == 5 && $_G['group']['allowpostdebate']) {
-
-
-			} elseif($specialextra) {
-
+			if($specialextra) {
 				@include_once DISCUZ_PLUGIN($_G['setting']['threadplugins'][$specialextra]['module']).'.class.php';
 				$classname = 'threadplugin_'.$specialextra;
 				if(class_exists($classname) && method_exists($threadpluginclass = new $classname, 'editpost_submit')) {
 					$threadpluginclass->editpost_submit($_G['fid'], $_G['tid']);
 				}
-
 			}
-
-
-		} else {
-
-
 		}
-
 
 		$feed = [];
 		if($isfirstpost && $special == 127) {
 			$message .= chr(0).chr(0).chr(0).$specialextra;
 		}
-
 
 		if($isfirstpost) {
 			$modpost->attach_before_method('editpost', ['class' => 'forum\extend_thread_sort', 'method' => 'before_editpost']);
@@ -501,7 +478,6 @@ if(!submitcheck('editsubmit')) {
 
 	} else {
 
-
 		if($thread['special'] == 3) {
 			$modpost->attach_before_method('deletepost', ['class' => 'forum\extend_thread_reward', 'method' => 'before_deletepost']);
 		}
@@ -529,6 +505,7 @@ if(!submitcheck('editsubmit')) {
 		];
 
 		$modpost->deletepost($param);
+
 	}
 
 	if($specialextra) {
