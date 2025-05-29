@@ -534,7 +534,7 @@ select {-moz-appearance:none;}
 .magic_log_list .dt { background: var(--dz-BG-0); border-top: 1px solid var(--dz-BOR-ed); }
 .magic_log_list .dt th, .magic_log_list .dt td { padding: 11px 10px 9px 10px; height: 24px; line-height: 24px; font-size: 13px; overflow: hidden; }
 .medal_tip_box ul { padding: 12px 15px; }
-.medal_tip_box ul input.px.p_fre{ text-align:center;}
+.medal_tip_box ul input.px.p_fre{ text-align:center; border:1px solid var(--dz-BOR-ed);}
 .medal_tip_box ul p {margin: 2px 0;line-height: 22px;overflow: hidden;}
 .medal_tip_box ul li { display: flex; position: relative; line-height: 22px; padding: 8px 12px; background: var(--dz-BG-0); font-size: 15px; overflow: hidden; }
 .medal_tip_box ul li span {display: flex; flex-shrink: 0; margin-right: 15px; color: var(--dz-FC-999);}
