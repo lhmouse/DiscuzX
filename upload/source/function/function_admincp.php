@@ -154,6 +154,9 @@ function admincustom($title, $url, $sort = 0) {
 
 function cpurl($type = 'parameter', $filters = ['sid', 'frames']) {
 	parse_str($_SERVER['QUERY_STRING'], $getarray);
+	if (!isset($getarray['frames'])) {
+		$getarray['frames'] = 'yes';
+	}
 	$extra = $and = '';
 	foreach($getarray as $key => $value) {
 		if(!in_array($key, $filters)) {
