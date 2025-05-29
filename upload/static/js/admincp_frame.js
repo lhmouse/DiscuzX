@@ -110,6 +110,7 @@ function switchplatform(platform, newwindow) {
 	var currentUrl = window.location.href;
 	var url = new URL(currentUrl);
 	url.searchParams.set('platform', platform);
+	url.searchParams.set('frames', 'yes');
 	if (newwindow) {
 		window.open(url.href)
 		$('cpplatform').value = currentPlatform;
