@@ -182,8 +182,8 @@ if(submitcheck('settingsubmit')) {
 					} else {
 						foreach($c::SubType as $key => $ossItem) {
 							$oss_langs['plugin:'.$pluginid.'_sub'.$key] = [
-								'title' => $ossItem['name'],
-								'desc' => $ossItem['desc'],
+								'title' => lang('plugin/'.$pluginid, $ossItem['name']),
+								'desc' => lang('plugin/'.$pluginid, $ossItem['desc']),
 							];
 						}
 					}
