@@ -222,6 +222,8 @@ button::-moz-focus-inner { border: none; padding: 0; }
 .frameuinfo_menu { border: 1px solid var(--admincp-bordera); padding: 10px 20px; margin-top: 5px; background: var(--admincp-bgf); border-radius: var(--admincp-radius-s);min-width:160px;box-shadow: 0 0 10px 0 rgba(82, 63, 105, .15);}
 .frameuinfo_menu a { display: block; color: var(--admincp-alink); text-decoration: none;     line-height: 35px;font-size: 14px;font-weight: 400;}
 .frameuinfo_menu .platform_box{border-top: 1px solid var(--admincp-bordera);}
+.frameuinfo_menu .platform_box a:hover{ position: relative; background-color: var(--admincp-bgb); }
+.frameuinfo_menu .platform_box a:hover::before { content: ""; position: absolute; top: 0; left: -10px; right: -10px; bottom: 0; background-color: var(--admincp-bgb); z-index: -1; border-radius: var(--admincp-radius-s); }
 .frameuinfo_menu .dzlogout{color: #ff6600;}
 .frameuinfo_menu .dzicon{font-family: dzicon;font-size: 16px;font-style: normal;-webkit-font-smoothing: antialiased;}
 .frameuinfo_menu .index:before{content: "\e604";}
