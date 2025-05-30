@@ -1357,5 +1357,11 @@ $lang = [
 	'json_editor_submit' => '发布',
 	'json_editor_title_seccode' => '安全验证',
 	'json_editor_seccode_desc' => '请输入验证码',
+
+	'collection_no_image' => '不使用图片',
+	'collection_cover' => '淘帖封面',
+	'collection_cover_resize' => '自动缩略成 1000×250 像素大小的图片',
+	'collection_icon' => '淘帖图标',
+	'collection_icon_resize' => '自动缩略成 200×200 像素大小的图片',
 ];
 

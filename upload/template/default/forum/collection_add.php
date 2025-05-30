@@ -39,7 +39,7 @@ function checklen() {
 			</h2>
 		</div>
 		<div class="bm_c">
-			<form action="forum.php?mod=collection&action=edit" onsubmit="return checklen();" method="POST">
+			<form enctype="multipart/form-data" action="forum.php?mod=collection&action=edit" onsubmit="return checklen();" method="POST">
 				<table cellspacing="0" cellpadding="0" class="tfm">
 					<tr>
 						<th>{lang collection_title}</th>
@@ -56,6 +56,41 @@ function checklen() {
 							<p class="xg1">{lang collection_keywords_desc}</p>
 						</td>
 					</tr>
+					<tr>
+						<th>{lang collection_cover}</th>
+						<td>
+							<input type="file" name="cover" id="cover" class="pf" size="25" />
+							<!--{if !empty($_G['collection']['cover'])}-->
+							<label><input type="checkbox" name="deletecover" class="pc" value="1" />{lang collection_no_image}</label>
+							<!--{/if}-->
+							<p class="d">{lang collection_cover_resize}</p>
+						</td>
+					</tr>
+					<!--{if !empty($_G['collection']['cover'])}-->
+					<tr>
+						<th>&nbsp;</th>
+						<td>
+							<img onload="thumbImg(this, 1)" _width="400" _height="200" src="$_G['collection']['cover']?{TIMESTAMP}" />
+						</td>
+					</tr>
+					<!--{/if}-->
+					<tr>
+						<th>{lang collection_icon}</th>
+						<td>
+							<input type="file" id="icon" class="pf vm" size="25" name="icon" />
+							<p class="d">
+								{lang collection_icon_resize} &nbsp;
+							</p>
+						</td>
+					</tr>
+					<!--{if !empty($_G['collection']['icon'])}-->
+					<tr>
+						<th>&nbsp;</th>
+						<td>
+							<img onload="thumbImg(this, 1)" _width="200" _height="200" src="$_G['collection']['icon']?{TIMESTAMP}" />
+						</td>
+					</tr>
+					<!--{/if}-->
 					<tr>
 						<th></th>
 						<td>

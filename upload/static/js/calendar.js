@@ -100,6 +100,8 @@ function settime(d) {
 			$('calendariframe').style.display = 'none';
 		}
 	}
+	currday = new Date(yy, mm, parseInt(d));
+	refreshcalendar(currday.getFullYear(), currday.getMonth());
 	controlid.value = yy + "-" + zerofill(mm + 1) + "-" + zerofill(d) + (addtime ? ' ' + zerofill($('hour').value) + ':' + zerofill($((halfhour) ? 'minutehalfhourly' : 'minute').value) : '');
 	if(typeof calendarrecall == 'function') {
 		calendarrecall();
@@ -213,6 +215,7 @@ function refreshcalendar(y, m) {
 	while(d + mv <= 42) {
 		dd = $("d" + (d + mv));
 		dd.innerHTML = "&nbsp;";
+		dd.className = 'calendar_default';
 		d++;
 	}
 

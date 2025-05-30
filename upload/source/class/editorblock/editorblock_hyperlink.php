@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_hyperlink {
 
-	var $version = '1.1.0';
+	var $version = '1.1.1';
 	var $name = '超链接';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 0; //  默认是否支持多列 0:不支持 1:支持
@@ -57,9 +57,6 @@ EOF;
 			availableTargets: ['_blank', '_self', '_parent', '_top'],
 			availableRels: ['alternate', 'author', 'bookmark', 'external', 'help', 'license', 'next', 'nofollow', 'noreferrer', 'noopener', 'prev', 'search', 'tag'],
 			validate: false,
-			iconlinkName: 'icon-lianjie',
-			iconlinkWidth: 10,
-			iconlinkHeight: 10,
 		  }
 		},
 		link: function() {}

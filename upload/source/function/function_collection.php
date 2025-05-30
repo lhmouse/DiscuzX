@@ -160,3 +160,41 @@ function parse_keyword($keywords, $string = false, $filter = true) {
 	return $return;
 }
 
+function uploadCollectionImg($type, $ctid, $width, $height) {
+	global $_G;
+
+	if(empty($_FILES[$type]) || $_FILES[$type]['error'] || !$_FILES[$type]['size']) {
+		return -1;
+	}
+
+	[$w, $h] = getimagesize($_FILES[$type]['tmp_name']);
+	if(!$w || !$h) {
+		return 0;
+	}
+
+	$imgfile = getCollectionImgDir($type, $ctid);
+	dmkdir($_G['setting']['attachdir'].dirname($imgfile));
+
+	require_once libfile('class/image');
+	$image = new image();
+	if(!$image->Thumb($_FILES[$type]['tmp_name'], $imgfile, $width, $height, 2)) {
+		return 0;
+	}
+
+	if(ftpperm('jpg', filesize($_G['setting']['attachdir'].$imgfile))) {
+		if(ftpcmd('upload', $imgfile)) {
+			@unlink($_G['setting']['attachdir'].$imgfile);
+		}
+	}
+	return 1;
+}
+
+function getCollectionImgDir($type, $ctid) {
+	return 'forum/collection/'.$type.'/'.substr(md5($ctid), 0, 2).'/'.substr(md5($ctid), 2, 2).'/'.$ctid.'.jpg';
+}
+
+function getCollectionImgUrl($type, $ctid) {
+	global $_G;
+
+	return $_G['setting']['attachurl'].getCollectionImgDir($type, $ctid);
+}

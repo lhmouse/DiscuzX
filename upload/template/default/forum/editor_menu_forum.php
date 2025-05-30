@@ -307,8 +307,8 @@
 
 			</div>
 			<div class="notice upnf">
-				<span id="attach_notice"{if empty($attachs['used']) && empty($attachs['unused'])} style="display: none"{/if}>{lang e_attach_insert}<!--{if $_G['setting']['allowattachurl']}-->{lang e_attach_inserturl}<!--{/if}--></span>
-				<br>
+				<span id="attach_notice"{if empty($attachs['used']) && empty($attachs['unused'])} style="display: none"{/if}>{lang e_attach_insert}<!--{if $_G['setting']['allowattachurl']}-->{lang e_attach_inserturl}<!--{/if}--><br></span>
+				
 				{lang attachment_size}: <span class="xi1"><!--{if $_G['group']['maxattachsize']}-->{lang lower_than} $maxattachsize_mb <!--{else}-->{lang size_no_limit}<!--{/if}--></span>
 				<!--{if $_G['group']['attachextensions']}-->
 					, {lang attachment_allow_exts}: <span class="xi1">{$_G['group']['attachextensions']}</span>&nbsp;

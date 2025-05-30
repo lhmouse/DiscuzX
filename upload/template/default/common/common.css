@@ -1032,6 +1032,7 @@ CSS 写作注意事项：
 /* 表情 */
 .sllt { padding: 10px 5px 5px !important; }
 	.sllt td { padding: 8px; border: none; cursor: pointer; }
+	.sllt td span { font-size: 16px; }
 	.sllt_p { text-align: right; }
 		.sllt_p a { margin-right: 5px; color: #069; text-decoration: underline; }
 	.sl_pv { margin-top: 5px; padding: 8px; background: #FAFAFA; border: 1px solid #CCC; }

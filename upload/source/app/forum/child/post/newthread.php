@@ -136,7 +136,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 	!isset($attachs['unused']) && $attachs['unused'] = [];
 	!isset($imgattachs['unused']) && $imgattachs['unused'] = [];
 
-	if(!empty($_G['setting']['editormodetype']) && empty($_GET['special']) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
+	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -147,7 +147,9 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 			}
 			$editorblocks[$ekey]['jspath'] = $jspath.'/tools/'.$evalue['identifier'].'/'.$evalue['filename'].'.js';
 		}
-		include template('forum/jsoneditor');
+
+		getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
+
 		//getgpc('infloat') ? include template('forum/jsoneditor_infloat') : include template('forum/jsoneditor');
 	} else {
 		getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');

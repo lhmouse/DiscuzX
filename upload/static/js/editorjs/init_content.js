@@ -5,6 +5,7 @@ const config = {
 		redo: ["CMD+Y", "CMD+SHIFT+Z"],
 	}
 };
+
 var undo = undefined;
 
 var i18n_default = {
@@ -125,6 +126,7 @@ var i18n_default = {
 		},
 	}
 };
+
 /**
  * To initialize the Editor, create a new instance with configuration object
  * @see docs/installation.md for mode details
@@ -188,59 +190,12 @@ var editor = new EditorJS({
 	}
 });
 
-/**
- * Saving button
- */
-const saveButton = document.getElementById('saveButton');
-/**
- * Submit button
- */
-const submitButton = document.getElementById('submitButton');
-
-
-/**
- * Saving
- */
-saveButton.addEventListener('click', function () {
-	var postsave = document.getElementById("postsave");
-	postsave.value = 1;
-	saveContent();
-});
-
-/**
- * Submit
- */
-submitButton.addEventListener('click', function () {
-	saveContent();
-});
-
-function saveContent() {
+function saveJsonContent(event) {
 	editor.save()
 	    .then((savedData) => {
 		    //console.log(JSON.stringify(savedData, null, 4));
 		    var postform = document.getElementById("postform");
-		    var subject = document.getElementById("subject");
-		    if (subject.value == '' || subject.value == undefined) {
-			    editor.notifier.show({
-				    message: $L("json_editor_tip_subject_null"),
-				    style: 'error',
-				    // time: 30
-			    });
-			    event.stopPropagation();
-			    return false;
-		    }
-		    var seccodeverify = document.getElementsByName("seccodeverify");
-		    if (seccodeverify[0] != undefined) {
-			    if (seccodeverify[0].value == '' || seccodeverify[0].value == undefined) {
-				    editor.notifier.show({
-					    message: $L("json_editor_tip_captcha_null"),
-					    style: 'error',
-					    // time: 30
-				    });
-				    event.stopPropagation();
-				    return false;
-			    }
-		    }
+
 		    var content = document.getElementById("content");
 		    if (savedData.blocks == '' || savedData.blocks == undefined) {
 			    editor.notifier.show({
@@ -252,15 +207,13 @@ function saveContent() {
 			    return false;
 		    }
 		    content.value = JSON.stringify(savedData);
+		    //console.log(content.value);
 
-		    var mobileeditor = document.getElementById("mobileeditor");
-		    if (mobileeditor.value != 1 && mobileeditor.value != '1') {
-			    postform.onsubmit();
-		    }
-
-	    })
+	    }).then(() => {
+		ajaxpost('postform', 'return_postform', 'return_postform', 'onerror');
+	})
 	    .catch((error) => {
-		    console.error($L("json_editor_tip_save_error"), error);
+		    console.error($L("json_editor_tip_content_null"), error);
 	    });
 }
 
@@ -271,7 +224,6 @@ function succeedhandle_postform(url, msg, param) {
 	});
 	window.location.href = url;
 }
-
 const addBlock = (type, data = undefined, e) => {
 	const index = editor.blocks.getCurrentBlockIndex() + 1;
 	editor.blocks.insert(type, data, undefined, index);

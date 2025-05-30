@@ -10,7 +10,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 	exit('Access Denied');
 }
 
-$lpp = empty($_GET['lpp']) ? 10 : $_GET['lpp'];
+$lpp = empty($_GET['lpp']) ? 20 : $_GET['lpp'];
 $start = ($page - 1) * $lpp;
 
 if(!submitcheck('editorblocksubmit')) {
@@ -96,6 +96,14 @@ if(!submitcheck('editorblocksubmit')) {
 			];
 			table_common_editorblock::t()->insert($arr);
 			memory('set', 'editorblock_'.$editorblock['class'], $arr);
+
+			if($editorblock['global_css']) {
+				$settings = [
+					'editor_global_css' => ($_G['setting']['editor_global_css'] ?? '').$editorblock['style'],
+				];
+				table_common_setting::t()->update_batch($settings);
+				updatecache('setting');
+			}
 			$flag = true;
 		}
 	}
@@ -128,7 +136,7 @@ if(!submitcheck('editorblocksubmit')) {
 	}
 
 	$multipage = multi($blockscount, $lpp, $page, ADMINSCRIPT."?action=editorblock&operation=$operation&lpp=$lpp", 0, 3);
-	showsubmit('editorblocksubmit', 'submit', '', '', $multipage);
+	showsubmit('editorblocksubmit', 'submit', '', '<a href="'.ADMINSCRIPT.'?action=editorblock&operation=global_css">'.$lang["global_css"].'</a>', $multipage);
 
 	showtablefooter();
 	showformfooter();

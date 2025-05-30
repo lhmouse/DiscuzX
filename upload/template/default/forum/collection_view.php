@@ -67,6 +67,9 @@
 </div>
 <div id="ct" class="ct2 wp cl">
 	<div class="mn">
+		<!--{if $_G['collection']['cover']}-->
+			<img src="$_G['collection']['cover']" width="100%" />
+		<!--{/if}-->
 		<div class="bm bml pbn">
 			<div class="bm_h cl">
 				<h1 class="xs2 z">
@@ -117,6 +120,9 @@
 					</div>
 				</div>
 				<div class="mbn cl">
+					<!--{if $_G['collection']['icon']}-->
+					<img src="$_G['collection']['icon']" width="50" class="y" />
+					<!--{/if}-->
 					<!--{if $_G['collection']['arraykeyword']}-->
 						<p class="mbn">
 							{lang collection_keywords}

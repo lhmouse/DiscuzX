@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_table {
 
-	var $version = '1.0.1';
+	var $version = '1.0.2';
 	var $name = '表格';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -65,7 +65,19 @@ EOF;
 		  },
           tunes: ['anchorTune']
 	  },
-   }
+   },
+   i18n: {
+       messages: {
+          tools: {
+            'table': {
+                  'With headings': '带标题',
+                  'Without headings': '不带标题',
+        	  'Stretch': '拉伸表格',
+        	  'Collapse': '取消拉伸',
+            }
+          }
+        },
+    },
 }
 EOF;
 	}

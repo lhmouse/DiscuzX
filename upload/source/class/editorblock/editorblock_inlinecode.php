@@ -4,17 +4,18 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class editorblock_underline {
+class editorblock_inlinecode {
 
-	var $version = '1.0.0';
-	var $name = '下划线';
+	var $version = '1.0.1';
+	var $name = '行内代码';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
-	var $identifier = 'underline';
-	var $description = '用于给文本增加下划线';
-	var $filename = 'underline';
+	var $global_css = 1; //  是否追加到全局CSS 0:否 1:是
+	var $identifier = 'inlinecode';
+	var $description = '行内代码';
+	var $filename = 'inline-code';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '3'; // 0:数据类型 1:视频类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
+	var $type = '0'; // 0:数据类型 1:视频类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 
@@ -47,13 +48,13 @@ EOF;
 	function getConfig() {
 		return <<<EOF
 {
-   tools_underline: {
-        underline: Underline,
+   tools_inlinecode: {
+        inlinecode: InlineCode,
    },
    i18n: {
 	    messages: {
 	        toolNames: {
-	           'Underline': '下划线',
+	           'Inlinecode': '行内代码',
 	        }
 	    },
    },
@@ -70,8 +71,16 @@ EOF;
 	function getStyle() {
 		return <<<EOF
 <style type="text/css">
-.cdx-underline {
-    text-decoration: underline;
+.inline-code {
+  background: rgba(250, 239, 240, 0.78);
+  color: #b44437;
+  padding: 3px 4px;
+  border-radius: 5px;
+  margin: 0 1px;
+  font-family: inherit;
+  font-size: 0.86em;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 </style>
 EOF;

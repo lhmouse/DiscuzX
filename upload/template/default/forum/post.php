@@ -90,7 +90,12 @@
 	{elseif $_GET[action] == 'reply'}action="forum.php?mod=post&action=reply&fid=$_G[fid]&tid=$_G[tid]&extra=$extra&replysubmit=yes"
 	{elseif $_GET[action] == 'edit'}action="forum.php?mod=post&action=edit&extra=$extra&editsubmit=yes" $enctype
 	{/if}
-	onsubmit="return validate(this)">
+	{if !(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'])}
+	onsubmit="return validate(this)"
+	{else}
+	onsubmit="saveJsonContent();return false;"
+	{/if}
+>
 <div id="ct" class="ct2_a ct2_a_r wp cl">
 	<input type="hidden" name="formhash" id="formhash" value="{FORMHASH}" />
 	<input type="hidden" name="posttime" id="posttime" value="{TIMESTAMP}" />
@@ -194,6 +199,8 @@
 
 			<!--{if !empty($_G['setting']['pluginhooks']['post_editor_body'])}-->
 				<!--{hook/post_editor_body}-->
+			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence']}-->
+				<!--{subtemplate forum/jsoneditor_content}-->
 			<!--{else}-->
 				<!--{subtemplate forum/post_editor_body}-->
 			<!--{/if}-->
@@ -261,7 +268,7 @@
 </form>
 <iframe name="ajaxpostframe" id="ajaxpostframe" style="display: none;"></iframe>
 
-<!--{if empty($_G['setting']['pluginhooks']['post_editor_body'])}-->
+<!--{if empty($_G['setting']['pluginhooks']['post_editor_body']) && !(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'])}-->
 <div id="{$editorid}_menus" class="editorrow" style="overflow: hidden; margin-top: -5px; height: 0; border: none; background: transparent;">
 	<!--{subtemplate common/editor_menu}-->
 	<!--{subtemplate forum/editor_menu_forum}-->

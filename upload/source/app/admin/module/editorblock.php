@@ -35,7 +35,7 @@ function geteditorblocks() {
 		}
 		$editorblockdir = dir($dir);
 		while($entry = $editorblockdir->read()) {
-			if(!in_array($entry, ['.', '..']) && preg_match('/^editorblock\_[\w\.]+$/', $entry) && str_ends_with($entry, '.php') && strlen($entry) < 30 && is_file($dir.'/'.$entry) && empty($editorblocks[$entry])) {
+			if(!in_array($entry, ['.', '..']) && preg_match('/^editorblock\_[\w\.]+$/', $entry) && str_ends_with($entry, '.php') && strlen($entry) < 100 && is_file($dir.'/'.$entry) && empty($editorblocks[$entry])) {
 				@include_once $dir.'/'.$entry;
 				$editorblockclass = substr($entry, 0, -4);
 				if(class_exists($editorblockclass)) {
@@ -47,6 +47,7 @@ function geteditorblocks() {
 						'name' => lang('editorblock/'.$script, $editorblock->name),
 						'available' => $editorblock->available,
 						'columns' => $editorblock->columns,
+						'global_css' => $editorblock->global_css,
 						'version' => $editorblock->version,
 						'copyright' => lang('editorblock/'.$script, $editorblock->copyright),
 						'type' => $editorblock->type,

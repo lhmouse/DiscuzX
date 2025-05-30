@@ -392,7 +392,8 @@ class restfulplugin {
 
 		$refcheck = (!$attach['remote'] && $_G['setting']['attachrefcheck']) || ($attach['remote'] && ($_G['setting']['ftp']['hideurl'] || ($attach['isimage'] && $_G['setting']['attachimgpost'] && strtolower(substr($_G['setting']['ftp']['attachurl'], 0, 3)) == 'ftp')));
 		if($refcheck) {
-			$url = $_G['siteurl'].'forum.php?mod=attachment&aid=$aidencode&noupdate=yes&nothumb=yes';
+			$aidencode = packaids($attach);
+			$url = $_G['siteurl'].'forum.php?mod=attachment&aid='.$aidencode.'&noupdate=yes&nothumb=yes';
 		} else {
 			$url = $attach['url'].$attach['attachment'];
 		}

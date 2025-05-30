@@ -29,6 +29,12 @@ $page = $page ? $page : 1;
 if(!is_array($ctid)) {
 	$ctid = intval($ctid);
 	$_G['collection'] = table_forum_collection::t()->fetch($ctid);
+	if(!empty($_G['collection']['cover'])) {
+		$_G['collection']['cover'] = getCollectionImgUrl('cover', $ctid);
+	}
+	if(!empty($_G['collection']['icon'])) {
+		$_G['collection']['icon'] = getCollectionImgUrl('icon', $ctid);
+	}
 }
 
 $allowaction = ['index', 'view', 'edit', 'follow', 'comment', 'mycollection', 'all'];

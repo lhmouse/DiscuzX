@@ -24,6 +24,8 @@ if(submitcheck('settingsubmit')) {
 	if(isset($settingnew['smcols'])) {
 		$settingnew['smcols'] = $settingnew['smcols'] >= 8 && $settingnew['smcols'] <= 12 ? $settingnew['smcols'] : 8;
 	}
+	$settingnew['editormodetype'] = !empty(array_filter((array)$settingnew['editorfids']));
+	$settingnew['json_independence'] = false;
 } else {
 	shownav('style', 'setting_editor');
 
@@ -31,7 +33,7 @@ if(submitcheck('settingsubmit')) {
 		['setting_editor_global', 'setting&operation=editor', 1],
 		['setting_editor_code', 'misc&operation=bbcode', 0],
 		['setting_editor_media', 'misc&operation=mediacode', 0],
-		!empty($_G['config']['experience']['editor_json']) ? ['setting_editor_block', 'editorblock&operation=list', 0] : [],
+		['setting_editor_block', 'editorblock&operation=list', 0],
 	]);
 
 	showformheader('setting&edit=yes', 'enctype');
@@ -44,16 +46,20 @@ if(submitcheck('settingsubmit')) {
 
 	/*search={"setting_editor":"action=setting&operation=editor","setting_editor_global":"action=setting&operation=editor"}*/
 	showtableheader();
-	if(!empty($_G['config']['experience']['editor_json'])) {
-		showsetting('setting_editor_mode_type', ['settingnew[editormodetype]', [
-			[1, $lang['setting_editor_mode_type_json'], ['editormodetype_default' => 'none', 'editormodetype_json' => '']],
-			[0, $lang['setting_editor_mode_type_default'], ['editormodetype_default' => '', 'editormodetype_json' => 'none']]
-		]], $setting['editormodetype'], 'mradio');
-	} else {
-		$setting['editormodetype'] = 0;
-	}
 
-	showtagheader('tbody', 'editormodetype_json', $setting['editormodetype'] == 1, 'sub');
+	showtitle('setting_editor_mode_type_default');
+	showsetting('setting_editor_mode_default', ['settingnew[defaulteditormode]', [
+		[0, $lang['setting_editor_mode_discuzcode']],
+		[1, $lang['setting_editor_mode_wysiwyg']]]], $setting['defaulteditormode'], 'mradio');
+	showsetting('setting_editor_swtich_enable', 'settingnew[allowswitcheditor]', $setting['allowswitcheditor'], 'radio');
+	showsetting('setting_editor_simplemode', ['settingnew[simplemode]', [
+		[1, $lang['setting_editor_simplemode_1']],
+		[0, $lang['setting_editor_simplemode_0']]], 1], $setting['simplemode'], 'mradio');
+	showsetting('setting_editor_smthumb', 'settingnew[smthumb]', $setting['smthumb'], 'text');
+	showsetting('setting_editor_smcols', 'settingnew[smcols]', $setting['smcols'], 'text');
+	showsetting('setting_editor_smrows', 'settingnew[smrows]', $setting['smrows'], 'text');
+
+	showtitle('setting_editor_mode_type_json');
 	$groupselect = [];
 	$query = table_common_usergroup::t()->fetch_all_not([6, 7], true);
 	foreach($query as $group) {
@@ -70,20 +76,6 @@ if(submitcheck('settingsubmit')) {
 	$forumselect = '<select name="settingnew[editorfids][]" multiple="multiple" size="10"><option value="">'.cplang('none').'</option>'.forumselect(FALSE, 0, unserialize($setting['editorfids']), TRUE).'</select>';
 	showsetting('setting_editor_forum', '', '', $forumselect);
 	showsetting('setting_editor_anchorparse', 'settingnew[anchorparse]', $setting['anchorparse'], 'textarea');
-	showtagfooter('tbody');
-
-	showtagheader('tbody', 'editormodetype_default', empty($setting['editormodetype']), 'sub');
-	showsetting('setting_editor_mode_default', ['settingnew[defaulteditormode]', [
-		[0, $lang['setting_editor_mode_discuzcode']],
-		[1, $lang['setting_editor_mode_wysiwyg']]]], $setting['defaulteditormode'], 'mradio');
-	showsetting('setting_editor_swtich_enable', 'settingnew[allowswitcheditor]', $setting['allowswitcheditor'], 'radio');
-	showsetting('setting_editor_simplemode', ['settingnew[simplemode]', [
-		[1, $lang['setting_editor_simplemode_1']],
-		[0, $lang['setting_editor_simplemode_0']]], 1], $setting['simplemode'], 'mradio');
-	showsetting('setting_editor_smthumb', 'settingnew[smthumb]', $setting['smthumb'], 'text');
-	showsetting('setting_editor_smcols', 'settingnew[smcols]', $setting['smcols'], 'text');
-	showsetting('setting_editor_smrows', 'settingnew[smrows]', $setting['smrows'], 'text');
-	showtagfooter('tbody');
 	/*search*/
 
 	showsubmit('settingsubmit', 'submit', '', $extbutton.(!empty($from) ? '<input type="hidden" name="from" value="'.$from.'">' : ''));

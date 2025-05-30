@@ -70,7 +70,6 @@ if(!submitcheck('modsubmit')) {
 		$post['attachment'] = 0;
 		$post['invisible'] = $post['rate'] = $post['ratetimes'] = 0;
 		$post['message'] .= "\n".lang('forum/thread', 'source').": [url=forum.php?mod=viewthread&tid={$sourcetid}]{$thread['subject']}[/url]";
-		$post = daddslashes($post);
 		$pid = insertpost($post);
 	}
 

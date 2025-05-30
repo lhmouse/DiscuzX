@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_header {
 
-	var $version = '2.7.5';
+	var $version = '2.7.6';
 	var $name = '标题区块 Header';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -142,22 +142,22 @@ EOF;
 }
 /* FontSize */
 h1.ce-header {
-  font-size: 2em;
+    font-size: 2.0em;
 }
 h2.ce-header {
-  font-size: 1.5em;
+    font-size: 1.7em;
 }
 h3.ce-header {
-  font-size: 1.17em;
+    font-size: 1.4em;
 }
 h4.ce-header {
-  font-size: 1em;
+    font-size: 1.15em;
 }
 h5.ce-header {
-  font-size: 0.83em;
+    font-size: 0.95em;
 }
 h6.ce-header {
-  font-size: 0.67em;
+    font-size: 0.8em;
 }
 /* Alignment*/
 .ce-header--right {

@@ -64,6 +64,12 @@ if(empty($op) || $op == 'add') {
 
 		$newctid = table_forum_collection::t()->insert($newcollection, true);
 
+		$newcollection = [
+			'cover' => uploadCollectionImg('cover', $newctid, 1000, 250),
+			'icon' => uploadCollectionImg('icon', $newctid, 200, 200),
+		];
+		table_forum_collection::t()->update($newctid, $newcollection);
+
 		if($newctid) {
 			showmessage('collection_create_succ', 'forum.php?mod=collection&action=view&ctid='.$newctid, ['ctid' => $newctid, 'title' => $newCollectionTitle], ['closetime' => '2', 'showmsg' => ($_GET['inajax'] ? '0' : '1')]);
 		}
@@ -100,6 +106,23 @@ if(empty($op) || $op == 'add') {
 			'desc' => dhtmlspecialchars(cutstr(censor($_GET['desc']), $desclimit, '')),
 			'keyword' => parse_keyword($_GET['keyword'], true)
 		];
+
+		$upload = uploadCollectionImg('cover', $ctid, 1000, 250);
+		if($upload !== -1) {
+			$newcollection['cover'] = $upload;
+		}
+		if(!empty($_GET['deletecover'])) {
+			if($_G['collection']['cover']) {
+				$imgfile = getCollectionImgDir('cover', $ctid);
+				@unlink($_G['setting']['attachdir'].$imgfile);
+				ftpcmd('delete', $imgfile);
+				$newcollection['cover'] = 0;
+			}
+		}
+		$upload = uploadCollectionImg('icon', $ctid, 200, 200);
+		if($upload !== -1) {
+			$newcollection['icon'] = $upload;
+		}
 
 		table_forum_collection::t()->update($ctid, $newcollection);
 

@@ -31,8 +31,8 @@ class table_common_editorblock extends discuz_table {
 		return DB::fetch_first('SELECT * FROM %t WHERE class = %s', [$this->_table, $class]);
 	}
 
-	public function fetch_all_block_sort_id() {
-		return DB::fetch_all("SELECT * FROM %t ORDER BY `sort`, $this->_pk", [$this->_table]);
+	public function fetch_all_block_sort_id($order = 'DESC') {
+		return DB::fetch_all("SELECT * FROM %t ORDER BY ".DB::order('sort', $order).", $this->_pk", [$this->_table]);
 	}
 
 	public function fetch_all_block_avaliable($fields = []) {
@@ -40,16 +40,16 @@ class table_common_editorblock extends discuz_table {
 		if(!empty($fields)) {
 			$field = implode(',', $fields);
 		}
-		return DB::fetch_all('SELECT ' .$field." FROM %t WHERE available > %d ORDER BY `sort`, $this->_pk", [$this->_table, 0]);
+		return DB::fetch_all('SELECT '.$field." FROM %t WHERE available > %d ORDER BY `sort`, $this->_pk", [$this->_table, 0]);
 	}
 
-	public function count_all_blocks() {
-		return DB::result_first('SELECT COUNT(*) FROM %t ORDER BY available DESC, sort ASC', [$this->_table]);
+	public function count_all_blocks($order = 'DESC') {
+		return DB::result_first('SELECT COUNT(*) FROM %t ORDER BY available DESC, '.DB::order('sort', $order).' ', [$this->_table]);
 	}
 
-	public function fetch_all_blocks($start = 0, $limit = 0) {
+	public function fetch_all_blocks($start = 0, $limit = 0, $order = 'DESC') {
 		$blocks = [];
-		$blocks = DB::fetch_all('SELECT * FROM '.DB::table($this->_table).'   ORDER BY available DESC, sort ASC '.DB::limit($start, $limit));
+		$blocks = DB::fetch_all('SELECT * FROM '.DB::table($this->_table).'   ORDER BY available DESC, '.DB::order('sort', $order).' '.DB::limit($start, $limit));
 		return $blocks;
 	}
 }

@@ -29,6 +29,9 @@
 <!--{if $_G['page'] == 1}-->
 	<div class="forumdisplay-top cl">
 		<h2>
+			<!--{if $_G['collection']['icon']}-->
+			<img src="$_G['collection']['icon']" width="50" style="display: inline; visibility: visible;" />
+			<!--{/if}-->
         <!--{if $_G['group']['allowfollowcollection'] && $_G['collection']['uid'] != $_G['uid']}-->
             <!--{if !$collectionfollowdata['ctid']}-->
                 <input type="button" id="a_favorite" value="{lang collection_follow}" class="dialog button" href="forum.php?mod=collection&action=follow&op=follow&ctid={$ctid}&formhash={FORMHASH}">

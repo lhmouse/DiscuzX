@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_image {
 
-	var $version = '1.1.2';
+	var $version = '1.1.3';
 	var $name = '图片';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -80,7 +80,18 @@ EOF;
             },
             tunes: ['anchorTune']
         },
-   }
+   },
+   i18n: {
+       messages: {
+          tools: {
+            'image': {
+                  'With border': '带边框',
+        	  'Stretch image': '拉伸图像',
+        	  'With background': '带背景色',
+            }
+          }
+        },
+    },
 }
 EOF;
 	}

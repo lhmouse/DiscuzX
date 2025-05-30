@@ -315,7 +315,8 @@ if(!submitcheck('editsubmit')) {
 		if($thread_cover && $thread_cover['cover']) {
 			$postinfo['coverpath'] = getthreadcover($postinfo['tid'], $thread_cover['cover']);
 		}
-		include template('forum/jsoneditor');
+
+		getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
 	} else {
 		include template('forum/post');
 	}

@@ -6,12 +6,12 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_paragraph {
 
-	var $version = '1.0.8';
+	var $version = '1.1.5';
 	var $name = '文本段落(增强版)';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
 	var $identifier = 'paragraph';
-	var $description = '文本段落(增强版)内容区块，启用后会自动覆盖默认文本段落区块';
+	var $description = '文本段落(增强版)内容区块，启用后会自动覆盖默认文本段落区块，支持配置输入指定Markdown标识切换到指定区块';
 	var $filename = 'paragraph';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
 	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型
@@ -60,7 +60,188 @@ EOF;
          class: Paragraph,
          inlineToolbar: true,
          config: {
-            placeholder: "请输入正文内容, 或点击加号添加功能区块"
+            placeholder: "请输入正文内容, 或点击加号添加功能区块",
+            enableClearFormattingBtn: true,
+            markdown: false,
+            markdownRules: [
+	            { 
+	                regex: /\*\*(.+?)\*/g, 
+	                type: 'bold', 
+	                data: {}, 
+	                skip: true,
+	                replacement: '<b>$1</b>' 
+	            },
+	            { 
+	                regex: /__(.+?)_/g, 
+	                type: 'bold', 
+	                data: {}, 
+	                skip: true,
+	                replacement: '<b>$1</b>' 
+	            },
+	            { 
+	                regex: /~~(.+?)~/g, 
+	                type: 'del', 
+	                data: {}, 
+	                skip: true,
+	                replacement: '<del>$1</del>' 
+	            },
+	            { 
+	                regex: /\*\*(.+?)\*\*/g, 
+	                type: 'bold', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<b>$1</b>' 
+	            },
+	            { 
+	                regex: /__(.+?)__/g, 
+	                type: 'bold', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<b>$1</b>' 
+	            },
+	            { 
+	                regex: /\*(.+?)\*/g, 
+	                type: 'italic', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<i>$1</i>' 
+	            },
+	            { 
+	                regex: /_(.+?)_/g, 
+	                type: 'italic', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<i>$1</i>' 
+	            },
+	            { 
+	                regex: /~~(.+?)~~/g, 
+	                type: 'del', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<del>$1</del>' 
+	            },
+	            { 
+	                regex: /==(.+?)==/g, 
+	                type: 'mark', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<mark style="background-color: #ffe500;">$1</mark>' 
+	            },
+	            { 
+	              regex: /`(.+?)`/g, 
+	              type: 'inline-code', 
+	              data: {}, 
+	              skip: false,
+	              replacement: '<code class="inline-code">$1</code>' 
+	            },
+	            { 
+	                regex: /___(.+?)___/g, 
+	                type: 'underline', 
+	                data: {}, 
+	                skip: false,
+	                replacement: '<u class="cdx-underline">$1</u>' 
+	            }
+	    ],
+            markdownSetting: [
+                    {
+	                trigger: '#',
+	                type: 'header',
+	                data: { level: 1 },
+	                settoblock: true,
+	                pattern: /^#{1}$/
+	            },
+	            {
+	                trigger: '##',
+	                type: 'header',
+	                data: { level: 2 },
+	                settoblock: true,
+	                pattern: /^#{2}$/
+	            },
+	            {
+	                trigger: '###',
+	                type: 'header',
+	                data: { level: 3 },
+	                settoblock: true,
+	                pattern: /^#{3}$/
+	            },
+	            {
+	                trigger: '####',
+	                type: 'header',
+	                data: { level: 4 },
+	                settoblock: true,
+	                pattern: /^#{4}$/
+	            },
+	            {
+	                trigger: '#####',
+	                type: 'header',
+	                data: { level: 5 },
+	                settoblock: true,
+	                pattern: /^#{5}$/
+	            },
+	            {
+	                trigger: '######',
+	                type: 'header',
+	                data: { level: 6 },
+	                settoblock: true,
+	                pattern: /^#{6}$/
+	            },
+	            {
+	                trigger: '>',
+	                type: 'quote',
+	                data: { caption: '' },
+	                settoblock: true,
+	                pattern: /^>\s*$/
+	            },
+	            {
+	                trigger: '*',
+	                type: 'list',
+	                data: { style: 'unordered', items: [] },
+	                settoblock: true,
+	                pattern: /^\*$/
+	            },
+	            {
+	                trigger: '1.',
+	                type: 'list',
+	                data: { style: 'ordered', items: [] },
+	                settoblock: true,
+	                pattern: /^1\.$/
+	            },
+	            {
+	                trigger: '```',
+	                type: 'codeflask',
+	                data: { code: '' },
+	                settoblock: true,
+	                pattern: /^```$/
+	            },
+	            {
+	                trigger: '|',
+	                type: 'table',
+	                data: { rows: 2, cols: 3 },
+	                settoblock: true,
+	                pattern: /^\|$/
+	            },
+	            {
+	                trigger: '---',
+	                type: 'delimiter',
+	                data: { style: 'star', lineWidth: 100, lineThickness: 1 },
+	                settoblock: false,
+	                pattern: /^\-{3}$/
+	            },
+	            {
+	                trigger: '!',
+	                type: 'image',
+	                data: { },
+	                settoblock: true,
+	                pattern: /^\!$/
+	            },
+	            {
+	                trigger: 'ttt',
+	                type: 'alert',
+	                data: { message: '', type: 'primary' },
+	                settoblock: true,
+	                pattern: /^ttt\s*$/
+	            }
+            ]
          },
          tunes: ['anchorTune']
       },
@@ -91,6 +272,7 @@ EOF;
     line-height: 1.6em;
     outline: none;
     text-indent: 2em;
+    font-size: 16px;
 }
 .ce-paragraph--right {
     text-align: right;

@@ -364,8 +364,8 @@ class restful {
 			[
 				'appid' => $_SERVER['HTTP_APPID'],
 				'api' => $_ENV['restful_api'],
-				'params' => strlen(serialize($this->postParam)) > 2048 ? 'too long...' : $this->postParam,
-				'response' => strlen(serialize($value)) > 2048 ? 'too long...' : $value,
+				'params' => strlen(serialize($this->postParam)) > 2048 ? substr(serialize($this->postParam), 0, 2048).'...(Too long, extract some records...)' : $this->postParam,
+				'response' => strlen(serialize($value)) > 2048 ? substr(serialize($value), 0, 2048).'...(Too long, extract some records...)' : $value,
 				'ret' => $value['ret'] ?? 'unknown',
 			]);
 	}

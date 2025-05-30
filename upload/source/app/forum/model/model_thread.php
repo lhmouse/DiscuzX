@@ -60,7 +60,7 @@ class model_thread extends discuz_model {
 			return $this->showmessage('post_sm_isnull');
 		}
 
-		if(!$this->param['sortid'] && !$this->param['special'] && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
+		if(!$this->param['sortid'] && (!$this->setting['json_independence'] || !$this->thread['special']) && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
 			return $this->showmessage('post_sm_isnull');
 		}
 		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);

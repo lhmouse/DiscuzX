@@ -213,6 +213,7 @@
     // next define the tools in the main block
     // Warning - Dont just use main_tools - you will probably generate a circular reference
     let main_tools = {};
+    let i18n_tools = {};
     let content = "";
     <!--{if $_GET[action] == 'edit'}-->
     content = {
@@ -226,6 +227,7 @@
 
 <!-- Load Ajax Core -->
 <script src="{STATICURL}js/editorjs/ajax.js?{VERHASH}"></script>
+<script src="{STATICURL}js/editorjs/util.js?{VERHASH}"></script>
 
 <!-- Initialization -->
 <script src="{STATICURL}js/editorjs/tools/editorjs-drag-drop/editorjs-drag-drop.js?{VERHASH}"></script><!-- editorjs-drag-drop.js -->
@@ -254,6 +256,9 @@
     column_available = true;
     <!--{/if}-->
     main_tools = Object.assign(main_tools, EDITOR_TOOLS.tools_$eblock['identifier']);
+    if (EDITOR_TOOLS.i18n !== undefined) {
+	    i18n_tools = mergeObjects(i18n_tools, EDITOR_TOOLS.i18n);
+    }
     <!--{/loop}-->
     // 多列
     if(column_available && Object.keys(column_tools).length !== 0) {

@@ -537,6 +537,9 @@ foreach($postarr as $post) {
 		// 开始解析json编辑器内容
 		if($post['content'] && !in_array($post['content'], ['{}', null, 'null', ''])) {
 			list($parserData, $styleData) = editor::parser($post['content']);
+			if($_G['setting']['editor_global_css']) {
+				$styleData .= $_G['setting']['editor_global_css'];
+			}
 			if(!defined('IN_RESTFUL')) {
 				$post['message'] = $parserData.$styleData;
 			} else {

@@ -2378,6 +2378,8 @@ CREATE TABLE pre_forum_collection
 	lastposter   varchar(50)           NOT NULL DEFAULT '',
 	lastvisit    int(10) unsigned      NOT NULL DEFAULT '0',
 	keyword      varchar(255)          NOT NULL DEFAULT '',
+	cover        tinyint(1) unsigned   NOT NULL DEFAULT '0',
+	icon         tinyint(1) unsigned   NOT NULL DEFAULT '0',
 	PRIMARY KEY (ctid),
 	KEY dateline (dateline),
 	KEY hotcollection (threadnum, lastupdate),
