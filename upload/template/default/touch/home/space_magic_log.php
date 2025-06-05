@@ -68,7 +68,7 @@
 		<!--{if $loglist}-->
 			<table summary="{lang magics_log_present}" cellspacing="0" cellpadding="0" class="dt" style="width: 100%;">
 				<tr class="alt">
-					<th>{lang magics_name}</td>
+					<th>{lang magics_name}</th>
 					<th>{lang magics_dateline_present}</th>
 					<th>{lang magics_amount_present}</th>
 					<th>{lang magics_target_present}</th>
