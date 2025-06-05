@@ -45,7 +45,7 @@ class discuz_table extends discuz_base {
 	}
 
 	public function count() {
-		$count = (int)DB::result_first('SELECT count(*) FROM ' .DB::table($this->_table));
+		$count = (int)DB::result_first('SELECT count(*) FROM '.DB::table($this->_table));
 		return $count;
 	}
 
@@ -72,7 +72,7 @@ class discuz_table extends discuz_base {
 	}
 
 	public function truncate() {
-		DB::query('TRUNCATE ' .DB::table($this->_table));
+		DB::query('TRUNCATE '.DB::table($this->_table));
 	}
 
 	public function insert($data, $return_insert_id = false, $replace = false, $silent = false) {
@@ -102,7 +102,7 @@ class discuz_table extends discuz_base {
 	public function fetch_all($ids, $force_from_db = false) {
 		$data = [];
 		if(!empty($ids)) {
-			if($force_from_db || ($data = $this->fetch_cache($ids)) === false || count($ids) != count($data)) {
+			if($force_from_db || ($data = $this->fetch_cache($ids)) === false || count((array)$ids) != count((array)$data)) {
 				if(is_array($data) && !empty($data)) {
 					$ids = array_diff($ids, array_keys($data));
 				}
