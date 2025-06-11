@@ -106,6 +106,63 @@
 			<li class="mli">
 				<input type="text" class="px vm" size="40" id="tag" name="tag" value="$blog[tag]" placeholder="{lang label}" />
 			</li>
+			<!--{if !$blog['uid'] || $blog['uid'] == $_G['uid']}-->
+			<li class="flex-box mli">
+				<div class="tit">{lang privacy_settings}:</div>
+				<div class="flex input">
+					<select name="friend" onchange="passwordShow(this.value);" class="sort_sel">
+						<option value="0"$friendarr[0]>{lang friendname_0}</option>
+						<option value="1"$friendarr[1]>{lang friendname_1}</option>
+						<option value="2"$friendarr[2]>{lang friendname_2}</option>
+						<option value="3"$friendarr[3]>{lang friendname_3}</option>
+						<option value="4"$friendarr[4]>{lang friendname_4}</option>
+					</select>
+				</div>
+			</li>
+			<script type="text/javascript">
+				function passwordShow(value) {
+					if (value == 4) {
+						$('#span_password').show();
+						$('#tb_selectgroup').hide()
+					} else if (value == 2) {
+						$('#span_password').hide()
+						$('#tb_selectgroup').show();
+					} else {
+						$('#span_password').hide()
+						$('#tb_selectgroup').hide()
+					}
+				}
+				function getgroup(gid) {
+					if (gid) {
+						$.get('home.php?mod=spacecp&ac=privacy&inajax=1&op=getgroup&gid=' + gid, function(s) {
+							s = s + ' ';
+							$('#target_names').append(s);
+						});
+					}
+				}
+			</script>
+			<li class="mli" id="span_password" style="$passwordstyle">
+				<input type="text" class="px vm" size="40" id="password" name="password" value="$blog['password']" onchange="value=value.replace(/[^\w\.\/]/ig,'')" placeholder="{lang password}" />
+			</li>
+			<div id="tb_selectgroup" style="$selectgroupstyle">
+				<li class="flex-box mli">
+					<div class="tit">{lang specified_friends}:</div>
+					<div class="flex input">
+						<select name="selectgroup" onchange="getgroup(this.value);" class="sort_sel">
+							<option value="">{lang from_friends_group}</option>
+							<!--{loop $groups $key $value}-->
+							<option value="$key">$value</option>
+							<!--{/loop}-->
+						</select>
+					</div>
+				</li>
+				<li class="mtit p10"><span class="xg1">{lang choices_following_friends_list}</span></li>
+				<li class="mtext">
+					<textarea class="pt" id="target_names" name="target_names" autocomplete="off" placeholder="{lang friend_name_space}">{$blog['target_names']}</textarea>
+				</li>
+			</div>
+			<li class="mli"><label for="noreply"><input type="checkbox" id="noreply" name="noreply" value="1" class="pc vm"{if $blog[noreply]} checked="checked"{/if}> {lang comments_not_allowed}</label></li>
+			<!--{/if}-->
 			<!--{if checkperm('manageblog')}-->
 			<li class="mli">
 				<input type="text" class="px" name="hot" id="hot" value="$blog[hot]" size="5" placeholder="{lang hot}" />
