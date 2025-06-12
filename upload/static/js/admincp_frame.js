@@ -584,10 +584,12 @@ var _framemenu = (function () {
 		$(frameid).contentWindow.history.back();
 	});
 
-	$("mitframeapps").addEventListener('click', function (event) {
-		tabOnMain();
-	});
-
+	if ($("mitframeapps")) {
+		$("mitframeapps").addEventListener('click', function (event) {
+			tabOnMain();
+		});
+	}
+	
 	switchnav(typeof defaultNav != 'undefined' ? defaultNav : 'index', 1);
 	switchtab(document.querySelector('nav ul li.active ul a.active') != null ? document.querySelector('nav ul li.active ul a.active') : document.querySelector('nav ul ul a'));
 	$('cpsetting').addEventListener('click', function () {
@@ -684,10 +686,12 @@ var _framemenu = (function () {
 		tabNew($(defaultTab));
 	}
 
-	$('mitframeapps').addEventListener('click', function (e) {
-		tabNew($('submn_mitframe'));
-	});
-
+	if ($("mitframeapps")) {
+		$('mitframeapps').addEventListener('click', function (e) {
+			tabNew($('submn_mitframe'));
+		});
+	}
+	
 	return {
 		tabNew: function (tab, tabHref) {
 			tabNew(tab, tabHref);
