@@ -773,6 +773,7 @@ $lang = [
 	'crime_record' => '违规记录',
 	'crime_sightml' => '清除签名',
 	'crime_warnpost' => '警告帖子',
+	'members_ban_none' => '正常状态',
 	'email_status' => '邮箱状态',
 	'group_useful_life' => '有效期至',
 	'hours' => '小时',

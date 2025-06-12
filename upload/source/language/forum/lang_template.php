@@ -501,6 +501,7 @@ $lang = [
 	'crime_record' => '违规记录',
 	'crime_sightml' => '清除签名',
 	'crime_warnpost' => '警告帖子',
+	'members_ban_none' => '正常状态',
 	'expiry' => '期限',
 	'ip_location' => '地理位置',
 	'mod_member_ban' => '禁止用户',
