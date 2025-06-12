@@ -160,7 +160,7 @@ if($_GET['op'] == 'delete') {
 			foreach(table_common_member::t()->fetch_all($blog['target_ids']) as $uid => $value) {
 				$names[$uid] = $value['username'];
 			}
-			$blog['target_names'] = implode(' ', $names);
+			$blog['target_names'] = implode(',', $names);
 		}
 	}
 

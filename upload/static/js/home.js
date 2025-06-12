@@ -876,7 +876,7 @@ function getgroup(gid) {
 	if(gid) {
 		var x = new Ajax();
 		x.get('home.php?mod=spacecp&ac=privacy&inajax=1&op=getgroup&gid='+gid, function(s){
-			s = s + ' ';
+			s = s + ',';
 			$('target_names').innerHTML += s;
 		});
 	}

@@ -121,7 +121,7 @@ if($operation == 'filter') {
 	foreach($query as $value) {
 		$users[] = $value['fusername'];
 	}
-	$ustr = empty($users) ? '' : dhtmlspecialchars(implode(' ', $users));
+	$ustr = empty($users) ? '' : dhtmlspecialchars(implode(',', $users));
 	if(!checkmobile()) {
 		showmessage($ustr, '', [], ['msgtype' => 3, 'handle' => false]);
 	} else {

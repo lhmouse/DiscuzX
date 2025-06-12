@@ -135,7 +135,7 @@
 				function getgroup(gid) {
 					if (gid) {
 						$.get('home.php?mod=spacecp&ac=privacy&inajax=1&op=getgroup&gid=' + gid, function(s) {
-							s = s + ' ';
+							s = s + ',';
 							$('#target_names').append(s);
 						});
 					}
