@@ -28,7 +28,7 @@ foreach($_G['setting']['verify'] as $vid => $verify) {
 }
 if($s) {
 	$tg = '<a href="javascript:;" onclick="toggle_group(\'gverify\', this)">['.($exists ? '-' : '+').']</a>';
-	showtablerow('', ['', '', 'class="lightfont" colspan="7"'], [$tg, '<b>'.$lang['forums_edit_perm_verify'].'</b>', 'verify']);
+	showtablerow('', ['', '', 'class="lightfont" colspan="'.$permcolspan.'"'], [$tg, '<b>'.$lang['forums_edit_perm_verify'].'</b>', 'verify']);
 	showtagheader('tbody', 'gverify', $exists);
 	echo $s;
 	$permtits = [

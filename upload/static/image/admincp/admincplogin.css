@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'mitframeicon';
+    src: url('../mitframe/mitframe.woff2?') format('woff2'),
+    url('../mitframe/mitframe.woff') format('woff'),
+    url('../mitframe/mitframe.ttf') format('truetype');
+}
+
 html,
 body {
     width: 100%;
@@ -220,6 +227,58 @@ body.st-d {
 
 .loginbox .loginqa {
     display: none;
+}
+
+.qrcodeswitch {
+    width: 100%;
+    display: inherit;
+    justify-content: flex-end;
+    position: relative;
+    top: -20px;
+    line-height: 0px;
+    right: -30px;
+    margin-top: -10px;
+    height: 0px;
+}
+
+.qrcodeswitch a {
+    width: 0;
+    height: 0;
+    border-top: 50px solid #1d1f24;
+    border-left: 50px solid transparent;
+    text-decoration: none;
+    border-top-right-radius: 10px;
+}
+
+.qrcodeswitch a:before {
+    position: relative;
+    top: -35px;
+    left: -25px;
+    color: #fff;
+    font-size: 20px;
+    filter: invert(1);
+}
+
+.qrcodeswitch a.qrcode:before {
+    font-style: normal;
+    font-family: mitframeicon;
+    content: "\e619";
+}
+
+.qrcodeswitch a.pwd:before {
+    font-style: normal;
+    font-family: mitframeicon;
+    content: "\e617";
+}
+
+#qrcodeimg img {
+    width: 250px !important;
+    height: 250px !important;
+    margin: 0 !important;
+}
+
+#qrcodebox {
+    text-align: center;
 }
 
 footer {

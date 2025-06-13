@@ -11,6 +11,9 @@
 	<link rel="stylesheet" href="{$staticurl}image/admincp/minireset.css?{$_G['style']['verhash']}">
 	<link rel="stylesheet" href="{$staticurl}image/admincp/admincplogin.css?{$_G['style']['verhash']}">
 	<meta content="Discuz! Team" name="Copyright">
+	<script type="text/JavaScript">
+		var VERHASH = '$VERHASH', JSPATH = '{$_G['setting']['jspath']}';
+	</script>
 	<script src="{$staticurl}js/common.js"></script>
 	<script src="{$staticurl}js/admincp_base.js"></script>
 </head>
@@ -50,38 +53,56 @@
 		<input type="hidden" name="sid" value="$sid">
 		<input type="hidden" name="frames" value="yes">
 		<input type="hidden" name="formhash" value="$formhash">
-
-		{$_G['style']['boardlogo']}
-		<!--{if $uid}-->
-			<!--{if !$mustlogin}-->
-			<select name="admin_type" onchange="$('admin_username').style.display = this.value > 0 ? 'none' : ''">
-				<option value="$uid">{$username}</option>
-				<option value="0">{$lang['other_loginname']}</option>
+		<input type="hidden" name="qrcodeReturnCode" value="" id="qrcodeReturnCode" >
+		<!--{if empty($_G['setting']['admin_qrlogin_close']) && empty($_G['config']['admincp']['qrcode_only'])}-->
+		<div class="qrcodeswitch">
+			<a href="javascript:;" class="qrcode" onclick="qrcodelogin(1)" title="{$lang['qrcode_login']}"></a>
+		</div>
+		<!--{/if}-->
+		<!--{if empty($_G['config']['admincp']['qrcode_only'])}-->
+			{$_G['style']['boardlogo']}
+			<!--{if $uid}-->
+				<!--{if !$mustlogin}-->
+				<select name="admin_type" onchange="$('admin_username').style.display = this.value > 0 ? 'none' : ''">
+					<option value="$uid">{$username}</option>
+					<option value="0">{$lang['other_loginname']}</option>
+				</select>
+				<!--{else}-->
+					<h1>{$username}</h1>
+				<!--{/if}-->
+			<!--{/if}-->
+			<input type="text" id="admin_username" name="admin_username" placeholder="{$lang['login_username']}" autofocus autocomplete="off"<!--{if $uid}--> style="display: none"<!--{/if}-->>
+			<input type="password" name="admin_password" placeholder="{$lang['login_password']}" autocomplete="off"<!--{if !$isguest}--> autofocus<!--{/if}-->>
+			<p onclick="document.querySelectorAll('.loginqa').forEach(vf=>{vf.className=''});this.style.display='none';"><span tabindex="0" onkeydown="window.event.key!='Tab'&&this.parentNode.click()"></span>{$lang['security_question']}</p>
+			<select id="questionid" name="admin_questionid" class="loginqa">
+				$forcesecques
+				<option value="1">{$lang['security_question_1']}</option>
+				<option value="2">{$lang['security_question_2']}</option>
+				<option value="3">{$lang['security_question_3']}</option>
+				<option value="4">{$lang['security_question_4']}</option>
+				<option value="5">{$lang['security_question_5']}</option>
+				<option value="6">{$lang['security_question_6']}</option>
+				<option value="7">{$lang['security_question_7']}</option>
 			</select>
-			<!--{else}-->
-				<h1>{$username}</h1>
+			<input type="text" name="admin_answer" class="loginqa" placeholder="{$lang['security_answer']}" autocomplete="off">
+			<button type="submit">{$lang['submit']}</button>
+
+			<!--{if !empty($_G['admincp_checkip_noaccess'])}-->
+				<br><span>{echo lang('admincp_login', 'login_ip_noaccess');}</span>
 			<!--{/if}-->
 		<!--{/if}-->
-		<input type="text" id="admin_username" name="admin_username" placeholder="{$lang['login_username']}" autofocus autocomplete="off"<!--{if $uid}--> style="display: none"<!--{/if}-->>
-		<input type="password" name="admin_password" placeholder="{$lang['login_password']}" autocomplete="off"<!--{if !$isguest}--> autofocus<!--{/if}-->>
-		<p onclick="document.querySelectorAll('.loginqa').forEach(vf=>{vf.className=''});this.style.display='none';"><span tabindex="0" onkeydown="window.event.key!='Tab'&&this.parentNode.click()"></span>{$lang['security_question']}</p>
-		<select id="questionid" name="admin_questionid" class="loginqa">
-			$forcesecques
-			<option value="1">{$lang['security_question_1']}</option>
-			<option value="2">{$lang['security_question_2']}</option>
-			<option value="3">{$lang['security_question_3']}</option>
-			<option value="4">{$lang['security_question_4']}</option>
-			<option value="5">{$lang['security_question_5']}</option>
-			<option value="6">{$lang['security_question_6']}</option>
-			<option value="7">{$lang['security_question_7']}</option>
-		</select>
-		<input type="text" name="admin_answer" class="loginqa" placeholder="{$lang['security_answer']}" autocomplete="off">
-		<button type="submit">{$lang['submit']}</button>
-
-		<!--{if !empty($_G['admincp_checkip_noaccess'])}-->
-			<br><span>{echo lang('admincp_login', 'login_ip_noaccess');}</span>
-		<!--{/if}-->
 	</form>
+	<!--{if empty($_G['setting']['admin_qrlogin_close'])}-->
+	<div class="loginbox" id="qrcodebox" style="display: none">
+		<!--{if empty($_G['config']['admincp']['qrcode_only'])}-->
+		<div class="qrcodeswitch">
+			<a href="javascript:;" class="pwd" onclick="qrcodelogin(0)" title="{$lang['pwd_login']}"></a>
+		</div>
+		<!--{/if}-->
+		<div id="qrcodeimg"><img src="static/image/common/transparent.gif" /></div>
+		{$lang['qrcode_wechat_scan']}
+	</div>
+	<!--{/if}-->
 <!--{/if}-->
 
 <!--{if $cpaccess != -2 && $cpaccess != -3}-->
@@ -95,6 +116,7 @@
 		self.parent.location=document.location;
 	}
 	init_darkmode();
+	<!--{if !empty($_G['config']['admincp']['qrcode_only'])}-->qrcodelogin(1);<!--{/if}-->
 </script>
 
 </body>

@@ -39,6 +39,7 @@ class menu_default {
 		$menu['index'] = [
 			['menu_home', 'index'],
 			['mitframe_apps', 'mitframe'],
+			['menu_home_qrcodelogin', 'qrcodelogin_list'],
 			['menu_custommenu_manage', 'misc_custommenu'],
 			['', '', 0, '', 'customMenuList'],
 		];

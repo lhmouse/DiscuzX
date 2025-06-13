@@ -16,7 +16,7 @@
             <div class="rfm">
                 <table>
                     <tr>
-                        <th><span class="rq">*</span><label for="questionidnew">{lang security_question}</th>
+                        <th><span class="rq">*</span><label for="questionidnew">{lang security_question}</label></th>
                         <td>
                             <select name="questionidnew" id="questionidnew">
                                 <option value="" selected>{lang memcp_profile_security_keep}</option>
@@ -32,7 +32,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="rq">*</span><label for="answernew">{lang security_answer}</th>
+                        <th><span class="rq">*</span><label for="answernew">{lang security_answer}</label></th>
                         <td>
                             <input type="text" name="answernew" id="answernew" class="px" />
                         </td>

@@ -748,5 +748,14 @@ $lang = [
 	'secqaa_click_zip_error' => '压缩包必须为 ZIP 文件',
 	'secqaa_click_image_error' => '压缩包中存在非图片文件',
 	'secqaa_click_unzip_error' => '压缩包解压失败',
+
+	'qrcodelogin_api_error' => '接口错误，请稍后再试 (%d)',
+	'qrcodelogin_pwd_error' => '输入的两次密码不一致',
+	'qrcodelogin_create_succeed' => '设置成功，您可以开始绑定账号了',
+	'qrcodelogin_code_error' => '绑定码错误，请重新输入',
+	'qrcodelogin_bindpwd_error' => '绑定密码错误，请重新输入',
+	'qrcodelogin_bind_succeed' => '账号绑定成功',
+	'qrcodelogin_update_succeed' => '更新成功',
+	'qrcodelogin_closed' => '站长尚未启用此功能',
 ];
 

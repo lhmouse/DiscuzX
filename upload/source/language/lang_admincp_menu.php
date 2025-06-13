@@ -41,6 +41,7 @@ $lang =
 
 	'menu_home' => '管理中心首页',
 	'menu_home_clearhistorymenus' => '清空历史操作',
+	'menu_home_qrcodelogin' => '扫码登录',
 
 	'menu_setting_basic' => '站点信息',
 	'menu_setting_access' => '注册与访问控制',
@@ -117,7 +118,7 @@ $lang =
 	'menu_posting_censors' => '词语过滤',
 	'menu_remoderate' => '内容重新审核',
 	'menu_maint_report' => '用户举报',
-	'menu_threads_forumstick' => '版块/圈子置顶',
+	'menu_threads_forumstick' => '多版块置顶',
 	'menu_post_position_index' => '帖子优化',
 	'menu_postcomment' => '帖子点评管理',
 	'menu_maint_doing' => '记录管理',
@@ -225,14 +226,9 @@ $lang =
 	// 企飞版
 	'header_corp' => '企业',
 	'menu_setting_login' => '第三方登录',
-	'menu_setting_workwx' => '企业微信',
 	'menu_setting_wechat' => '微信',
-	'menu_setting_dingtalk' => '钉钉',
-	'menu_setting_feishu' => '飞书',
-	'menu_setting_qq' => 'QQ',
-	'menu_setting_phone' => '手机',
-	'menu_setting_douyin' => '抖音',
-	'menu_setting_weibo' => '微博',
+	'menu_setting_discuz' => 'Discuz!',
+	'menu_setting_ucenter' => 'UCenter',
 	'menu_founder_restful' => 'RESTful 接口',
 
 	// 企业平台参数信息

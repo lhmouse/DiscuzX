@@ -116,7 +116,7 @@ class memory_setting_array implements ArrayAccess {
 			}
 			memory('hmset', self::SETTING_KEY, $newdata);
 		} else {
-			memory('set', serialize($data));
+			memory('set', self::SETTING_KEY, $data);
 		}
 	}
 

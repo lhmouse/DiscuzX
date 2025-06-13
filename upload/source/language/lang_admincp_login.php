@@ -46,6 +46,9 @@ $lang =
 	'login_ip_noaccess' => '<a href="https://www.dismall.com/thread-17514-1-1.html" target="_blank">IP变动可能导致登录失败，查看解决办法</a>',
 	'noaccess' => '后台管理权限(或此项操作)尚未对您开放，请联系站点管理员',
 
+	'qrcode_login' => '扫码登录',
+	'pwd_login' => '账号登录',
+	'qrcode_wechat_scan' => '请使用微信扫码登录',
 
 	];
 

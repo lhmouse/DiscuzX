@@ -34,7 +34,7 @@ if($interfaces) {
 	}
 
 	$tg = '<a href="javascript:;" onclick="toggle_group(\'gaccount\', this)">['.($exists ? '-' : '+').']</a>';
-	showtablerow('', ['', '', 'class="lightfont" colspan="7"'], [$tg, '<b>'.cplang('account').'</b>', 'account']);
+	showtablerow('', ['', '', 'class="lightfont" colspan="'.$permcolspan.'"'], [$tg, '<b>'.cplang('account').'</b>', 'account']);
 
 	showtagheader('tbody', 'gaccount', $exists);
 	echo $s;

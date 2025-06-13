@@ -10,6 +10,10 @@ $scriptlang['sample'] = array (
   'log_text' => 'sample Log chinese',
   'oss_name' => '腾讯云 COS',
   'oss_desc' => '腾讯云对象存储，<a href="https://cloud.tencent.com/product/cos" target="_blank">注册地址</a>',
+  'perm_a' => '权限1',
+  'perm_b' => '权限2',
+  'perm_type1' => '权限类型1',
+  'perm_type2' => '权限类型2',
 );
 
 $templatelang['sample'] = array (

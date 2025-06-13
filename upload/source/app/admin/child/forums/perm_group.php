@@ -32,7 +32,7 @@ foreach(['member', 'special', 'specialadmin', 'system'] as $type) {
 		}
 
 		$tg = '<a href="javascript:;" onclick="toggle_group(\'ggroup_'.$type.'\', this)">['.($exists ? '-' : '+').']</a>';
-		showtablerow('', ['', '', 'class="lightfont" colspan="7"'], [$tg, '<b>'.cplang('usergroups_'.$type).'</b>', 'group']);
+		showtablerow('', ['', '', 'class="lightfont" colspan="'.$permcolspan.'"'], [$tg, '<b>'.cplang('usergroups_'.$type).'</b>', 'group']);
 		showtagheader('tbody', 'ggroup_'.$type, $exists);
 		echo $s;
 		showtagfooter('tbody');

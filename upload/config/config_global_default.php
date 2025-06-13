@@ -192,6 +192,7 @@ $_config['admincp']['runquery']			= 0;		// 是否允许后台运行 SQL 语句 1
 $_config['admincp']['dbimport']			= 1;		// 是否允许后台恢复论坛数据  1=是 0=否[安全]
 $_config['admincp']['mustlogin']		= 0;		// 是否必须前台登录后才允许后台登录  1=是[安全] 0=否（如果前台已登录，后台的登录态不会同步到前台，前后台可登录2个账号）
 $_config['admincp']['synclogin_front']		= 0;		// mustlogin=0 时有效，后台登录态同步到前台
+$_config['admincp']['qrcode_only']		= 0;		// 仅开启扫码登录 0=否, 1=是[安全]。请确保所有需要登录的管理员均已绑定扫码登录后再开启。如网络因素导致扫码登录失败，可随时关闭
 
 $_config['admincp']['validate']['method'] = 'default';          // 后台二次校验模式，“/admin.php” 文件删除后有效，
 								// default=系统默认方式，需要补充下方的 user 和 pass
@@ -273,10 +274,5 @@ $_config['ipgetter']['dnslist']['list']['0'] = 'comsenz.com';
  * secret = 'xxxxxxxxxx';
  */
 //$_config['witframe']['sdkurl'] = 'http://127.0.0.1/WitSdk-Dev'
-
-/**
- * 体验功能开关
- */
-$_config['experience']['editor_json'] = false;
 
 ?>

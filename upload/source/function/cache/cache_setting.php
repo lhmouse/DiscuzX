@@ -629,7 +629,7 @@ function component_data($pluginid, &$componentSetting) {
 	}
 }
 
-function perm_data($pluginid, &$permSetting) {
+function perm_data($pluginid, &$permSetting, &$permTypeSetting) {
 	$dir = DISCUZ_PLUGIN($pluginid).'/perm';
 	if(!file_exists($dir)) {
 		return false;
@@ -644,12 +644,19 @@ function perm_data($pluginid, &$permSetting) {
 			}
 
 			$n = new $class();
-			$name = property_exists($n, 'name') ? $n->name : $pluginid.'_'.$c;
-			$permSetting[$c] = [
-				'pluginid' => $pluginid,
-				'name' => $name,
-				'class' => $class,
-			];
+			if(property_exists($n, 'typename')) {
+				$permTypeSetting[$n->typename] = [
+					'pluginid' => $pluginid,
+					'name' => $n->typename,
+				];
+			} else {
+				$name = property_exists($n, 'name') ? $n->name : $pluginid.'_'.$c;
+				$permSetting[$c] = [
+					'pluginid' => $pluginid,
+					'name' => $name,
+					'class' => $class,
+				];
+			}
 		}
 	}
 }
@@ -672,7 +679,7 @@ function get_cachedata_setting_plugin($method = '') {
 		}
 		child_data($plugin['identifier'], $data['plugins']['child']);
 		component_data($plugin['identifier'], $_G['cache']['admin']['component']);
-		perm_data($plugin['identifier'], $data['plugins']['perm']);
+		perm_data($plugin['identifier'], $data['plugins']['perm'], $data['plugins']['permtype']);
 		$plugin['directory'] = $plugin['directory'].((!empty($plugin['directory']) && !str_ends_with($plugin['directory'], '/')) ? '/' : '');
 		if(!isplugindir($plugin['directory'])) {
 			if(ispluginkey($plugin['identifier'])) {

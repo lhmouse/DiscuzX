@@ -36,6 +36,7 @@ function run_toggle(target, styles, source) {
 		}
 	}
 }
+
 function init_darkmode() {
 	var dmcookie = getcookie('darkmode');
 	var dmdark = 0, dmauto = 1;
@@ -57,6 +58,7 @@ function init_darkmode() {
 		});
 	}
 }
+
 function toggledarkmode() {
 	var dmcookie = getcookie('darkmode');
 	var dmdark = 0, dmauto = 1;
@@ -79,6 +81,7 @@ function toggledarkmode() {
 	}
 	switchdmvalue(dmdark, dmauto);
 }
+
 function switchdmvalue(ifdark, ifauto) {
 	var dmcookie = '';
 	var dmmeta = '';
@@ -99,11 +102,63 @@ function switchdmvalue(ifdark, ifauto) {
 		dmmeta = 'light dark';
 	} else {
 		document.body.classList.remove('st-a');
-	} console.log(dmcookie);
+	}
 	if (getcookie('darkmode') != dmcookie) {
 		setcookie('darkmode', dmcookie);
 	}
 	if (document.querySelector('meta[name="color-scheme"]').content != dmmeta) {
 		document.querySelector('meta[name="color-scheme"]').content = dmmeta;
 	}
+}
+
+var _qrcodeReturnCode = '';
+var qrcodeCheckSwitch = null;
+var qrcodeLoaded = false;
+var qrcodeCCount = 0;
+
+function qrcodelogin(op) {
+	if (op) {
+		var sign = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+		if (!qrcodeLoaded) {
+			$('qrcodeimg').innerHTML = '<img src="https://api.witframe.com/discuzlogin/qrcode?sign=' + sign + '" />';
+			qrcodeLoaded = true;
+		}
+		$('qrcodebox').style.display = '';
+		$('loginform').style.display = 'none';
+		qrcodecheck(sign);
+	} else {
+		$('qrcodebox').style.display = 'none';
+		$('loginform').style.display = '';
+		clearTimeout(qrcodeCheckSwitch);
+	}
+}
+
+function qrcodecheck(sign) {
+	qrcodeCheckSwitch = setTimeout(function () {
+		if ($('qrcodecheck')) {
+			$('qrcodecheck').parentNode.removeChild($('qrcodecheck'));
+		}
+		var scriptNode = document.createElement("script");
+		scriptNode.type = "text/javascript";
+		scriptNode.id = 'qrcodecheck';
+		scriptNode.src = 'https://api.witframe.com/discuzlogin/check?sign=' + sign;
+		document.getElementsByTagName('head')[0].appendChild(scriptNode);
+		if (_qrcodeReturnCode) {
+			$('qrcodeReturnCode').value = _qrcodeReturnCode;
+			$('loginform').submit();
+			return;
+		}
+		qrcodeCCount++;
+		if (qrcodeCCount > 30) {
+			$('qrcodeimg').style.filter = 'opacity(0.2) blur(4px)';
+			$('qrcodeimg').addEventListener('click', function (e) {
+				var sign = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+				qrcodeLoaded = false;
+				qrcodelogin(1);
+				$('qrcodeimg').style.filter = '';
+			});
+		} else {
+			qrcodecheck(sign);
+		}
+	}, 2500);
 }

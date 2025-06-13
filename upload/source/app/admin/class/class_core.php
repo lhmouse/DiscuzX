@@ -7,10 +7,12 @@
  */
 
 namespace admin;
+
 use table_common_admincp_member;
 use table_common_admincp_perm;
 use table_common_admincp_session;
 use table_common_plugin;
+use table_common_member;
 
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
@@ -117,6 +119,9 @@ class class_core {
 		$this->core->var['setting']['jscachepath'] = $this->core->var['setting']['jspath'];
 		$this->core->var['setting']['jspath'] = 'static/js/';
 
+		if(!empty($_GET['qrcodeReturnCode']) && empty($this->core->var['setting']['admin_qrlogin_close'])) {
+			$this->qrcodelogin();
+		}
 
 		$this->isfounder = $this->checkfounder($this->adminuser);
 
@@ -206,7 +211,7 @@ class class_core {
 
 		$this->adminsession = $session;
 
-		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['admin_password'])) {
+		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['admin_password']) && empty($_G['config']['admincp']['qrcode_only'])) {
 			if($this->cpaccess == 2) {
 				$this->check_admin_login();
 			} elseif($this->cpaccess == 0) {
@@ -337,7 +342,7 @@ class class_core {
 			if(isset($this->perms[$key])) {
 				return $this->perms[$key];
 			}
-			$do = $_GET['do']? $_GET['do'] : '';
+			$do = $_GET['do'] ? $_GET['do'] : '';
 			$key .= $do ? ':'.$do : '';
 			if(isset($this->perms[$key])) {
 				return $this->perms[$key];
@@ -464,5 +469,45 @@ class class_core {
 		if(defined('IN_MOBILE')) {
 			updatestat('mobilelogin', 1);
 		}
+
+		$this->qrcodenotify();
+	}
+
+	function qrcodelogin() {
+		if(strlen($_GET['qrcodeReturnCode']) != 19) {
+			return;
+		}
+		$v = \admin\class_qrcodelogin::login($_GET['qrcodeReturnCode']);
+		if($v['data']['siteuniqueid'] == getglobal('setting/siteuniqueid') &&
+			$v['data']['siteurl'] == getglobal('siteurl') && $v['data']['status'] >= 0) {
+			$this->adminuser = table_common_member::t()->fetch($v['data']['adminUid']);
+			if(!empty($this->adminuser) && $v['data']['pwdmd5'] == md5($this->adminuser['password'])) {
+				$_POST['admin_username'] = $this->adminuser['username'];
+
+				table_common_admincp_session::t()->insert([
+					'uid' => $this->adminuser['uid'],
+					'adminid' => $this->adminuser['uid'],
+					'panel' => $this->panel,
+					'dateline' => TIMESTAMP,
+					'ip' => $this->core->var['clientip'],
+					'errorcount' => -1], false, true);
+
+				$this->setloginstatus($this->adminuser, 0);
+			}
+		}
+	}
+
+	function qrcodenotify() {
+		if(empty($this->core->var['setting']['admin_qrlogin_notify'])) {
+			return;
+		}
+		$param = [
+			'adminuser' => $this->adminuser['username'],
+			'adminid' => $this->adminuser['uid'],
+			'siteuniqueid' => getglobal('setting/siteuniqueid'),
+			'siteurl' => getglobal('siteurl'),
+			'ip' => $this->core->var['clientip'],
+		];
+		\admin\class_qrcodelogin::notify($param);
 	}
 }

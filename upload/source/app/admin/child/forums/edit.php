@@ -40,7 +40,22 @@ if(empty($fids)) {
 	cpmsg('forums_edit_nonexistence', 'action=forums&operation=edit'.(!empty($highlight) ? "&highlight=$highlight" : '').(!empty($anchor) ? "&anchor=$anchor" : ''), 'form', [], '<select name="fid">'.forumselect(FALSE, 0, 0, TRUE).'</select>');
 }
 $mforum = [];
-$perms = ['viewperm', 'postperm', 'replyperm', 'getattachperm', 'postattachperm', 'postimageperm'];
+$permnames = [
+	'viewperm' => cplang('forums_edit_perm_view'),
+	'postperm' => cplang('forums_edit_perm_post'),
+	'replyperm' => cplang('forums_edit_perm_reply'),
+	'getattachperm' => cplang('forums_edit_perm_getattach'),
+	'postattachperm' => cplang('forums_edit_perm_postattach'),
+	'postimageperm' => cplang('forums_edit_perm_postimage'),
+];
+$sysperms = array_keys($permnames);
+if(!empty($_G['setting']['plugins']['permtype'])) {
+	foreach($_G['setting']['plugins']['permtype'] as $_k => $_v) {
+		$permnames[$_k] = lang('plugin/'.$_v['pluginid'], $_v['name']);
+	}
+}
+$perms = array_keys($permnames);
+$permcolspan = count($perms) + 1;
 
 $query = table_forum_forum::t()->fetch_all_info_by_fids($fids);
 if(empty($query)) {
@@ -169,7 +184,8 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 
 	if(count($mforum) == 1 && $mforum[0]['type'] == 'group') {
 		$mforum[0]['extra'] = dunserialize($mforum[0]['extra']);
-		/*search={"forums_admin":"action=forums","forums_edit":"action=forums&operation=edit"}*/
+		/*search={"forums_admin":"action=forums","forums_edit_basic":"action=forums&operation=edit&anchor=basic"}*/
+		showtagheader('div', 'basic', $anchor == 'basic');
 		showtableheader();
 		showsetting('forums_edit_basic_cat_name', 'namenew', $mforum[0]['name'], 'text');
 		showsetting('forums_edit_basic_cat_name_color', 'extranew[namecolor]', $mforum[0]['extra']['namecolor'], 'color');
@@ -191,6 +207,23 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 		showsetting('forums_edit_basic_seodescription', 'seodescriptionnew', dhtmlspecialchars($mforum[0]['seodescription']), 'textarea');
 		showsubmit('detailsubmit');
 		showtablefooter();
+		showtagfooter('div');
+		/*search*/
+
+		/*search={"forums_admin":"action=forums","forums_edit_perm_forum":"action=forums&operation=edit&anchor=perm"}*/
+		showtagheader('div', 'perm', $anchor == 'perm');
+		showtableheader('', '');
+
+		$forum['formulaperm'] = dunserialize($forum['formulaperm']);
+		$forum['formulapermmessage'] = $forum['formulaperm']['message'];
+		$forum['formulapermusers'] = $forum['formulaperm']['users'];
+		$forum['formulaperm'] = $forum['formulaperm'][0];
+
+		require_once childfile('forums/perm');
+
+		showsubmit('detailsubmit');
+		showtablefooter();
+		showtagfooter('div');
 		/*search*/
 
 	} else {
@@ -301,6 +334,15 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			$forum['extra'] = dunserialize($forum['extra']);
 			$forum['threadsorts'] = is_array($forum['threadsorts']) ? $forum['threadsorts'] : [];
 			$forum['threadsorts']['default'] = $forum['threadsorts']['defaultshow'] ? 1 : 0;
+
+			foreach($perms as $perm) {
+				if(in_array($perm, $sysperms)) {
+					continue;
+				}
+				if(!empty($forum['extra']['perms'][$perm])) {
+					$forum[$perm] = $forum['extra']['perms'][$perm];
+				}
+			}
 
 			$_G['multisetting'] = $multiset ? 1 : 0;
 			showmultititle();
@@ -776,6 +818,8 @@ EOT;
 					'styleid' => $newstyleid,
 				]);
 
+				require childfile('forums/perm_submit');
+
 				$extranew = is_array($_GET['extranew']) ? $_GET['extranew'] : [];
 				$extranew = serialize($extranew);
 				table_forum_forumfield::t()->update($fid, [
@@ -784,6 +828,14 @@ EOT;
 					'seotitle' => $_GET['seotitlenew'],
 					'keywords' => $_GET['keywordsnew'],
 					'seodescription' => $_GET['seodescriptionnew'],
+					'viewperm' => $_GET['viewpermnew'],
+					'postperm' => $_GET['postpermnew'],
+					'replyperm' => $_GET['replypermnew'],
+					'getattachperm' => $_GET['getattachpermnew'],
+					'postattachperm' => $_GET['postattachpermnew'],
+					'postimageperm' => $_GET['postimagepermnew'],
+					'formulaperm' => $_GET['formulapermnew'],
+					'spviewperm' => implode("\t", is_array($_GET['spviewpermnew']) ? $_GET['spviewpermnew'] : []),
 				]);
 				loadcache('forums');
 				$subfids = [];
@@ -811,8 +863,8 @@ EOT;
 				}
 
 				updatecache(['forums', 'setting']);
+				cpmsg('forums_edit_succeed', 'mod=forum&action=forums&operation=edit&fid='.$fid.($_GET['anchor'] ? "&anchor={$_GET['anchor']}" : ''), 'succeed', ['frame' => $multiset]);
 
-				cpmsg('forums_edit_succeed', 'action=forums', 'succeed', ['frame' => $multiset]);
 			} else {
 				cpmsg('forums_edit_name_invalid', '', 'error', ['frame' => $multiset]);
 			}
@@ -1176,6 +1228,12 @@ EOT;
 				}
 			}
 
+			foreach($perms as $perm) {
+				if(in_array($perm, $sysperms)) {
+					continue;
+				}
+				$forum['extra']['perms'][$perm] = $_GET[$perm.'new'] ?? '';
+			}
 			$extranew = serialize($forum['extra']);
 
 			$forumfielddata = array_merge($forumfielddata, [

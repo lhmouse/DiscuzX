@@ -30,7 +30,7 @@ if($tags) {
 	}
 
 	$tg = '<a href="javascript:;" id="a_gtag" onclick="toggle_group(\'gtag\')">['.($exists ? '-' : '+').']</a>';
-	showtablerow('', ['', '', 'class="lightfont"', 'colspan="6"'], [$tg, '<b>'.$lang['forums_edit_perm_usertag'].'</b>', 'tag',
+	showtablerow('', ['', '', 'class="lightfont"', 'colspan="'.$permcolspan.'"'], [$tg, '<b>'.$lang['forums_edit_perm_usertag'].'</b>', 'tag',
 		'<input id="tag_item" class="txt" onkeydown="perm_enter(event, this)" /><a href="javascript:;" style="vertical-align: middle" onclick="perm_search(\'tag\', \'tag_item\')">'.cplang('search').'</a>']);
 	showtagheader('tbody', 'gtag', $exists);
 	echo $s;

@@ -11,29 +11,27 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 }
 
 showtips('forums_edit_perm_tips');
-echo '<style>.permtable td{ padding: 5px; border-bottom: 1px solid #E6E6E6;}'.
+echo '<style>'.
+	' .permtable{ width: auto !important; }'.
+	' .permtable td{ padding: 5px; border-bottom: 1px solid #E6E6E6;}'.
 	' .permtable .header.noborder td { border: none; }'.
 	' .permtable .header th, .permtable .header td {background: var(--admincp-bgf2) !important;}</style>';
 
-showtableheader('forums_edit_perm_forum', 'noborder fixpadding permtable', 'style="width: 900px !important"');
-showtablerow('class="header"', [], [
-	'', '', cplang('forums_edit_permformula_cell'),
-	'<label for="chkall1"><b>'.cplang('forums_edit_perm_view').'</b></label>',
-	'<label for="chkall2"><b>'.cplang('forums_edit_perm_post').'</b></label>',
-	'<label for="chkall3"><b>'.cplang('forums_edit_perm_reply').'</b></label>',
-	'<label for="chkall4"><b>'.cplang('forums_edit_perm_getattach').'</b></label>',
-	'<label for="chkall5"><b>'.cplang('forums_edit_perm_postattach').'</b></label>',
-	'<label for="chkall6"><b>'.cplang('forums_edit_perm_postimage').'</b></label>'
-]);
-showtablerow('', ['width="30"', 'width="150"', 'width="50"', 'width=50', 'width=50', 'width=50', 'width=50', 'width=50', 'width=50'], [
-	'', '', '',
-	'<input class="checkbox" type="checkbox" name="chkall1" onclick="checkAll(\'prefix\', this.form, \'^viewperm\', \'chkall1\')" id="chkall1" />',
-	'<input class="checkbox" type="checkbox" name="chkall2" onclick="checkAll(\'prefix\', this.form, \'^postperm\', \'chkall2\')" id="chkall2" />',
-	'<input class="checkbox" type="checkbox" name="chkall3" onclick="checkAll(\'prefix\', this.form, \'^replyperm\', \'chkall3\')" id="chkall3" />',
-	'<input class="checkbox" type="checkbox" name="chkall4" onclick="checkAll(\'prefix\', this.form, \'^getattachperm\', \'chkall4\')" id="chkall4" />',
-	'<input class="checkbox" type="checkbox" name="chkall5" onclick="checkAll(\'prefix\', this.form, \'^postattachperm\', \'chkall5\')" id="chkall5" />',
-	'<input class="checkbox" type="checkbox" name="chkall6" onclick="checkAll(\'prefix\', this.form, \'^postimageperm\', \'chkall6\')" id="chkall6" />'
-]);
+$forum['extra'] = dunserialize($forum['extra']);
+
+$titles = ['', '', cplang('forums_edit_permformula_cell'),];
+$chkalls = ['', '', '',];
+$widths = ['width="30"', 'width="150"', 'width="60"'];
+$i = 1;
+foreach($permnames as $perm => $permname) {
+	$titles[] = '<label for="chkall'.$i.'"><b>'.$permname.'</b></label>';
+	$chkalls[] = '<input class="checkbox" type="checkbox" name="chkall'.$i.'" onclick="checkAll(\'prefix\', this.form, \'^'.$perm.'\', \'chkall'.$i.'\')" id="chkall'.$i.'" />';
+	$widths[] = 'width=60';
+	$i++;
+}
+showtableheader('forums_edit_perm_forum', 'noborder fixpadding permtable');
+showtablerow('class="header"', [], $titles);
+showtablerow('', $widths, $chkalls);
 
 $permfiles = ['group', 'verify', 'account', 'tag', 'plugin'];
 foreach($permfiles as $permfile) {
@@ -42,13 +40,15 @@ foreach($permfiles as $permfile) {
 
 showtablerow('', 'class="lineheight" colspan="8"', cplang('forums_edit_perm_forum_comment'));
 
-$permformulastr = '<p class="bold" style="margin-bottom: 10px">'.cplang('forums_edit_permformula').':</p>'.cplang('forums_edit_permformula_comment');
+$permformulastr = '<p class="bold" style="margin-bottom: 10px">'.cplang('forums_edit_permformula').':</p>'.cplang('forums_edit_permformula_comment').
+	'<table>';
 $permtexts = ['forums_edit_perm_view', 'forums_edit_perm_post', 'forums_edit_perm_reply', 'forums_edit_perm_getattach', 'forums_edit_perm_postattach', 'forums_edit_perm_postimage'];
-foreach($perms as $perm) {
+foreach($permnames as $perm => $permname) {
 	preg_match("/(^|\t)_formula\[(.+?)\]/", $forum[$perm], $r);
-	$permformulastr .= '<div style="margin-top: 10px"><b style="margin-right: 10px">'.cplang(array_shift($permtexts)).'</b>'.
-		'<input name="permformula['.$perm.']" value="'.$r[2].'" type="text" class="txt" style="width:500px"></div>';
+	$permformulastr .= '<tr><th>'.$permname.'</th><td>'.
+		'<input name="permformula['.$perm.']" value="'.$r[2].'" type="text" class="txt" style="width:500px"></td></tr>';
 }
+$permformulastr .= '</table>';
 showtablerow('', 'class="lineheight" colspan="8"', $permformulastr);
 showtablefooter();
 

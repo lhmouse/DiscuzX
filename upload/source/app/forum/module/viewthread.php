@@ -16,6 +16,7 @@ require_once libfile('function/post');
 
 $thread = &$_G['forum_thread'];
 $forum = &$_G['forum'];
+$_G['forum']['extra'] = empty($_G['forum']['extra']) ? [] : dunserialize($_G['forum']['extra']);
 
 if(!empty($_GET['checkrush']) && preg_match('/[^0-9_]/', $_GET['checkrush'])) {
 	$_GET['checkrush'] = '';

@@ -163,7 +163,9 @@ class menu {
 
 		$_G['cache']['admin']['platform'][$platform] = $menuData;
 		savecache('admin', $_G['cache']['admin']);
-		echo "<script type=\"text/javascript\">top.addplatform('$platform', '{$menuData['name']}')</script>";
+		if($platform != 'system') {
+			echo "<script type=\"text/javascript\">top.addplatform('$platform', '{$menuData['name']}')</script>";
+		}
 	}
 
 	public static function platform_del($platform) {
