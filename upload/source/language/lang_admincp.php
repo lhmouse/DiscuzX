@@ -1553,6 +1553,8 @@ $lang =
 
 	'setting_seo_seohead' => '其他头部信息',
 	'setting_seo_seohead_comment' => '如需在 &lt;head&gt;&lt;/head&gt; 中添加其他的 HTML 代码，可以使用本设置，否则请留空',
+	'setting_seo_seohead_mobile' => '其他头部信息（手机版）',
+	'setting_seo_seohead_mobile_comment' => '如需在 &lt;head&gt;&lt;/head&gt; 中添加其他的 HTML 代码，可以使用本设置，否则请留空',
 	'setting_seo_rewritestatus' => '<span class="spectitle">URL 静态化</span>',
 	'setting_seo_pages' => '页面',
 	'setting_seo_vars' => '标记',

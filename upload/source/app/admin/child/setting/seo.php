@@ -86,6 +86,7 @@ if(submitcheck('settingsubmit')) {
 	showtips('<li>'.cplang('setting_seo_seotitle_comment').'</li><li>'.cplang('setting_seo_seodescription_comment').'</li><li>'.cplang('setting_seo_seokeywords_comment').'</li>', 'tips', true, '<em class="right">'.cplang('setting_seo_robots_output').'</em>'.cplang('setting_seo'));
 	showtableheader('', 'nobottom');
 	showsetting('setting_seo_seohead', 'settingnew[seohead]', $setting['seohead'], 'textarea');
+	showsetting('setting_seo_seohead_mobile', 'settingnew[seohead_mobile]', $setting['seohead_mobile'], 'textarea');
 	showtablefooter();
 	echo '</div>';
 	$seotypes = [
