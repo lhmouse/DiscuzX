@@ -44,7 +44,7 @@ if($tagcount) {
 		showtablerow('', ['class="td25"', 'width=100', ''], [
 			'<input type="checkbox" class="checkbox" name="tagids[]" value="'.$row['tagid'].'" />',
 			$row['tagname'],
-			'<span id="tag_'.$row['tagid'].'"><a href="javascript:;" onclick="ajaxget(\'misc.php?mod=tag&type=countitem&id='.$row['tagid'].'\', \'tag_'.$row['tagid'].'\');return false;">'.$lang['view'].'</a></span>',
+			$row['related_count'],
 			'<a href="'.ADMINSCRIPT.'?action=members&operation=search&submit=1&tagid='.$row['tagid'].'" target="_blank">'.cplang('view').$lang['usertag_user'].'</a>&nbsp;|&nbsp;<a href="'.ADMINSCRIPT.'?action=members&operation=newsletter&tagid='.$row['tagid'].'&submit=1" target="_blank">'.$lang['usertag_send_notice'].'</a>'
 		]);
 	}

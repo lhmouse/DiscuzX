@@ -27,7 +27,7 @@ $query = table_common_tag::t()->fetch_all_by_status($table_status, $tagname, $st
 showformheader('tag&operation=admin');
 showtableheader(cplang('tag_result').' '.$totalcount.' <a href="###" onclick="location.href=\''.ADMINSCRIPT.'?action=tag&operation=admin;\'" class="act lightlink normal">'.cplang('research').'</a>', 'nobottom');
 showhiddenfields(['page' => $_GET['page'], 'tagname' => $tagname, 'status' => $status, 'perpage' => $ppp]);
-showsubtitle(['', 'tagname', 'misc_tag_status']);
+showsubtitle(['', 'tagname', 'misc_tag_status', 'misc_tag_related_count', 'misc_tag_hot_score', 'misc_tag_created_at', 'misc_tag_updated_at']);
 foreach($query as $result) {
 	if($result['status'] == 0) {
 		$tagstatus = cplang('misc_tag_status_0');
@@ -37,7 +37,11 @@ foreach($query as $result) {
 	showtablerow('', ['class="td25"', 'width=400', ''], [
 		"<input class=\"checkbox\" type=\"checkbox\" name=\"tagidarray[]\" value=\"{$result['tagid']}\" />",
 		$result['tagname'],
-		$tagstatus
+		$tagstatus,
+		$result['related_count'],
+		sprintf("%.2f", $result['hot_score']),
+		dgmdate($result['created_at']),
+		dgmdate($result['updated_at'])
 	]);
 }
 showtablerow('', ['class="td25" colspan="3"'], ['<input name="chkall" id="chkall" type="checkbox" class="checkbox" onclick="checkAll(\'prefix\', this.form, \'tagidarray\', \'chkall\')" /><label for="chkall">'.cplang('select_all').'</label>']);

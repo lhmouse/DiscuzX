@@ -1651,6 +1651,41 @@ a.progressCancel { display: block; float: right; width: 14px; height: 14px; line
 			.slidebar li { float: left; margin-right: 1px; width: 20px; height: 20px; line-height: 20px; text-align: center; font-size: 10px; cursor: pointer; }
 				.slidebar li.on { background: rgba(255, 255, 255, 0.5); color: #000; font-weight: 700; }
 
+/* 热门标签云样式 */
+.tag-cloud-container {display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0;}
+.tag-cloud-item {display: inline-flex; /* 修改为flex布局 */ align-items: center; /* 垂直居中 */ justify-content: center; /* 水平居中 */ padding: 6px 14px; border-radius: 20px; text-decoration: none; transition: all 0.3s ease; transform-origin: center; font-weight: 500; line-height: 1; /* 确保行高一致 */ text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+/* 标签大小分级 (根据热度) */
+.tag-size-1 { font-size: 12px; padding: 4px 10px; }
+.tag-size-2 { font-size: 14px; padding: 5px 12px; }
+.tag-size-3 { font-size: 16px; padding: 6px 14px; }
+.tag-size-4 { font-size: 18px; padding: 7px 16px; }
+.tag-size-5 { font-size: 20px; padding: 8px 18px; }
+
+/* 标签颜色分级 (根据热度) */
+.tag-color-1 { background-color: #f5f7fa; color: #606266; }
+.tag-color-2 { background-color: #e4f1ff; color: #409eff; }
+.tag-color-3 { background-color: #f0f9eb; color: #67c23a; }
+.tag-color-4 { background-color: #fff7e6; color: #e6a23c; }
+.tag-color-5 { background-color: #fef0f0; color: #f56c6c; }
+
+/* 标签悬停效果 */
+.tag-cloud-item:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); text-decoration: none;z-index: 10;}
+
+/* 动画效果 */
+@keyframes tagAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.tag-cloud-item { animation: tagAppear 0.5s ease forwards; animation-delay: calc(var(--animation-order) * 0.05s); opacity: 0;}
+
 /* 清除DIY产生的多余样式使用的公共样式 */
 .cl_frame_bm { margin: 0 !important; border: 0 !important;}
 .cl_block_bm { margin: 0 !important; border: 0 !important;}

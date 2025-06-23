@@ -62,6 +62,10 @@ if(submitcheck('forumsubmit', 1)) {
 
 	require_once childfile('counter/albumpicnum');
 
+} elseif(submitcheck('tagitemnum', 1)) {
+
+	require_once childfile('counter/tagitemnum');
+
 } elseif(submitcheck('setthreadcover', 1)) {
 
 	require_once childfile('counter/setthreadcover');

@@ -16,7 +16,16 @@
 	</div>
 </div>
 <div id="ct" class="wp cl">
-	<h1 class="mt"><i class="fico-tag fc-s" alt="tag"></i> {lang tag}: $tagname</h1>
+	<h1 class="mt">
+		<i class="fico-tag fc-s" alt="tag"></i> {lang tag}: $tagname
+		<!--{if $_G['adminid'] == 1 && empty($showtype)}-->
+		<div class="xs0 xg1 y cl">
+			{lang related_nums}: {$tag['related_count']}<span class="pipe">|</span>
+			{lang hot}: {$tag['hot_score']}<span class="pipe">|</span>
+			{lang update}: {echo dgmdate($tag['updated_at'])}
+		</div>
+		<!--{/if}-->
+	</h1>
 	<!--{if empty($showtype) || $showtype == 'thread'}-->
 		<div class="bm tl">
 			<div class="th">

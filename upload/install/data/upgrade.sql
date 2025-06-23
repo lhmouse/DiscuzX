@@ -517,3 +517,25 @@ ALTER TABLE pre_forum_thread
 	ADD INDEX displayorder_heats (fid, displayorder, heats);
 ALTER TABLE pre_forum_thread
 	ADD INDEX typeid_heats (fid, typeid, displayorder, heats);
+
+ALTER TABLE `pre_common_tag`
+	MODIFY `tagname` char (50) NOT NULL DEFAULT '';
+
+ALTER TABLE `pre_common_tag`
+ADD COLUMN `related_count` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '关联数据数量' AFTER `status`,
+ADD COLUMN `hot_score` float NOT NULL DEFAULT '0' COMMENT '近期热度值' AFTER `related_count`,
+ADD COLUMN `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间' AFTER `hot_score`,
+ADD COLUMN `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间' AFTER `created_at`,
+ADD KEY `idx_hot_score` (`hot_score`);
+
+UPDATE `pre_common_tag` t
+SET t.`related_count` = (
+    SELECT COUNT(*) FROM `pre_common_tagitem` ti
+    WHERE ti.`tagid` = t.`tagid`
+);
+
+ALTER TABLE `pre_common_tagitem`
+ADD COLUMN `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联时间' AFTER `idtype`,
+ADD KEY `idx_created_at` (`created_at`);
+
+INSERT INTO pre_common_block_style (blockclass, `name`, template, `hash`, getpic, getsummary, makethumb, settarget, `fields`) VALUES('html_misctag', '[内置]标签模版', 'a:9:{s:3:\"raw\";s:361:\"<!-- 热门标签模块 -->\r\n<div class=\"tag-cloud-module\">\r\n	<div class=\"tag-cloud-container\">\r\n		[loop]\r\n		<a href=\"{url}\"\r\n		   title=\"{title} ({related_count}篇内容)\"\r\n		   class=\"tag-cloud-item tag-size-{size_level} tag-color-{color_level}\"\r\n		   data-count=\"{related_count}\"\r\n		   data-hot=\"{hot_score}\">\r\n			{title}\r\n		</a>\r\n		[/loop]\r\n	</div>\r\n</div>\";s:6:\"footer\";s:0:\"\";s:6:\"header\";s:0:\"\";s:9:\"indexplus\";a:0:{}s:5:\"index\";a:0:{}s:9:\"orderplus\";a:0:{}s:5:\"order\";a:0:{}s:8:\"loopplus\";a:0:{}s:4:\"loop\";s:224:\"<a href=\"{url}\"\r\n		   title=\"{title} ({related_count}篇内容)\"\r\n		   class=\"tag-cloud-item tag-size-{size_level} tag-color-{color_level}\"\r\n		   data-count=\"{related_count}\"\r\n		   data-hot=\"{hot_score}\">\r\n			{title}\r\n		</a>\";}', '391cb72a', 0, 0, 0, 0, 'a:6:{i:0;s:3:\"url\";i:1;s:5:\"title\";i:2;s:13:\"related_count\";i:3;s:10:\"size_level\";i:4;s:11:\"color_level\";i:5;s:9:\"hot_score\";}');

@@ -5498,6 +5498,10 @@ $lang =
 	'misc_tag_all_close' => '全部锁定',
 	'misc_tag_all_open' => '全部开放',
 	'misc_tag_all_recommend' => '全部推荐',
+	'misc_tag_related_count' => '关联数据数',
+	'misc_tag_hot_score' => '热度',
+	'misc_tag_created_at' => '创建时间',
+	'misc_tag_updated_at' => '更新时间',
 
 	'smilies' => '表情管理',
 	'smilies_edit' => '表情管理',
@@ -6594,6 +6598,7 @@ URL转换绝对网址：<pre>
 	'counter_blog_replynum' => '重建日志回复数',
 	'counter_friendnum' => '重建空间好友数',
 	'counter_album_picnum' => '重建相册图片数',
+	'counter_tagitemnum' => '重建标签关联数',
 	'counter_thread_cover' => '重建主题封面',
 	'counter_thread_cover_settime' => '主题最后回复时间范围',
 	'counter_thread_heat' => '重建热点主题',

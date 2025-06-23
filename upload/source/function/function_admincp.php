@@ -1519,6 +1519,28 @@ function album_picnum_stat($start, $perpage) {
 	return $next;
 }
 
+function tagitemnum_stat($start, $perpage) {
+	global $_G;
+
+	$next = false;
+	$updates = [];
+	$query = table_common_tag::t()->range($start, $perpage);
+	foreach($query as $value) {
+		$next = true;
+		$count = table_common_tagitem::t()->count_by_tagid($value['tagid']);
+		if($count != $value['related_count']) {
+			$updates[$value['tagid']] = $count;
+		}
+	}
+	if(empty($updates)) return $next;
+
+	$nums = renum($updates);
+	foreach($nums[0] as $count) {
+		table_common_tag::t()->update($nums[1][$count], ['related_count' => $count]);
+	}
+	return $next;
+}
+
 function get_custommenu() {
 	global $_G;
 	$custommenu = [];

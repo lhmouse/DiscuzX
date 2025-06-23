@@ -12,7 +12,7 @@
 			<div class="taglist mtm mbm">
 				<!--{if $tagarray}-->
 					<!--{loop $tagarray $tag}-->
-						<a href="misc.php?mod=tag&id=$tag[tagid]" title="$tag[tagname]" target="_blank" class="xi2">$tag[tagname]</a>
+						<a href="misc.php?mod=tag&id=$tag[tagid]" title="{$tag['tagname']}, {lang related_nums}: {$tag['related_count']}" target="_blank" class="xi2">{$tag['tagname']}</a>
 					<!--{/loop}-->
 				<!--{else}-->
 					<p class="emp">{lang no_tag}</p>

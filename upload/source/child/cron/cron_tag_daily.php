@@ -10,3 +10,5 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+$class_tag = new tag();
+$updatedCount = $class_tag->batch_update_tag_hot(20);

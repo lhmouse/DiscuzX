@@ -21,6 +21,7 @@ $lang = [
 	'lastpost' => '最后发表',
 	'no_content' => '没有相关内容',
 	'personal_category' => '个人分类',
+	'related_nums' => '关联数据量',
 	'related_blog' => '相关日志',
 	'related_thread' => '相关帖子',
 	'replies' => '回复/查看',

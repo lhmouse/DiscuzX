@@ -19,6 +19,6 @@ if(empty($_GET['confirmed']) || FORMHASH != $_GET['formhash']) {
 	cpmsg('usertag_delete_confirm', '', 'form');
 } else {
 	table_common_tagitem::t()->delete_tagitem($_GET['tagid'], $_GET['uid'], 'uid');
+	table_common_tag::t()->increase($_GET['tagid'], ['related_count' => -1]);
 	cpmsg('usertag_delete_succeed', 'action=members&operation=edit&uid='.$_GET['uid'], 'succeed');
 }
-	

@@ -1563,25 +1563,31 @@ CREATE TABLE pre_common_syscache
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_common_tag;
-CREATE TABLE pre_common_tag
+CREATE TABLE `pre_common_tag` 
 (
-	tagid    mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-	tagname  char(20)              NOT NULL DEFAULT '',
-	`status` tinyint(1)            NOT NULL DEFAULT '0',
-	PRIMARY KEY (tagid),
-	KEY tagname (tagname),
-	KEY `status` (`status`, tagid)
-) ENGINE = InnoDB;
+  `tagid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `tagname` char(50) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `related_count` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '关联数据数量',
+  `hot_score` float NOT NULL DEFAULT '0' COMMENT '近期热度值',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`tagid`),
+  KEY `tagname` (`tagname`),
+  KEY `status` (`status`,`tagid`),
+  KEY `idx_hot_score` (`hot_score`)
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS pre_common_tagitem;
-CREATE TABLE pre_common_tagitem
+CREATE TABLE `pre_common_tagitem` 
 (
-	tagid  mediumint(8) unsigned NOT NULL DEFAULT '0',
-	itemid mediumint(8) unsigned NOT NULL DEFAULT '0',
-	idtype char(10)              NOT NULL DEFAULT '',
-	UNIQUE KEY item (tagid, itemid, idtype),
-	KEY idtype (idtype, itemid)
-) ENGINE = InnoDB;
+  `tagid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `itemid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `idtype` char(10) NOT NULL DEFAULT '',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联时间',
+  UNIQUE KEY `item` (`tagid`,`itemid`,`idtype`),
+  KEY `idtype` (`idtype`,`itemid`)
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS pre_common_task;
 CREATE TABLE pre_common_task

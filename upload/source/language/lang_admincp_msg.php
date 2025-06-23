@@ -232,6 +232,7 @@ $lang = [
 	'counter_blog_replynum_succeed' => '日志回复数重建完成',
 	'counter_friendnum_succeed' => '空间好友数重建完成',
 	'counter_album_picnum_succeed' => '相册图片数重建完成',
+	'counter_tagitemnum_succeed' => '标签关联数重建完成',
 	'counter_thread_cover_fiderror' => '版块ID错误',
 	'counter_thread_cover_fidnopicstyle' => '指定版块没有开启图片列表模式',
 	'counter_thread_cover_succeed' => '主题封面重建完成',

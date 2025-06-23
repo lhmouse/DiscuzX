@@ -26,8 +26,16 @@ if(submitcheck('submit')) {
 		foreach($uids as $uid) {
 			if(empty($uid)) continue;
 			foreach($tagarray as $tagid => $tagname) {
-				table_common_tagitem::t()->insert(['tagid' => $tagid, 'itemid' => $uid, 'idtype' => 'uid'], 0, 1);
+				table_common_tagitem::t()->insert(['tagid' => $tagid, 'itemid' => $uid, 'idtype' => 'uid', 'created_at' => TIMESTAMP], 0, 1);
 			}
+		}
+		foreach($tagarray as $tagid => $tagname) {
+			$count = table_common_tagitem::t()->count_by_tagid($tagid);
+			$updates[$tagid] = $count;
+		}
+		$nums = renum($updates);
+		foreach($nums[0] as $count) {
+			table_common_tag::t()->update($nums[1][$count], ['related_count' => $count]);
 		}
 		cpmsg('usertag_add_succeed', 'action=usertag&operation=add', 'succeed');
 	} else {
