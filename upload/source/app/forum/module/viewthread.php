@@ -1038,7 +1038,7 @@ function viewthread_procpost($post, $lastvisit, $ordertype, $maxposition = 0) {
 						$post['message'] = preg_replace('/\s?\[page\]\s?/is', '', $post['message']);
 					}
 					if($_GET['cp'] != 'all' && !str_contains($post['message'], '[/index]') && empty($_GET['threadindex']) && !$messageindex) {
-						$_G['forum_posthtml']['footer'][$post['pid']] .= '<div id="threadpage"></div><script type="text/javascript" reload="1">show_threadpage('.$post['pid'].', '.$cp.', '.count($messagearray).', '.($_GET['from'] == 'preview' ? '1' : '0').');</script>';
+						$_G['forum_posthtml']['footer'][$post['pid']] .= '<div id="threadpage"></div><script type="text/javascript" reload="1">show_threadpage(' . $post['pid'] . ', ' . $cp . ', ' . count($messagearray) . ', ' . ($_GET['from'] == 'preview' ? '1' : '0') . ', \'' . (isset($_GET['modthreadkey']) ? $_GET['modthreadkey'] : '') . '\');</script>';
 					}
 				}
 			}

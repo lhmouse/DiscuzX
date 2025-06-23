@@ -493,12 +493,12 @@ function display_blocked_post() {
 	$('hiddenposts').innerHTML+='<div id="postlistreply" class="pl">'+postlistreply+'</div>';
 }
 
-function show_threadpage(pid, current, maxpage, ispreview) {
+function show_threadpage(pid, current, maxpage, ispreview, modthreadkey) {
 	if(!$('threadpage') || typeof tid == 'undefined') {
 		return;
 	};
-	var clickvalue = function (page) {
-		return 'ajaxget(\'forum.php?mod=viewthread&tid=' + tid + '&viewpid=' + pid + '&cp=' + page + (ispreview ? '&from=preview' : '') + '\', \'post_' + pid + '\', \'ajaxwaitid\');';
+	var clickvalue = function (page, modthreadkey) {
+		return 'ajaxget(\'forum.php?mod=viewthread&tid=' + tid + '&viewpid=' + pid + '&cp=' + page + (modthreadkey ? ('&modthreadkey=' + modthreadkey) : '') + (ispreview ? '&from=preview' : '') + '\', \'post_' + pid + '\', \'ajaxwaitid\');';
 	};
 	var pstart = current - 1;
 	pstart = pstart < 1 ? 1 : pstart;
@@ -506,18 +506,18 @@ function show_threadpage(pid, current, maxpage, ispreview) {
 	pend = pend > maxpage ? maxpage : pend;
 	var s = '<div class="cm pgs mtm mbm cl"><div class="pg">';
 	if(pstart > 1) {
-		s += '<a href="javascript:;" onclick="' + clickvalue(1) + '">1 ...</a>';
+		s += '<a href="javascript:;" onclick="' + clickvalue(1, modthreadkey) + '">1 ...</a>';
 	}
 	for(i = pstart;i <= pend;i++) {
-		s += i == current ? '<strong>' + i + '</strong>' : '<a href="javascript:;" onclick="' + clickvalue(i)+ '">' + i + '</a>';
+		s += i == current ? '<strong>' + i + '</strong>' : '<a href="javascript:;" onclick="' + clickvalue(i, modthreadkey)+ '">' + i + '</a>';
 	}
 	if(pend < maxpage) {
-		s += '<a href="javascript:;" onclick="' + clickvalue(maxpage)+ '">... ' + maxpage + '</a>';
+		s += '<a href="javascript:;" onclick="' + clickvalue(maxpage, modthreadkey)+ '">... ' + maxpage + '</a>';
 	}
 	if(current < maxpage) {
-		s += '<a href="javascript:;" onclick="' + clickvalue(current + 1) + '" class="nxt">' + $L('next_page') + '</a>';
+		s += '<a href="javascript:;" onclick="' + clickvalue(current + 1, modthreadkey) + '" class="nxt">' + $L('next_page') + '</a>';
 	}
-	s += '<a href="javascript:;" onclick="' + clickvalue('all') + '">' + $L('view_all') + '</a>';
+	s += '<a href="javascript:;" onclick="' + clickvalue('all', modthreadkey) + '">' + $L('view_all') + '</a>';
 	s += '</div></div>';
 	$('threadpage').innerHTML = s;
 }
