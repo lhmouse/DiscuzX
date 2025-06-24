@@ -536,6 +536,7 @@ INSERT INTO pre_common_setting VALUES ('regemail','1');
 INSERT INTO pre_common_setting VALUES ('sendregisterurl','0');
 INSERT INTO pre_common_setting VALUES ('seodescription','');
 INSERT INTO pre_common_setting VALUES ('seohead','');
+INSERT INTO pre_common_setting VALUES ('seohead_mobile','');
 INSERT INTO pre_common_setting VALUES ('seokeywords','');
 INSERT INTO pre_common_setting VALUES ('seotitle','');
 INSERT INTO pre_common_setting VALUES ('sharestatus','0');
