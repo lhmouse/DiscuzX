@@ -36,6 +36,7 @@ a.button {color:var(--dz-FC-fff)}
 .btn_pn_red {background-color:var(--dz-BG-2);color:var(--dz-FC-fff)}
 .btn_pn_orange {background-color:var(--dz-BG-3);color:var(--dz-FC-fff)}
 .btn_pn_green {background-color:var(--dz-BG-4);color:var(--dz-FC-fff)}
+.btn_pn_cancel {background-color:var(--dz-BG-6);color:var(--dz-FC-fff)}
 input[type="reset"]::-moz-focus-inner,
 input[type="button"]::-moz-focus-inner,
 input[type="submit"]::-moz-focus-inner,
@@ -209,6 +210,9 @@ select {-moz-appearance:none;}
 .f_c, .f_c a {color: var(--dz-FC-ccc);}
 .f_d, .f_d a {color: var(--dz-FC-ddd);}
 .f_9, .f_9 a {color: var(--dz-FC-999);}
+.txt_a_l {text-align:left;}
+.txt_a_c {text-align:center;}
+.txt_a_r {text-align:right;}
 .b_t {border-top:1px solid var(--dz-BOR-ed) !important;}
 .b_b {border-bottom:1px solid var(--dz-BOR-ed) !important}
 .b_a {border:1px solid var(--dz-BOR-ed) !important;}
@@ -401,7 +405,8 @@ select {-moz-appearance:none;}
 .jump_c {padding:100px 15px;background-color:var(--dz-BG-0);border-top:1px solid var(--dz-BOR-ed);border-bottom:1px solid var(--dz-BOR-ed);margin-top:10px;font-size:15px}
 .jump_c p {line-height:26px}
 .jump_c p .grey {color:var(--dz-FC-999)}
-.tip {width:300px;text-align:center;background-color:var(--dz-BG-0);border:1px solid var(--dz-BOR-ed);border-radius:6px}
+.tip {width:300px;margin:auto;text-align:center;background-color:var(--dz-BG-0);border:1px solid var(--dz-BOR-ed);border-radius:6px}
+.tip .tit {font-weight: 700;}
 .tip dt {padding:25px 20px;line-height:30px;font-size:14px}
 .tip dt.mpt {margin:15px;padding:10px;background-color:var(--dz-BG-5);border-radius:4px}
 .tip dt.mpt .pt {min-height:96px}
