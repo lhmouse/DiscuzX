@@ -6,6 +6,10 @@
  * https://license.discuz.vip
  */
 
+if(!preg_match('/cli/i', php_sapi_name())) {
+	exit;
+}
+
 const IN_API = true;
 const CURSCRIPT = 'api_mserver';
 const APPTYPEID = 200;

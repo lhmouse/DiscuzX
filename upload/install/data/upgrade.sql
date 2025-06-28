@@ -528,12 +528,6 @@ ADD COLUMN `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时
 ADD COLUMN `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间' AFTER `created_at`,
 ADD KEY `idx_hot_score` (`hot_score`);
 
-UPDATE `pre_common_tag` t
-SET t.`related_count` = (
-    SELECT COUNT(*) FROM `pre_common_tagitem` ti
-    WHERE ti.`tagid` = t.`tagid`
-);
-
 ALTER TABLE `pre_common_tagitem`
 ADD COLUMN `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联时间' AFTER `idtype`,
 ADD KEY `idx_created_at` (`created_at`);

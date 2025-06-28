@@ -624,22 +624,6 @@ if($method == 'show_license') {
 			show_msg('database_errno_1044', $link->error, 0);
 		}
 
-		try {
-			$version = '';
-			$link->query("USE {$dbname}");
-			$r = $link->query("SELECT svalue FROM {$tablepre}common_setting WHERE skey='siteversion'");
-			if($r) {
-				$v = $r->fetch_array();
-				if(!empty($v['svalue'])) {
-					$version = $v['svalue'];
-				}
-			}
-		} catch (Exception $e) {
-		}
-		if(UPGRADE_FROM_VERSION != $version) {
-			show_msg('upgrade_version_error', 'version = '.$version, 0);
-		}
-
 		$link->close();
 	}
 

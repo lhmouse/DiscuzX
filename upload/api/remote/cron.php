@@ -6,6 +6,10 @@
  * https://license.discuz.vip
  */
 
+if(!preg_match('/cli/i', php_sapi_name())) {
+	exit;
+}
+
 // 添加系统计划任务，每隔1分钟执行一次
 // */1 * * * * [php_path]php [discuz_path]api/remote/cron.php
 // [php_path] 和 [discuz_path] 自行补充
