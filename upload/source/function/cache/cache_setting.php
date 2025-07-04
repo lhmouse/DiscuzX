@@ -606,22 +606,26 @@ function child_data($pluginid, &$childSetting) {
 }
 
 function component_data($pluginid, &$componentSetting) {
-	$dir = DISCUZ_PLUGIN($pluginid).'/admin/component';
-	if(!file_exists($dir)) {
-		return false;
+	if($pluginid) {
+		$dir = DISCUZ_PLUGIN($pluginid).'/admin/component';
+		if(!file_exists($dir)) {
+			return false;
+		}
+	} else {
+		$dir = MITFRAME_APP('admin').'/component';
 	}
 
 	$compdir = dir($dir);
 	while($filename = $compdir->read()) {
 		if(!in_array($filename, ['.', '..']) && fileext($filename) == 'php') {
 			$c = 'admin\\'.($_n = substr($filename, 0, -4));
-			if(!class_exists($class = '\\'.$pluginid.'\\'.$c)) {
+			if(!class_exists($class = ($pluginid ? '\\'.$pluginid : '').'\\'.$c)) {
 				continue;
 			}
 
 			$n = new $class();
-			$name = property_exists($n, 'name') ? $n->name : $pluginid.'_'.$_n;
-			$componentSetting[$pluginid.':'.$_n] = [
+			$name = property_exists($n, 'name') ? $n->name : ($pluginid ? $pluginid.'_' : '').$_n;
+			$componentSetting[($pluginid ? $pluginid.':' : '').$_n] = [
 				'name' => $name,
 				'class' => $class,
 			];
@@ -839,6 +843,9 @@ function get_cachedata_setting_plugin($method = '') {
 			}
 		}
 	}
+
+	component_data('', $_G['cache']['admin']['component']);
+
 	savecache('adminlog', $adminlog);
 	savecache('admin', $_G['cache']['admin']);
 

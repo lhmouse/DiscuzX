@@ -261,8 +261,9 @@ if(!submitcheck('editsubmit')) {
 
 			$extra = [];
 			foreach($stylevars as $var) {
-				if(strexists($var['type'], ':')) {
+				if(strexists($var['type'], ':') || str_starts_with($var['type'], 'component_')) {
 					$var['variable'] = 'varsnew['.$var['variable'].']';
+					$_G['showcomponent'][$var['type']][] = $var['variable'];
 					admin\class_component::type_plugin($var, $extra);
 				} else {
 					if(strexists($var['type'], '_')) {

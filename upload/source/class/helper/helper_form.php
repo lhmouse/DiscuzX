@@ -33,6 +33,9 @@ class helper_form {
 						showmessage('submit_seccode_invalid');
 					}
 				}
+				if(defined('IN_ADMINCP')) {
+					serializecomponent();
+				}
 				return TRUE;
 			} else {
 				showmessage('submit_invalid');

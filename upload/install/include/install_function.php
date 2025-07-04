@@ -504,7 +504,9 @@ function show_license() {
 		echo <<<EOT
 </div>
 <div class="main">
-	<div class="licenseblock" id="license">$license</div>
+	<div class="licenseblock" id="license">$license
+	<div onmouseover="document.getElementById('agree').disabled = false;" style="width: 100%">&nbsp;</div>
+	</div>
 	<div class="btnbox">
 		<em>$lang_agreement_notice</em>
 		<form method="get" autocomplete="off" action="index.php" class="inputbox">
@@ -515,14 +517,6 @@ function show_license() {
 		<input type="submit" id="agree" class="btn" name="submit" disabled value="{$lang_agreement_yes}">
 		</form>
 	</div>
-	<script>
-	document.getElementById('license').addEventListener('scroll', function() {
-	    var div = this;
-	    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-	        document.getElementById('agree').disabled = false;
-	    }
-	});
-	</script>
 EOT;
 
 		show_footer();

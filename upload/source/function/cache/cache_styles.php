@@ -75,7 +75,7 @@ function build_cache_styles() {
 		foreach(table_common_stylevar_extra::t()->fetch_all_by_styleid($data['styleid']) as $var) {
 			$_v = dunserialize($var['value']);
 			$data[$var['variable']] = is_array($_v) ? $_v : $var['value'];
-			if(strexists($var['type'], ':')) {
+			if(strexists($var['type'], ':') || str_starts_with($var['type'], 'component_')) {
 				admin\class_component::plugin_unserialize($var['type'], $data[$var['variable']]);
 			}
 			if($var['type'] == 'groupfids') {

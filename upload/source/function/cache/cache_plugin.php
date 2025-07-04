@@ -48,7 +48,7 @@ function build_cache_plugin() {
 		}
 
 		foreach(table_common_pluginvar::t()->fetch_all_by_pluginid($plugin['pluginid']) as $var) {
-			if(strexists($var['type'], ':')) {
+			if(strexists($var['type'], ':') || str_starts_with($var['type'], 'component_')) {
 				admin\class_component::plugin_unserialize($var['type'], $var['value']);
 			}
 			$data[$plugin['identifier']][$var['variable']] = $var['value'];

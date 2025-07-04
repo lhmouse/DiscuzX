@@ -109,6 +109,27 @@ class class_component {
 		$n->serialize($value);
 	}
 
+	public static function assign_get($key, $v = null) {
+		preg_match_all('/\[([^\]]+)\]/', $key, $matches);
+		$firstKey = str_contains($key, '[') ? substr($key, 0, strpos($key, '[')) : $key;
+		$keys = array_merge([$firstKey], $matches[1]);
+
+		$current = &$_GET;
+		foreach($keys as $k) {
+			if(!is_array($current)) {
+				$current = [];
+			}
+			if(!isset($current[$k])) {
+				$current[$k] = [];
+			}
+			$current = &$current[$k];
+		}
+		if($v !== null) {
+			$current = $v;
+		}
+		return $current;
+	}
+
 	public static function plugin_unserialize($type, &$value) {
 		$n = self::_plugin_class($type);
 

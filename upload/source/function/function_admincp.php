@@ -154,7 +154,7 @@ function admincustom($title, $url, $sort = 0) {
 
 function cpurl($type = 'parameter', $filters = ['sid', 'frames']) {
 	parse_str($_SERVER['QUERY_STRING'], $getarray);
-	if (!isset($getarray['frames'])) {
+	if(!isset($getarray['frames'])) {
 		$getarray['frames'] = 'yes';
 	}
 	$extra = $and = '';
@@ -721,10 +721,10 @@ function showcomponent($setname, $varname, $value, $type, $comment = '', $conf =
 
 	$extra = [];
 	$var = ['title' => $setname, 'variable' => $varname, 'value' => $value, 'type' => $type, 'description' => $comment, 'extra' => $conf];
-	$_G['showcomponent'][$var['type']] = $var['variable'];
+	$_G['showcomponent'][$var['type']][] = $var['variable'];
 	admin\class_component::type_plugin($var, $extra);
 
-	showsetting($lang[$var['title']] ?? dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, $lang[$var['description']] ?? nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']));
+	showsetting(dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']));
 
 	foreach($extra as $k => $v) {
 		if(!empty($showextra[$k])) {
@@ -743,11 +743,12 @@ function serializecomponent() {
 	}
 
 	$_components = json_decode($_GET['_components'], 1);
-	foreach((array)$_components as $type => $varname) {
-		if(!isset($_GET[$varname])) {
-			continue;
+	foreach((array)$_components as $type => $varnames) {
+		foreach($varnames as $varname) {
+			$v = admin\class_component::assign_get($varname);
+			admin\class_component::plugin_serialize($type, $v);
+			admin\class_component::assign_get($varname, $v);
 		}
-		admin\class_component::plugin_serialize($type, $_GET[$varname]);
 	}
 	unset($_GET['_components']);
 }
