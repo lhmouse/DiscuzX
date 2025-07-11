@@ -185,9 +185,10 @@ class discuz_error {
 		}
 
 		$messagesave = '<b>'.$errormsg.'</b><br><b>PHP:</b>'.$logmsg;
-		self::write_error_log($messagesave);
+		$backtraceid = md5(discuz_error::clear($messagesave));
+		self::write_error_log($messagesave.'<br>BackTraceID:'.$backtraceid);
 
-		self::show_error($type, $errormsg, $phpmsg, '', md5(discuz_error::clear($messagesave)));
+		self::show_error($type, $errormsg, $phpmsg, '', $backtraceid);
 		exit();
 
 	}
@@ -230,7 +231,7 @@ class discuz_error {
 	.bg1{ background-color: #FFFFCC;}
 	.bg2{ background-color: #EEEEEE;}
 	.bg3{ background-color: #FFA66C; font-weight: bold;}
-	.table {background: #AAAAAA; font: 11pt Menlo,Consolas,"Lucida Console";}
+	.table {background: #AAAAAA; font: 9pt Menlo,Consolas,"Lucida Console";}
 	.table tbody{word-break: break-all;}
 	.info {
 	    background: none repeat scroll 0 0 #F3F3F3;

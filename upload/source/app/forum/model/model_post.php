@@ -396,7 +396,7 @@ class model_post extends discuz_model {
 				showmessage('post_sm_isnull');
 			}
 
-			if(!$this->param['sortid'] && (!$this->setting['json_independence'] || !$this->thread['special']) && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
+			if(!$this->param['sortid'] && (!$this->setting['json_independence'] && !$this->param['special']) && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
 				showmessage('post_sm_isnull');
 			}
 
