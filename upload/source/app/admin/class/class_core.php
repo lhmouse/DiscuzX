@@ -137,12 +137,6 @@ class class_core {
 		$extralog = implodearray(['GET' => $_GET, 'POST' => $_POST], ['formhash', 'submit', 'addsubmit', 'admin_password', 'sid', 'action']);
 		//writelog('cplog', implode("\t", clearlogstring(array($_G['timestamp'], $_G['username'], $_G['adminid'], $_G['clientip'], getgpc('action'), $extralog))));
 		// logger start
-		if(is_string($_G['setting']['log'])) {
-			$_G['setting']['log'] = dunserialize($_G['setting']['log']);
-			if(is_array($_G['setting']['log'])) {
-				savecache('setting', $_G['setting']);
-			}
-		}
 		if($_G['setting']['log']['cp']) {
 			$errorlog = [
 				'timestamp' => TIMESTAMP,

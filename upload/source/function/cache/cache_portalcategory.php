@@ -83,8 +83,10 @@ function build_cache_portalcategory() {
 	if(!function_exists('get_cachedata_mainnav')) {
 		include_once libfile('cache/setting', 'function');
 	}
-	$data = $_G['setting'];
+	$data = [];
 	list($data['navs'], $data['subnavs'], $data['menunavs'], $data['navmns'], $data['navmn'], $data['navdms']) = get_cachedata_mainnav();
-	savecache('setting', $data);
+	foreach($data as $key => $value) {
+		table_common_setting::t()->update_setting($key, $value);
+	}
 }
 
