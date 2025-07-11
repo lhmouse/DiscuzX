@@ -20,6 +20,7 @@ if(!defined('IN_DISCUZ')) {
 class extend_thread_trade extends extend_thread_base {
 
 	private $trademessage;
+	private $tradecontent;
 
 	public function before_newthread($parameters) {
 
@@ -55,8 +56,10 @@ class extend_thread_trade extends extend_thread_base {
 			}
 		}
 
-		$this->trademessage = $parameters['message'];
+		$this->trademessage = $parameters['content'] ? 'json_content' : $parameters['message'];
+		$this->tradecontent = $parameters['content'];
 		$this->param['message'] = '';
+		$this->param['content'] = '';
 	}
 
 	public function after_newthread() {
@@ -73,6 +76,7 @@ class extend_thread_trade extends extend_thread_base {
 			'subject' => $this->param['subject'],
 			'dateline' => getglobal('timestamp'),
 			'message' => $this->trademessage,
+			'content' => $this->tradecontent,
 			'useip' => getglobal('clientip'),
 			'invisible' => 0,
 			'anonymous' => $this->param['isanonymous'],

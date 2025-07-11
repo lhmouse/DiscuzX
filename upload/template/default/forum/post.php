@@ -199,7 +199,7 @@
 
 			<!--{if !empty($_G['setting']['pluginhooks']['post_editor_body'])}-->
 				<!--{hook/post_editor_body}-->
-			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence']}-->
+			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'] && ($_GET['action'] != 'edit' || ($_GET['action'] == 'edit' && $is_json_content ))}-->
 				<!--{subtemplate forum/jsoneditor_content}-->
 			<!--{else}-->
 				<!--{subtemplate forum/post_editor_body}-->
@@ -324,7 +324,8 @@
 					<!--{if !empty($swfconfig['filtertype'])}-->
 					filterType: $swfconfig['filtertype'],
 					<!--{/if}-->
-					singleUpload: $('{$editorid}_btn_local')
+					singleUpload: $('{$editorid}_btn_local'),
+					paste_name: [$('{$editorid}_textarea'),$('{$editorid}_iframe') ? ($('{$editorid}_iframe').contentDocument||$('{$editorid}_iframe').contentWindow.document).body : null]
 				},
 				debug: false
 			});
@@ -369,12 +370,32 @@
 					<!--{if !empty($swfconfig['filtertype'])}-->
 					filterType: $swfconfig['filtertype'],
 					<!--{/if}-->
-					singleUpload: $('{$editorid}_btn_upload')
+					singleUpload: $('{$editorid}_btn_upload'),
 				},
 
 				debug: false
 			});
 		<!--{/if}-->
+		_attachEvent(window, 'load', function () {
+			if ($(editorid + '_iframe')) {
+				var iframeDoc = ($(editorid + '_iframe').contentDocument || $(editorid + '_iframe').contentWindow.document);
+				var attachurl = '{$_G[setting][attachurl]}';
+				if (/^https?:\/\//i.test(attachurl)) {
+					var whitelistDomains = [SITEURL,attachurl];
+				}else{
+					var whitelistDomains = [SITEURL];
+				}
+				_attachEvent(iframeDoc.body, 'paste', function (e) {
+					setTimeout(function() {
+						if (wysiwyg) {
+							checkPasteImages(iframeDoc,whitelistDomains);
+							switchEditor(0);
+							switchEditor(1);
+						}
+					}, 1);
+				});
+			}
+		});
 		</script>
 	<!--{else}-->
 		<!--{hook/post_upload_extend}-->

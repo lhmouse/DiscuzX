@@ -211,7 +211,7 @@ if(!submitcheck('editsubmit')) {
 
 	$postinfo['subject'] = str_replace('"', '&quot;', $postinfo['subject']);
 	$postinfo['message'] = dhtmlspecialchars($postinfo['message']);
-	if(!empty($postinfo['content'])) {
+	if(!empty($postinfo['content']) && !in_array($postinfo['content'], ['{}', null, 'null', ''])) {
 		$content = json_decode($postinfo['content'], true);
 		$postinfo['content'] = json_encode($content['blocks']);
 	}
@@ -295,8 +295,9 @@ if(!submitcheck('editsubmit')) {
 
 	$imgattachs['unused'] = !$sortid ? ($imgattachs['unused'] ?? '') : '';
 
-	// $isOpenJsonEditor = !empty($_G['setting']['editormodetype']) && empty($_GET['special']) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']));
-	if(!empty($postinfo['content']) && !in_array($postinfo['content'], ['{}', null, 'null', ''])) {
+	$is_json_content = $postinfo['content'] && !in_array($postinfo['content'], ['{}', null, 'null', '']);
+	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))
+		&& $is_json_content) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -315,8 +316,11 @@ if(!submitcheck('editsubmit')) {
 		if($thread_cover && $thread_cover['cover']) {
 			$postinfo['coverpath'] = getthreadcover($postinfo['tid'], $thread_cover['cover']);
 		}
-
-		getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
+		if($_G['setting']['json_independence']) {
+			include template('forum/jsoneditor');
+		} else {
+			getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
+		}
 	} else {
 		include template('forum/post');
 	}
@@ -476,6 +480,14 @@ if(!submitcheck('editsubmit')) {
 		// 结束处理json编辑器内容中的图片
 
 		$modpost->editpost($param);
+
+		if($isfirstpost) {
+			attrplugin::post_relation('edit', [
+				'tid' => $_G['tid'],
+				'attrs_new' => (array)getgpc('attr_viewperm'),
+				'keyword' => $subject.' '.$message
+			]);
+		}
 
 	} else {
 

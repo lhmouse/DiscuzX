@@ -20,7 +20,6 @@ if(!defined('IN_DISCUZ')) {
  */
 
 class memory_setting_array implements ArrayAccess {
-	private $can_lazy = false;
 	public $array = [];
 
 	const SETTING_KEY = 'setting';
@@ -57,16 +56,6 @@ class memory_setting_array implements ArrayAccess {
 		]
 	];
 
-	public function __construct() {
-		$this->can_lazy = C::memory()->goteval && C::memory()->gothash;
-		if(!$this->can_lazy) { // 不支持lazy load的时候，直接加载整个数据
-			$this->array = memory('get', self::SETTING_KEY);
-			foreach($this->array as $key => $value) {
-				if($value) $this->array[$key] = dunserialize($value);
-			}
-		}
-	}
-
 	public function offsetExists($index) {
 		if(!array_key_exists($index, $this->array)) {
 			return memory('hexists', self::SETTING_KEY, $index);
@@ -76,7 +65,7 @@ class memory_setting_array implements ArrayAccess {
 
 	public function &offsetGet($index) {
 		$val = $this->array[$index];
-		if($val === null && $this->can_lazy) {
+		if($val === null) {
 			foreach(self::FIELDS_GROUPS as $group => $fields) {
 				if(in_array($index, $fields)) {
 					$this->_load_fields($fields, 'setting_'.$group);
@@ -108,16 +97,11 @@ class memory_setting_array implements ArrayAccess {
 	 * 支持lazy load的时候，保存为hash，每个field都做serialize
 	 */
 	public static function save($data) {
-		$can_lazy = C::memory()->goteval && C::memory()->gothash;
-		if($can_lazy) {
-			$newdata = [];
-			foreach($data as $key => $value) {
-				$newdata[$key] = serialize($value);
-			}
-			memory('hmset', self::SETTING_KEY, $newdata);
-		} else {
-			memory('set', self::SETTING_KEY, $data);
+		$newdata = [];
+		foreach($data as $key => $value) {
+			$newdata[$key] = serialize($value);
 		}
+		memory('hmset', self::SETTING_KEY, $newdata);
 	}
 
 	private function _load_fields($fields, $shakey) {

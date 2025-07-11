@@ -517,6 +517,11 @@ function show_license() {
 		<input type="submit" id="agree" class="btn" name="submit" disabled value="{$lang_agreement_yes}">
 		</form>
 	</div>
+	<script type="text/javascript">
+		setTimeout(function(){
+			document.getElementById('agree').disabled = false;
+		}, 10000);
+	</script>
 EOT;
 
 		show_footer();
