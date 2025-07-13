@@ -46,7 +46,7 @@ class memory_driver_redis {
 			} catch (RedisException $e) {
 
 			}
-			$this->enable = (bool)$connect && $this->feature('eval');
+			$this->enable = (bool)$connect;
 			if($this->enable) {
 				if($config['requirepass']) {
 					$this->obj->auth($config['requirepass']);

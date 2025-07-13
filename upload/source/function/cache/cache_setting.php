@@ -245,6 +245,7 @@ function build_cache_setting() {
 		$data['domain']['list'][$value['domain'].'.'.$value['domainroot']] = ['id' => $value['id'], 'idtype' => $value['idtype']];
 	}
 	savecache('domain', $data['domain']);
+	@unlink(DISCUZ_DATA.'./sysdata/cache_domain.php');
 
 	$data['seccodedata'] = is_array($data['seccodedata']) ? $data['seccodedata'] : [];
 	if($data['seccodedata']['type'] == 2) {

@@ -11,7 +11,6 @@ if(!defined('IN_DISCUZ')) {
 }
 
 class table_common_syscache extends discuz_table {
-	private $_isfilecache;
 
 	public static function t() {
 		static $_instance;
@@ -26,7 +25,6 @@ class table_common_syscache extends discuz_table {
 		$this->_table = 'common_syscache';
 		$this->_pk = 'cname';
 		$this->_pre_cache_key = '';
-		$this->_isfilecache = getglobal('config/cache/type') == 'file';
 		$this->_allowmem = memory('check');
 
 		parent::__construct();
@@ -86,17 +84,7 @@ class table_common_syscache extends discuz_table {
 		$data = [];
 		$cachenames = is_array($cachenames) ? $cachenames : [$cachenames];
 		if($this->_allowmem) {
-			if(($index = array_search('setting', $cachenames)) !== FALSE) {
-				if(memory('exists', 'setting')) {
-					unset($cachenames[$index]);
-					$settings = new memory_setting_array();
-				}
-			}
-
 			$data = memory('get', $cachenames);
-			if(isset($settings)) {
-				$data['setting'] = $settings;
-			}
 			$newarray = $data !== false ? array_diff($cachenames, array_keys($data)) : $cachenames;
 			if(empty($newarray)) {
 				return $data;
@@ -105,41 +93,11 @@ class table_common_syscache extends discuz_table {
 			}
 		}
 
-		if($this->_isfilecache) {
-			$lostcaches = [];
-			foreach($cachenames as $cachename) {
-				if(!@include_once(DISCUZ_DATA.'./cache/cache_'.$cachename.'.php')) {
-					$lostcaches[] = $cachename;
-				} elseif($this->_allowmem) {
-					$cachename === 'setting' ? memory_setting_array::save($data[$cachename]) : memory('set', $cachename, $data[$cachename]);
-				}
-			}
-			if(!$lostcaches) {
-				return $data;
-			}
-			$cachenames = $lostcaches;
-			unset($lostcaches);
-		}
-
 		$query = DB::query('SELECT * FROM '.DB::table($this->_table).' WHERE '.DB::field('cname', $cachenames));
 		while($syscache = DB::fetch($query)) {
 			$data[$syscache['cname']] = $syscache['ctype'] ? dunserialize($syscache['data']) : $syscache['data'];
 			if($this->_allowmem) {
-				if($syscache['cname'] === 'setting') {
-					memory_setting_array::save($data[$syscache['cname']]);
-				} else {
-					memory('set', $syscache['cname'], $data[$syscache['cname']]);
-				}
-			}
-			if($this->_isfilecache) {
-				$cachedata = '$data[\''.$syscache['cname'].'\'] = '.var_export($data[$syscache['cname']], true).";\n\n";
-				$cachedata_save = "<?php\n//Discuz! cache file, DO NOT modify me!\n//Identify: ".md5($syscache['cname'].$cachedata.getglobal('config/security/authkey'))."\n\n$cachedata?>";
-				$fp = fopen(DISCUZ_DATA.'./cache/cache_'.$syscache['cname'].'.php', 'cb');
-				if(!($fp && flock($fp, LOCK_EX) && ftruncate($fp, 0) && fwrite($fp, $cachedata_save) && fflush($fp) && flock($fp, LOCK_UN) && fclose($fp))) {
-					flock($fp, LOCK_UN);
-					fclose($fp);
-					unlink(DISCUZ_DATA.'./cache/cache_'.$syscache['cname'].'.php');
-				}
+				memory('set', $syscache['cname'], $data[$syscache['cname']]);
 			}
 		}
 
@@ -163,13 +121,8 @@ class table_common_syscache extends discuz_table {
 		], false, true);
 
 		if($this->_allowmem && memory('exists', $cachename) !== false) {
-			if($cachename === 'setting') {
-				memory_setting_array::save($data);
-			} else {
-				memory('set', $cachename, $data);
-			}
+			memory('set', $cachename, $data);
 		}
-		$this->_isfilecache && @unlink(DISCUZ_DATA.'./cache/cache_'.$cachename.'.php');
 	}
 
 	public function update_syscache($cachename, $data) {
@@ -178,10 +131,9 @@ class table_common_syscache extends discuz_table {
 
 	public function delete_syscache($cachenames) {
 		parent::delete($cachenames);
-		if($this->_allowmem || $this->_isfilecache) {
+		if($this->_allowmem) {
 			foreach((array)$cachenames as $cachename) {
 				$this->_allowmem && memory('rm', $cachename);
-				$this->_isfilecache && @unlink(DISCUZ_DATA.'./cache/cache_'.$cachename.'.php');
 			}
 		}
 	}
