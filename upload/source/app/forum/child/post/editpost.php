@@ -481,14 +481,6 @@ if(!submitcheck('editsubmit')) {
 
 		$modpost->editpost($param);
 
-		if($isfirstpost) {
-			attrplugin::post_relation('edit', [
-				'tid' => $_G['tid'],
-				'attrs_new' => (array)getgpc('attr_viewperm'),
-				'keyword' => $subject.' '.$message
-			]);
-		}
-
 	} else {
 
 		if($thread['special'] == 3) {
