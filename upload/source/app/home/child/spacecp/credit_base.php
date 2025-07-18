@@ -70,7 +70,10 @@ if($_GET['op'] == 'base') {
 	}
 
 	$navtitle = lang('core', 'title_credit');
-	$creditsformulaexp = str_replace('*', 'X', $_G['setting']['creditsformulaexp']);
+	$creditsformulaexp = str_replace('*', '&times;', $_G['setting']['creditsformulaexp']);
+	$creditsformulaexp = preg_replace_callback('/\{(credits_\w+)\}/', function($r) {
+		return lang('credit', $r[1]);
+	}, $creditsformulaexp);
 
 	$upgroup_credits = 0;
 	$upgroup_creditsformulaexp = $upgroup_name = '';

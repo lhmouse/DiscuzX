@@ -501,12 +501,18 @@ function show_license() {
 		$lang_agreement_no = lang('agreement_no');
 		$lang_agreement_notice = lang('agreement_notice');
 
+		$arraw = '<svg class="arrow" viewBox="0 0 24 24"><path d="M12 16.5c-.3 0-.5-.1-.7-.3l-6-6a1 1 0 0 1 1.4-1.4L12 14.1l5.3-5.3a1 1 0 1 1 1.4 1.4l-6 6c-.2.2-.5.3-.7.3z" /></svg>';
+
 		echo <<<EOT
 </div>
 <div class="main">
-	<div class="licenseblock" id="license">$license
-	<div onmouseover="document.getElementById('agree').disabled = false;" style="width: 100%">&nbsp;</div>
+	<div class="scroll-arrows" id="scrollArrows">
+            $arraw$arraw$arraw$arraw$arraw$arraw
+        </div>
+        <div class="licenseblock" id="license">$license
+	<div onmouseover="agreeUnlock()" style="width: 100%">&nbsp;</div>
 	</div>
+	
 	<div class="btnbox">
 		<em>$lang_agreement_notice</em>
 		<form method="get" autocomplete="off" action="index.php" class="inputbox">
@@ -514,13 +520,34 @@ function show_license() {
 		<input type="hidden" name="uchidden" value="$uchidden">
 		<input type="hidden" name="agree" value="yes">
 		<input type="button" class="btn oldbtn" name="exit" value="{$lang_agreement_no}"  onclick="location.href='https://www.discuz.vip'">
-		<input type="submit" id="agree" class="btn" name="submit" disabled value="{$lang_agreement_yes}">
+		<input type="submit" id="agree" class="btn" name="submit" disabled value="{$lang_agreement_yes}(10)">
 		</form>
 	</div>
 	<script type="text/javascript">
-		setTimeout(function(){
+		var currentSeconds = 10;
+		var t = setInterval(function(){
+			if(currentSeconds == 0) {
+				agreeUnlock();
+				return;
+			}
+			document.getElementById('agree').value = '{$lang_agreement_yes}(' + currentSeconds + ')';
+			currentSeconds--;
+		}, 1000);
+		const licenseBox = document.getElementById('license');
+	        const scrollArrows = document.getElementById('scrollArrows');
+	        licenseBox.addEventListener('scroll', () => {
+	            const { scrollTop, scrollHeight, clientHeight } = licenseBox;
+	            if (scrollTop + clientHeight >= scrollHeight - 10) {
+	                scrollArrows.classList.add('hidden');
+	            } else {
+	                scrollArrows.classList.remove('hidden');
+	            }
+	        });
+		function agreeUnlock() {
 			document.getElementById('agree').disabled = false;
-		}, 10000);
+			document.getElementById('agree').value = '{$lang_agreement_yes}';
+			clearInterval(t);
+		}
 	</script>
 EOT;
 

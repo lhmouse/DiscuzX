@@ -14,7 +14,8 @@ $modactioncode = lang('forum/modaction');
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td23"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td23"'], [
+	'ID',
 	cplang('operator'),
 	cplang('usergroup'),
 	cplang('logs_device'),
@@ -29,6 +30,7 @@ foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
 	$log = [];
+	$log[0] = $logrow['id'];
 	$log[1] = dgmdate($logrow['dateline']);
 	$log[2] = "<a href=\"home.php?mod=space&username=".rawurlencode($data['operator_username'])."\" target=\"_blank\">".($data['operator_username'] != $_G['member']['username'] ? '<b>'.$data['operator_username'].'</b>' : $data['operator_username'])."</a>";
 	$log[3] = $usergroup[$data['operator_adminid']];
@@ -40,6 +42,7 @@ foreach($logs as $k => $logrow) {
 	$log[8] = "<a href=\"./forum.php?mod=viewthread&tid=".$data['tid']."\" target=\"_blank\" title=\"".$data['subject']."\">".cutstr($data['subject'], 15).'</a>';
 	$log[9] = $modactioncode[trim($data['action'])];
 	showtablerow('', ['class="bold"'], [
+		$log[0],
 		$log[2],
 		$log[3],
 		$log[4],
@@ -49,6 +52,6 @@ foreach($logs as $k => $logrow) {
 		$log[9],
 		$data['reason'],
 	]);
-	echo showdevice($logrow['id'], $device, 8);
+	echo showdevice($logrow['id'], $device, 9);
 }
 	

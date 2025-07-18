@@ -82,11 +82,11 @@ if(submitcheck('settingsubmit')) {
 			if($extcreditsarray[$creditsid = preg_replace('/^extcredits(\d{1})$/', "\\1", $var)]['available']) {
 				$replacement = $extcreditsarray[$creditsid]['title'];
 			} else {
-				$replacement = $lang['setting_credits_formula_'.$var];
+				$replacement = '{credits_'.strtoupper($var).'}';
 			}
 			$settingnew['creditsformulaexp'] = str_replace($var, '<u>'.$replacement.'</u>', $settingnew['creditsformulaexp']);
 		}
-		$settingnew['creditsformulaexp'] = addslashes('<u>'.$lang['setting_credits_formula_credits'].'</u>='.$settingnew['creditsformulaexp']);
+		$settingnew['creditsformulaexp'] = addslashes('<u>{credits_CREDITS}</u>='.$settingnew['creditsformulaexp']);
 
 		$initformula = str_replace('posts', '0', $settingnew['creditsformula']);
 		$initformula = str_replace('digest0', '0', $initformula);

@@ -12,7 +12,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"'], [
+	'ID',
 	cplang('time'),
 	cplang('logs_device'),
 	cplang('message'),
@@ -22,14 +23,16 @@ foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
 	$log = [];
+	$log[0] = $logrow['id'];
 	$log[1] = dgmdate($logrow['dateline']);
 	$log[2] = $_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-';
 
 	showtablerow('', ['class="bold" style="box-sizing: unset;"', 'style="box-sizing: unset;"'], [
+		$log[0],
 		$log[1],
 		$log[2],
 		str_replace(' -> ', '<br>', $data['message']).'<br>hash:'.$data['hash'].'<br>clientip:'.$data['clientip'].'<br>'.$data['user'].'<br>'.$data['uri']
 	]);
-	echo showdevice($logrow['id'], $device, 3);
+	echo showdevice($logrow['id'], $device, 4);
 }
 	

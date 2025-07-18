@@ -12,7 +12,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"', 'style="word-break: break-all"', 'class="td23" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"', 'style="word-break: break-all"', 'class="td23" style="box-sizing: unset;"', 'class="td23" style="box-sizing: unset;"', 'class="td24" style="box-sizing: unset;"'], [
+	'ID',
 	cplang('time'),
 	'appid',
 	'api',
@@ -26,10 +27,12 @@ foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
 	$log = [];
+	$log[0] = $logrow['id'];
 	$log[1] = dgmdate($logrow['dateline']);
 	$log[2] = $_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-';
 
-	showtablerow('', ['class="bold" style="box-sizing: unset;"', 'style="box-sizing: unset;"', '', 'style="word-break: break-all"'], [
+	showtablerow('', ['', 'class="bold" style="box-sizing: unset;"', 'style="box-sizing: unset;"', '', 'style="word-break: break-all"'], [
+		$log[0],
 		$log[1],
 		$data['appid'],
 		$data['api'],
@@ -42,5 +45,5 @@ foreach($logs as $k => $logrow) {
 		'<tr><td colspan="7"><strong>Request:</strong> '.dhtmlspecialchars(print_r($data['params'], 1)).'</td></tr>'.
 		'<tr><td colspan="7"><strong>Response:</strong> '.dhtmlspecialchars(print_r($data['response'], 1)).'</td></tr>'.
 		'</tbody>';
-	echo showdevice($logrow['id'], $device, 7);
+	echo showdevice($logrow['id'], $device, 8);
 }

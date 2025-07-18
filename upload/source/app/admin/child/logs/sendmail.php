@@ -12,7 +12,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23"', 'class="td24"', 'class="td23"', 'class="td23"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td24"', 'class="td23"', 'class="td23"'], [
+	'ID',
 	cplang('time'),
 	cplang('logs_device'),
 	cplang('username'),
@@ -44,11 +45,12 @@ foreach($logs as $k => $logrow) {
 		$logrow[6] = "<b>$logrow[6]</b>";
 	}
 	showtablerow('', ['class="smallefont"', 'class="smallefont"', 'class="bold"', 'class="smallefont"'], [
+		$logrow['id'],
 		dgmdate($logrow['dateline']),
 		$_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-',
 		'<a href="home.php?mod=space&username='.$logrow[6].'" target="_blank">'.$logrow[6].'</a>',
 		$log['message']
 	]);
-	echo showdevice($logrow['id'], $device, 6);
+	echo showdevice($logrow['id'], $device, 5);
 }
 	

@@ -464,10 +464,6 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 		}
 	}
 
-	attrplugin::post_relation('reply', [
-		'tid' => $_G['tid'],
-	]);
-
 	// 开始处理json编辑器内容中的图片
 	if($params['content'] && !in_array($params['content'], ['{}', null, 'null', ''])) {
 		$blocksData = json_decode($params['content'], true);

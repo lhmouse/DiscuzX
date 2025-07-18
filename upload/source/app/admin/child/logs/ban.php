@@ -14,7 +14,8 @@ showtips('logs_tips_ban');
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td24"', 'class="td24"', 'class="td23"', 'class="td23"', 'class="td23"', 'class="td25"', 'style="width:160px"', 'class="td23"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td24"', 'class="td24"', 'class="td23"', 'class="td23"', 'class="td23"', 'class="td25"', 'style="width:160px"', 'class="td23"'], [
+	'ID',
 	cplang('operator'),
 	cplang('logs_device'),
 	cplang('time'),
@@ -35,6 +36,7 @@ foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
 	$log = [];
+	$log[0] = $logrow['id'];
 	$log[1] = dgmdate($logrow['dateline']);
 	$log[2] = "<a href=\"home.php?mod=space&username=".rawurlencode($data['operator_username'])."\" target=\"_blank\">".$data['operator_username']."</a> <span class=\"normal\">".$usergroup[$data['operator_groupid']].'</span>';
 	$log[4] = $_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-';
@@ -54,7 +56,8 @@ foreach($logs as $k => $logrow) {
 	}
 	$operation = $operations[$operation];
 
-	showtablerow('', ['class="bold"', 'class="smallefont"', 'class="smallefont"', '', '', '', 'class="smallefont"', ''], [
+	showtablerow('', ['', 'class="bold"', 'class="smallefont"', 'class="smallefont"', '', '', '', 'class="smallefont"', ''], [
+		$log[0],
 		$log[2],
 		$log[4],
 		$log[1],
@@ -64,6 +67,6 @@ foreach($logs as $k => $logrow) {
 		$log[8],
 		$data['reason']
 	]);
-	echo showdevice($logrow['id'], $device, 8);
+	echo showdevice($logrow['id'], $device, 9);
 }
 	

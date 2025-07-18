@@ -158,7 +158,7 @@ INSERT INTO pre_common_nav VALUES ('', '0', '广播', '', 'home.php?mod=follow',
 INSERT INTO pre_common_nav VALUES ('', '0', '{hr}', '', '', '', 0, 1, 1, 8, 0, 0, 0, 0, '', '', '', 2, '');
 
 INSERT INTO pre_common_nav VALUES ('', '0', '好友', '', 'home.php?mod=space&do=friend', 'friend', 0, 0, -1, 1, 0, 0, 0, 0, '{STATICURL}image/feed/friend_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '帖子', '', 'home.php?mod=space&do=thread&view=me', 'thread', 0, 0, 0, 2, 0, 0, 0, 0, '{STATICURL}image/feed/thread_b.png', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '帖子', '', 'home.php?mod=space&do=thread&view=me', 'thread', 0, 0, 1, 2, 0, 0, 0, 0, '{STATICURL}image/feed/thread_b.png', '', '', 3, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '收藏', '', 'home.php?mod=space&do=favorite&view=me', 'favorite', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/feed/favorite_b.png', '', '', 3, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '道具', '', 'home.php?mod=magic', 'magic', 0, 0, -1, 4, 0, 0, 0, 0, '{STATICURL}image/feed/magic_b.png', '', '', 3, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '勋章', '', 'home.php?mod=medal', 'medal', 0, 0, -1, 5, 0, 0, 0, 0, '{STATICURL}image/feed/medal_b.png', '', '', 3, '');
@@ -277,7 +277,7 @@ INSERT INTO pre_common_setting VALUES ('commentpostself','0');
 INSERT INTO pre_common_setting VALUES ('connect', 'a:19:{s:5:"allow";s:1:"1";s:4:"feed";a:2:{s:5:"allow";s:1:"1";s:5:"group";s:1:"0";}s:1:"t";a:2:{s:5:"allow";s:1:"1";s:5:"group";s:1:"0";}s:10:"like_allow";s:1:"1";s:7:"like_qq";s:0:"";s:10:"turl_allow";s:1:"1";s:7:"turl_qq";s:0:"";s:8:"like_url";s:0:"";s:17:"register_birthday";s:1:"0";s:15:"register_gender";s:1:"0";s:17:"register_uinlimit";s:0:"";s:21:"register_rewardcredit";s:1:"1";s:18:"register_addcredit";s:0:"";s:16:"register_groupid";s:1:"0";s:18:"register_regverify";s:1:"1";s:15:"register_invite";s:1:"0";s:10:"newbiespan";s:0:"";s:9:"turl_code";s:0:"";s:13:"mblog_app_key";s:3:"abc";}');
 INSERT INTO pre_common_setting VALUES ('creditnotice','1');
 INSERT INTO pre_common_setting VALUES ('creditsformula','posts+digestposts*5+extcredits1*2+extcredits2+extcredits3');
-INSERT INTO pre_common_setting VALUES ('creditsformulaexp','<u>总积分</u>=<u>发帖数</u>+<u>精华帖数</u>*5+<u>威望</u>*2+<u>金钱</u>+<u>贡献</u>');
+INSERT INTO pre_common_setting VALUES ('creditsformulaexp','<u>{credits_CREDITS}</u>=<u>{credits_POSTS}</u>+<u>{credits_DIGESTPOSTS}</u>*5+<u>威望</u>*2+<u>金钱</u>+<u>贡献</u>');
 INSERT INTO pre_common_setting VALUES ('creditsnotify','');
 INSERT INTO pre_common_setting VALUES ('creditspolicy','a:12:{s:4:\"post\";a:0:{}s:5:\"reply\";a:0:{}s:6:\"digest\";a:1:{i:1;i:10;}s:10:\"postattach\";a:0:{}s:9:\"getattach\";a:0:{}s:6:\"sendpm\";a:0:{}s:6:\"search\";a:0:{}s:15:\"promotion_visit\";a:0:{}s:18:\"promotion_register\";a:0:{}s:13:\"tradefinished\";a:0:{}s:8:\"votepoll\";a:0:{}s:10:\"lowerlimit\";a:0:{}}');
 INSERT INTO pre_common_setting VALUES ('creditspolicymobile','0');
@@ -591,7 +591,7 @@ INSERT INTO pre_common_setting VALUES ('statcode','');
 INSERT INTO pre_common_setting VALUES ('statscachelife','180');
 INSERT INTO pre_common_setting VALUES ('statstatus','');
 INSERT INTO pre_common_setting VALUES ('strongpw','0');
-INSERT INTO pre_common_setting VALUES ('styleid','1');
+INSERT INTO pre_common_setting VALUES ('styleid','2');
 INSERT INTO pre_common_setting VALUES ('styleid1','1');
 INSERT INTO pre_common_setting VALUES ('styleid2','1');
 INSERT INTO pre_common_setting VALUES ('styleid3','1');
@@ -771,6 +771,8 @@ INSERT INTO pre_common_statuser VALUES ('1','0','login');
 
 
 INSERT INTO pre_common_style VALUES ('1','默认风格','1','1', 't1	t2	t3	t4	t5|', '1.0.0');
+INSERT INTO pre_common_style VALUES ('2','X5模版','1','2', '', '');
+
 
 INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (1, 'menuhoverbgcolor', '#004FA0');
 INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (1, 'menucurbgcolor', '#005AB4');
@@ -820,6 +822,58 @@ INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (
 INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (1, 'contentwidth', '630px');
 INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (1, 'contentseparate', '#C2D5E3');
 INSERT INTO `pre_common_stylevar` (`styleid`, `variable`, `substitute`) VALUES (1, 'inputborder', '#E0E0E0');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'menuhoverbgcolor', '#0051cc');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'menucurbgcolor', '#0051cc');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'lightlink', '#ccc');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'floatbgcolor', '#FFF');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'dropmenubgcolor', '#FEFEFE');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'floatmaskbgcolor', '#000');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'dropmenuborder', '#eeeeee');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'specialbg', '#d6e4ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'specialborder', '#d6e4ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'commonbg', '#F9f9f9');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'commonborder', '#eeeeee');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'inputbg', '#FFF');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'stypeid', '1');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'inputborderdarkcolor', '#e3e3e3');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'headerbgcolor', '');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'headerborder', '0');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'sidebgcolor', '#E8F0F7');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'msgfontsize', '14px');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'bgcolor', '#f7f9fa');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'noticetext', '#F26C4F');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'highlightlink', '#0066ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'link', '#333');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'lighttext', '#999');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'midtext', '#666');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'tabletext', '#333');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'smfontsize', '0.83em');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'threadtitlefont', 'Tahoma,Helvetica,\'Microsoft Yahei\',sans-serif');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'threadtitlefontsize', '16px');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'smfont', 'Tahoma,Helvetica,sans-serif');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'titlebgcolor', '#E5EDF2');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'fontsize', '12px/1.5');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'font', 'Tahoma,Helvetica,\'Microsoft Yahei\',sans-serif');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'styleimgdir', 'template/discuzx5/static/');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'imgdir', '');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'boardimg', 'logo.png');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'searchimg', 'logo_sc.svg');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'touchimg', 'logo_m.svg');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'available', '');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'headertext', '#444');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'footertext', '#666');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'menubgcolor', '#0066ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'menutext', '#0066ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'menuhovertext', '#FFF');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'wrapbg', '#FFF');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'wrapbordercolor', '#CCC');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'contentwidth', '630px');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'contentseparate', '#d6e4ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'inputborder', '#e3e3e3');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'btnbg', '#d6e4ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'btntxt', '#0066ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'btnbga', '#0066ff');
+INSERT INTO pre_common_stylevar (styleid, variable, substitute) VALUES (2, 'btntxta', '#ffffff');
 
 INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (1, 1, 0, '手机版配色', '', 'touch_style', 'stylePage', '', '');
 INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (2, 1, 2, '模板主色调', '模板主色调颜色, 默认值 #2B7ACD', 'touch_style_color', 'color', '#2B7ACD', '');
@@ -851,12 +905,31 @@ INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title,
 INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (28, 1, 34, '辅助文字色', '辅助文字颜色, 默认值 #7CBE00', 'touch_style_tv', 'color', '#7CBE00', '');
 INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (29, 1, 35, '自定义CSS', '', 'touch_style_add', 'styleTitle', '', '');
 INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (30, 1, 36, '附加自定义CSS', '附加自定义CSS对页面进行个性化设置', 'touch_style_addcss', 'textarea', '', '');
-
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (31, 2, 0, '界面设置', '', 'template', 'stylePage', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (32, 2, 10, '模版头部', '', 'template_top', 'styleTitle', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (33, 2, 11, '搜索框', '定义顶部搜索框的开关', 'is_search', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (34, 2, 12, '顶部导航固定', '当向上滚动屏幕时，主导航将即时出现在屏幕的顶部', 'is_fixtop', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (35, 2, 13, '导航显示数量', '导航最多显示几个后显示“更多”', 'top_navnum', 'number', '8', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (36, 2, 14, '导航自由宽度', '选择“是”导航显示自由宽度，选择“否”导航显示固定宽度', 'top_nav_widthauto', 'radio', '0', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (37, 2, 15, '导航背景颜色', '配色导航背景颜色，留空为默认的白色', 'top_nav_bgc', 'color', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (38, 2, 16, '导航背景深色', '跟上面的导航背景颜色一起使用，如果设置的是深色背景颜色，并选择了“导航背景深色”为是，导航文字颜色则会显示为白色', 'top_nav_dark', 'radio', '0', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (39, 2, 17, '快捷导航', '是否显示用户名下拉中的快捷导航', 'top_fastnav', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (40, 2, 20, '侧边工具栏', '', 'sider_tool', 'styleTitle', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (41, 2, 22, '微信客服', '', 'sider_wechat', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (42, 2, 23, '微信客服二维码', '', 'sider_wechat_qrcode', 'uploadimage', 'template/discuzx5/static/images/wechat.jpg', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (43, 2, 24, '微信客服文字说明', '', 'sider_wechat_txt', 'text', '关注公众号', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (44, 2, 25, '快速发帖', '', 'sider_fastpost', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (45, 2, 30, '模版底部', '', 'template_bottom', 'styleTitle', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (46, 2, 31, '底部背景颜色', '设置底部的背景颜色', 'bottom_bgc', 'color', '#333333', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (47, 2, 32, '底部背景深色', '跟上面的底部背景颜色一起使用，如果设置的是深色背景颜色，并选择了“底部背景深色”为是，底部文字颜色则会显示为白色', 'bottom_dark', 'radio', '1', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (48, 2, 33, '二维码', '不设置将显示默认图片，如果二维码和二维码文字都不设置，将不显示', 'bottom_qrcode', 'uploadimage', 'template/discuzx5/static/images/ewm_a.jpg', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (49, 2, 34, '二维码文字', '不设置将显示默认文字，如果二维码和二维码文字都不设置，将不显示', 'bottom_qrcodetxt', 'text', '关注公众号', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (50, 2, 35, '底部文字信息', '', 'bottom_txt', 'text', '相关侵权、举报、投诉及建议等，请发 E-mail：admin@discuz.vip', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (51, 2, 100, '后台设置', '', 'admin', 'stylePage', '', '');
+INSERT INTO pre_common_stylevar_extra (stylevarid, styleid, displayorder, title, description, variable, type, value, extra) VALUES (52, 2, 101, '后台主色调', '', 'admin_color', 'color', '#00b96b', '');
 
 INSERT INTO pre_common_template VALUES ('1','默认模板套系','./template/default','Discuz!');
-
-
-
+INSERT INTO pre_common_template VALUES ('2','X5模版','./template/discuzx5','Discuz!');
 
 INSERT INTO pre_common_usergroup VALUES ('1','1','system','private','管理员','0','0','9','','','1','1','1','1','1','0','0','10','0', '');
 INSERT INTO pre_common_usergroup VALUES ('2','2','system','private','超级版主','0','0','8','','','1','1','1','1','1','0','0','10','0', '');

@@ -14,7 +14,8 @@ $modactioncode = lang('forum/modaction');
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td24"', 'class="td23"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td24"', 'class="td23"'], [
+	'ID',
 	cplang('uid'),
 	cplang('username'),
 	cplang('type'),
@@ -28,13 +29,14 @@ foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
 	$log = [];
-	$log[0] = $logrow['uid'];
-	$log[1] = $logrow['username'];
-	$log[2] = $data['type'] ? $data['type'] : 'unknown';
-	$log[3] = $_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-';
-	$log[4] = $logrow['data'];
-	$log[5] = dgmdate($logrow['dateline']);
-	$log[6] = $device['client_ip'];
+	$log[0] = $logrow['id'];
+	$log[1] = $logrow['uid'];
+	$log[2] = $logrow['username'];
+	$log[3] = $data['type'] ? $data['type'] : 'unknown';
+	$log[4] = $_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-';
+	$log[5] = $logrow['data'];
+	$log[6] = dgmdate($logrow['dateline']);
+	$log[7] = $device['client_ip'];
 
 	showtablerow('', ['class="bold"'], [
 		$log[0],
@@ -44,7 +46,8 @@ foreach($logs as $k => $logrow) {
 		$log[4],
 		$log[5],
 		$log[6],
+		$log[7],
 	]);
-	echo showdevice($logrow['id'], $device, 8);
+	echo showdevice($logrow['id'], $device, 9);
 }
 	

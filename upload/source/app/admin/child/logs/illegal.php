@@ -14,7 +14,8 @@ showtips('logs_tips_illegal');
 
 showtableheader('', 'fixpadding');
 
-showtablerow('class="header"', ['class="td23"', 'class="td24"', 'class="td23"', 'class="td23"', 'class="td23"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td24"', 'class="td23"', 'class="td23"', 'class="td23"'], [
+	'ID',
 	cplang('time'),
 	cplang('logs_device'),
 	cplang('logs_passwd_username'),
@@ -25,7 +26,8 @@ showtablerow('class="header"', ['class="td23"', 'class="td24"', 'class="td23"', 
 foreach($logs as $k => $logrow) {
 	$data = json_decode($logrow['data'], true);
 	$device = json_decode($logrow['device'], true);
-	showtablerow('', ['class="smallefont"', 'class="smallefont"', 'class="bold"', 'class="smallefont"', 'class="smallefont"'], [
+	showtablerow('', ['class="smallefont"', 'class="smallefont"', 'class="smallefont"', 'class="bold"', 'class="smallefont"', 'class="smallefont"'], [
+		$logrow['id'],
 		dgmdate($logrow['dateline']),
 		$_G['group']['allowviewip'] ? 'ClientIP: '.$device['client_ip'].'&nbsp;&nbsp;<a href="javascript:;" onclick="togglelog('.$logrow['id'].')">'.cplang('more').'</a>' : '-',
 		$data['username'],

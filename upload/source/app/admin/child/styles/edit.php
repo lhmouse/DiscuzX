@@ -460,6 +460,7 @@ if(!submitcheck('editsubmit')) {
 		}
 	}
 	$tpl->close();
+	$anchor == '_default' && $anchor = '';
 	cpmsg('styles_edit_succeed', 'action=styles&operation=edit&id='.$id.'&anchor='.$anchor, 'succeed');
 
 }

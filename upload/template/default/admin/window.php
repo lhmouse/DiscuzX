@@ -1,6 +1,11 @@
 <?php exit('Access Denied');?>
 {template common/header_ajax}
-<table width="100%" cellpadding="0" cellspacing="0" class="fwin" style="min-width: 400px">
+<style>
+.adminwin a, .adminwin button { cursor: pointer !important; }
+.adminwin input { cursor: text !important; margin-bottom: 5px; }
+.adminwin span { margin-left: 5px; margin-right: 5px; color: #999; cursor: pointer !important; }
+</style>
+<table width="100%" cellpadding="0" cellspacing="0" class="fwin adminwin" style="min-width: 400px">
 	<tr>
 		<td class="t_l"></td>
 		<td class="t_c"></td>
@@ -16,6 +21,8 @@
 				</ul>
 				<div style="padding: 10px">
 				{$s}
+				</div>
+				<div id="{$closeid}_footer">
 				</div>
 			</div>
 		</td>
