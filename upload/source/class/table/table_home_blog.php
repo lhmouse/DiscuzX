@@ -224,7 +224,7 @@ class table_home_blog extends discuz_table {
 		$sql .= $hot2 ? ' AND b.'.DB::field('hot', $hot2, '<=') : '';
 
 		$sql .= $viewnum1 ? ' AND b.'.DB::field('viewnum', $viewnum1, '>=') : '';
-		$sql .= $viewnum2 ? ' AND b.'.DB::field('viewnum', $viewnum1, '<=') : '';
+		$sql .= $viewnum2 ? ' AND b.'.DB::field('viewnum', $viewnum2, '<=') : '';
 		$sql .= $replynum1 ? ' AND b.'.DB::field('replynum', $replynum1, '>=') : '';
 		$sql .= $replynum2 ? ' AND b.'.DB::field('replynum', $replynum2, '<=') : '';
 		$sql .= $classid ? ' AND b.'.DB::field('classid', $classid) : '';
