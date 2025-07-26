@@ -388,7 +388,6 @@
 				_attachEvent(iframeDoc.body, 'paste', function (e) {
 					setTimeout(function() {
 						if (wysiwyg) {
-							checkPasteImages(iframeDoc,whitelistDomains);
 							switchEditor(0);
 							switchEditor(1);
 						}
