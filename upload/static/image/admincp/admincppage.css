@@ -404,7 +404,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
 	.staton{ text-indent:-9999px; width:20px; height:17px; background:url(bg_repno.gif) no-repeat -280px -250px; }
 	.statoff{ text-indent:-9999px; background:url(bg_repno.gif) no-repeat -250px -347px; }
-	.rowform{ width:306px; overflow:auto; }
+	.rowform{ width:336px; overflow:auto; }
 		.tb2 .rowform{ padding-left:20px; }
 		.rowform .txt, .rowform textarea{ margin-right:10px; width:250px; }
 		.rowform select{ margin-right:10px; width:256px; }
@@ -897,7 +897,8 @@ div.todo>em { width: 25%; }
 }
 
 .permitem { max-height: 300px; overflow: auto; }
-.permitem a { display: block; margin: 5px; text-decoration:none; }
+.permitem p { margin: 5px; }
+.permitem a { margin: 5px; text-decoration:none; }
 
 .blank { background-size: 20%; color: #999; display: flex;font-size: 12px;text-align: center;text-align: center;height: 100%;width: 100%; position: absolute;justify-content: flex-end;flex-direction: column;align-items: center; }
     .blank a { color: #999; }

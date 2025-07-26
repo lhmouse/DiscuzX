@@ -295,9 +295,7 @@ if(!submitcheck('editsubmit')) {
 
 	$imgattachs['unused'] = !$sortid ? ($imgattachs['unused'] ?? '') : '';
 
-	$is_json_content = $postinfo['content'] && !in_array($postinfo['content'], ['{}', null, 'null', '']);
-	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))
-		&& $is_json_content) {
+	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -310,6 +308,10 @@ if(!submitcheck('editsubmit')) {
 		}
 		if(!empty($postinfo['source'])) {
 			$postinfo['source'] = json_decode($postinfo['source'], true);
+		}
+
+		if($postinfo['content'] === '{}'){
+			$postinfo['content'] = '[]';
 		}
 
 		$thread_cover = table_forum_thread::t()->fetch_thread($postinfo['tid']);

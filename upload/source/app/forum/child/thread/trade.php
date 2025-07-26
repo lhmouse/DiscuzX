@@ -134,9 +134,9 @@ if(empty($_GET['do']) || $_GET['do'] == 'tradeinfo') {
 				$styleData .= $_G['setting']['editor_global_css'];
 			}
 			if(!defined('IN_RESTFUL')) {
-				$post['message'] = $parserData.$styleData;
+				$post['message'] = $json_content = $parserData.$styleData;
 			} else {
-				$post['message'] = $parserData;
+				$post['message'] = $json_content = $parserData;
 				if($_REQUEST['removestyle']) {
 					$pattern = '/\<style(\s+.*?)?\>/s';
 					$styleData = preg_replace($pattern, '', $styleData);

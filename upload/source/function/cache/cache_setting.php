@@ -270,12 +270,12 @@ function build_cache_setting() {
 				$data['watermarktext']['text'][$k] = diconv($data['watermarktext']['text'][$k], CHARSET, 'UTF-8', true);
 			}
 			$data['watermarktext']['text'][$k] = bin2hex($data['watermarktext']['text'][$k]);
-			if(file_exists('static/image/seccode/font/en/'.$data['watermarktext']['fontpath'][$k])) {
-				$data['watermarktext']['fontpath'][$k] = 'static/image/seccode/font/en/'.$data['watermarktext']['fontpath'][$k];
-			} elseif(file_exists('static/image/seccode/font/ch/'.$data['watermarktext']['fontpath'][$k])) {
-				$data['watermarktext']['fontpath'][$k] = 'static/image/seccode/font/ch/'.$data['watermarktext']['fontpath'][$k];
+			if(file_exists('source/data/seccode/font/en/'.$data['watermarktext']['fontpath'][$k])) {
+				$data['watermarktext']['fontpath'][$k] = 'source/data/seccode/font/en/'.$data['watermarktext']['fontpath'][$k];
+			} elseif(file_exists('source/data/seccode/font/ch/'.$data['watermarktext']['fontpath'][$k])) {
+				$data['watermarktext']['fontpath'][$k] = 'source/data/seccode/font/ch/'.$data['watermarktext']['fontpath'][$k];
 			} else {
-				$data['watermarktext']['fontpath'][$k] = 'static/image/seccode/font/'.$data['watermarktext']['fontpath'][$k];
+				$data['watermarktext']['fontpath'][$k] = 'source/data/seccode/font/'.$data['watermarktext']['fontpath'][$k];
 			}
 			$data['watermarktext']['color'][$k] = preg_replace_callback('/#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/', 'build_cache_setting_callback_hexdec_123', $data['watermarktext']['color'][$k]);
 			$data['watermarktext']['shadowcolor'][$k] = preg_replace_callback('/#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/', 'build_cache_setting_callback_hexdec_123', $data['watermarktext']['shadowcolor'][$k]);

@@ -23,9 +23,9 @@ if(submitcheck('settingsubmit')) {
 		}
 		$seccoderoot = '';
 		if($settingnew['seccodedata']['type'] == 0 || $settingnew['seccodedata']['type'] == 2) {
-			$seccoderoot = 'static/image/seccode/font/en/';
+			$seccoderoot = 'source/data/seccode/font/en/';
 		} elseif($settingnew['seccodedata']['type'] == 1) {
-			$seccoderoot = 'static/image/seccode/font/ch/';
+			$seccoderoot = 'source/data/seccode/font/ch/';
 		}
 		if($seccoderoot) {
 			$dirs = opendir($seccoderoot);

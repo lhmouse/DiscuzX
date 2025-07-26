@@ -16,13 +16,7 @@ $rand = random(5, 1);
 $htmlcode = '';
 $ani = $_G['setting']['seccodedata']['animator'] ? '_ani' : '';
 if($_G['setting']['seccodedata']['type'] == 2) {
-	$htmlcode = extension_loaded('ming') ?
-		"$('seccodeswf_$idhash').innerHTML='".lang('core', 'seccode_image'.$ani.'_tips')."' + AC_FL_RunContent('width', '".$_G['setting']['seccodedata']['width']."', 'height', '".$_G['setting']['seccodedata']['height']."', 'src', 'misc.php?mod=seccode&update=$rand&idhash=$idhash','quality', 'high', 'wmode', 'transparent', 'bgcolor', '#ffffff','align', 'middle', 'menu', 'false', 'allowScriptAccess', 'never');" :
-		"$('seccodeswf_$idhash').innerHTML='".lang('core', 'seccode_image'.$ani.'_tips')."' + AC_FL_RunContent('width', '".$_G['setting']['seccodedata']['width']."', 'height', '".$_G['setting']['seccodedata']['height']."', 'src', '{$_G['siteurl']}static/image/seccode/flash/flash2.swf', 'FlashVars', 'sFile=".rawurlencode("{$_G['siteurl']}misc.php?mod=seccode&update=$rand&idhash=$idhash")."', 'menu', 'false', 'allowScriptAccess', 'never', 'swLiveConnect', 'true', 'wmode', 'transparent');";
-	$message = '<span id="seccodeswf_'.$idhash.'"></span>';
 } elseif($_G['setting']['seccodedata']['type'] == 3) {
-	$htmlcode = "(function(){var a=document.createElement('audio');a.src='{$_G['siteurl']}misc.php?mod=seccode&update=$rand&idhash=$idhash&fromFlash=1',a.style.display='none',$('seccodeplay_$idhash').onclick=function(){a.play()},$('seccodeswf_$idhash').appendChild(a)})();";
-	$message = '<span id="seccodeswf_'.$idhash.'">'.lang('core', 'seccode_sound_tips').'</span>'.lang('forum/misc', 'seccode_player', ['idhash' => $idhash]);
 } else {
 	if(!empty($_G['setting']['seccodedata']['shuffer_order'])) {
 		$ani = '_shuffer';

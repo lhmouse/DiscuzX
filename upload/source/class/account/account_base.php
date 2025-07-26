@@ -393,4 +393,20 @@ class account_base {
 		return $v;
 	}
 
+	public static function error_logger($message) {
+		global $_G;
+		$uid = $_G['uid'] ?? 0;
+		$ip = $_G['clientip'] ?? '';
+		$user = '<b>User:</b> uid='.intval($uid).'; IP='.$ip.'; RIP:'.$_SERVER['REMOTE_ADDR'];
+		$uri = 'Request: '.htmlspecialchars(discuz_error::clear($_SERVER['REQUEST_URI']));
+
+		$errorlog = [
+			'timestamp' => TIMESTAMP,
+			'message' => $message,
+			'clientip' => $_G['clientip'],
+			'user' => $user,
+			'uri' => $uri,
+		];
+		logger('error', [], $uid, $errorlog);
+	}
 }

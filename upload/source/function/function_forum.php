@@ -1094,7 +1094,7 @@ function stringtopic($value, $key = '', $force = false, $rlength = 0) {
 		unset($temp);
 	}
 	if(function_exists('imagettftext')) {
-		$fontroot = DISCUZ_ROOT.'./static/image/seccode/font/ch/';
+		$fontroot = DISCUZ_ROOT.'./source/data/seccode/font/ch/';
 		$dirs = opendir($fontroot);
 		while($entry = readdir($dirs)) {
 			if($entry != '.' && $entry != '..' && in_array(strtolower(fileext($entry)), ['ttf', 'ttc'])) {
@@ -1103,7 +1103,7 @@ function stringtopic($value, $key = '', $force = false, $rlength = 0) {
 			}
 		}
 		if(!empty($fontname)) {
-			$fontfile = DISCUZ_ROOT.'./static/image/seccode/font/ch/'.$fontname;
+			$fontfile = DISCUZ_ROOT.'./source/data/seccode/font/ch/'.$fontname;
 		}
 		if($fontfile) {
 			if(strtoupper(CHARSET) != 'UTF-8') {

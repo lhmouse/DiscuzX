@@ -50,8 +50,8 @@ if(is_numeric($_G['setting']['seccodedata']['type']) || !preg_match('/^[\w\d:_]+
 	$code->size = $_G['setting']['seccodedata']['size'];
 	$code->shadow = $_G['setting']['seccodedata']['shadow'];
 	$code->animator = $_G['setting']['seccodedata']['animator'];
-	$code->fontpath = DISCUZ_ROOT.'./static/image/seccode/font/';
-	$code->datapath = DISCUZ_ROOT.'./static/image/seccode/';
+	$code->fontpath = DISCUZ_ROOT.'./source/data/seccode/font/';
+	$code->datapath = DISCUZ_ROOT.'./source/data/seccode/';
 	$code->includepath = DISCUZ_ROOT.'./source/class/';
 	$code->shuffer = $_G['setting']['seccodedata']['shuffer_order'];
 

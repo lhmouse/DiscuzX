@@ -36,10 +36,10 @@ function watermarkinit($type) {
 	if($settingnew['watermarktype'][$type] == 'text' && $settingnew['watermarktext']['fontpath'][$type]) {
 		$fontpath = $settingnew['watermarktext']['fontpath'][$type];
 		$fontpathnew = 'ch/'.$fontpath;
-		$settingnew['watermarktext']['fontpath'][$type] = file_exists('static/image/seccode/font/'.$fontpathnew) ? $fontpathnew : '';
+		$settingnew['watermarktext']['fontpath'][$type] = file_exists('source/data/seccode/font/'.$fontpathnew) ? $fontpathnew : '';
 		if(!$settingnew['watermarktext']['fontpath'][$type]) {
 			$fontpathnew = 'en/'.$fontpath;
-			$settingnew['watermarktext']['fontpath'][$type] = file_exists('static/image/seccode/font/'.$fontpathnew) ? $fontpathnew : '';
+			$settingnew['watermarktext']['fontpath'][$type] = file_exists('source/data/seccode/font/'.$fontpathnew) ? $fontpathnew : '';
 		}
 		if(!$settingnew['watermarktext']['fontpath'][$type]) {
 			cpmsg('watermarkpreview_fontpath_error', '', 'error');

@@ -20,7 +20,7 @@ if(!submitcheck('submit')) {
 	 {"type": "mradio", "field": "f3", "name": "radio2", "options": [{"name":"A","value":"a","default":true},{"name":"B","value":"b"}]},
 	 {"type": "checkbox", "field": "f4", "name": "checkbox", "options": [{"name":"C","value":"c","default":true},{"name":"D","value":"d"}]}
 	]';
-	showcomponent('测试4', 'ghi', '[]', 'enhance_component:component_list', '', $conf);
+	showcomponent('测试4', 'ghi', '[]', 'component_list', '', $conf);
 
 	showsubmit('submit');
 	showtablefooter();
@@ -28,7 +28,7 @@ if(!submitcheck('submit')) {
 
 } else {
 
-	serializecomponent();
+	//serializecomponent();
 
 	debug($_GET);
 }

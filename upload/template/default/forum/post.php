@@ -199,7 +199,7 @@
 
 			<!--{if !empty($_G['setting']['pluginhooks']['post_editor_body'])}-->
 				<!--{hook/post_editor_body}-->
-			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'] && ($_GET['action'] != 'edit' || ($_GET['action'] == 'edit' && $is_json_content ))}-->
+			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence']}-->
 				<!--{subtemplate forum/jsoneditor_content}-->
 			<!--{else}-->
 				<!--{subtemplate forum/post_editor_body}-->

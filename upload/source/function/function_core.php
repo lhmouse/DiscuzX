@@ -342,7 +342,11 @@ function dexit($message = '') {
 function dheader($string, $replace = true, $http_response_code = 0) {
 	$islocation = str_starts_with(strtolower(trim($string)), 'location');
 	if(defined('IN_RESTFUL') && $islocation) {
-		$url = substr(trim($string), 10);
+		$s = strpos(trim($string), ':');
+		if($s === false) {
+			exit;
+		}
+		$url = trim(substr($string, $s + 1));
 		$v = parse_url($url);
 		if($v['query']) {
 			parse_str($v['query'], $v['query']);

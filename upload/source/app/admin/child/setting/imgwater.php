@@ -76,7 +76,7 @@ if(submitcheck('settingsubmit')) {
 	$setting['watermarktext']['fontpath'] = str_replace(['ch/', 'en/'], '', $setting['watermarktext']['fontpath']);
 
 	$fontlist = [];
-	$dir = opendir(DISCUZ_ROOT.'./static/image/seccode/font/en');
+	$dir = opendir(DISCUZ_ROOT.'./source/data/seccode/font/en');
 	while($entry = readdir($dir)) {
 		if(in_array(strtolower(fileext($entry)), ['ttf', 'ttc'])) {
 			$fontlist['portal'] .= '<option value="'.$entry.'"'.($entry == $setting['watermarktext']['fontpath']['portal'] ? ' selected>' : '>').$entry.'</option>';
@@ -84,7 +84,7 @@ if(submitcheck('settingsubmit')) {
 			$fontlist['album'] .= '<option value="'.$entry.'"'.($entry == $setting['watermarktext']['fontpath']['album'] ? ' selected>' : '>').$entry.'</option>';
 		}
 	}
-	$dir = opendir(DISCUZ_ROOT.'./static/image/seccode/font/ch');
+	$dir = opendir(DISCUZ_ROOT.'./source/data/seccode/font/ch');
 	while($entry = readdir($dir)) {
 		if(in_array(strtolower(fileext($entry)), ['ttf', 'ttc'])) {
 			$fontlist['portal'] .= '<option value="'.$entry.'"'.($entry == $setting['watermarktext']['fontpath']['portal'] ? ' selected>' : '>').$entry.'</option>';

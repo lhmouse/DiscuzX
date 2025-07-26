@@ -226,7 +226,7 @@ if(submitcheck('settingsubmit')) {
 		showtagfooter('tbody');
 
 		showtagheader('tbody', 'ossext', $setting['ftp']['on'] == 2, 'sub');
-		showsetting('setting_attach_remote_oss_type', ['settingnew[oss][oss_type]', $oss_type, TRUE], $setting['oss']['oss_type'] ?? '', 'mradio', '', 0, $lang['setting_attach_remote_oss_type_comment'].$typeDesc);
+		showsetting('setting_attach_remote_oss_type', ['settingnew[oss][oss_type]', $oss_type], $setting['oss']['oss_type'] ?? '', 'mradio', '', 0, $lang['setting_attach_remote_oss_type_comment'].$typeDesc);
 		showsetting('setting_attach_remote_oss_id', 'settingnew[oss][oss_id]', $setting['oss']['oss_id'], 'text');
 		showsetting('setting_attach_remote_oss_key', 'settingnew[oss][oss_key]', $setting['oss']['oss_key'], 'text');
 		showsetting('setting_attach_remote_oss_bucket', 'settingnew[oss][oss_bucket]', $setting['oss']['oss_bucket'], 'text');

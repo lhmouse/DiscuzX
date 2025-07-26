@@ -19,9 +19,6 @@ $flag = intval($_GET['flag']);
 $feed = $thread = [];
 if($tid) {
 	$thread = table_forum_thread::t()->fetch_thread($tid);
-	if(empty($_G['setting']['followforumid']) || $thread['fid'] != $_G['setting']['followforumid']) {
-		$flag = 0;
-	}
 	if($flag) {
 		$post = table_forum_post::t()->fetch_post($thread['posttableid'], $pid);
 		if($thread['tid'] != $post['tid']) {

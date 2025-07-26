@@ -56,10 +56,10 @@ class extend_thread_trade extends extend_thread_base {
 			}
 		}
 
-		$this->trademessage = $parameters['content'] ? 'json_content' : $parameters['message'];
-		$this->tradecontent = $parameters['content'];
+		$this->trademessage = !empty($parameters['content']) ? 'json_content' : $parameters['message'];
+		$this->tradecontent = !empty($parameters['content']) ? $parameters['content'] : '{}';
 		$this->param['message'] = '';
-		$this->param['content'] = '';
+		$this->param['content'] = '{}';
 	}
 
 	public function after_newthread() {
