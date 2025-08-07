@@ -1,42 +1,42 @@
 :root {
-    --dz-bodybg:{BGCOLOR}; 
-    --dz-color:{MENUBGCOLOR};  
-    --dz-alink:{LINK}; 
-    --dz-ahover: var(--dz-color); 
-    --dz-ahot:{NOTICETEXT}; 
-    --dz-fa:{TABLETEXT}; 
-    --dz-fb:{MIDTEXT}; 
-    --dz-fc:{LIGHTTEXT}; 
-    --dz-fd:{LIGHTLINK}; 
-    --dz-ff:{WRAPBG}; 
-    --dz-nvbg:{MENUBGCOLOR}; 
-    --dz-nvtxt:{MENUTEXT}; 
-    --dz-nvbga:{MENUHOVERBGCOLOR}; 
-    --dz-nvtxta:{MENUHOVERTEXT}; 
-    --dz-bga:{CONTENTSEPARATE}; 
-    --dz-bgb:{TITLEBGCOLOR}; 
-    --dz-bgc:{COMMONBG}; 
-    --dz-bgd:{SPECIALBG}; 
-    --dz-bgf:{WRAPBG}; 
-    --dz-bgfglass:rgba(255,255,255,.4); 
-    --dz-bgbglass:rgba(0,0,0,.4); 
-    --dz-btnbg:{BTNBG}; 
-    --dz-btntxt:{BTNTXT}; 
-    --dz-btnbga:{BTNBGA}; 
-    --dz-btntxta:{BTNTXTA}; 
-    --dz-bordera:{WRAPBORDERCOLOR}; 
-    --dz-borderb:{COMMONBORDER};  
-    --dz-borderc:{INPUTBORDER}; 
-    --dz-borderd:{SPECIALBORDER}; 
-    --dz-radius-x:3px; 
-    --dz-radius-s:4px; 
-    --dz-radius-m:8px; 
-    --dz-radius-xl:10px; 
-    --dz-radius-l:2px; 
-    --dz-radius-a:50%; 
-    --dz-radius-b:4px; 
-    --dz-radius-c:40px; 
-    --dz-shadow:0 0 2px 0 rgba(88,118,138,.1); 
+    --dz-bodybg:{BGCOLOR};
+    --dz-color:{MENUBGCOLOR};
+    --dz-alink:{LINK};
+    --dz-ahover: var(--dz-color);
+    --dz-ahot:{NOTICETEXT};
+    --dz-fa:{TABLETEXT};
+    --dz-fb:{MIDTEXT};
+    --dz-fc:{LIGHTTEXT};
+    --dz-fd:{LIGHTLINK};
+    --dz-ff:{WRAPBG};
+    --dz-nvbg:{MENUBGCOLOR};
+    --dz-nvtxt:{MENUTEXT};
+    --dz-nvbga:{MENUHOVERBGCOLOR};
+    --dz-nvtxta:{MENUHOVERTEXT};
+    --dz-bga:{CONTENTSEPARATE};
+    --dz-bgb:{TITLEBGCOLOR};
+    --dz-bgc:{COMMONBG};
+    --dz-bgd:{SPECIALBG};
+    --dz-bgf:{WRAPBG};
+    --dz-bgfglass:rgba(255,255,255,.4);
+    --dz-bgbglass:rgba(0,0,0,.4);
+    --dz-btnbg:{BTNBG};
+    --dz-btntxt:{BTNTXT};
+    --dz-btnbga:{BTNBGA};
+    --dz-btntxta:{BTNTXTA};
+    --dz-bordera:{WRAPBORDERCOLOR};
+    --dz-borderb:{COMMONBORDER};
+    --dz-borderc:{INPUTBORDER};
+    --dz-borderd:{SPECIALBORDER};
+    --dz-radius-x:3px;
+    --dz-radius-s:4px;
+    --dz-radius-m:8px;
+    --dz-radius-xl:10px;
+    --dz-radius-l:2px;
+    --dz-radius-a:50%;
+    --dz-radius-b:4px;
+    --dz-radius-c:40px;
+    --dz-shadow:0 0 2px 0 rgba(88,118,138,.1);
     }
 
 
@@ -62,13 +62,13 @@ body .km_pnbtn {background:var(--dz-btnbga);color:var(--dz-btntxta) !important}
 .a_mu {background:none;border-width:0px}
 .a_h {padding-top:0}
 .a_t td {background:var(--dz-bgf);padding:8px 10px}
-img[src*="smiley"] {max-width:26px !important;max-height:26px !important;vertical-align:middle} 
-img[src*="verify"] {max-height:16px !important;margin-right:4px} 
-img[src*="static/image/poke"] {max-width:22px !important;max-height:22px !important} 
+img[src*="smiley"] {max-width:26px !important;max-height:26px !important;vertical-align:middle}
+img[src*="verify"] {max-height:16px !important;margin-right:4px}
+img[src*="static/image/poke"] {max-width:22px !important;max-height:22px !important}
 .dz_bm, .appl, .ct2 .mn .bm, .ct2 .sd .bm, .ct2_a .mn, .ct2_a .dz_phbbox .bm, .ct3_a .mn, .ct3_a .sd, .pg_spacecp #ct.wp .mn .bm, .pg_post #ct.ct2_a .bm, #scbar, .dz_flbm .bm, #online.bm, .bm.lk, .km_nox, .bm.kmbm_ca {border:none !important;box-shadow:var(--dz-shadow)}
 .pg_ranklist .ct2_a .dz_phbbox, #ct.wp .mn .bm.bw0 {box-shadow:none;overflow:hidden}
 .wp {width:1000px}
-.mn, .ct2 .sd {overflow:visible} 
+.mn, .ct2 .sd {overflow:visible}
 .ct2_a, .ct3_a {background:none;border:none}
 .ct2 .sd {width:250px}
 .ct2 .mn {width:735px;margin-bottom:0}
@@ -298,7 +298,7 @@ input[name="searchkey"] {width: 120px;}
 .dz_tbnvb .tb li {margin:0 20px 0 5px;height:40px;min-width:18px;text-align:center}
 .dz_tbnvb .tb a {background:none;font-size:15px;border:none;padding:0}
 .dz_tbnvb .tb .a:after, .dz_tbnvb .tb .current:after {content:"";position:relative;bottom:-18px;display:flex;margin:0 auto;width:100%;height:2px;background:var(--dz-color);border-radius:var(--dz-radius-x)}
-.dz_tbnvb .tb .o {margin-right:0;margin-left:10px;font-size:12px !important} 
+.dz_tbnvb .tb .o {margin-right:0;margin-left:10px;font-size:12px !important}
 .dz_tbnvb .tb .o a {padding:0 10px;background:var(--dz-btnbga);font-size:12px !important;color:var(--dz-btntxt)}
 .dz_tbnvb .tb .kmfa_rss {margin-top:0;padding-left:20px !important;background-position:0 3px !important}
 .dz_tbnvb .tb .y {margin-right:0}
@@ -312,12 +312,12 @@ input[name="searchkey"] {width: 120px;}
 .dz_wide .tb a {background:none;border:none;padding:0 5px;font-size:15px;}
 .dz_wide .tb .a:after, .dz_wide .tb .current:after {content:"";position:relative;bottom:-8px;display:flex;margin:0 auto;width:20px;height:3px; background:var(--dz-nvbg);border-radius:var(--dz-radius-s)}
 .dz_wide .tb .a a, .dz_wide .tb .current a{color:var(--dz-nvbg);}
-.dz_wide .tb .o {margin-right:0;margin-left:10px} 
+.dz_wide .tb .o {margin-right:0;margin-left:10px}
 .dz_wide .tb .o a {padding:0 10px;background:var(--dz-btnbg);}
 .dz_wide .tb .kmfa_rss {margin-top:0;padding-left:20px !important;background-position:0 3px !important}
 .dz_wide .tb .y {margin-right:0}
 .dz_wide .tb .showmenu:after {content:"";position:static;bottom:auto;display:inline-block;margin:0 auto;width:auto;height:auto;background:none;border-radius:0}
-    
+
 .fl .bm_h {background:none;border:none}
 .bbs {border-bottom:1px solid var(--dz-borderb) !important}
 .bmw .bm_h {background:none;border-top:none;border-left:none;border-right:none;border-bottom:1px solid var(--dz-borderb)}
@@ -510,6 +510,17 @@ img{border:none;}
 .header-notice .notice-icon .dzicon {font-family:dzicon;font-size: 22px;color: var(--dz-fc);}
 .header-notice .notice-icon .noticeicon:before{content: "\f145";}
 .header-notice .notice-icon .myrepeats:before{content: "\f113";}
+/* i18n */
+.header-i18n .poptip-popper .poptip-arrow{right: 56px;}
+.header-i18n .i18n-dropdown{display:none;top:55px;right:40px;}
+.header-i18n.open .i18n-dropdown{display:block}
+.header-i18n .i18n-icon{position:relative;width:24px;height:24px;cursor:pointer;padding:6px;line-height: 24px;text-align: center;}
+.header-i18n .i18n-icon:hover, .header-i18n.open .i18n-icon{background:var(--dz-bgfglass);border-radius:50%}
+.header-i18n .i18n-content{padding:5px 0;background:var(--dz-bgf);border-radius:4px;box-shadow:0 8px 20px 0 rgba(28,54,108,.05),0 4px 12px 0 rgba(28,54,108,.08);min-width: 120px;}
+.header-i18n .i18n-content a{font-size:14px;font-weight:400;color:var(--dz-alink);line-height:20px;text-align:center;padding:12px 20px;display: block; word-break: keep-all;}
+.header-i18n .i18n-content a:hover{background:var(--dz-borderb)}
+.header-i18n .i18n-content .i18n-item{position:relative;word-break:keep-all}
+.header-i18n .i18n-icon .dzicon {color: var(--dz-fc); background-image: url({STYLEIMGDIR}/svg/i18n.svg); width: 22px; height: 22px; display: inline-block; background-size: cover; background-repeat: no-repeat;}
 
 /* */
 .header-user-login{display:flex;margin-left:.8rem;height:100%;font-size:14px;align-items:center;}
@@ -730,7 +741,7 @@ body .colorwd {width:36px !important;height:36px !important;line-height:36px !im
 .pgsbtn:hover {opacity:0.8;background:var(--dz-btnbga);color:var(--dz-btntxta)}
 .pgsbtn:active {box-shadow:none}
 .pgs {margin-top:10px !important}
-.pg, .pgb {line-height:30px;overflow:visible}		
+.pg, .pgb {line-height:30px;overflow:visible}
 .pg a, .pg strong, .pgb a, .pg label {border:1px solid var(--dz-borderb);margin-left:6px;min-width:14px;height:30px;line-height:30px;text-align:center;display:inline;border-radius:var(--dz-radius-s);background-color:var(--dz-bgf);color:var(--dz-fa)}
 .pg strong, .pg a:hover, .pgb a:hover {background-color:var(--dz-nvbg);border-color:var(--dz-nvbg);color:var(--dz-ff);font-weight:400}
 .pg label {display:none}
@@ -754,7 +765,7 @@ body .colorwd {width:36px !important;height:36px !important;line-height:36px !im
 
 
 /* 公共帖子列表 */
-.forumportal_list .tb-c {padding:5px 20px} 
+.forumportal_list .tb-c {padding:5px 20px}
 .forumportal_listc {margin-bottom:-18px;overflow:hidden}
 .forumportal_listc li.kmlist {padding:18px 0;min-height:48px;border-top:1px solid var(--dz-borderb);position:relative}
 .forumportal_listc li.kmlist_hf {padding-bottom:20px}

@@ -34,13 +34,14 @@
 			</div>
 		</div>
 	</div>
-<!--{/if}-->
+	<!--{/if}-->
+	{cells common/header/i18n_switch}
 	<!--{if $_G['uid']}-->
 	<!--{if strpos($_G['setting']['pluginhooks']['global_usernav_extra1'], 'function showmyrepeats()')}-->
 	<div class="header-notice">
 		<div class="notice-icon"><a href="home.php?mod=spacecp&ac=plugin&id=myrepeats:memcp" id="myrepeats" class="kmico" onmouseover="delayShow(this, showmyrepeats)" title="{lang tmp070}">
 		<i class="dzicon myrepeats"></i>
-		
+
 		</a></div>
 	</div>
 	<!--{/if}-->
@@ -52,7 +53,7 @@
 			<span class="dot">{if $newprompt >99}99{else}$newprompt{/if}</span>
 			<!--{/if}-->
 		</div>
-		
+
 		<div class="notice-dropdown poptip-popper">
 			<div class="poptip-arrow"></div>
 			<ul class="notice-content">
@@ -93,7 +94,7 @@
 				<div class="user-card-top">
 					<div class="block_avatar e-avatar"><a href="home.php?mod=space&uid=$_G[uid]"><!--{avatar($_G['uid'],'big')}--></a></div>
 					<div class="block_name">
-						
+
 						<a href="home.php?mod=space&uid=$_G[uid]">{$_G[member][username]}</a>
 						<a href="home.php?mod=spacecp&ac=usergroup" target="_blank">{$_G['group']['grouptitle']}</a>
 					</div>
@@ -136,20 +137,20 @@
 					<!--{hook/global_myitem_extra}-->
 				</div>
 				<!--{if $_G['style']['top_fastnav'] }-->
-				<div class="dz_user_qmenu cl"> 
+				<div class="dz_user_qmenu cl">
 					<div class="qmenu_an" id="qmenu_an">
 						<a class="next" href="javascript:qmenu_move('1');"><em></em></a>
 						<a class="prev" href="javascript:qmenu_move('0');"><em></em></a>
-					</div>				
+					</div>
 					<div class="qmenu_ico" id="qmenu_loop">
 						<ul class="cl" id="qmenu_loopul">
 							<!--{loop $_G['setting']['mynavs'] $nav}-->
 								<!--{if $nav['available'] && (!$nav['level'] || ($nav['level'] == 1 && $_G['uid']) || ($nav['level'] == 2 && $_G['adminid'] > 0) || ($nav['level'] == 3 && $_G['adminid'] == 1))}-->
 									<li>{echo str_replace($nav['navname'], '<span>'. $nav['navname'].'</span>', $nav['code']);}</li>
 								<!--{/if}-->
-							<!--{/loop}-->						
-						</ul> 
-					</div>					
+							<!--{/loop}-->
+						</ul>
+					</div>
 				</div>
 				<!--{/if}-->
 
@@ -170,14 +171,14 @@
 		</div>
 	</div>
 	<!--{else}-->
-	<!--{hook/global_usernav_extra1}-->	
+	<!--{hook/global_usernav_extra1}-->
 	<div class="header-user-login">
 		<div class="login_btn"><a href="member.php?mod=logging&action=login" onclick="showWindow('login', this.href)">{lang login}</a></div>
 	</div>
 	<!--{/if}-->
 </div>
 <script type="text/javascript">
-document.querySelectorAll('.header-user, .header-notice, .header-client').forEach(function(element) {
+document.querySelectorAll('.header-user, .header-notice, .header-i18n, .header-client').forEach(function(element) {
     element.addEventListener('mouseenter', function() {
         this.classList.add('open');
     });
