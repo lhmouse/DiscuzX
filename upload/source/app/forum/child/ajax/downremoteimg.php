@@ -79,6 +79,13 @@ if(is_array($temp) && !empty($temp)) {
 					continue;
 				}
 				$attach['size'] = filesize($attach['target']);
+
+				$remote = 0;
+				if(ftpperm($attach['extension'], $attach['size'])) {
+					ftpcmd('upload', 'forum/'.$attach['attachment']);
+					$remote = 1;
+				}
+
 				$upload->attach = $attach;
 				$thumb = $width = $height = 0;
 				if($upload->attach['isimage']) {
@@ -103,6 +110,9 @@ if(is_array($temp) && !empty($temp)) {
 						$image->Watermark($attach['target'], '', 'forum');
 						$upload->attach['size'] = $image->imginfo['size'];
 					}
+					if($thumb && $remote && $_G['setting']['ftp']['on'] == 2) {
+						ftpcmd('upload', 'forum/'.getimgthumbname($upload->attach['attachment']));
+					}
 				}
 				$aids[] = $aid = getattachnewaid();
 				$setarr = [
@@ -114,7 +124,7 @@ if(is_array($temp) && !empty($temp)) {
 					'isimage' => $upload->attach['isimage'],
 					'uid' => $_G['uid'],
 					'thumb' => $thumb,
-					'remote' => '0',
+					'remote' => $remote,
 					'width' => $width,
 					'height' => $height
 				];

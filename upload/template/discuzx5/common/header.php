@@ -4,7 +4,6 @@
 	{cells common/header/css}
 	{cells common/header/js}
 	<script src="{STATICURL}js/mobile/jquery.min.js?{VERHASH}"></script><script>jQuery.noConflict();</script>
-    <!--{if $_G['setting']['statcode']}-->$_G['setting']['statcode']<!--{/if}-->
 </head>
 
 <body id="nv_{$_G[basescript]}" class="pg_{CURMODULE} dz_pg_{CURMODULE}	dz_tbnvb {if $_G['basescript'] === 'portal' && CURMODULE === 'list' && !empty($cat)} {$cat['bodycss']}{/if} dz_wide discuzx5" onkeydown="if(event.keyCode==27) return false;">
@@ -93,11 +92,11 @@
 		<div id="dz_btm_layer" {if $_G['style']['is_fixtop']} class="topbox"{/if}>
 			<div class="dz_layer_top">
 				<div  class="dz_btm_layer dz_nav">
+					<!--{eval $mnid = getcurrentnav();}-->
 					<div class="dz_nav_logo">
-						<!--{if !isset($_G['setting']['navlogos'][$mnid])}--><a href="{if $_G['setting']['domain']['app']['default']}{$_G['scheme']}://{$_G['setting']['domain']['app']['default']}/{else}./{/if}" title="$_G['setting']['bbname']" class="dzlogo">{$_G['style']['boardlogo']}</a><!--{else}-->$_G['setting']['navlogos'][$mnid]<!--{/if}-->
+						<!--{if !isset($_G['setting']['navlogos'][$mnid])}--><a href="{if $_G['setting']['domain']['app']['default']}{$_G['scheme']}://{$_G['setting']['domain']['app']['default']}/{else}./{/if}" title="$_G['setting']['bbname']" class="dzlogo">{$_G['style']['boardlogo']}</a><!--{else}--><div class="dzlogo">$_G['setting']['navlogos'][$mnid]</div><!--{/if}-->
 					</div>
-					<div class="dz_layer_nav">
-						<!--{eval $mnid = getcurrentnav();}-->
+					<div class="dz_layer_nav">						
 						<ul>
 							<!--{eval $mnid = getcurrentnav(); $n=0; $dz_menumore = ''; $nn = $_G['style']['top_navnum'] ? $_G['style']['top_navnum'] : 10;}-->
 							<!--{loop $_G['setting']['navs'] $nav}-->

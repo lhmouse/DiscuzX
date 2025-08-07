@@ -43,6 +43,19 @@ body {
 .css-publish__div_content .tags {
     max-width: 245px;
 }
+
+.json-editor #editorjs li {
+    list-style: auto;
+}
+
+.json-editor #editorjs ul li {
+    list-style: disc;
+}
+
+.json-editor #editorjs ol li {
+    list-style: decimal;
+}
+
 .ce-popover {
     overflow: visible;
 }
@@ -139,7 +152,7 @@ body {
 .ce-paragraph {
     line-height: 1.6em;
     outline: none;
-    text-indent: 2em;
+    /* text-indent: 2em; */
 }
 /* publish */
 .editor-param {

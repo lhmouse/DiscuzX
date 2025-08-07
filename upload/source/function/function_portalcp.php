@@ -1176,7 +1176,7 @@ function getportalfile($tplname, $default) {
 	}
 
 	list($tpldir, $tplname) = explode(':', $tplname);
-	if(file_exists(DISCUZ_TEMPLATE($tpldir).'/'.$path.$tplname.'.htm')) {
+	if(file_exists(DISCUZ_TEMPLATE($tpldir).'/'.$path.$tplname.'.htm') || file_exists(DISCUZ_TEMPLATE($tpldir).'/'.$path.$tplname.'.php')) {
 		return [$tplname, $tpldir];
 	}
 	$check = [];
@@ -1185,13 +1185,13 @@ function getportalfile($tplname, $default) {
 
 	if(!empty($_G['cache'][$touchStyle]) &&
 		($tpldir = $_G['cache'][$touchStyle]['directory'])) {
-		$check[DISCUZ_TEMPLATE($tpldir).'/'.$path.$default.'.htm'] = [$default, $tpldir];
+		$check[DISCUZ_TEMPLATE($tpldir).'/'.$path.$tplname] = [$tplname, $tpldir];
 	}
 
-	$check[DISCUZ_TEMPLATE('default').'/'.$path.$default.'.htm'] = [$default, './template/default'];
+	$check[DISCUZ_TEMPLATE('default').'/'.$path.$tplname] = [$tplname, './template/default'];
 
 	foreach($check as $file => $value) {
-		if(file_exists($file)) {
+		if(file_exists($file.'.php') || file_exists($file.'.htm')) {
 			return $value;
 		}
 	}

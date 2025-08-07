@@ -319,7 +319,7 @@ class table_home_blog extends discuz_table {
 			if($picrequired) {
 				$wheres[] = "bf.pic != ''";
 			}
-			$tablesql = ' LEFT JOIN '.DB::table('home_blogfield'). ' bf ON b.blogid = bf.blogid';
+			$tablesql = ' LEFT JOIN '.DB::table('home_blogfield').' bf ON b.blogid = bf.blogid';
 			$fieldsql = ', bf.pic, b.picflag, bf.message';
 		}
 		$wheres[] = "b.friend = '0'";

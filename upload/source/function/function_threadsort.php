@@ -62,7 +62,7 @@ function gettypetemplate($option, $optionvalue, $optionid) {
 			}
 		}
 	} elseif($option['type'] == 'textarea') {
-		$showoption[$option['identifier']]['value'] = '<span><textarea name="typeoption['.$option['identifier'].']" id="typeoption_'.$option['identifier'].'" class="pt" rows="'.$option['rowsize'].'" cols="'.$option['colsize'].'" onBlur="checkoption(\''.$option['identifier'].'\', \''.$option['required'].'\', \''.$option['type'].'\', 0, 0'.($option['maxlength'] ? ', \'$option[maxlength]\'' : '').'" '.$optionvalue['unchangeable'].'>'.$optionvalue['value'].'</textarea><span>';
+		$showoption[$option['identifier']]['value'] = '<span><textarea name="typeoption['.$option['identifier'].']" id="typeoption_'.$option['identifier'].'" class="pt" rows="'.$option['rowsize'].'" cols="'.$option['colsize'].'" onBlur="checkoption(\''.$option['identifier'].'\', \''.$option['required'].'\', \''.$option['type'].'\', 0, 0'.($option['maxlength'] ? ', \''.$option['maxlength'].'\'' : '').')" '.$optionvalue['unchangeable'].'>'.$optionvalue['value'].'</textarea><span>';
 	} elseif($option['type'] == 'plugin') {
 		$showoption[$option['identifier']]['value'] = pluginthreadtype_show($optionvalue);
 	}
