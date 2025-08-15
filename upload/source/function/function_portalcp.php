@@ -709,27 +709,6 @@ function article_tagnames() {
 	return $_G['article_tagnames'];
 }
 
-function article_parse_tags($tag) {
-	$tag = intval($tag);
-	$article_tags = [];
-	for($i = 1; $i <= 8; $i++) {
-		$k = pow(2, $i - 1);
-		$article_tags[$i] = ($tag & $k) ? 1 : 0;
-	}
-	return $article_tags;
-}
-
-function article_make_tag($tags) {
-	$tags = (array)$tags;
-	$tag = 0;
-	for($i = 1; $i <= 8; $i++) {
-		if(!empty($tags[$i])) {
-			$tag += pow(2, $i - 1);
-		}
-	}
-	return $tag;
-}
-
 function category_showselect($type, $name = 'catid', $shownull = true, $current = '') {
 	global $_G;
 	if(!in_array($type, ['portal', 'blog', 'album'])) {

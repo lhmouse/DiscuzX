@@ -12,6 +12,17 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 if(!submitcheck('typeoptionsubmit')) {
 
+	$typeSetting = [];
+	threadtype_sysdata($typeSetting);
+	foreach($_G['setting']['plugins']['available'] as $plugin) {
+		threadtype_data($plugin, $typeSetting);
+	}
+
+	$plugins = [];
+	foreach($typeSetting as $plugin) {
+		$plugins[$plugin[0]] = '<option value="plugin/'.$plugin[0].'">'.$plugin[1].'('.$plugin[0].')</option>';
+	}
+
 	if($_GET['classid']) {
 		$typetitle = table_forum_typeoption::t()->fetch($_GET['classid']);
 		if(!$typetitle['title']) {
@@ -20,18 +31,24 @@ if(!submitcheck('typeoptionsubmit')) {
 
 		$typeoptions = '';
 		foreach(table_forum_typeoption::t()->fetch_all_by_classid($_GET['classid']) as $option) {
-			$option['type'] = $lang['threadtype_edit_vars_type_'.$option['type']];
+			if($option['type'] != 'plugin') {
+				$type = $lang['threadtype_edit_vars_type_'.$option['type']];
+			} else {
+				$rules = unserialize($option['rules']);
+				$type = strip_tags($plugins[$rules['pluginthreadtype']]);
+			}
 			$typeoptions .= showtablerow('', ['class="td25"', 'class="td28"'], [
 				"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$option['optionid']}\">",
 				"<input type=\"text\" class=\"txt\" size=\"2\" name=\"displayorder[{$option['optionid']}]\" value=\"{$option['displayorder']}\">",
 				"<input type=\"text\" class=\"txt\" size=\"15\" name=\"title[{$option['optionid']}]\" value=\"".dhtmlspecialchars($option['title'])."\">",
 				"{$option['identifier']}<input type=\"hidden\" name=\"identifier[{$option['optionid']}]\" value=\"{$option['identifier']}\">",
-				$option['type'],
+				$type,
 				"<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=optiondetail&optionid={$option['optionid']}\" class=\"act\">{$lang['detail']}</a>"
 			], TRUE);
 		}
 	}
 
+	$plugins = implode('', $plugins);
 	echo <<<EOT
 <script type="text/JavaScript">
 	var rowtypedata = [
@@ -40,7 +57,7 @@ if(!submitcheck('typeoptionsubmit')) {
 			[1, '<input type="text" class="txt" size="2" name="newdisplayorder[]" value="0">', 'td28'],
 			[1, '<input type="text" class="txt" size="15" name="newtitle[]">'],
 			[1, '<input type="text" class="txt" size="15" name="newidentifier[]">'],
-			[1, '<select name="newtype[]"><option value="number">{$lang['threadtype_edit_vars_type_number']}</option><option value="text" selected>{$lang['threadtype_edit_vars_type_text']}</option><option value="textarea">{$lang['threadtype_edit_vars_type_textarea']}</option><option value="radio">{$lang['threadtype_edit_vars_type_radio']}</option><option value="checkbox">{$lang['threadtype_edit_vars_type_checkbox']}</option><option value="select">{$lang['threadtype_edit_vars_type_select']}</option><option value="calendar">{$lang['threadtype_edit_vars_type_calendar']}</option><option value="email">{$lang['threadtype_edit_vars_type_email']}</option><option value="image">{$lang['threadtype_edit_vars_type_image']}</option><option value="url">{$lang['threadtype_edit_vars_type_url']}</option><option value="range">{$lang['threadtype_edit_vars_type_range']}</option><option value="plugin">{$lang['threadtype_edit_vars_type_plugin']}</option></select>'],
+			[1, '<select name="newtype[]"><option value="number">{$lang['threadtype_edit_vars_type_number']}</option><option value="text" selected>{$lang['threadtype_edit_vars_type_text']}</option><option value="textarea">{$lang['threadtype_edit_vars_type_textarea']}</option><option value="radio">{$lang['threadtype_edit_vars_type_radio']}</option><option value="checkbox">{$lang['threadtype_edit_vars_type_checkbox']}</option><option value="select">{$lang['threadtype_edit_vars_type_select']}</option><option value="calendar">{$lang['threadtype_edit_vars_type_calendar']}</option><option value="email">{$lang['threadtype_edit_vars_type_email']}</option><option value="image">{$lang['threadtype_edit_vars_type_image']}</option><option value="url">{$lang['threadtype_edit_vars_type_url']}</option><option value="range">{$lang['threadtype_edit_vars_type_range']}</option>$plugins</select>'],
 			[1, '']
 		],
 	];
@@ -97,12 +114,18 @@ EOT;
 				if(table_forum_typeoption::t()->fetch_all_by_identifier($newidentifier1, 0, 1) || strlen($newidentifier1) > 40 || !ispluginkey($newidentifier1)) {
 					cpmsg('threadtype_infotypes_optionvariable_invalid', '', 'error');
 				}
+				$rules = [];
+				if(str_starts_with($_GET['newtype'][$key], 'plugin/')) {
+					$rules['pluginthreadtype'] = substr($_GET['newtype'][$key], 7);
+					$_GET['newtype'][$key] = 'plugin';
+				}
 				$data = [
 					'classid' => $_GET['classid'],
 					'displayorder' => $_GET['newdisplayorder'][$key],
 					'title' => $newtitle1,
 					'identifier' => $newidentifier1,
 					'type' => $_GET['newtype'][$key],
+					'rules' => serialize($rules),
 				];
 				table_forum_typeoption::t()->insert($data);
 			} elseif($newtitle1 && !$newidentifier1) {

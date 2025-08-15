@@ -27,6 +27,7 @@ if(!submitcheck('sorttemplatesubmit')) {
 		['threadtype_infotypes_content', 'threadtypes&operation=content', 0],
 		[['menu' => ($curclassname ? $curclassname : 'threadtype_infotypes_option'), 'submenu' => $classoptionmenu], '', 0]
 	]);
+	showtips('threadtype_tips');
 	showtableheader();
 	echo '<tr><td>';
 	showformheader("threadtypes&operation=sorttemplate&sortid={$_GET['sortid']}");

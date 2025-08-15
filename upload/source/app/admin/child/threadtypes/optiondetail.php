@@ -132,14 +132,14 @@ if(!submitcheck('editsubmit')) {
 	showsetting('threadtype_edit_searchtxt', 'rules[range][searchtxt]', $option['rules']['searchtxt'], 'text');
 	showtagfooter('tbody');
 
+	threadtype_sysdata($typeSetting);
 	foreach($_G['setting']['plugins']['available'] as $plugin) {
 		threadtype_data($plugin, $typeSetting);
 	}
 	showtagheader('tbody', 'style_plugin', $option['type'] == 'plugin');
 	showtitle('threadtype_edit_vars_type_plugin');
 	showsetting('threadtype_edit_pluginthreadtype', ['rules[plugin][pluginthreadtype]', $typeSetting], $option['rules']['pluginthreadtype'], 'mradio');
-	showsetting('threadtype_edit_pluginthreadtype_param', 'rules[plugin][pluginthreadtype_param]', $option['rules']['pluginthreadtype_param'], 'text');
-
+	showsetting('threadtype_edit_pluginthreadtype_param', 'rules[plugin][pluginthreadtype_param]', $option['rules']['pluginthreadtype_param'], 'textarea', comment: $typeSetting[$option['rules']['pluginthreadtype']][2]);
 	showtagfooter('tbody');
 
 	showsubmit('editsubmit');
@@ -195,28 +195,4 @@ if(!submitcheck('editsubmit')) {
 
 	updatecache('threadsorts');
 	cpmsg('threadtype_infotypes_option_succeed', 'action=threadtypes&operation=typeoption&classid='.$option['classid'], 'succeed');
-}
-
-function threadtype_data($pluginid, &$typeSetting) {
-	$dir = DISCUZ_PLUGIN($pluginid).'/threadtype';
-	if(!file_exists($dir)) {
-		return false;
-	}
-
-	$typedir = dir($dir);
-	while($filename = $typedir->read()) {
-		if(!in_array($filename, ['.', '..']) && fileext($filename) == 'php') {
-			$c = substr($filename, 0, -4);
-			if(!class_exists($class = '\\'.$pluginid.'\\'.$c)) {
-				continue;
-			}
-			$_n = str_replace('threadtype_', '', $c);
-			$n = new $class();
-			$name = property_exists($n, 'name') ? $n->name : $pluginid.'_'.$_n;
-			$typeSetting[] = [
-				$pluginid.':'.$_n,
-				$name,
-			];
-		}
-	}
 }

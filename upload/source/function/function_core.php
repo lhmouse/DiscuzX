@@ -1068,13 +1068,15 @@ function dgmdate($timestamp, $format = 'dt', $timeoffset = 9999, $uformat = '') 
 		$time = TIMESTAMP + $timeoffset * 3600 - $timestamp;
 		if($timestamp >= $todaytimestamp) {
 			if($time > 3600) {
-				$return = intval($time / 3600).'&nbsp;'.$lang['hour'].$lang['before'];
+				$_v = intval($time / 3600);
+				$return = $_v.'&nbsp;'.($_v > 1 ? $lang['hours'] : $lang['hour']).$lang['before'];
 			} elseif($time > 1800) {
 				$return = $lang['half'].$lang['hour'].$lang['before'];
 			} elseif($time > 60) {
-				$return = intval($time / 60).'&nbsp;'.$lang['min'].$lang['before'];
+				$_v = intval($time / 60);
+				$return = $_v.'&nbsp;'.($_v > 1 ? $lang['mins'] : $lang['min']).$lang['before'];
 			} elseif($time > 0) {
-				$return = $time.'&nbsp;'.$lang['sec'].$lang['before'];
+				$return = $time.'&nbsp;'.($time > 1 ? $lang['secs'] : $lang['sec']).$lang['before'];
 			} elseif($time == 0) {
 				$return = $lang['now'];
 			} else {
@@ -2401,8 +2403,7 @@ function sysmessage($message) {
 }
 
 function forumperm($permstr, $groupid = 0) {
-	$formperm = new helper_forumperm($permstr);
-	return $formperm->check($groupid);
+	return (new helper_forumperm($permstr))->check($groupid);
 }
 
 function checkperm($perm) {
@@ -2871,4 +2872,28 @@ function getimportfilename($fn) {
 	} else {
 		return false;
 	}
+}
+
+// 获取最近使用的标签
+function recent_use_tag($idtype = 'tid') {
+	$tagarray = $stringarray = [];
+	$string = '';
+	$i = 0;
+	$query = table_common_tagitem::t()->select(0, 0, $idtype, 'itemid', 'DESC', 10);
+	foreach($query as $result) {
+		if($i > 4) {
+			break;
+		}
+		if($tagarray[$result['tagid']] == '') {
+			$i++;
+		}
+		$tagarray[$result['tagid']] = 1;
+	}
+	if($tagarray) {
+		$query = table_common_tag::t()->fetch_all(array_keys($tagarray));
+		foreach($query as $result) {
+			$tagarray[$result['tagid']] = $result['tagname'];
+		}
+	}
+	return $tagarray;
 }

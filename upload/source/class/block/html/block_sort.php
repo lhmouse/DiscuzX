@@ -188,6 +188,9 @@ class block_sort extends commonblock_html {
 		loadcache(['threadsort_option_'.$sortid, 'threadsort_template_'.$sortid]);
 		sortthreadsortselectoption($sortid);
 		$templatearray[$sortid] = $_G['cache']['threadsort_template_'.$sortid]['block'];
+		if(is_array($templatearray[$sortid])) {
+			$templatearray[$sortid] = defined('IN_MOBILE') ? $templatearray[$sortid][1] : $templatearray[$sortid][0];
+		}
 		$sortoptionarray[$sortid] = $_G['cache']['threadsort_option_'.$sortid];
 		$isthreadtype = (str_contains($templatearray[$sortid], '{typename}') || str_contains($templatearray[$sortid], '{typename_url}')) ? true : false;
 		$threadtypes = [];

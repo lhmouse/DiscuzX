@@ -440,6 +440,10 @@ $lang = [
 	'temporarily_to_remind' => '暂不提醒',
 	'myitem' => '我的',
 	'mypost' => '帖子',
+	'post_tag' => '标签',
+	'choosetag' => '选择标签',
+	'posttag_comment' => '用逗号或空格隔开多个标签',
+	'recent_use_tag' => '最近使用标签:',
 
 	'm_loading' => '正在加载...',
 	'm_its_all' => '已显示全部',

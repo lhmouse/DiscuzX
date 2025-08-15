@@ -134,6 +134,22 @@ if($article['idtype'] == 'tid' || $content['idtype'] == 'pid') {
 	}
 }
 
+if($article['tags']) {
+	$tagarray_all = $array_temp = $articletag_array = $articlemetatag_array = [];
+	$articlemeta_tag = '';
+	$tagarray_all = explode("\t", $article['tags']);
+	if($tagarray_all) {
+		foreach($tagarray_all as $var) {
+			if($var) {
+				$array_temp = explode(',', $var);
+				$articletag_array[] = $array_temp;
+				$articlemetatag_array[] = $array_temp['1'];
+			}
+		}
+	}
+	$article['tags'] = $articletag_array;
+}
+
 $article['related'] = [];
 if(($relateds = table_portal_article_related::t()->fetch_all_by_aid($aid))) {
 	foreach(table_portal_article_title::t()->fetch_all(array_keys($relateds)) as $raid => $value) {

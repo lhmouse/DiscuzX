@@ -17,6 +17,7 @@ class helper_forumperm {
 
 	private $formula_cells = [];
 
+	const CacheKey = 'forumperm_';
 
 	function __construct($permstr) {
 		$this->permstr = $permstr;
@@ -39,24 +40,37 @@ class helper_forumperm {
 	}
 
 	private function get_group() {
+		static $got = null;
+		if($got !== null) {
+			$this->formula_cells = array_merge($this->formula_cells, $got);
+			return;
+		}
 		global $_G;
 
-		$this->formula_cells['g'.$_G['groupid']] = 1;
-		$groupterms = dunserialize(getuserprofile('groupterms'));
+		$newCells = [];
+		$newCells['g'.$_G['groupid']] = 1;
 		foreach(explode("\t", $_G['member']['extgroupids']) as $extgroupid) {
 			if($extgroupid = intval(trim($extgroupid))) {
 				if($groupterms['ext'][$extgroupid] && $groupterms['ext'][$extgroupid] < TIMESTAMP) {
 					continue;
 				}
-				$this->formula_cells['g'.$extgroupid] = 1;
+				$newCells['g'.$extgroupid] = 1;
 			}
 		}
-		$this->formula_cells['group'] = 1;
+		$newCells['group'] = 1;
+
+		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
 	}
 
 	private function get_verify() {
+		static $got = null;
+		if($got !== null) {
+			$this->formula_cells = array_merge($this->formula_cells, $got);
+			return;
+		}
 		global $_G;
 
+		$newCells = [];
 		if($_G['setting']['verify']['enabled'] && $_G['uid']) {
 			getuserprofile('verify1');
 			foreach($_G['setting']['verify'] as $vid => $verify) {
@@ -64,35 +78,60 @@ class helper_forumperm {
 					continue;
 				}
 				if($_G['member']['verify'.$vid] == 1) {
-					$this->formula_cells['v'.$vid] = 1;
-					$this->formula_cells['verify'] = 1;
+					$newCells['v'.$vid] = 1;
+					$newCells['verify'] = 1;
 				}
 			}
 		}
+
+		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
 	}
 
 	private function get_tag() {
+		static $got = null;
+		if($got !== null) {
+			$this->formula_cells = array_merge($this->formula_cells, $got);
+			return;
+		}
 		global $_G;
 
 		static $member_tags = null;
 		if($member_tags === null && $_G['uid']) {
-			$member_tags = table_common_tagitem::t()->select(0, $_G['uid'], 'uid');
+			$_v = memory('get', self::CacheKey.'tag_'.$_G['uid']);
+			if(!$_v) {
+				$member_tags = table_common_tagitem::t()->select(0, $_G['uid'], 'uid');
+				memory('set', self::CacheKey.'tag_'.$_G['uid'], [$member_tags, time()], 3600);
+			} else {
+				$member_tags = $_v[0];
+			}
 		}
 
+		$newCells = [];
 		foreach($member_tags as $row) {
-			$this->formula_cells['t'.$row['tagid']] = 1;
-			$this->formula_cells['tag'] = 1;
+			$newCells['t'.$row['tagid']] = 1;
+			$newCells['tag'] = 1;
 		}
+
+		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
 	}
 
+	public static function tag_clear_cache($uid) {
+		memory('rm', $uid, self::CacheKey.'tag_');
+	}
 
 	private function get_plugin() {
+		static $got = null;
+		if($got !== null) {
+			$this->formula_cells = array_merge($this->formula_cells, $got);
+			return;
+		}
 		global $_G;
 
 		if(empty($_G['setting']['plugins']['perm'])) {
 			return;
 		}
 
+		$newCells = [];
 		foreach($_G['setting']['plugins']['perm'] as $k => $v) {
 			if(!class_exists($v['class'])) {
 				continue;
@@ -102,13 +141,20 @@ class helper_forumperm {
 				continue;
 			}
 			if($c->fetch_perm($_G['uid'])) {
-				$this->formula_cells['p_'.$k] = 1;
-				$this->formula_cells['plugin_'.$v['pluginid']] = 1;
+				$newCells['p_'.$k] = 1;
+				$newCells['plugin_'.$v['pluginid']] = 1;
 			}
 		}
+
+		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
 	}
 
 	private function get_account() {
+		static $got = null;
+		if($got !== null) {
+			$this->formula_cells = array_merge($this->formula_cells, $got);
+			return;
+		}
 		global $_G;
 
 		static $member_accounts = null;
@@ -116,10 +162,13 @@ class helper_forumperm {
 			$member_accounts = table_common_member_account::t()->fetch_all_by_uid($_G['uid'], false);
 		}
 
+		$newCells = [];
 		foreach($member_accounts as $row) {
-			$this->formula_cells['a'.$row['atype']] = 1;
-			$this->formula_cells['account'] = 1;
+			$newCells['a'.$row['atype']] = 1;
+			$newCells['account'] = 1;
 		}
+
+		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
 	}
 
 	private function init_formula() {

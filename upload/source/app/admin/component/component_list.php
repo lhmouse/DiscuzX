@@ -226,7 +226,7 @@ function addRow(id) {
 				$valstr = $value !== null ? ' value="'.dhtmlspecialchars($value).'"' : '';
 				$maxstr = $col['maxlen'] ? ' maxlength="'.$col['maxlen'].'"' : '';
 				$s .= '<input id="c'.$colorid.'_v"  name="'.$var['variable'].'['.$i.']['.$col['field'].']" type="text" '.$valstr.$widthstr.$maxstr.'   value="'.$value.'" onchange="updatecolorpreview(\'c'.$colorid.'\')"/>';
-				$s .= "<input id=\"c$colorid\" onclick=\"c{$colorid}_frame.location='static/image/admincp/getcolor.htm?c{$colorid}|c{$colorid}_v';showMenu({'ctrlid':'c$colorid'})\" type=\"button\" class=\"colorwd\" value=\"\" style=\"background: $background\"><span id=\"c{$colorid}_menu\" style=\"display: none\"><iframe name=\"c{$colorid}_frame\" src=\"\" frameborder=\"0\" width=\"210\" height=\"148\" scrolling=\"no\"></iframe></span>";
+				$s .= "<input id=\"c$colorid\" onclick=\"c{$colorid}_frame.location='static/image/admincp/getcolor.htm?c{$colorid}|c{$colorid}_v';showMenu({'ctrlid':'c$colorid'})\" type=\"button\" class=\"colorwd\" value=\"\" style=\"background: ".dhtmlspecialchars($value)."\"><span id=\"c{$colorid}_menu\" style=\"display: none\"><iframe name=\"c{$colorid}_frame\" src=\"\" frameborder=\"0\" width=\"210\" height=\"148\" scrolling=\"no\"></iframe></span>";
 				return $s;
 		}
 	}

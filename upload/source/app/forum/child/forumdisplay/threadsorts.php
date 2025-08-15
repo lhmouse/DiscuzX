@@ -18,6 +18,9 @@ foreach($_G['forum']['threadsorts']['types'] as $stid => $sortname) {
 	loadcache(['threadsort_option_'.$stid, 'threadsort_template_'.$stid]);
 	sortthreadsortselectoption($stid);
 	$templatearray[$stid] = $_G['cache']['threadsort_template_'.$stid]['subject'];
+	if(is_array($templatearray[$stid])) {
+		$templatearray[$stid] = defined('IN_MOBILE') ? $templatearray[$stid][1] : $templatearray[$stid][0];
+	}
 	$sortoptionarray[$stid] = $_G['cache']['threadsort_option_'.$stid];
 }
 

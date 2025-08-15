@@ -442,8 +442,6 @@ if(!submitcheck('editsubmit')) {
 					$value = (float)$value;
 				} elseif(in_array($stylevars[$variable]['type'], ['forums', 'groups', 'selects', 'portalcats'])) {
 					$value = serialize($value);
-				} elseif(strexists($stylevars[$variable]['type'], ':')) {
-					admin\class_component::plugin_serialize($stylevars[$variable]['type'], $value);
 				}
 				$value = (string)$value;
 				table_common_stylevar_extra::t()->update_by_variable($id, $variable, ['value' => $value]);

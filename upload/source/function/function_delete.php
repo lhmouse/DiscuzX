@@ -845,7 +845,7 @@ function deletetrasharticle($aids) {
 		deletearticlepush($pushs);
 		deletearticlerelated($dels);
 	}
-
+	table_common_tagitem::t()->delete_tagitem(0, $dels, 'articleid');
 	return $articles;
 }
 

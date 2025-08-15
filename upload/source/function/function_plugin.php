@@ -598,3 +598,73 @@ function load_installlang($pluginid) {
 		return $_value[$pluginid] = [];
 	}
 }
+
+function threadtype_install($name, $fieldPrefix, $typeData, $fieldData) {
+	global $_G;
+
+	$fieldIndex = [];
+	$classId = table_forum_typeoption::t()->insert(['title' => $name, 'identifier' => $fieldPrefix], 1);
+	foreach($fieldData as $fieldKey => $fieldData) {
+		$fieldData['classid'] = $classId;
+		$fieldId = table_forum_typeoption::t()->insert($fieldData, 1);
+		$fieldIndex[$fieldId] = $fieldData;
+	}
+	$typeId = table_forum_threadtype::t()->insert($typeData, 1);
+	foreach($fieldIndex as $fieldId => $fieldData) {
+		table_forum_typevar::t()->insert(['sortid' => $typeId, 'optionid' => $fieldId, 'available' => 1, 'subjectshow' => 1]);
+	}
+
+	$fields = '';
+	foreach(table_forum_typevar::t()->fetch_all_by_sortid($typeId) as $optionid => $option) {
+		$identifier = $fieldIndex[$optionid]['identifier'];
+		if($identifier) {
+			if($fieldIndex[$optionid]['type'] == 'radio') {
+				$create_tableoption_sql .= "$separator$identifier smallint(6) UNSIGNED NOT NULL DEFAULT '0'";
+			} elseif(in_array($fieldIndex[$optionid]['type'], ['number', 'range'])) {
+				$create_tableoption_sql .= "$separator$identifier int(10) UNSIGNED NOT NULL DEFAULT '0'";
+			} elseif($fieldIndex[$optionid]['type'] == 'select') {
+				$create_tableoption_sql .= "$separator$identifier varchar(50) NOT NULL";
+			} else {
+				$create_tableoption_sql .= "$separator$identifier mediumtext NOT NULL";
+			}
+			$separator = ' ,';
+			if(in_array($fieldIndex[$optionid]['type'], ['radio', 'select', 'number'])) {
+				$indexoption[] = $identifier;
+			}
+		}
+	}
+	$fields .= ($create_tableoption_sql ? $create_tableoption_sql.',' : '')."tid mediumint(8) UNSIGNED NOT NULL DEFAULT '0',fid smallint(6) UNSIGNED NOT NULL DEFAULT '0',dateline int(10) UNSIGNED NOT NULL DEFAULT '0',expiration int(10) UNSIGNED NOT NULL DEFAULT '0',";
+	$fields .= 'KEY (fid), KEY(dateline)';
+	if($indexoption) {
+		foreach($indexoption as $index) {
+			$fields .= "$separator KEY $index ($index)";
+			$separator = ' ,';
+		}
+	}
+	$dbcharset = $_G['config']['db'][1]['dbcharset'];
+	$dbcharset = empty($dbcharset) ? str_replace('-', '', CHARSET) : $dbcharset;
+
+	table_forum_optionvalue::t()->create($typeId, $fields, $dbcharset);
+
+	require_once libfile('function/cache');
+	updatecache('threadsorts');
+}
+
+function threadtype_uninstall($fieldPrefix) {
+	$fields = array_keys(table_forum_typeoption::t()->fetch_all_by_identifier_prefix($fieldPrefix));
+	$sortids = [];
+	foreach(table_forum_typevar::t()->fetch_all_by_optionid($fields) as $row) {
+		$sortids[] = $row['sortid'];
+		table_forum_typevar::t()->delete_typevar($row['sortid'], $row['optionid']);
+	}
+	foreach($sortids as $sortid) {
+		table_forum_threadtype::t()->delete($sortid);
+		table_forum_optionvalue::t()->drop($sortid);
+	}
+	foreach($fields as $field) {
+		table_forum_typeoption::t()->delete($field);
+	}
+
+	require_once libfile('function/cache');
+	updatecache('threadsorts');
+}

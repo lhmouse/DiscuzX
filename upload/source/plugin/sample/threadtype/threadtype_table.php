@@ -24,11 +24,11 @@ class threadtype_table {
 		$string = '';
 		if($viewtype == 'viewthread') {
 			for($i = 1; $i <= 9; $i++) {
-				$string .= $i.'年级：'.$value[$i].'<br/>';
-			}
-		} elseif($viewtype == 'template') {
-			for($i = 1; $i <= 9; $i++) {
 				$string .= $i.'年级：'.$value[$i].' - ';
+			}
+		} else {
+			for($i = 1; $i <= 9; $i++) {
+				$string .= $i.'年级：'.$value[$i].'<br/>';
 			}
 		}
 		return $string;

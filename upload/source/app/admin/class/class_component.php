@@ -197,9 +197,11 @@ class class_component {
 	public static function type_uploadimage(&$var, &$extra) {
 		$var['type'] = 'filetext';
 		$var['extra'] = 'accept=\'image/*\'';
-		$var['description'] = '__t';
-		$GLOBALS['lang']['__t'] = '<label><input type="checkbox" class="checkbox" name="deleteUploadimage[]" value="'.$var['var'].'" /> '.$lang['delete'].'</label>'.
-			'<br /><img src="'.$var['value'].'" />';
+		if($var['value']) {
+			$var['description'] = '__t';
+			$GLOBALS['lang']['__t'] = '<label><input type="checkbox" class="checkbox" name="deleteUploadimage[]" value="'.$var['var'].'" /> '.cplang('delete').'</label>'.
+				'<br /><img src="'.$var['value'].'" />';
+		}
 	}
 
 	public static function type_date(&$var, &$extra) {
@@ -220,7 +222,7 @@ class class_component {
 	}
 
 	public static function type_forums(&$var, &$extra) {
-		$var['description'] = ($var['description'] ? ($lang[$var['description']] ?? $var['description'])."\n" : '').$lang['plugins_edit_vars_multiselect_comment']."\n".$var['comment'];
+		$var['description'] = ($var['description'] ? (cplang($var['description']) ?? $var['description'])."\n" : '').cplang('plugins_edit_vars_multiselect_comment')."\n".$var['comment'];
 		$var['value'] = dunserialize($var['value']);
 		$var['value'] = is_array($var['value']) ? $var['value'] : [];
 		require_once libfile('function/forumlist');
@@ -233,12 +235,12 @@ class class_component {
 
 	public static function type_groupfids(&$var, &$extra) {
 		$var['type'] = 'text';
-		$var['description'] = $var['description']."\n".$lang['members_search_group_fid'];
+		$var['description'] = $var['description']."\n".cplang('members_search_group_fid');
 	}
 
 	public static function type_group(&$var, &$extra) {
 		if($var['type'] == 'groups') {
-			$var['description'] = ($var['description'] ? ($lang[$var['description']] ?? $var['description'])."\n" : '').$lang['plugins_edit_vars_multiselect_comment']."\n".$var['comment'];
+			$var['description'] = ($var['description'] ? (cplang($var['description']) ?? $var['description'])."\n" : '').cplang('plugins_edit_vars_multiselect_comment')."\n".$var['comment'];
 			$var['value'] = dunserialize($var['value']);
 			$var['type'] = '<select name="'.$var['variable'].'[]" size="10" multiple="multiple"><option value=""'.(is_array($var['value']) && in_array('', $var['value']) ? ' selected' : '').'>'.cplang('plugins_empty').'</option>';
 		} else {
@@ -252,10 +254,10 @@ class class_component {
 			$group['type'] = $group['type'] == 'special' && $group['radminid'] ? 'specialadmin' : $group['type'];
 			$groupselect[$group['type']] .= '<option value="'.$group['groupid'].'"'.(is_array($var['value']) && in_array($group['groupid'], $var['value']) ? ' selected' : '').'>'.$group['grouptitle'].'</option>';
 		}
-		$var['type'] .= '<optgroup label="'.$lang['usergroups_member'].'">'.$groupselect['member'].'</optgroup>'.
-			($groupselect['special'] ? '<optgroup label="'.$lang['usergroups_special'].'">'.$groupselect['special'].'</optgroup>' : '').
-			($groupselect['specialadmin'] ? '<optgroup label="'.$lang['usergroups_specialadmin'].'">'.$groupselect['specialadmin'].'</optgroup>' : '').
-			'<optgroup label="'.$lang['usergroups_system'].'">'.$groupselect['system'].'</optgroup></select>';
+		$var['type'] .= '<optgroup label="'.cplang('usergroups_member').'">'.$groupselect['member'].'</optgroup>'.
+			($groupselect['special'] ? '<optgroup label="'.cplang('usergroups_special').'">'.$groupselect['special'].'</optgroup>' : '').
+			($groupselect['specialadmin'] ? '<optgroup label="'.cplang('usergroups_specialadmin').'">'.$groupselect['specialadmin'].'</optgroup>' : '').
+			'<optgroup label="'.cplang('usergroups_system').'">'.$groupselect['system'].'</optgroup></select>';
 		$var['variable'] = $var['value'] = '';
 	}
 
@@ -267,7 +269,7 @@ class class_component {
 		global $_G;
 
 		if($var['type'] == 'portalcats') {
-			$var['description'] = ($var['description'] ? ($lang[$var['description']] ?? $var['description'])."\n" : '').$lang['plugins_edit_vars_multiselect_comment']."\n".$var['comment'];
+			$var['description'] = ($var['description'] ? (cplang($var['description']) ?? $var['description'])."\n" : '').cplang('plugins_edit_vars_multiselect_comment')."\n".$var['comment'];
 			$var['value'] = dunserialize($var['value']);
 			$var['type'] = '<select name="'.$var['variable'].'[]" size="10" multiple="multiple"><option value=""'.(is_array($var['value']) && in_array('', $var['value']) ? ' selected' : '').'>'.cplang('plugins_empty').'</option>';
 		} else {

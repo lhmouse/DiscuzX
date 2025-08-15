@@ -891,6 +891,19 @@ $threadlist_data = [];
 if(defined('IN_MOBILE') && $_G['forum_threadcount']) {
 	$threadlist_data = get_attach($_G['forum_threadlist']);
 }
+
+if(!empty($_G['forum']['threadsorts']['suptypeid']) && !empty($_G['cache']['threadsort_template_'.$_G['forum']['threadsorts']['suptypeid']]['super']['forumdisplay'])) {
+	[$pluginid, $tpl] = explode(':', $_G['cache']['threadsort_template_'.$_G['forum']['threadsorts']['suptypeid']]['super']['forumdisplay']);
+	if(!$tpl) {
+		$tpl = $pluginid;
+		$tpldir = '';
+	} else {
+		$tpldir = DISCUZ_PLUGIN($pluginid).'/template';
+	}
+	include template('diy:'.$tpl.':'.$_G['fid'], 0, $tpldir);
+	exit;
+}
+
 if(!defined('IN_ARCHIVER')) {
 	include template($template);
 } else {

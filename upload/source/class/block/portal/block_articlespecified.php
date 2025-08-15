@@ -25,11 +25,6 @@ class block_articlespecified extends block_article {
 				'type' => 'text',
 				'value' => ''
 			],
-			'tag' => [
-				'title' => 'articlelist_tag',
-				'type' => 'mcheckbox',
-				'value' => [],
-			],
 			'starttime' => [
 				'title' => 'articlelist_starttime',
 				'type' => 'calendar',

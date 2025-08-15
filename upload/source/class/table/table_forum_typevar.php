@@ -88,5 +88,9 @@ class table_forum_typevar extends discuz_table {
 			return false;
 		}
 	}
+
+	public function fetch_all_by_optionid($optionids) {
+		return DB::fetch_all('SELECT * FROM %t WHERE '.DB::field('optionid', $optionids), [$this->_table]);
+	}
 }
 

@@ -256,7 +256,7 @@ function showsorttemplate($sortid, $fid, $sortoptionarray, $templatearray, $thre
 					$sortthreadlist[$tid][$arrayoption['title']] = $_G['optionvaluelist'][$sortid][$tid][$arrayoption['identifier']]['value'] = $sortthread['value'] ? $sortthread['value'] : STATICURL.'image/common/nophotosmall.gif';
 				}
 			} elseif($arrayoption['type'] == 'plugin') {
-				$_G['optionvaluelist'][$sortid][$tid][$arrayoption['identifier']]['value'] = $sortthreadlist[$tid][$arrayoption['title']] = pluginthreadtype_view('template', $arrayoption, $sortthread['value']);
+				$_G['optionvaluelist'][$sortid][$tid][$arrayoption['identifier']]['value'] = $sortthreadlist[$tid][$arrayoption['title']] = pluginthreadtype_view('global', $arrayoption, $sortthread['value']);
 			} else {
 				$sortthreadlist[$tid][$arrayoption['title']] = $_G['optionvaluelist'][$sortid][$tid][$arrayoption['identifier']]['value'] = $sortthread['value'] ? $sortthread['value'] : $arrayoption['defaultvalue'];
 			}
@@ -469,6 +469,9 @@ function threadsortshow($sortid, $tid) {
 
 		$typetemplate = '';
 		if($templatearray['viewthread']) {
+			if(is_array($templatearray['viewthread'])) {
+				$templatearray['viewthread'] = defined('IN_MOBILE') ? $templatearray['viewthread'][1] : $templatearray['viewthread'][0];
+			}
 			foreach($sortoptionarray as $option) {
 				$searchtitle[] = '/{('.$option['identifier'].')}/';
 				$searchvalue[] = '/\[('.$option['identifier'].')value\]/';
@@ -688,6 +691,9 @@ function threadsort_optiondata($pid, $sortid, $sortoptionarray, $templatearray) 
 	}
 
 	if($templatearray['post']) {
+		if(is_array($templatearray['post'])) {
+			$templatearray['post'] = defined('IN_MOBILE') ? $templatearray['post'][1] : $templatearray['post'][0];
+		}
 		$typetemplate = $templatearray['post'];
 		foreach($searchcontent as $key => $content) {
 			$typetemplate = preg_replace_callback(
@@ -787,16 +793,20 @@ function pluginthreadtype_show($option) {
 	if(empty($option['pluginthreadtype'])) {
 		return;
 	}
-	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
-
 	global $_G;
+	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
+	if($type) {
+		if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
+			return;
+		}
 
-	if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
-		return;
-	}
-
-	if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
-		return;
+		if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
+			return;
+		}
+	} else {
+		if(!class_exists($c = $plugin)) {
+			return;
+		}
 	}
 	$n = new $c();
 	if(method_exists($n, 'unserialize')) {
@@ -812,16 +822,21 @@ function pluginthreadtype_submit($option, &$value) {
 	if(empty($option['pluginthreadtype'])) {
 		return;
 	}
-	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
-
 	global $_G;
 
-	if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
-		return;
-	}
+	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
+	if($type) {
+		if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
+			return;
+		}
 
-	if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
-		return;
+		if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
+			return;
+		}
+	} else {
+		if(!class_exists($c = $plugin)) {
+			return;
+		}
 	}
 	$n = new $c();
 	if(!method_exists($n, 'serialize')) {
@@ -834,16 +849,21 @@ function pluginthreadtype_view($viewtype, $option, $value) {
 	if(empty($option['pluginthreadtype'])) {
 		return $value;
 	}
-	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
-
 	global $_G;
 
-	if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
-		return $value;
-	}
+	[$plugin, $type] = explode(':', $option['pluginthreadtype']);
+	if($type) {
+		if(!in_array($plugin, $_G['setting']['plugins']['available'])) {
+			return $value;
+		}
 
-	if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
-		return $value;
+		if(!class_exists($c = '\\'.$plugin.'\\threadtype_'.$type)) {
+			return $value;
+		}
+	} else {
+		if(!class_exists($c = $plugin)) {
+			return;
+		}
 	}
 	$n = new $c();
 	if(method_exists($n, 'unserialize')) {

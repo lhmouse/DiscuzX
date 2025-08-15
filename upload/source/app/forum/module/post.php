@@ -381,27 +381,3 @@ function check_allow_action($action = 'allowpost') {
 		showmessage('forum_access_disallow');
 	}
 }
-
-function recent_use_tag() {
-	$tagarray = $stringarray = [];
-	$string = '';
-	$i = 0;
-	$query = table_common_tagitem::t()->select(0, 0, 'tid', 'itemid', 'DESC', 10);
-	foreach($query as $result) {
-		if($i > 4) {
-			break;
-		}
-		if($tagarray[$result['tagid']] == '') {
-			$i++;
-		}
-		$tagarray[$result['tagid']] = 1;
-	}
-	if($tagarray) {
-		$query = table_common_tag::t()->fetch_all(array_keys($tagarray));
-		foreach($query as $result) {
-			$tagarray[$result['tagid']] = $result['tagname'];
-		}
-	}
-	return $tagarray;
-}
-

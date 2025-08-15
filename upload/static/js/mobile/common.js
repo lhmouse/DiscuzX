@@ -1396,6 +1396,40 @@ function footlink() {
 	}
 }
 
+// 封装初始化 Discuz! 手机版二级滑动导航的函数
+function initdhnav(containerSelector, activeClass) {
+	document.addEventListener('DOMContentLoaded', function() {
+		// 获取指定容器下带有指定激活类的元素
+		const monElements = document.querySelectorAll(`${containerSelector} ${activeClass}`);
+		let initialSlide = 0;
+
+		if (monElements.length > 0) {
+			const monElement = monElements[0];
+			const rect = monElement.getBoundingClientRect();
+			const windowWidth = window.innerWidth;
+
+			// 计算元素左偏移量和宽度之和是否超出窗口宽度
+			initialSlide = (rect.left + rect.width > windowWidth) ?
+				Array.from(monElement.parentNode.children).indexOf(monElement) : 0;
+		}
+
+		// 初始化 Swiper 实例
+		new Swiper(containerSelector, {
+			freeMode: true,
+			slidesPerView: 'auto',
+			initialSlide: initialSlide,
+			on: {
+				touchMove: function() {
+					Discuz_Touch_on = 0;
+				},
+				touchEnd: function() {
+					Discuz_Touch_on = 1;
+				}
+			}
+		});
+	});
+}
+
 _attachEvent(window, 'load', footlink, document);
 
 var mlast = getcookie('mfootlink');

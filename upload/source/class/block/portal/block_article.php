@@ -35,11 +35,6 @@ class block_article extends discuz_block {
 				'type' => 'mselect',
 				'value' => [],
 			],
-			'tag' => [
-				'title' => 'articlelist_tag',
-				'type' => 'mcheckbox',
-				'value' => [],
-			],
 			'picrequired' => [
 				'title' => 'articlelist_picrequired',
 				'type' => 'radio',
@@ -186,12 +181,6 @@ class block_article extends discuz_block {
 				}
 			}
 		}
-		if($settings['tag']) {
-			$tagnames = article_tagnames();
-			foreach($tagnames as $k => $v) {
-				$settings['tag']['value'][] = [$k, $v];
-			}
-		}
 		return $settings;
 	}
 
@@ -203,7 +192,6 @@ class block_article extends discuz_block {
 		$aids = !empty($parameter['aids']) ? explode(',', $parameter['aids']) : [];
 		$uids = !empty($parameter['uids']) ? explode(',', $parameter['uids']) : [];
 		$keyword = !empty($parameter['keyword']) ? $parameter['keyword'] : '';
-		$tag = !empty($parameter['tag']) ? $parameter['tag'] : [];
 		$starttime = !empty($parameter['starttime']) ? strtotime($parameter['starttime']) : 0;
 		$endtime = !empty($parameter['endtime']) ? strtotime($parameter['endtime']) : 0;
 		$publishdateline = isset($parameter['publishdateline']) ? intval($parameter['publishdateline']) : 0;
@@ -270,17 +258,6 @@ class block_article extends discuz_block {
 			$wheres[] = 'at.aid NOT IN ('.dimplode($bannedids).')';
 		}
 		$wheres[] = "at.status='0'";
-		if(is_array($tag)) {
-			$article_tags = [];
-			foreach($tag as $k) {
-				$article_tags[$k] = 1;
-			}
-			include_once libfile('function/portalcp');
-			$v = article_make_tag($article_tags);
-			if($v > 0) {
-				$wheres[] = "(at.tag & $v) = $v";
-			}
-		}
 		if($keyword) {
 			require_once libfile('function/search');
 			$keyword = searchkey($keyword, "at.title LIKE '%{text}%'");

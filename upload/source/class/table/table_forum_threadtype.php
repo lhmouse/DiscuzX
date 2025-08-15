@@ -28,10 +28,10 @@ class table_forum_threadtype extends discuz_table {
 	}
 
 	public function fetch_all_for_cache() {
-		return DB::fetch_all('SELECT t.typeid AS sortid, tt.optionid, tt.title, tt.type, tt.unit, tt.rules, tt.identifier, tt.description, tt.permprompt, tv.required, tv.unchangeable, tv.search, tv.subjectshow, tt.expiration, tt.protect
-			FROM ' .DB::table('forum_threadtype'). ' t
-			LEFT JOIN ' .DB::table('forum_typevar'). ' tv ON t.typeid=tv.sortid
-			LEFT JOIN ' .DB::table('forum_typeoption')." tt ON tv.optionid=tt.optionid
+		return DB::fetch_all('SELECT t.typeid AS sortid, t.super, tt.optionid, tt.title, tt.type, tt.unit, tt.rules, tt.identifier, tt.description, tt.permprompt, tv.required, tv.unchangeable, tv.search, tv.subjectshow, tt.expiration, tt.protect
+			FROM '.DB::table('forum_threadtype').' t
+			LEFT JOIN '.DB::table('forum_typevar').' tv ON t.typeid=tv.sortid
+			LEFT JOIN '.DB::table('forum_typeoption')." tt ON tv.optionid=tt.optionid
 			WHERE t.special='1' AND tv.available='1'
 			ORDER BY tv.displayorder");
 	}
@@ -40,7 +40,7 @@ class table_forum_threadtype extends discuz_table {
 		if(!empty($typeid)) {
 			$where = ' WHERE '.DB::field('typeid', $typeid);
 		}
-		return DB::fetch_all('SELECT * FROM ' .DB::table('forum_threadtype')." $where ORDER BY displayorder");
+		return DB::fetch_all('SELECT * FROM '.DB::table('forum_threadtype')." $where ORDER BY displayorder");
 	}
 
 	public function checkname($name) {

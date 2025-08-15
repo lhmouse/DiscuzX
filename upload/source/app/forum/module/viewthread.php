@@ -498,14 +498,14 @@ if(empty($_GET['viewpid'])) {
 			$_G['forum_numpost'] = $_G['forum_thread']['replies'] + 2 - $_G['forum_numpost'];
 		}
 	}
-	$multipageparam = ($_G['forum_thread']['is_archived'] ? '&archive=' . $_G['forum_thread']['archiveid'] : '') .
-		'&extra=' . $_GET['extra'] .
-		($ordertype && $ordertype != getstatus($_G['forum_thread']['status'], 4) ? '&ordertype=' . $ordertype : '') .
-		(isset($_GET['highlight']) ? '&highlight=' . rawurlencode($_GET['highlight']) : '') .
-		(!empty($_GET['authorid']) ? '&authorid=' . $_GET['authorid'] : '') .
-		(!empty($_GET['from']) ? '&from=' . $_GET['from'] : '') .
-		(!empty($_GET['checkrush']) ? '&checkrush=' . $_GET['checkrush'] : '') .
-		(!empty($_GET['modthreadkey']) ? '&modthreadkey=' . rawurlencode($_GET['modthreadkey']) : '') .
+	$multipageparam = ($_G['forum_thread']['is_archived'] ? '&archive='.$_G['forum_thread']['archiveid'] : '').
+		'&extra='.$_GET['extra'].
+		($ordertype && $ordertype != getstatus($_G['forum_thread']['status'], 4) ? '&ordertype='.$ordertype : '').
+		(isset($_GET['highlight']) ? '&highlight='.rawurlencode($_GET['highlight']) : '').
+		(!empty($_GET['authorid']) ? '&authorid='.$_GET['authorid'] : '').
+		(!empty($_GET['from']) ? '&from='.$_GET['from'] : '').
+		(!empty($_GET['checkrush']) ? '&checkrush='.$_GET['checkrush'] : '').
+		(!empty($_GET['modthreadkey']) ? '&modthreadkey='.rawurlencode($_GET['modthreadkey']) : '').
 		$specialextra;
 	$multipage = multi($_G['forum_thread']['replies'] + ($ordertype != 1 ? 1 : 0), $_G['ppp'], $page, 'forum.php?mod=viewthread&tid='.$_G['tid'].$multipageparam);
 } else {
@@ -789,6 +789,18 @@ if(getstatus($_G['forum_thread']['status'], 10)) {
 	$_G['forum_thread']['relay'] = $preview['relay'];
 }
 
+if(!empty($_G['forum']['threadsorts']['suptypeid']) && !empty($_G['cache']['threadsort_template_'.$_G['forum']['threadsorts']['suptypeid']]['super']['viewthread'])) {
+	[$pluginid, $tpl] = explode(':', $_G['cache']['threadsort_template_'.$_G['forum']['threadsorts']['suptypeid']]['super']['viewthread']);
+	if(!$tpl) {
+		$tpl = $pluginid;
+		$tpldir = '';
+	} else {
+		$tpldir = DISCUZ_PLUGIN($pluginid).'/template';
+	}
+	include template('diy:'.$tpl.':'.$_G['fid'], 0, $tpldir);
+	exit;
+}
+
 if(empty($_GET['viewpid'])) {
 	$sufix = '';
 	if($_GET['from'] == 'portal') {
@@ -1038,7 +1050,7 @@ function viewthread_procpost($post, $lastvisit, $ordertype, $maxposition = 0) {
 						$post['message'] = preg_replace('/\s?\[page\]\s?/is', '', $post['message']);
 					}
 					if($_GET['cp'] != 'all' && !str_contains($post['message'], '[/index]') && empty($_GET['threadindex']) && !$messageindex) {
-						$_G['forum_posthtml']['footer'][$post['pid']] .= '<div id="threadpage"></div><script type="text/javascript" reload="1">show_threadpage(' . $post['pid'] . ', ' . $cp . ', ' . count($messagearray) . ', ' . ($_GET['from'] == 'preview' ? '1' : '0') . ', \'' . (isset($_GET['modthreadkey']) ? $_GET['modthreadkey'] : '') . '\');</script>';
+						$_G['forum_posthtml']['footer'][$post['pid']] .= '<div id="threadpage"></div><script type="text/javascript" reload="1">show_threadpage('.$post['pid'].', '.$cp.', '.count($messagearray).', '.($_GET['from'] == 'preview' ? '1' : '0').', \''.(isset($_GET['modthreadkey']) ? $_GET['modthreadkey'] : '').'\');</script>';
 					}
 				}
 			}

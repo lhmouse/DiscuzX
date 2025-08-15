@@ -35,5 +35,9 @@ class table_forum_typeoption extends discuz_table {
 		return DB::fetch_all('SELECT * FROM %t WHERE identifier=%s '.($not_optionid ? ' AND '.DB::field('optionid', $not_optionid, '<>').' ' : '').DB::limit($start, $limit), [$this->_table, $identifier]);
 	}
 
+	public function fetch_all_by_identifier_prefix($prefix) {
+		return DB::fetch_all('SELECT optionid FROM %t WHERE %i', [$this->_table, DB::field('identifier', '%'.$prefix.'%', 'like')], 'optionid');
+	}
+
 }
 

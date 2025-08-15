@@ -13,6 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 if(!submitcheck('sortdetailsubmit')) {
 	$threadtype = table_forum_threadtype::t()->fetch($_GET['sortid']);
 	$threadtype['modelid'] = isset($_GET['modelid']) ? intval($_GET['modelid']) : $threadtype['modelid'];
+	$threadtype['super'] = dunserialize($threadtype['super']);
 
 	$sortoptions = $jsoptionids = '';
 	$showoption = [];
@@ -85,6 +86,11 @@ if(!submitcheck('sortdetailsubmit')) {
 	showformheader("threadtypes&operation=sortdetail&sortid={$_GET['sortid']}");
 	showtableheader('threadtype_infotypes_validity', 'nobottom');
 	showsetting('threadtype_infotypes_validity', 'typeexpiration', $threadtype['expiration'], 'radio');
+	showtablefooter();
+
+	showtableheader('threadtype_super', 'nobottom');
+	showsetting('threadtype_supertpl_forumdisplay', 'super[forumdisplay]', $threadtype['super']['forumdisplay'], 'text');
+	showsetting('threadtype_supertpl_viewthread', 'super[viewthread]', $threadtype['super']['viewthread'], 'text');
 	showtablefooter();
 
 	showtableheader("{$threadtype['name']} - {$lang['threadtype_infotypes_add_option']}", 'noborder fixpadding');
@@ -164,7 +170,7 @@ if(!submitcheck('sortdetailsubmit')) {
 			}
 		}
 	}
-	table_forum_threadtype::t()->update($_GET['sortid'], ['special' => 1, 'modelid' => $_GET['modelid'], 'expiration' => $_GET['typeexpiration']]);
+	table_forum_threadtype::t()->update($_GET['sortid'], ['special' => 1, 'modelid' => $_GET['modelid'], 'expiration' => $_GET['typeexpiration'], 'super' => serialize($_GET['super'])]);
 
 	if(submitcheck('sortdetailsubmit')) {
 

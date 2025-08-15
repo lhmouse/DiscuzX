@@ -49,7 +49,7 @@ class tag {
 	 * @return mixed
 	 */
 	public function add_tag($tags, $itemid, $idtype = 'tid', $returnarray = 0) {
-		if($tags == '' || !in_array($idtype, ['', 'tid', 'blogid', 'uid'])) {
+		if($tags == '' || !in_array($idtype, ['', 'tid', 'blogid', 'articleid', 'uid'])) {
 			return;
 		}
 
@@ -248,6 +248,9 @@ class tag {
 			$tagstr = $tagstr['tags'];
 		} elseif($idtype == 'blogid') {
 			$tagstr = table_home_blogfield::t()->fetch_tag_by_blogid($itemid);
+		} elseif($idtype == 'articleid') {
+			$article = table_portal_article_title::t()->fetch($itemid);
+			$tagstr = $article['tags'];
 		} else {
 			return '';
 		}
@@ -305,7 +308,7 @@ class tag {
 			return 'tag_empty';
 		}
 		if(preg_match('/^([\x7f-\xff_-]|\w|\s){2,50}$/', $newtag)) {
-			$tidarray = $blogidarray = [];
+			$tidarray = $blogidarray = $articleidarray = [];
 			$newtaginfo = $this->add_tag($newtag, 0, $idtype, 1);
 			foreach($newtaginfo as $tagid => $tagname) {
 				$newid = $tagid;
@@ -330,6 +333,13 @@ class tag {
 							$blogidarray[$itemid] = $blogfield['tag'];
 						}
 						$blogidarray[$itemid] = str_replace("{$result['tagid']},{$result['tagname']}\t", '', $blogidarray[$itemid]);
+					} elseif($result['idtype'] == 'articleid') {
+						$itemid = $result['itemid'];
+						if(!isset($articleidarray[$itemid])) {
+							$article = table_portal_article_title::t()->fetch($itemid);
+							$articleidarray[$itemid] = $article['tags'];
+						}
+						$articleidarray[$itemid] = str_replace("{$result['tagid']},{$result['tagname']}\t", '', $articleidarray[$itemid]);
 					}
 				}
 			}
@@ -361,6 +371,11 @@ class tag {
 					table_home_blogfield::t()->update($key, ['tag' => $var.$newid.','.$newtag."\t"]);
 				}
 			}
+			if($articleidarray) {
+				foreach($articleidarray as $key => $var) {
+					table_portal_article_title::t()->update($key, ['tags' => $var]);
+				}
+			}
 		} else {
 			return 'tag_length';
 		}
@@ -368,7 +383,7 @@ class tag {
 	}
 
 	public function delete_tag($tagidarray, $idtype = '') {
-		$tidarray = $blogidarray = [];
+		$tidarray = $blogidarray = $articleidarray = [];
 		if(!is_array($tagidarray)) {
 			return false;
 		}
@@ -391,6 +406,13 @@ class tag {
 						$blogidarray[$itemid] = $blogfield['tag'];
 					}
 					$blogidarray[$itemid] = str_replace("{$result['tagid']},{$result['tagname']}\t", '', $blogidarray[$itemid]);
+				} elseif($result['idtype'] == 'articleid') {
+					$itemid = $result['itemid'];
+					if(!isset($articleidarray[$itemid])) {
+						$article = table_portal_article_title::t()->fetch($itemid);
+						$articleidarray[$itemid] = $article['tags'];
+					}
+					$articleidarray[$itemid] = str_replace("{$result['tagid']},{$result['tagname']}\t", '', $articleidarray[$itemid]);
 				}
 			}
 		}
@@ -403,6 +425,11 @@ class tag {
 		if($blogidarray) {
 			foreach($blogidarray as $key => $var) {
 				table_home_blogfield::t()->update($key, ['tag' => $var]);
+			}
+		}
+		if($articleidarray) {
+			foreach($articleidarray as $key => $var) {
+				table_portal_article_title::t()->update($key, ['tags' => $var]);
 			}
 		}
 		table_common_tag::t()->delete_byids($tagidarray);
@@ -437,6 +464,26 @@ class tag {
 			}
 		}
 		return $threadlist;
+	}
+
+	public static function getarticlebyid($articleidarray) {
+		global $_G, $summarylen;
+
+		$articlelist = [];
+		if(!empty($articleidarray)) {
+			$data_article = table_portal_article_title::t()->fetch_all_for_search($articleidarray, 'dateline', 'DESC',0, 99);
+
+			require_once libfile('function/home');
+			foreach($data_article as $curarticleid => $result) {
+				$result['dateline'] = dgmdate($result['dateline']);
+				$result['summary'] = preg_replace('/&[a-z]+\;/i', '', $result['summary']);
+				if($result['pic']) {
+					$result['pic'] = pic_get($result['pic'], '', $result['thumb'], $result['remote'], 1, 1);
+				}
+				$articlelist[] = $result;
+			}
+		}
+		return $articlelist;
 	}
 
 	public static function getblogbyid($blogidarray) {

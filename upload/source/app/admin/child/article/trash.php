@@ -51,7 +51,7 @@ if(submitcheck('batchsubmit', true)) {
 				'fromurl' => $article['fromurl'],
 				'bid' => $article['bid'],
 				'allowcomment' => $article['allowcomment'],
-				'tag' => $article['tag'],
+				'tags' => $article['tags'],
 				'owncomment' => $article['owncomment'],
 				'status' => $article['status'],
 				'highlight' => $article['highlight'],

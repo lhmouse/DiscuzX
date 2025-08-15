@@ -76,13 +76,6 @@ if(submitcheck('articlesubmit')) {
 		$catids[] = $_GET['catid'];
 		$wherearr[] = 'catid IN ('.dimplode($catids).')';
 	}
-	if(!empty($_GET['tag'])) {
-		$tag = article_make_tag($_GET['tag']);
-		$wherearr[] = "(tag & '$tag' = '$tag')";
-		foreach($_GET['tag'] as $k => $v) {
-			$mpurl .= "&tag[$k]=$v";
-		}
-	}
 	$wheresql = empty($wherearr) ? '1' : implode(' AND ', $wherearr);
 
 	$orders = getorders(['dateline'], 'aid');
@@ -97,16 +90,9 @@ if(submitcheck('articlesubmit')) {
 	$categoryselect = category_showselect('portal', 'catid', true, $_GET['catid']);
 	$searchlang = [];
 	$keys = ['search', 'likesupport', 'resultsort', 'defaultsort', 'orderdesc', 'orderasc', 'perpage_10', 'perpage_20', 'perpage_50', 'perpage_100',
-		'article_dateline', 'article_id', 'article_title', 'article_uid', 'article_username', 'article_category', 'article_tag'];
+		'article_dateline', 'article_id', 'article_title', 'article_uid', 'article_username', 'article_category'];
 	foreach($keys as $key) {
 		$searchlang[$key] = cplang($key);
-	}
-	$articletagcheckbox = '';
-	$article_tags = article_tagnames();
-	foreach($article_tags as $k => $v) {
-		$checked = !empty($_GET['tag']) && !empty($_GET['tag'][$k]) ? 'checked="checked"' : '';
-		$articletagcheckbox .= "<input type=\"checkbox\" class=\"checkbox\" id=\"tag_$k\" name=\"tag[$k]\" value=\"1\"$checked />";
-		$articletagcheckbox .= "<label for=\"tag_$k\">$v</label>";
 	}
 
 	$start = ($page - 1) * $perpage;
@@ -130,9 +116,6 @@ if(submitcheck('articlesubmit')) {
 				<tr>
 					<td>{$searchlang['article_category']}</td><td>$categoryselect</td>
 					<td>&nbsp;</td><td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>{$searchlang['article_tag']}</td><td colspan="3">$articletagcheckbox</td>
 				</tr>
 				<tr>
 					<td>{$searchlang['resultsort']}</td>
@@ -184,16 +167,9 @@ SEARCH;
 				$repairs[$value['aid']] = $value['aid'];
 			}
 
-			$tags = article_parse_tags($value['tag']);
-			$taghtml = '';
-			foreach($tags as $k => $v) {
-				if($v) {
-					$taghtml .= ' [<a href="'.ADMINSCRIPT.'?action=article&operation=list&tag['.$k.']=1" style="color: #666">'.$article_tags[$k].'</a>] ';
-				}
-			}
 			$tablerow = [
 				"<input type=\"checkbox\" class=\"checkbox\" name=\"ids[]\" value=\"{$value['aid']}\">",
-				"<a href=\"portal.php?mod=view&aid={$value['aid']}\" target=\"_blank\">{$value['title']}</a>".($taghtml ? $taghtml : ''),
+				"<a href=\"portal.php?mod=view&aid={$value['aid']}\" target=\"_blank\">{$value['title']}</a>",
 				'<a href="'.ADMINSCRIPT.'?action=article&operation=list&catid='.$value['catid'].'">'.$category[$value['catid']]['catname'].'</a>',
 				"<a href=\"".ADMINSCRIPT."?action=article&uid={$value['uid']}\">{$value['username']}</a>",
 				dgmdate($value['dateline']),

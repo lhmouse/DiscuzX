@@ -250,12 +250,6 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 .fszm { width: 55px !important; line-height: normal; }
 .fnm li, .fszm li, .simm li { cursor: pointer; }
 .qsv { padding-left: 16px; width: 16px; height: 16px; background: url({IMGDIR}/repquote.gif) no-repeat 50% 50%; cursor: pointer; }
-
-/* 发帖时选择标签 by Pony */
-	.marked:after { font-family: dzicon; content: "\f128"; color: #F60; margin-left: 2px; }
-	#taglistarea a { white-space: nowrap; zoom: 1; }
-		#taglistarea .marked { padding-right: 0; font-weight: 700; color: {NOTICETEXT} !important; }
-		#taglistarea .marked:after { display: none; }
 /** end **/
 
 /** forum::post,group::post **/
@@ -327,6 +321,12 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 .tfm .fwin th { padding: 0; width: auto; }
 .tfm .fwin .px { width: auto; }
 .tfm .fwin .upfl table td { border-bottom: none; }
+
+/* 发帖时选择标签 by Pony */
+.marked:after { font-family: dzicon; content: "\f128"; color: #F60; margin-left: 2px; }
+#taglistarea a { white-space: nowrap; zoom: 1; }
+#taglistarea .marked { padding-right: 0; font-weight: 700; color: {NOTICETEXT} !important; }
+#taglistarea .marked:after { display: none; }
 /** end **/
 
 

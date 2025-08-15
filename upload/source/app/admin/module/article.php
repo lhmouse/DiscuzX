@@ -29,7 +29,6 @@ $catid = $_GET['catid'] = intval($_GET['catid']);
 showsubmenu('article', [
 	['list', 'article&catid='.$catid, $operation == 'list'],
 	['article_trash', 'article&operation=trash&catid='.$catid, $operation == 'trash'],
-	['article_tag', 'article&operation=tag', $operation == 'tag'],
 	['article_add', 'portal.php?mod=portalcp&ac=article', false, 1, 1]
 ], $searchctrl);
 

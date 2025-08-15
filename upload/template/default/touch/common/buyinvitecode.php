@@ -63,20 +63,20 @@
 </form>
 <script type="text/javascript">
 	(function() {
-		// »ñÈ¡ÊäÈë¿òÔªËØ
+		// è·å–è¾“å…¥æ¡†å…ƒç´ 
 		const amountInput = document.getElementById('amount');
-		// »ñÈ¡ÏÔÊ¾½ğ¶îµÄÔªËØ
+		// è·å–æ˜¾ç¤ºé‡‘é¢çš„å…ƒç´ 
 		const desAmountElement = document.getElementById('desamount');
-		// »ñÈ¡ÑûÇëÂëµ¥¼Û
+		// è·å–é‚€è¯·ç å•ä»·
 		const inviteCodePrice = $_G['setting']['inviteconfig']['invitecodeprice'];
 
-		// ÎªÊäÈë¿òÌí¼Ó input ÊÂ¼ş¼àÌıÆ÷
+		// ä¸ºè¾“å…¥æ¡†æ·»åŠ  input äº‹ä»¶ç›‘å¬å™¨
 		amountInput.addEventListener('input', function() {
-			// È¥³ıÊäÈëÖµ¿ªÍ·µÄ 0
+			// å»é™¤è¾“å…¥å€¼å¼€å¤´çš„ 0
 			let amount = this.value.replace(/^0/, '');
-			// ½«ÊäÈëÖµ×ª»»ÎªÕûÊı
+			// å°†è¾“å…¥å€¼è½¬æ¢ä¸ºæ•´æ•°
 			amount = parseInt(amount, 10);
-			// ¼ÆËã²¢¸üĞÂÏÔÊ¾µÄ½ğ¶î
+			// è®¡ç®—å¹¶æ›´æ–°æ˜¾ç¤ºçš„é‡‘é¢
 			desAmountElement.innerHTML = !isNaN(amount) ? (amount * inviteCodePrice).toFixed(2) : '0.00';
 		});
 	})();

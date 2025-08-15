@@ -228,19 +228,28 @@ make_html('portal.php?mod=view&aid={$aid}', $('makehtml_'));
 					</div>
 					<div class="bm_c"><textarea name="summary" cols="80" class="pt" style="width: 98.7%; height: 51px;">$article[summary]</textarea></div>
 				</div>
-
+				<!--{if $_G['group']['allowposttag']}-->
 				<div class="bm bml">
 					<div class="bm_h cl">
 						<h2>{lang article_tag}</h2>
 					</div>
 					<div class="bm_c">
-						<!--{loop $article_tags $key $tag}-->
-						<input type="checkbox" name="tag[$key]" id="article_tag_$key" class="pc"{if $article_tags[$key]} checked="checked"{/if} />
-						<label for="article_tag_$key" class="lb">$tag_names[$key]</label>
-						<!--{/loop}-->
+						<input type="text" class="px vm" size="60" id="tags" name="tags" value="{$article[tags] or ''}" onblur="extraCheck(4)" />
+						<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'forum.php?mod=tag', 'get', 0)">{lang choosetag}</a>
+						<p class="xg1">{lang posttag_comment}</p>
+						<!--{eval $recent_use_tag = recent_use_tag('articleid');}-->
+						<!--{if $recent_use_tag}-->
+						<p class="mtn">{lang recent_use_tag}&nbsp;
+							<!--{eval $tagi = 0;}-->
+							<!--{loop $recent_use_tag $var}-->
+							<!--{if $tagi}-->, <!--{/if}--><a href="javascript:;" class="xi2" onclick="$('tags').value == '' ? $('tags').value += '$var' : $('tags').value += ',$var';extraCheck(4);doane();">$var</a>
+							<!--{eval $tagi++;}-->
+							<!--{/loop}-->
+						</p>
+						<!--{/if}-->
 					</div>
 				</div>
-
+				<!--{/if}-->
 				<div class="exfm">
 					<h2>{lang article_related} <a id="related_article" href="portal.php?mod=portalcp&ac=related&aid=$aid" class="xi2" style="text-decoration: underline;" onclick="showWindow(this.id, this.href+'&catid='+$('catid').value, 'get', 0);return false;">{lang select}</a></h2>
 					<ul id="raid_div" class="xl">

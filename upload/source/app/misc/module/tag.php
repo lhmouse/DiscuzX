@@ -67,18 +67,39 @@ if($id || $name) {
 			$threadlist = tag::getthreadsbytids($tidarray);
 			$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=thread");
 		}
+	} elseif($type == 'article') {
+		$showtype = 'article';
+		if(helper_access::check_module('portal')) {
+			$articleidarray = $articlelist = [];
+			$count = table_common_tagitem::t()->select($id, 0, 'articleid', '', '', 0, 0, 0, 1);
+			if($count) {
+				$query = table_common_tagitem::t()->select($id, 0, 'articleid', '', '', $start_limit, $tpp);
+				foreach($query as $result) {
+					$articleidarray[$result['itemid']] = $result['itemid'];
+				}
+				$articlelist = tag::getarticlebyid($articleidarray);
+
+				$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=article");
+			}
+		}else{
+			showmessage('portal_status_off');
+		}
 	} elseif($type == 'blog') {
 		$showtype = 'blog';
-		$blogidarray = $bloglist = [];
-		$count = table_common_tagitem::t()->select($id, 0, 'blogid', '', '', 0, 0, 0, 1);
-		if($count) {
-			$query = table_common_tagitem::t()->select($id, 0, 'blogid', '', '', $start_limit, $tpp);
-			foreach($query as $result) {
-				$blogidarray[$result['itemid']] = $result['itemid'];
-			}
-			$bloglist = tag::getblogbyid($blogidarray);
+		if(helper_access::check_module('blog')) {
+			$blogidarray = $bloglist = [];
+			$count = table_common_tagitem::t()->select($id, 0, 'blogid', '', '', 0, 0, 0, 1);
+			if($count) {
+				$query = table_common_tagitem::t()->select($id, 0, 'blogid', '', '', $start_limit, $tpp);
+				foreach($query as $result) {
+					$blogidarray[$result['itemid']] = $result['itemid'];
+				}
+				$bloglist = tag::getblogbyid($blogidarray);
 
-			$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=blog");
+				$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=blog");
+			}
+		}else{
+			showmessage('blog_status_off');
 		}
 	} else {
 		$shownum = 20;
@@ -89,6 +110,15 @@ if($id || $name) {
 			$tidarray[$result['itemid']] = $result['itemid'];
 		}
 		$threadlist = tag::getthreadsbytids($tidarray);
+
+		if(helper_access::check_module('portal')) {
+			$articleidarray = $articlelist = [];
+			$query = table_common_tagitem::t()->select($id, 0, 'articleid', '', '', $shownum);
+			foreach($query as $result) {
+				$articleidarray[$result['itemid']] = $result['itemid'];
+			}
+			$articlelist = tag::getarticlebyid($articleidarray);
+		}
 
 		if(helper_access::check_module('blog')) {
 			$blogidarray = $bloglist = [];

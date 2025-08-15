@@ -3416,6 +3416,7 @@ CREATE TABLE pre_forum_threadtype
 	stemplate    text                  NOT NULL,
 	ptemplate    text                  NOT NULL,
 	btemplate    text                  NOT NULL,
+	super        text                  NOT NULL,
 	PRIMARY KEY (typeid)
 ) ENGINE = InnoDB;
 
@@ -4226,7 +4227,7 @@ CREATE TABLE pre_portal_article_title
 	click6       smallint(6) unsigned  NOT NULL DEFAULT '0',
 	click7       smallint(6) unsigned  NOT NULL DEFAULT '0',
 	click8       smallint(6) unsigned  NOT NULL DEFAULT '0',
-	tag          tinyint(8) unsigned   NOT NULL DEFAULT '0',
+	tags         varchar(255)          NOT NULL DEFAULT '',
 	dateline     int(10) unsigned      NOT NULL DEFAULT '0',
 	`status`     tinyint(1)            NOT NULL DEFAULT '0',
 	showinnernav tinyint(1)            NOT NULL DEFAULT '0',

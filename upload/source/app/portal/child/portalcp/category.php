@@ -80,13 +80,6 @@ if($count) {
 		$value['dateline'] = dgmdate($value['dateline']);
 		$value['allowmanage'] = $allowmanage || !empty($permission[$value['catid']]['allowmanage']);
 		$value['allowpublish'] = $value['allowmanage'] || $allowpost || !empty($permission[$value['catid']]['allowpublish']);
-		$value['taghtml'] = '';
-		$tags = article_parse_tags($value['tag']);
-		foreach($tags as $k => $v) {
-			if($v) {
-				$value['taghtml'] .= "[{$article_tags[$k]}] ";
-			}
-		}
 		$style = [];
 		if($value['highlight']) {
 			$style = explode('|', $value['highlight']);

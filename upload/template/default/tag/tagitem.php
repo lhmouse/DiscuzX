@@ -18,7 +18,7 @@
 <div id="ct" class="wp cl">
 	<h1 class="mt">
 		<i class="fico-tag fc-s" alt="tag"></i> {lang tag}: $tagname
-		<!--{if $_G['adminid'] == 1 && empty($showtype)}-->
+		<!--{if $idtype == 'tag' && $_G['adminid'] == 1 && empty($showtype)}-->
 		<div class="xs0 xg1 y cl">
 			{lang related_nums}: {$tag['related_count']}<span class="pipe">|</span>
 			{lang hot}: {$tag['hot_score']}<span class="pipe">|</span>
@@ -120,6 +120,42 @@
 				<!--{/if}-->
 			</div>
 		</div>
+	<!--{/if}-->
+
+	<!--{if $idtype == 'tag' && helper_access::check_module('portal') && (empty($showtype) || $showtype == 'article')}-->
+	<div class="bm">
+		<div class="bm_h">
+			<h2>{lang related_article}</h2>
+		</div>
+		<div class="bm_c">
+			<!--{if $articlelist}-->
+			<div class="xld">
+				<!--{loop $articlelist $article}-->
+				<dl class="bbda cl">
+					<dt class="xs2"><a href="$article_url" target="_blank" class="xi2">$article[title]</a> <!--{if $article[status] == 1}-->({lang moderate_need})<!--{/if}--></dt>
+					<dd class="xs2 cl">
+						<!--{if $article[pic]}--><div class="atc"><a href="$article_url" target="_blank"><img src="$article[pic]" alt="$article[title]" class="tn" /></a></div><!--{/if}-->
+						$article[summary]
+					</dd>
+					<dd>
+						<!--{if $article[catname] && $cat[subs]}-->{lang category}: <label><a href="{$portalcategory[$article['catid']]['caturl']}" class="xi2">$article[catname]</a></label>&nbsp;&nbsp;<!--{/if}-->
+						<span class="xg1"> $article[dateline]</span>
+					</dd>
+				</dl>
+				<!--{/loop}-->
+			</div>
+			<!--{if empty($showtype)}-->
+			<div class="ptm">
+				<a class="xi2" href="misc.php?mod=tag&id=$id&type=article">{lang more}...</a>
+			</div>
+			<!--{else}-->
+			<!--{if $multipage}--><div class="pgs mtm cl">$multipage</div><!--{/if}-->
+			<!--{/if}-->
+			<!--{else}-->
+			<p class="emp">{lang no_content}</p>
+			<!--{/if}-->
+		</div>
+	</div>
 	<!--{/if}-->
 
 	<!--{if helper_access::check_module('blog') && (empty($showtype) || $showtype == 'blog')}-->

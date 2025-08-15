@@ -178,8 +178,6 @@ if(empty($_GET['pmod'])) {
 						$value = (float)$value;
 					} elseif(in_array($pluginvars[$variable]['type'], ['forums', 'groups', 'selects', 'portalcats'])) {
 						$value = serialize($value);
-					} elseif(strexists($pluginvars[$variable]['type'], ':')) {
-						admin\class_component::plugin_serialize($pluginvars[$variable]['type'], $value);
 					}
 					$value = (string)$value;
 					table_common_pluginvar::t()->update_by_variable($pluginid, $variable, ['value' => $value]);

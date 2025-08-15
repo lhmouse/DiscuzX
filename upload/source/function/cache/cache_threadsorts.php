@@ -11,7 +11,7 @@ if(!defined('IN_DISCUZ')) {
 }
 
 function build_cache_threadsorts() {
-	$sortlist = $templatedata = $stemplatedata = $ptemplatedata = $btemplatedata = $template = [];
+	$sortlist = $templatedata = $stemplatedata = $ptemplatedata = $btemplatedata = $template = $super = [];
 	$query = table_forum_threadtype::t()->fetch_all_for_cache();
 	foreach($query as $data) {
 		$data['rules'] = dunserialize($data['rules']);
@@ -78,13 +78,14 @@ function build_cache_threadsorts() {
 			$sortlist[$sortid][$optionid]['pluginthreadtype'] = $data['rules']['pluginthreadtype'];
 			$sortlist[$sortid][$optionid]['pluginthreadtype_param'] = $data['rules']['pluginthreadtype_param'];
 		}
+		$super[$sortid] = dunserialize($data['super']);
 	}
 	$query = table_forum_threadtype::t()->range();
 	foreach($query as $data) {
-		$templatedata[$data['typeid']] = addcslashes($data['template'], '",\\');
-		$stemplatedata[$data['typeid']] = addcslashes($data['stemplate'], '",\\');
-		$ptemplatedata[$data['typeid']] = addcslashes($data['ptemplate'], '",\\');
-		$btemplatedata[$data['typeid']] = addcslashes($data['btemplate'], '",\\');
+		$stemplatedata[$data['typeid']] = loadThreadtypeTemplate($data['stemplate']);
+		$ptemplatedata[$data['typeid']] = loadThreadtypeTemplate($data['ptemplate']);
+		$btemplatedata[$data['typeid']] = loadThreadtypeTemplate($data['btemplate']);
+		$templatedata[$data['typeid']] = loadThreadtypeTemplate($data['template']);
 	}
 
 	$data['sortoption'] = $data['template'] = [];
@@ -94,6 +95,7 @@ function build_cache_threadsorts() {
 		$template['subject'] = $stemplatedata[$sortid];
 		$template['post'] = $ptemplatedata[$sortid];
 		$template['block'] = $btemplatedata[$sortid];
+		$template['super'] = $super[$sortid];
 
 		savecache('threadsort_option_'.$sortid, $option);
 		savecache('threadsort_template_'.$sortid, $template);
@@ -101,3 +103,37 @@ function build_cache_threadsorts() {
 
 }
 
+function loadThreadtypeTemplate($data) {
+	if(!preg_match('/\[file\](.+?)\[\/file\]/', trim($data), $r)) {
+		return addcslashes($data, '",\\');
+	}
+	[$pluginid, $tpl] = explode(':', $r[1]);
+	if(!$tpl) {
+		if(!preg_match('/^[\\/\w+$/', $pluginid)) {
+			return addcslashes($data, '",\\');
+		}
+		$tpls = [
+			DISCUZ_ROOT.'./template/default/'.$pluginid.'.php',
+			DISCUZ_ROOT.'./template/default/touch/'.$pluginid.'.php',
+		];
+	} else {
+		if(!preg_match('/^[\\/\w]+$/', $tpl)) {
+			return addcslashes($data, '",\\');
+		}
+		$tpls = [
+			DISCUZ_PLUGIN($pluginid).'/template/'.$tpl.'.php',
+			DISCUZ_PLUGIN($pluginid).'/template/touch/'.$tpl.'.php',
+		];
+	}
+
+	if(!file_exists($tpls[0])) {
+		return addcslashes($data, '",\\');
+	}
+	$content = implode("\n", array_slice(file($tpls[0]), 1));
+
+	if(!file_exists($tpls[1])) {
+		return [addcslashes($content, '",\\'), addcslashes($content, '",\\')];
+	}
+	$h5content = implode("\n", array_slice(file($tpls[1]), 1));
+	return [addcslashes($content, '",\\'), addcslashes($h5content, '",\\')];
+}

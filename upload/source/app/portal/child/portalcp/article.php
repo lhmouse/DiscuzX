@@ -92,7 +92,6 @@ if(submitcheck('articlesubmit', 0, $seccodecheck, $secqaacheck)) {
 		'allowcomment' => !empty($_POST['forbidcomment']) ? '0' : '1',
 		'summary' => $summary,
 		'catid' => intval($_POST['catid']),
-		'tag' => article_make_tag($_POST['tag']),
 		'status' => $article_status,
 		'highlight' => $style,
 		'showinnernav' => empty($_POST['showinnernav']) ? '0' : '1',
@@ -217,7 +216,13 @@ if(submitcheck('articlesubmit', 0, $seccodecheck, $secqaacheck)) {
 		updatemoderate('aid', $aid);
 		manage_addnotify('verifyarticle');
 	}
-
+	//标签处理
+	$_POST['tags'] = dhtmlspecialchars(trim($_POST['tags']));
+	$_POST['tags'] = getstr($_POST['tags'], 500);
+	$_POST['tags'] = censor($_POST['tags']);
+	$class_tag = new tag();
+	$_POST['tags'] = $article ? $class_tag->update_field($_POST['tags'], $aid, 'articleid') : $class_tag->add_tag($_POST['tags'], $aid, 'articleid');
+	$updatearticle['tags'] = $_POST['tags'];
 	$updatearticle = array_merge($updatearticle, portalcp_article_pre_next($catid, $aid));
 	table_portal_article_title::t()->update($aid, $updatearticle);
 
@@ -630,8 +635,19 @@ if($op == 'delete') {
 	if(!empty($attachs)) {
 		$article['attachs'] = get_upload_content($attachs);
 	}
-	$article_tags = article_parse_tags($article['tag']);
-	$tag_names = article_tagnames();
+	if($article['tags']) {
+		$tagarray_all = $array_temp = $articletag_array = [];
+		$tagarray_all = explode("\t", $article['tags']);
+		if($tagarray_all) {
+			foreach($tagarray_all as $var) {
+				if($var) {
+					$array_temp = explode(',', $var);
+					$articletag_array[] = $array_temp['1'];
+				}
+			}
+		}
+		$article['tags'] = implode(',', $articletag_array);
+	}
 }
 require_once libfile('function/upload');
 $swfconfig = getuploadconfig($_G['uid'], 0, false);
