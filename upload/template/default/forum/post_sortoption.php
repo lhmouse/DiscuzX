@@ -84,7 +84,7 @@
 						<script type="text/javascript" reload="1">
 							function sortaid_{$option[identifier]}_upload(aid, url) {
 								$('sortaid_{$option[identifier]}_url').value = url;
-								updatesortattach(aid, url, 'data/attachment/forum', '{$option[identifier]}');
+								updatesortattach(aid, url, '{$_G['setting']['attachurl']}forum', '{$option[identifier]}');
 							}
 						</script>
 					<!--{else}-->

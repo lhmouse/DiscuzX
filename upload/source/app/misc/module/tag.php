@@ -37,6 +37,9 @@ if($id || $name) {
 		$name = addslashes($name);
 		$tag = table_common_tag::t()->fetch_info(0, $name);
 	}
+	if(!$tag) {
+		showmessage('undefined_action');
+	}
 
 	if(TIMESTAMP - $tag['updated_at'] > 86400){
 		tag::update_tag_hot_score($tag['tagid']);
