@@ -3,9 +3,10 @@ jQuery.extend({
 		try {
 			var reader = new FileReader();
 			var canvaszoom = false;
-			if(s.maxfilesize && s.files[0].size > s.maxfilesize * 1024) {
-				canvaszoom = true;
-			}
+			//注释此逻辑，目前网络带宽大了，不需要图片压缩
+			// if(s.maxfilesize && s.files[0].size > s.maxfilesize * 1024) {
+			// 	canvaszoom = true;
+			// }
 
 			var picupload = function(picdata) {
 

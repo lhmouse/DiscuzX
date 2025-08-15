@@ -277,6 +277,9 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 				}
 
 				$typeselect = $sortselect = '';
+				$supsort = [
+					[0, cplang('none')],
+				];
 
 				$query = table_forum_threadtype::t()->fetch_all_for_order();
 				$typeselect = getthreadclasses_html($fid);
@@ -304,6 +307,10 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 							"<input class=\"checkbox\" type=\"checkbox\" name=\"threadsortsnew[options][show][{$type['typeid']}]\" value=\"3\" $typeselected[3] />",
 							"<input class=\"radio\" type=\"radio\" name=\"threadsortsnew[defaultshow]\" value=\"{$type['typeid']}\" ".($forum['threadsorts']['defaultshow'] == $type['typeid'] ? 'checked' : '').' />'
 						], TRUE) : '';
+					}
+
+					if(!empty($type['stemplate'])) {
+						$supsort[] = [$type['typeid'], $type['name']];
 					}
 				}
 				$forum['creditspolicy'] = $forum['creditspolicy'] ? dunserialize($forum['creditspolicy']) : [];
@@ -416,6 +423,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			$multi_styleselect = str_replace("value=\"$styleid\"", "value=\"$styleid\" selected=\"selected\"", $multi_styleselect);
 			showsetting('forums_edit_extend_style', '', '', $multi_styleselect);
 			if($forum['type'] != 'sub') {
+				showsetting('forums_edit_threadsorts_suptypeid', ['threadsortsnew[suptypeid]', $supsort], $forum['threadsorts']['suptypeid'], 'select');
 				showsetting('forums_edit_extend_sub_horizontal', 'forumcolumnsnew', $forum['forumcolumns'], 'text');
 				showsetting('forums_edit_extend_subforumsindex', ['subforumsindexnew', [
 					[-1, cplang('default')],
@@ -1116,6 +1124,13 @@ EOT;
 					$forumfielddata['threadtypes'] = is_array($threadtypesnew) ? serialize($threadtypesnew) : $threadtypesnew;
 
 					$threadsortsnew = $_GET['threadsortsnew'];
+					if(!empty($threadsortsnew['suptypeid'])) {
+						$threadsortsnew['required'] = true;
+						$threadsortsnew['options']['enable'][$threadsortsnew['suptypeid']] = 1;
+						$threadsortsnew['status'] = 1;
+						$threadsortsnew['default'] = 1;
+						$threadsortsnew['defaultshow'] = $threadsortsnew['suptypeid'];
+					}
 					if($threadsortsnew['status']) {
 						if(is_array($threadsortsnew['options']) && $threadsortsnew['options']) {
 							if(!empty($threadsortsnew['options']['enable'])) {
@@ -1148,6 +1163,7 @@ EOT;
 								'expiration' => $threadsortsnew['expiration'],
 								'description' => $threadsortsnew['description'],
 								'defaultshow' => $threadsortsnew['default'] ? $threadsortsnew['defaultshow'] : '',
+								'suptypeid' => $threadsortsnew['suptypeid'] ? $threadsortsnew['suptypeid'] : 0,
 							]) : '';
 					} else {
 						$threadsortsnew = '';
