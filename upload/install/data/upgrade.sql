@@ -287,12 +287,13 @@ DROP TABLE IF EXISTS `pre_restful_permission`;
 CREATE TABLE `pre_restful_permission`
 (
 	`appid`    int(10) unsigned     NOT NULL COMMENT 'appid',
-	`uri`      varchar(255) NOT NULL COMMENT 'api uri',
+	`uri`      varchar(255)         NOT NULL COMMENT 'api uri',
 	`ver`      smallint(6) unsigned NOT NULL COMMENT 'ver',
 	`isbase`   tinyint(1)           NOT NULL COMMENT '是否基础 uri',
+	`freq`     int(10) unsigned     NOT NULL COMMENT '频率',
 	`dateline` int(10) unsigned     NOT NULL COMMENT '创建日期',
 	PRIMARY KEY (`appid`, `uri`, `ver`),
-	KEY        `isbase` (`isbase`)
+	KEY `isbase` (`isbase`)
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_restful_stat;
@@ -517,6 +518,12 @@ ALTER TABLE pre_forum_thread
 	ADD INDEX displayorder_heats (fid, displayorder, heats);
 ALTER TABLE pre_forum_thread
 	ADD INDEX typeid_heats (fid, typeid, displayorder, heats);
+
+ALTER TABLE `pre_forum_collection`
+	ADD COLUMN cover tinyint(1) unsigned NOT NULL DEFAULT '0';
+
+ALTER TABLE `pre_forum_collection`
+	ADD COLUMN icon tinyint(1) unsigned NOT NULL DEFAULT '0';
 
 ALTER TABLE `pre_common_tag`
 	MODIFY `tagname` char (50) NOT NULL DEFAULT '';

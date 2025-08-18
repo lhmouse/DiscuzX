@@ -151,8 +151,7 @@ if(empty($_GET['pmod'])) {
 					'error' => $_FILES['varsnew']['error'][$varid],
 					'size' => $_FILES['varsnew']['size'][$varid],
 				];
-				$upload->init($file, 'common', 0, '', 'plugin', 0, $value) && $upload->save();
-				$_GET['varsnew'][$varid] = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
+				$_GET['varsnew'][$varid] = admin\class_attach::upload($file, 'common', 'plugin', 0, $value);
 			}
 		}
 		if(!empty($_GET['deleteUploadimage'])) {
@@ -160,13 +159,7 @@ if(empty($_GET['pmod'])) {
 				if(!isset($_GET['varsnew'][$key])) {
 					continue;
 				}
-				$f = $_GET['varsnew'][$key];
-				$valueparse = parse_url($f);
-				if(!isset($valueparse['host'])) {
-					$f = str_replace(['..', '//'], ['', '/'], $f);
-					@unlink($f);
-					ftpcmd('delete', 'common/'.$f);
-				}
+				admin\class_attach::delete($_GET['varsnew'][$key]);
 				$_GET['varsnew'][$key] = '';
 			}
 		}

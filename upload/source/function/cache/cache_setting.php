@@ -946,7 +946,6 @@ function get_cachedata_mainnav() {
 		$data['navs'][$id]['navname'] = $nav['name'];
 		$data['navs'][$id]['filename'] = $nav['url'];
 		$data['navs'][$id]['available'] = $nav['available'];
-		$data['navs'][$id]['icon'] = $nav['icon'];
 		$nav['name'] = $nav['name'].($nav['title'] ? '<span>'.$nav['title'].'</span>' : '');
 		$subnavs = '';
 		foreach(table_common_nav::t()->fetch_all_subnav($nav['id']) as $subnav) {
@@ -994,11 +993,12 @@ function get_cachedata_mainnav() {
 		}
 
 		if($nav['logo']) {
-			$navlogo = str_replace('{STATICURL}', STATICURL, $nav['logo']);
-			if(!preg_match('/^'.preg_quote(STATICURL, '/').'/i', $navlogo) && !(($valueparse = parse_url($navlogo)) && isset($valueparse['host']))) {
-				$navlogo = $nav['logo'];
-			}
+			$navlogo = admin\class_attach::getUrl($nav['logo']);
 			$data['navlogos'][$navid] = '<a href="'.$nav['url'].'" title="'.$_G['setting']['bbname'].'"><img src="'.$navlogo.'" alt="'.$_G['setting']['bbname'].'" border="0" /></a>';
+		}
+
+		if($nav['icon']) {
+			$data['navs'][$id]['icon'] = admin\class_attach::getUrl($nav['icon']);
 		}
 
 		$purl = parse_url($nav['url']);

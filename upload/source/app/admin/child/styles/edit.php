@@ -381,8 +381,8 @@ if(!submitcheck('editsubmit')) {
 							'error' => $_FILES['stylevar']['error'][$varid],
 							'size' => $_FILES['stylevar']['size'][$varid],
 						];
-						if($upload->init($file, 'common', 0, '', 'template', 0, $stylesvar[$varid].'_'.date('Ymd').strtolower(random(8))) && $upload->save()) {
-							$logonew = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
+						$logonew = admin\class_attach::upload($file, 'common', 'template', 0, $stylesvar[$varid].'_'.date('Ymd').strtolower(random(8)));
+						if($logonew) {
 							$stylevarids = [$varid];
 							table_common_stylevar::t()->update_substitute_by_styleid($logonew, $id, $stylevarids);
 						}
@@ -409,8 +409,7 @@ if(!submitcheck('editsubmit')) {
 				'error' => $_FILES['varsnew']['error'][$varid],
 				'size' => $_FILES['varsnew']['size'][$varid],
 			];
-			$upload->init($file, 'common', 0, '', 'style', 0, $value) && $upload->save();
-			$_GET['varsnew'][$varid] = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
+			$_GET['varsnew'][$varid] = admin\class_attach::upload($file, 'common', 'style', 0, $value);
 		}
 	}
 	if(!empty($_GET['deleteUploadimage'])) {
@@ -418,13 +417,7 @@ if(!submitcheck('editsubmit')) {
 			if(!isset($_GET['varsnew'][$key])) {
 				continue;
 			}
-			$f = $_GET['varsnew'][$key];
-			$valueparse = parse_url($f);
-			if(!isset($valueparse['host'])) {
-				$f = str_replace(['..', '//'], ['', '/'], $f);
-				@unlink($f);
-				ftpcmd('delete', 'common/'.$f);
-			}
+			admin\class_attach::delete($_GET['varsnew'][$key]);
 			$_GET['varsnew'][$key] = '';
 		}
 	}

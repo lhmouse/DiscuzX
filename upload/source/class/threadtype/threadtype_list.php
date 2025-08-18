@@ -58,10 +58,15 @@ template: 模板中用 {字段名} 引用相应的列表字段
 	width: auto !important;
 }
 .enhcomp th {
-	min-width: 50px;
+	width: auto !important;
+	text-align: left !important;
+	padding: 0 4px 2px 4px !important;
 }
 .enhcomp td {
 	padding-right: 20px !important;
+}
+.enhcomp label {
+	margin-right: 10px;
 }
 </style>';
 			$string = $header;
@@ -72,14 +77,14 @@ template: 模板中用 {字段名} 引用相应的列表字段
 		$conf = is_string($params) ? json_decode($params, true) : $params;
 		$_id = random(5);
 		$string .= '<table class="enhcomp" id="'.$_id.'">';
-		$string .= '<tr class="header"><th width="50">'.lang('template', 'delete').'</th>';
+		$string .= '<tr class="header bbda"><th>'.lang('template', 'delete').'</th>';
 		foreach($conf as $col) {
 			if(!isset($col['field'])) {
 				continue;
 			}
 			$string .= '<th>'.$col['name'].'</th>';
 		}
-		$string .= '<th width="50">'.lang('forum/template', 'displayorder').'</th></tr>';
+		$string .= '<th>'.lang('forum/template', 'displayorder').'</th></tr>';
 		$addCols = '';
 		if(!empty($option['value'])) {
 			$i = 0;

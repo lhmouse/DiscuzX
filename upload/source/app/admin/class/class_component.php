@@ -8,6 +8,10 @@
 
 namespace admin;
 
+if(!defined('IN_DISCUZ')) {
+	exit('Access Denied');
+}
+
 class class_component {
 
 	const components = [
@@ -198,9 +202,10 @@ class class_component {
 		$var['type'] = 'filetext';
 		$var['extra'] = 'accept=\'image/*\'';
 		if($var['value']) {
+			$url = \admin\class_attach::getUrl($var['value']);
+			$GLOBALS['lang']['__t'] = ($var['description'] ? $var['description'].'<br />' : '').'<label><input type="checkbox" class="checkbox" name="deleteUploadimage[]" value="'.$var['var'].'" /> '.cplang('delete').'</label>'.
+				'<br /><img src="'.$url.'" />';
 			$var['description'] = '__t';
-			$GLOBALS['lang']['__t'] = '<label><input type="checkbox" class="checkbox" name="deleteUploadimage[]" value="'.$var['var'].'" /> '.cplang('delete').'</label>'.
-				'<br /><img src="'.$var['value'].'" />';
 		}
 	}
 

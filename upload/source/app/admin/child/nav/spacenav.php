@@ -31,9 +31,8 @@ if(!$do) {
 		}
 
 		foreach($navlist as $nav) {
-			$navicon = str_replace('{STATICURL}', STATICURL, $nav['icon']);
-			if(!preg_match('/^'.preg_quote(STATICURL, '/').'/i', $navicon) && !(($valueparse = parse_url($navicon)) && isset($valueparse['host']))) {
-				$navicon = $nav['icon'].'?'.random(6);
+			if($nav['icon']) {
+				$navicon = admin\class_attach::getUrl($nav['icon']);
 			}
 			showtablerow('', ['class="td25"', 'class="td25"', '', ''], [
 				in_array($nav['type'], ['2', '1']) ? "<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$nav['id']}\">" : '<input type="checkbox" class="checkbox" value="" disabled="disabled" />',
@@ -128,10 +127,7 @@ EOT;
 			$nav['subname'] = substr($nav['subname'], 1);
 		}
 		if($nav['icon']) {
-			$navicon = str_replace('{STATICURL}', STATICURL, $nav['icon']);
-			if(!preg_match('/^'.preg_quote(STATICURL, '/').'/i', $navicon) && !(($valueparse = parse_url($navicon)) && isset($valueparse['host']))) {
-				$navicon = $nav['icon'].'?'.random(6);
-			}
+			$navicon = admin\class_attach::getUrl($nav['icon']);
 			$naviconhtml = '<br /><label><input type="checkbox" class="checkbox" name="deleteicon" value="yes" /> '.$lang['delete'].'</label><br /><img src="'.$navicon.'" width="16" height="16" />';
 		}
 		shownav('style', 'nav_setting_customnav');
@@ -180,19 +176,12 @@ EOT;
 		}
 		$iconnew = addslashes($nav['icon']);
 		if($_FILES['iconnew']) {
-			$upload = new discuz_upload();
-			if($upload->init($_FILES['iconnew'], 'common') && $upload->save()) {
-				$iconnew = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
-			}
+			$iconnew = admin\class_attach::upload($_FILES['iconnew']);
 		} else {
 			$iconnew = $_GET['iconnew'];
 		}
 		if($_GET['deleteicon'] && $nav['icon']) {
-			$valueparse = parse_url($nav['icon']);
-			if(!isset($valueparse['host']) && !strexists($nav['icon'], '{STATICURL}')) {
-				@unlink($_G['setting']['attachurl'].'common/'.$nav['icon']);
-				ftpcmd('delete', 'common/'.$nav['icon']);
-			}
+			admin\class_attach::delete($nav['icon']);
 			$iconnew = '';
 		}
 		$iconadd = ", icon='$iconnew'";

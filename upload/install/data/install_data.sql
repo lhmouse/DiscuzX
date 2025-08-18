@@ -1381,3 +1381,5 @@ INSERT INTO `pre_common_smiley` (typeid,displayorder,type,code,url) VALUES
 (4,90,'smiley',':tu:','tu.gif'),
 (4,91,'smiley',':weiqu:','weiqu.gif'),
 (4,92,'smiley',':xieyanxiao:','xieyanxiao.gif');
+
+INSERT INTO pre_restful_source (sourceid, name, url) VALUES (1, 'Discuz! Team', 'https://api.witframe.com/discuzrestful');

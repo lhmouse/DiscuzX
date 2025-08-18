@@ -224,7 +224,7 @@ EOT;
 		updatecache('setting');
 		// 删除cache_domain.php文件
 		$cache_domain_file = DISCUZ_DATA.'./sysdata/cache_domain.php';
-		if (file_exists($cache_domain_file)) {
+		if(file_exists($cache_domain_file)) {
 			@unlink($cache_domain_file);
 		}
 		cpmsg('nav_add_succeed', 'action=nav&operation=headernav', 'succeed');
@@ -256,18 +256,12 @@ EOT;
 		}
 
 		if($nav['logo']) {
-			$navlogo = str_replace('{STATICURL}', STATICURL, $nav['logo']);
-			if(!preg_match('/^'.preg_quote(STATICURL, '/').'/i', $navlogo) && !(($valueparse = parse_url($navlogo)) && isset($valueparse['host']))) {
-				$navlogo = $nav['logo'].'?'.random(6);
-			}
+			$navlogo = admin\class_attach::getUrl($nav['logo']);
 			$logohtml = '<br /><label><input type="checkbox" class="checkbox" name="deletelogo" value="yes" /> '.$lang['delete'].'</label><br /><img src="'.$navlogo.'" />';
 		}
 
 		if($nav['icon']) {
-			$navicon = str_replace('{STATICURL}', STATICURL, $nav['icon']);
-			if(!preg_match('/^'.preg_quote(STATICURL, '/').'/i', $navicon) && !(($valueparse = parse_url($navicon)) && isset($valueparse['host']))) {
-				$navicon = $nav['icon'].'?'.random(6);
-			}
+			$navicon = admin\class_attach::getUrl($nav['icon']);
 			$naviconhtml = '<br /><label><input type="checkbox" class="checkbox" name="deleteicon" value="yes" /> '.$lang['delete'].'</label><br /><img src="'.$navicon.'" width="40" height="40" />';
 		}
 
@@ -336,19 +330,12 @@ EOT;
 
 		$logonew = addslashes($nav['logo']);
 		if($_FILES['logonew']) {
-			$upload = new discuz_upload();
-			if($upload->init($_FILES['logonew'], 'common') && $upload->save()) {
-				$logonew = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
-			}
+			$logonew = admin\class_attach::upload($_FILES['logonew']);
 		} else {
 			$logonew = $_GET['logonew'];
 		}
 		if($_GET['deletelogo'] && $nav['logo']) {
-			$valueparse = parse_url($nav['logo']);
-			if(!isset($valueparse['host']) && !strexists($nav['logo'], '{STATICURL}')) {
-				@unlink($_G['setting']['attachurl'].'common/'.$nav['logo']);
-				ftpcmd('delete', 'common/'.$nav['logo']);
-			}
+			admin\class_attach::delete($nav['logo']);
 			$logonew = '';
 		}
 		$logoadd = ", logo='$logonew'";
@@ -356,19 +343,12 @@ EOT;
 
 		$iconnew = addslashes($nav['icon']);
 		if($_FILES['iconnew']) {
-			$upload = new discuz_upload();
-			if($upload->init($_FILES['iconnew'], 'common') && $upload->save()) {
-				$iconnew = $_G['setting']['attachurl'].'common/'.$upload->attach['attachment'];
-			}
+			$iconnew = admin\class_attach::upload($_FILES['iconnew']);
 		} else {
 			$iconnew = $_GET['iconnew'];
 		}
 		if($_GET['deleteicon'] && $nav['icon']) {
-			$valueparse = parse_url($nav['icon']);
-			if(!isset($valueparse['host']) && !strexists($nav['icon'], '{STATICURL}')) {
-				@unlink($_G['setting']['attachurl'].'common/'.$nav['icon']);
-				ftpcmd('delete', 'common/'.$nav['icon']);
-			}
+			admin\class_attach::delete($nav['icon']);
 			$iconnew = '';
 		}
 		$iconadd = ", icon='$iconnew'";
