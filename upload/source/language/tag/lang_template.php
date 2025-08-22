@@ -30,5 +30,7 @@ $lang = [
 	'attach_img' => '图片附件',
 	'attachment' => '附件',
 	'thread_digest' => '精华',
-];
+	'none_tag' => '没有相关标签',
+	'tag_search' => '搜索结果最多显示 50 个，点击结果链接可直接插入标签',
+	];
 

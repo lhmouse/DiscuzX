@@ -14,6 +14,5 @@ if($_GET['formhash'] != FORMHASH || !$_G['group']['allowmanagetag']) {
 	showmessage('undefined_action');
 }
 $class_tag = new tag();
-$tagstr = $class_tag->update_field($_GET['tags'], $_G['tid'], 'tid', $_G['thread']);
-table_forum_post::t()->update_by_tid('tid:'.$_G['tid'], $_G['tid'], ['tags' => $tagstr], false, false, 1);
-	
+$tagstr = $class_tag->update_field($_GET['tags'], intval($_GET['tid']), 'tid', $_G['thread']);
+table_forum_post::t()->update_by_tid('tid:'.intval($_GET['tid']), intval($_GET['tid']), ['tags' => $tagstr], false, false, 1);

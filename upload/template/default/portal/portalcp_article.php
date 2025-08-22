@@ -235,7 +235,7 @@ make_html('portal.php?mod=view&aid={$aid}', $('makehtml_'));
 					</div>
 					<div class="bm_c">
 						<input type="text" class="px vm" size="60" id="tags" name="tags" value="{$article[tags] or ''}" onblur="extraCheck(4)" />
-						<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'forum.php?mod=tag', 'get', 0)">{lang choosetag}</a>
+						<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'misc.php?mod=tag&op=add', 'get', 0)">{lang choosetag}</a>
 						<p class="xg1">{lang posttag_comment}</p>
 						<!--{eval $recent_use_tag = recent_use_tag('articleid');}-->
 						<!--{if $recent_use_tag}-->

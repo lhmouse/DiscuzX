@@ -117,6 +117,7 @@
 		<li class="mtext">
 			<textarea class="pt" id="needmessage" autocomplete="off" id="{$editorid}_textarea" name="$editor['textarea']" placeholder="<!--{if $_GET['action'] != 'reply'}-->{lang posts}<!--{/if}-->{lang thread_content}" fwin="reply"><!--{if $special != 127}-->$postinfo['message']<!--{/if}--></textarea>
 			<div class="mimg cl">
+				<a href="javascript:;" class="post_camerabtn"><i class="dm-camera"></i>拍照<input type="file" name="Filedata" id="cameradata" capture="environment" accept=".jpg,.jpeg,.gif,.png,.bmp,image/jpeg,image/gif,image/png,image/bmp" /></a>
 				<a href="javascript:;" class="post_imgbtn"><i class="dm-image"></i>{lang e_img_attach}<input type="file" name="Filedata" id="filedata" multiple="multiple" accept=".jpg,.jpeg,.gif,.png,.bmp,image/jpeg,image/gif,image/png,image/bmp" /></a>
 				<a href="javascript:;" class="post_attbtn"><i class="dm-star-fill"></i>{lang upload_attach}<input type="file" name="Filedata" id="attfiledata" multiple="multiple" /></a>
 			</div>
@@ -298,6 +299,57 @@
 		'13' : '{lang uploadstatusmsg13}'
 	};
 	var form = $('#postform');
+	$(document).on('change', '#cameradata', function() {
+			popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
+			uploadsuccess = function(data) {
+				if(data == '') {
+					popup.open('{lang uploadpicfailed}', 'alert');
+				}
+				var dataarr = data.split('|');
+				if(dataarr[0] == 'DISCUZUPLOAD' && dataarr[2] == 0) {
+					popup.close();
+					$('#imglist').append('<li><div><span aid="'+dataarr[3]+'" class="del"><a href="javascript:;"><i class="dm-error"></i></a></span><span class="p_img"><a href="javascript:;" onclick="addsmilies(\'[attachimg]'+dataarr[3]+'[/attachimg]\')"><img style="height:54px;width:54px;" id="aimg_'+dataarr[3]+'" src="{$_G['setting']['attachurl']}forum/'+dataarr[5]+'" /></a></span><input type="hidden" name="attachnew['+dataarr[3]+'][description]" /><div></li>');
+				} else {
+					var sizelimit = '';
+					if(dataarr[7] == 'ban') {
+						sizelimit = '{lang uploadpicatttypeban}';
+					} else if(dataarr[7] == 'perday') {
+						sizelimit = '{lang donotcross}'+Math.ceil(dataarr[8]/1024)+'K)';
+					} else if(dataarr[7] > 0) {
+						sizelimit = '{lang donotcross}'+Math.ceil(dataarr[7]/1024)+'K)';
+					}
+					popup.open(STATUSMSG[dataarr[2]] + sizelimit, 'alert');
+				}
+			};
+			if(typeof FileReader != 'undefined' && this.files[0]) {//note 支持html5上传新特性
+				for (const file of this.files) {
+					var tmpfiles = [];
+					tmpfiles[0] = file;
+					$.buildfileupload({
+						uploadurl:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
+						files:tmpfiles,
+						uploadformdata:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
+						uploadinputname:'Filedata',
+						maxfilesize:"$swfconfig['max']",
+						success:uploadsuccess,
+						error:function() {
+							popup.open('{lang uploadpicfailed}', 'alert');
+						}
+					});
+				}
+			} else {
+				$.ajaxfileupload({
+					url:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
+					data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
+					dataType:'text',
+					fileElementId:'filedata',
+					success:uploadsuccess,
+					error: function() {
+						popup.open('{lang uploadpicfailed}', 'alert');
+					}
+				});
+			}
+	});
 	$(document).on('change', '#filedata', function() {
 			popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
 			uploadsuccess = function(data) {

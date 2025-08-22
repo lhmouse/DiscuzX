@@ -20,7 +20,7 @@ require './source/function/function_forum.php';
 
 $modarray = ['ajax', 'announcement', 'attachment', 'forumdisplay',
 	'group', 'image', 'index', 'misc', 'modcp', 'post', 'redirect',
-	'rss', 'topicadmin', 'trade', 'viewthread', 'tag', 'collection', 'guide', 'member'
+	'rss', 'topicadmin', 'trade', 'viewthread', 'collection', 'guide', 'member'
 ];
 
 $modcachelist = [

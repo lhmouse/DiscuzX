@@ -48,7 +48,11 @@ foreach($forums as $forum) {
 			if(forum($forum)) {
 				$catlist[$forum['fup']]['forums'][] = $forum['fid'];
 				$forum['orderid'] = $catlist[$forum['fup']]['forumscount']++;
-				$forum['subforums'] = '';
+				if(!defined('IN_RESTFUL_API')) {
+					$forum['subforums'] = '';
+				} else {
+					$forum['subforums'] = [];
+				}
 				$forumlist[$forum['fid']] = $forum;
 			}
 
@@ -61,9 +65,21 @@ foreach($forums as $forum) {
 				$forumurl = !empty($forum['domain']) && !empty($_G['setting']['domain']['root']['forum']) ? $_G['scheme'].'://'.$forum['domain'].'.'.$_G['setting']['domain']['root']['forum'] : 'forum.php?mod=forumdisplay&fid='.$forum['fid'];
 				$forumlist[$forum['fup']]['subforums'] .= (empty($forumlist[$forum['fup']]['subforums']) ? '' : ', ').'<a href="'.$forumurl.'" '.(!empty($forum['extra']['namecolor']) ? ' style="color: '.$forum['extra']['namecolor'].';"' : '').'>'.$forum['name'].'</a>';
 			}
+			if(defined('IN_RESTFUL_API')) {
+				$subforum = [];
+				$subforum['fid'] = $forum['fid'];
+				$subforum['fup'] = $forum['fup'];
+				$subforum['type'] = $forum['type'];
+				$subforum['name'] = $forum['name'];
+				$subforum['displayorder'] = $forum['displayorder'];
+				$subforum['threads'] = $forum['threads'];
+				$subforum['posts'] = $forum['posts'];
+				$subforum['todayposts'] = $forum['todayposts'];
+				$subforum['yesterdayposts'] = $forum['yesterdayposts'];
+				$subforum['iconUri'] = $forum['icon'];
+				$forumlist[$forum['fup']]['subforums'][] = $subforum;
+			}
 		}
-
-	} else {
 
 		if($forum['moderators']) {
 			$forum['moderators'] = moddisplay($forum['moderators'], 'flat');

@@ -1814,27 +1814,46 @@ function getfocus_rand($module) {
 	if(empty($_G['cache']['focus']['data']) || !is_array($_G['cache']['focus']['data'])) {
 		return null;
 	}
-	$focusid = $_G['setting']['focus'][$module][array_rand($_G['setting']['focus'][$module])];
-	return $focusid;
+	return $_G['setting']['focus'][$module][array_rand($_G['setting']['focus'][$module])];
 }
 
 function check_seccode($value, $idhash, $fromjs = 0, $modid = '', $verifyonly = false) {
+	$f = childfile('check_seccode', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_seccheck::check_seccode($value, $idhash, $fromjs, $modid, $verifyonly);
 }
 
 function check_secqaa($value, $idhash, $verifyonly = false) {
+	$f = childfile('check_secqaa', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_seccheck::check_secqaa($value, $idhash, $verifyonly);
 }
 
 function seccheck($rule, $param = []) {
+	$f = childfile('seccheck', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_seccheck::seccheck($rule, $param);
 }
 
 function make_seccode($seccode = '') {
+	$f = childfile('make_seccode', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_seccheck::make_seccode($seccode);
 }
 
 function make_secqaa() {
+	$f = childfile('make_secqaa', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_seccheck::make_secqaa();
 }
 
@@ -1922,10 +1941,18 @@ function simplepage($num, $perpage, $curpage, $mpurl) {
 }
 
 function censor($message, $modword = NULL, $return = FALSE, $modasban = TRUE) {
+	$f = childfile('censor', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_form::censor($message, $modword, $return, $modasban);
 }
 
 function censormod($message) {
+	$f = childfile('censormod', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return !(getglobal('group/ignorecensor') || !$message) && helper_form::censormod($message);
 }
 
@@ -1966,8 +1993,7 @@ function runlog($file, $message, $halt = 0) {
 
 function stripsearchkey($string) {
 	$string = trim($string);
-	$string = str_replace('*', '%', addcslashes($string, '%_'));
-	return $string;
+	return str_replace('*', '%', addcslashes($string, '%_'));
 }
 
 function dmkdir($dir, $mode = 0777, $makeindex = TRUE) {
@@ -2159,14 +2185,26 @@ function setstatus($position, $value, $baseon = null) {
 }
 
 function notification_add($touid, $type, $note, $notevars = [], $system = 0) {
+	$f = childfile('notification_add', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_notification::notification_add($touid, $type, $note, $notevars, $system);
 }
 
 function manage_addnotify($type, $from_num = 0, $langvar = []) {
+	$f = childfile('manage_addnotify', 'global/core');
+	if($f) {
+		require $f;
+	}
 	helper_notification::manage_addnotify($type, $from_num, $langvar);
 }
 
 function sendpm($toid, $subject, $message, $fromid = '', $replypmid = 0, $isusername = 0, $type = 0) {
+	$f = childfile('sendpm', 'global/core');
+	if($f) {
+		require $f;
+	}
 	return helper_pm::sendpm($toid, $subject, $message, $fromid, $replypmid, $isusername, $type);
 }
 

@@ -89,7 +89,7 @@
 							<td class="xw1">{lang post_tag}</td>
 							<td>
 								<input type="text" class="px vm" size="60" id="tags" name="tags" value="{$postinfo[tag] or ''}" onblur="extraCheck(4)" />
-								<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'forum.php?mod=tag', 'get', 0)">{lang choosetag}</a>
+								<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'misc.php?mod=tag&op=add', 'get', 0)">{lang choosetag}</a>
 							</td>
 						</tr>
 						<tr>

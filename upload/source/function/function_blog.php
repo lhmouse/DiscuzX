@@ -60,9 +60,9 @@ function blog_post($POST, $olds = []) {
 		$POST['password'] = '';
 	}
 
-	$POST['tag'] = dhtmlspecialchars(trim($POST['tag']));
-	$POST['tag'] = getstr($POST['tag'], 500);
-	$POST['tag'] = censor($POST['tag']);
+	$POST['tags'] = dhtmlspecialchars(trim($POST['tags']));
+	$POST['tags'] = getstr($POST['tags'], 500);
+	$POST['tags'] = censor($POST['tags']);
 
 	if($POST['plaintext']) {
 		$POST['message'] = nl2br($POST['message']);
@@ -219,13 +219,13 @@ function blog_post($POST, $olds = []) {
 
 	$blogarr['blogid'] = $blogid;
 	$class_tag = new tag();
-	$POST['tag'] = $olds ? $class_tag->update_field($POST['tag'], $blogid, 'blogid') : $class_tag->add_tag($POST['tag'], $blogid, 'blogid');
+	$POST['tags'] = $olds ? $class_tag->update_field($POST['tags'], $blogid, 'blogid') : $class_tag->add_tag($POST['tags'], $blogid, 'blogid');
 	$fieldarr = [
 		'message' => $message,
 		'postip' => $_G['clientip'],
 		'port' => $_G['remoteport'],
 		'target_ids' => $POST['target_ids'],
-		'tag' => $POST['tag'] ?? ''
+		'tag' => $POST['tags'] ?? ''
 	];
 
 	if(!empty($titlepic)) {

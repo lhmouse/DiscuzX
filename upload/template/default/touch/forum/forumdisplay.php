@@ -96,6 +96,9 @@
 			<!--{if $thread['displayorder'] > 0 && !$displayorder_thread}-->
 			{eval $displayorder_thread = 1;}
 			<!--{/if}-->
+			<!--{if !$thread['forumstick'] && $thread['closed'] > 1 && ($thread['isgroup'] == 1 || $thread['fid'] != $_G['fid'])}-->
+			<!--{eval $thread['tid']=$thread['closed'];}-->
+			<!--{/if}-->
 			<!--{if $thread['moved']}-->
 			<!--{eval $thread['tid']=$thread['closed'];}-->
 			<!--{/if}-->

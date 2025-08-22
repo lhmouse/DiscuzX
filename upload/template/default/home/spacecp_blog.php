@@ -133,7 +133,10 @@
 					</tr>
 					<tr>
 						<th>{lang label}</th>
-						<td class="pns"><input type="text" class="px vm" size="40" id="tag" name="tag" value="$blog[tag]" /></td>
+						<td class="pns">
+							<input type="text" class="px vm" size="60" id="tags" name="tags" value="{$blog[tag] or ''}" onblur="extraCheck(4)" />
+							<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'misc.php?mod=tag&op=add', 'get', 0)">{lang choosetag}</a>
+						</td>
 					</tr>
 
 				<!--{if $blog['uid'] && $blog['uid']!=$_G['uid']}-->

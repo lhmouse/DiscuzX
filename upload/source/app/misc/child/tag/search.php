@@ -16,4 +16,3 @@ foreach($query as $value) {
 	$taglist[] = $value;
 }
 $searchkey = dhtmlspecialchars($searchkey);
-	

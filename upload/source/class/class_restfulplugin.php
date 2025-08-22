@@ -252,6 +252,14 @@ class restfulplugin {
 				'authorusername' => $forum['lastpost']['authorusername'],
 			] : [];
 
+			if($forum['type'] == 'forum' && !empty($forum['subforums'])) {
+				foreach($forum['subforums'] as $k_sub => $forum_sub) {
+					if(!empty($forum_sub['iconUri'])) {
+						$data[$forumKey][$k]['subforums'][$k_sub]['icon'] = self::_f_forumimg($forum_sub['iconUri']);
+					}
+					unset($data[$forumKey][$k]['subforums'][$k_sub]['iconUri']);
+				}
+			}
 			unset($forumlist[$forum['fup']]['forums']);
 			$forumlist[$forum['fup']]['subforums'][] = $data[$forumKey][$k];
 		}
