@@ -81,6 +81,8 @@ foreach($forums as $forum) {
 			}
 		}
 
+	} else {
+
 		if($forum['moderators']) {
 			$forum['moderators'] = moddisplay($forum['moderators'], 'flat');
 		}
