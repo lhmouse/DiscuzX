@@ -332,6 +332,7 @@ EOF;
 		showsetting('usergroups_edit_basic_allowcreatecollection', 'allowcreatecollectionnew', intval($group['allowcreatecollection']), 'text');
 		showsetting('usergroups_edit_basic_allowfollowcollection', 'allowfollowcollectionnew', intval($group['allowfollowcollection']), 'text');
 		showsetting('usergroups_edit_basic_close_ad', 'closeadnew', $group['closead'], 'radio');
+		showsetting('usergroups_edit_post_tag', 'allowposttagnew', $group['allowposttag'], 'radio');
 		showtablefooter();
 		showtagfooter('div');
 		/*search*/
@@ -390,7 +391,6 @@ EOF;
 		}
 		showsetting('usergroups_edit_post_edit_time_limit', 'edittimelimitnew', intval($group['edittimelimit']), 'text');
 		showsetting('usergroups_edit_post_allowreplycredit', 'allowreplycreditnew', $group['allowreplycredit'], 'radio');
-		showsetting('usergroups_edit_post_tag', 'allowposttagnew', $group['allowposttag'], 'radio');
 		showsetting('usergroups_edit_post_allowcommentpost', ['allowcommentpostnew', [
 			$lang['usergroups_edit_post_allowcommentpost_firstpost'],
 			$lang['usergroups_edit_post_allowcommentpost_reply'],
