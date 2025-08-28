@@ -1,5 +1,4 @@
 <?php exit('Access Denied');?>
-<!--{eval $_G['home_tpl_titles'] = array(getstr($pic['title'], 60, 0, 0, 0, -1), $album['albumname'], '{lang album}');}-->
 <!--{eval $friendsname = array(1 => '{lang friendname_1}',2 => '{lang friendname_2}',3 => '{lang friendname_3}',4 => '{lang friendname_4}');}-->
 <!--{template common/header}-->
 <div class="header cl">
@@ -19,11 +18,15 @@
 		</div>
 		<!--[diy=diy2]--><div id="diy2" class="area"></div><!--[/diy]-->
 		<div class="album_inof">
-			<p id="a_set_title" class="albim_pic_title"><!--{if $pic['title']}-->$pic['title']<!--{else}--><!--{eval echo substr($pic['filename'], 0, strrpos($pic['filename'], '.'));}--><!--{/if}--></p>
+			<p id="a_set_title" class="albim_pic_title">
+				<a href="home.php?mod=spacecp&ac=album&op=editpic&albumid=$pic['albumid']&picid=$pic['picid']" class="y">{lang manage_pic}</a>
+				<!--{if $pic['title']}-->$pic['title']<!--{else}--><!--{eval echo substr($pic['filename'], 0, strrpos($pic['filename'], '.'));}--><!--{/if}-->
+			</p>
 			<p class="album_at">
 				{lang upload_at} <!--{date($pic['dateline'])}--> ($pic['size'])
 			</p>
 		</div>
+		<a href="home.php?mod=space&uid={$pic['uid']}&do=album&id={$pic['albumid']}" class="mt10 cl"><button class="mt10 pn btn_pn_red">{lang return_pic_list}</button></a>
 	</div>
 </div>
 <!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->

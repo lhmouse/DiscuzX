@@ -26,7 +26,11 @@ if(empty($_G['cache']['adminsearchindex'])) {
 $searchindex = &$_G['cache']['adminsearchindex'];
 
 $keywords = trim($_GET['keywords']);
-$kws = explode(' ', $keywords);
+if(str_starts_with($keywords, '(') && str_ends_with($keywords, ')')) {
+	$kws = [substr($keywords, 1, -1)];
+} else {
+	$kws = explode(' ', $keywords);
+}
 $kws = array_map('trim', $kws);
 $kws = array_filter($kws);
 $keywords = implode(' ', $kws);

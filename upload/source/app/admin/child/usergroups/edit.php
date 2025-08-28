@@ -406,11 +406,13 @@ EOF;
 		showsetting('usergroups_edit_post_allowimgcontent', 'allowimgcontentnew', $group['allowimgcontent'], 'radio');
 		showtablefooter();
 		showtagfooter('div');
+		/*search*/
 
 		$group['maxattachsize'] = intval($group['maxattachsize'] / 1024);
 		$group['maxsizeperday'] = intval($group['maxsizeperday'] / 1024);
 		$group['maximagesize'] = intval($group['maximagesize'] / 1024);
 
+		/*search={"nav_usergroups":"action=usergroups","usergroups_edit_attach":"action=usergroups&operation=edit&anchor=attach"}*/
 		showtagheader('div', 'attach', $anchor == 'attach');
 		showtableheader('', 'nobottom');
 		showtitle('usergroups_edit_attach');
@@ -419,8 +421,8 @@ EOF;
 		showsetting('usergroups_edit_attach_post', 'allowpostattachnew', $group['allowpostattach'], 'radio');
 		showsetting('usergroups_edit_attach_set_perm', 'allowsetattachpermnew', $group['allowsetattachperm'], 'radio');
 		showsetting('usergroups_edit_image_post', 'allowpostimagenew', $group['allowpostimage'], 'radio');
-		showsetting('usergroups_edit_attach_max_size', 'maxattachsizenew', $group['maxattachsize'], 'text');
-		showsetting('usergroups_edit_attach_max_size_per_day', 'maxsizeperdaynew', $group['maxsizeperday'], 'text');
+		showcomponent('usergroups_edit_attach_max_size', 'maxattachsizenew', $group['maxattachsize'], 'component_size');
+		showcomponent('usergroups_edit_attach_max_size_per_day', 'maxsizeperdaynew', $group['maxsizeperday'], 'component_size');
 		showsetting('usergroups_edit_attach_max_number_per_day', 'maxattachnumnew', $group['maxattachnum'], 'text');
 		showsetting('usergroups_edit_attach_ext', 'attachextensionsnew', $group['attachextensions'], 'text');
 		showtablefooter();
@@ -448,9 +450,9 @@ EOF;
 		showtitle('usergroups_edit_invite');
 		showsetting('usergroups_edit_invite_permission', 'allowinvitenew', $group['allowinvite'], 'radio');
 		showsetting('usergroups_edit_invite_send_permission', 'allowmailinvitenew', $group['allowmailinvite'], 'radio');
-		showsetting('usergroups_edit_invite_price', 'invitepricenew', $group['inviteprice'], 'text');
-		showsetting('usergroups_edit_invite_buynum', 'maxinvitenumnew', $group['maxinvitenum'], 'text');
-		showsetting('usergroups_edit_invite_maxinviteday', 'maxinvitedaynew', $group['maxinviteday'], 'text');
+		showsetting('usergroups_edit_invite_price', 'invitepricenew', $group['inviteprice'], 'text', norelatedlink: true);
+		showsetting('usergroups_edit_invite_buynum', 'maxinvitenumnew', $group['maxinvitenum'], 'text', norelatedlink: true);
+		showsetting('usergroups_edit_invite_maxinviteday', 'maxinvitedaynew', $group['maxinviteday'], 'text', norelatedlink: true);
 		showtablefooter();
 		showtagfooter('div');
 		/*search*/
@@ -554,7 +556,7 @@ EOF;
 		showtagheader('div', 'home', $anchor == 'home');
 		showtableheader('', 'nobottom');
 		showtitle('usergroups_edit_home');
-		showsetting('usergroups_edit_attach_max_space_size', 'maxspacesizenew', $group['maxspacesize'], 'text');
+		showcomponent('usergroups_edit_attach_max_space_size', 'maxspacesizenew', $group['maxspacesize'], 'component_size', '', 'MB,GB');
 		showsetting('usergroups_edit_home_allow_blog', 'allowblognew', $group['allowblog'], 'radio', '', 1);
 		showsetting('usergroups_edit_home_allow_blog_mod', 'allowblogmodnew', $group['allowblogmod'], 'radio');
 		showtagfooter('tbody');
@@ -563,7 +565,7 @@ EOF;
 		showtagfooter('tbody');
 		showsetting('usergroups_edit_home_allow_upload', 'allowuploadnew', $group['allowupload'], 'radio', '', 1);
 		showsetting('usergroups_edit_home_allow_upload_mod', 'allowuploadmodnew', $group['allowuploadmod'], 'radio');
-		showsetting('usergroups_edit_home_image_max_size', 'maximagesizenew', $group['maximagesize'], 'text');
+		showcomponent('usergroups_edit_home_image_max_size', 'maximagesizenew', $group['maximagesize'], 'component_size');
 		showtagfooter('tbody');
 		showsetting('usergroups_edit_home_allow_share', 'allowsharenew', $group['allowshare'], 'radio', '', 1);
 		showsetting('usergroups_edit_home_allow_share_mod', 'allowsharemodnew', $group['allowsharemod'], 'radio');

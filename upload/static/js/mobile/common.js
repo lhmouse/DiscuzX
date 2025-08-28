@@ -1396,38 +1396,101 @@ function footlink() {
 	}
 }
 
-// 封装初始化 Discuz! 手机版二级滑动导航的函数
-function initdhnav(containerSelector, activeClass) {
-	document.addEventListener('DOMContentLoaded', function() {
-		// 获取指定容器下带有指定激活类的元素
-		const monElements = document.querySelectorAll(`${containerSelector} ${activeClass}`);
-		let initialSlide = 0;
+/**
+ * 初始化导航Swiper组件
+ * @param {string} [containerSelector='#dhnavs_li'] - 容器选择器
+ * @param {string} [activeClass='mon'] - 活动元素类名
+ * @param {Object} [customOptions={}] - 自定义Swiper配置选项
+ * @returns {Swiper|null} - 返回Swiper实例或null（当容器不存在时）
+ */
+function initdhnav(containerSelector = '#dhnavs_li', activeClass = 'mon', customOptions = {}) {
+    // 获取容器元素
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+        console.warn('Swiper容器不存在:', containerSelector);
+        return null;
+    }
 
-		if (monElements.length > 0) {
-			const monElement = monElements[0];
-			const rect = monElement.getBoundingClientRect();
-			const windowWidth = window.innerWidth;
+    // 查找活动元素并计算初始位置
+    const activeElement = container.querySelector('.' + activeClass);
+    let initialSlide = 0;
 
-			// 计算元素左偏移量和宽度之和是否超出窗口宽度
-			initialSlide = (rect.left + rect.width > windowWidth) ?
-				Array.from(monElement.parentNode.children).indexOf(monElement) : 0;
-		}
+    if (activeElement) {
+        const rect = activeElement.getBoundingClientRect();
+        const elementLeft = rect.left;
+        const elementWidth = activeElement.offsetWidth;
+        const windowWidth = window.innerWidth;
 
-		// 初始化 Swiper 实例
-		new Swiper(containerSelector, {
-			freeMode: true,
-			slidesPerView: 'auto',
-			initialSlide: initialSlide,
-			on: {
-				touchMove: function() {
-					Discuz_Touch_on = 0;
-				},
-				touchEnd: function() {
-					Discuz_Touch_on = 1;
-				}
-			}
-		});
-	});
+        // 计算元素索引
+        const siblings = Array.from(container.getElementsByClassName(activeClass));
+        const elementIndex = siblings.indexOf(activeElement);
+
+        // 确定初始滑动位置
+        initialSlide = (elementLeft + elementWidth >= windowWidth) ? elementIndex : 0;
+    }
+
+    // 合并默认配置和自定义配置
+    const swiperOptions = {
+        freeMode: true,
+        slidesPerView: 'auto',
+        initialSlide: initialSlide,
+        onTouchMove: () => { Discuz_Touch_on = 0; },
+        onTouchEnd: () => { Discuz_Touch_on = 1; },
+        ...customOptions // 自定义配置可以覆盖默认值
+    };
+
+    // 初始化并返回Swiper实例
+    return new Swiper(containerSelector, swiperOptions);
+}
+
+/**
+ * 家园模块下设置密码的共用函数
+ */
+function home_passwordShow(value) {
+    // 获取元素引用
+    const spanPassword = document.getElementById('span_password');
+    const tbSelectgroup = document.getElementById('tb_selectgroup');
+    if(value == 4) {
+        spanPassword.style.display= '';
+        tbSelectgroup.style.display = 'none';
+    } else if(value == 2) {
+        spanPassword.style.display = 'none';
+        tbSelectgroup.style.display = '';
+    } else {
+        spanPassword.style.display = 'none';
+        tbSelectgroup.style.display = 'none';
+    }
+}
+
+function home_getgroup(gid) {
+    if (gid) {
+        // 构建请求URL
+        const url = `home.php?mod=spacecp&ac=privacy&inajax=1&op=getgroup&gid=${encodeURIComponent(gid)}`;
+
+        // 使用原生fetch发送GET请求
+        fetch(url)
+            .then(response => {
+                // 检查响应是否成功
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text(); // 解析响应为文本
+            })
+            .then(s => {
+                // 获取目标元素并检查是否存在
+                const targetNames = document.getElementById('target_names');
+                if (targetNames) {
+                    // 处理响应并更新innerHTML
+                    targetNames.innerHTML += s + ',';
+                } else {
+                    console.warn('未找到ID为target_names的元素');
+                }
+            })
+            .catch(error => {
+                // 捕获并处理请求错误
+                console.error('请求失败:', error);
+            });
+    }
 }
 
 _attachEvent(window, 'load', footlink, document);

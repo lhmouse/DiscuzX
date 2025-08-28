@@ -33,7 +33,7 @@ if(!submitcheck('updategroupsetting')) {
 	showtableheader();
 	showtitle('groups_setting_basic');
 	showsetting('groups_setting_basic_mod', 'settingnew[groupmod]', $setting['groupmod'], 'radio');
-	showsetting('groups_setting_basic_iconsize', 'settingnew[group_imgsizelimit]', $setting['group_imgsizelimit'], 'text');
+	showcomponent('groups_setting_basic_iconsize', 'settingnew[group_imgsizelimit]', $setting['group_imgsizelimit'], 'component_size');
 	showsetting('groups_setting_basic_recommend', 'settingnew[group_recommend]', $setting['group_recommend'], 'text');
 	showtitle('groups_setting_admingroup');
 	$varname = ['newgroup_admingroupids', [], 'isfloat'];

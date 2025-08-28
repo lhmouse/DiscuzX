@@ -46,8 +46,9 @@ if(submitcheck('settingsubmit')) {
 } else {
 	shownav('global', 'setting_'.$operation);
 
-	$_GET['anchor'] = in_array($_GET['anchor'], ['mod', 'heatthread', 'recommend', 'comment', 'activity', 'other', 'threadexp', 'avatar', 'guide']) ? $_GET['anchor'] : 'mod';
+	$_GET['anchor'] = in_array($_GET['anchor'], ['mod', 'heatthread', 'recommend', 'comment', 'activity', 'other', 'threadexp', 'avatar', 'guide', 'login']) ? $_GET['anchor'] : 'login';
 	showsubmenu('setting_functions', [
+		['setting_functions_login', 'setting&operation=functions&anchor=login', $_GET['anchor'] == 'login'],
 		['setting_functions_mod', 'setting&operation=functions&anchor=mod', $_GET['anchor'] == 'mod'],
 		['setting_functions_heatthread', 'setting&operation=functions&anchor=heatthread', $_GET['anchor'] == 'heatthread'],
 		['setting_functions_recommend', 'setting&operation=functions&anchor=recommend', $_GET['anchor'] == 'recommend'],
@@ -177,12 +178,18 @@ if(submitcheck('settingsubmit')) {
 	showtablefooter();
 	/*search*/
 
-	/*search={"setting_functions":"action=setting&operation=functions","setting_functions_other":"action=setting&operation=functions&anchor=other"}*/
-	showtips('setting_tips', 'other_tips', $_GET['anchor'] == 'other');
-	showtableheader('', 'nobottom', 'id="other"'.($_GET['anchor'] != 'other' ? ' style="display: none"' : ''));
+	/*search={"setting_functions":"action=setting&operation=functions","setting_functions_login":"action=setting&operation=functions&anchor=login"}*/
+	showtableheader('', 'nobottom', 'id="login"'.($_GET['anchor'] != 'login' ? ' style="display: none"' : ''));
 	showsetting('setting_functions_other_uidlogin', 'settingnew[uidlogin]', $setting['uidlogin'], 'radio');
 	showsetting('setting_functions_other_secmobilelogin', 'settingnew[secmobilelogin]', $setting['secmobilelogin'], 'radio');
 	showsetting('setting_functions_other_autoidselect', 'settingnew[autoidselect]', $setting['autoidselect'], 'radio');
+	showsetting('setting_functions_other_disableipnotice', 'settingnew[disableipnotice]', $setting['disableipnotice'], 'radio');
+	showtablefooter();
+	/*search*/
+
+	/*search={"setting_functions":"action=setting&operation=functions","setting_functions_other":"action=setting&operation=functions&anchor=other"}*/
+	showtips('setting_tips', 'other_tips', $_GET['anchor'] == 'other');
+	showtableheader('', 'nobottom', 'id="other"'.($_GET['anchor'] != 'other' ? ' style="display: none"' : ''));
 	showsetting('setting_functions_other_submitlock', 'settingnew[submitlock]', $setting['submitlock'], 'radio');
 	showsetting('setting_functions_other_rssstatus', 'settingnew[rssstatus]', $setting['rssstatus'], 'radio');
 	showsetting('setting_functions_other_rssttl', 'settingnew[rssttl]', $setting['rssttl'], 'text');
@@ -195,7 +202,6 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_functions_other_collectionteamworkernum', 'settingnew[collectionteamworkernum]', $setting['collectionteamworkernum'], 'text');
 	showsetting('setting_functions_other_shortcut', 'settingnew[shortcut]', $setting['shortcut'], 'text');
 	showsetting('setting_functions_other_closeforumorderby', 'settingnew[closeforumorderby]', $setting['closeforumorderby'], 'radio');
-	showsetting('setting_functions_other_disableipnotice', 'settingnew[disableipnotice]', $setting['disableipnotice'], 'radio');
 	showsetting('setting_functions_other_darkroom', 'settingnew[darkroom]', $setting['darkroom'], 'radio');
 	showsetting('setting_functions_other_global_sign', 'settingnew[globalsightml]', $setting['globalsightml'], 'textarea');
 	showtablefooter();

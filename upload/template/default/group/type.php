@@ -26,7 +26,7 @@
 			<!--{/if}-->
 			<!--{hook/index_top}-->
 			<!--{if $list}-->
-				<div class="tbmu cl bw0">
+				<div class="bm_c pbm ptm cl bw0">
 					<span class="y">
 					<select title="{lang orderby}" onchange="location.href=this.value" class="ps">
 						<option value="$url" $selectorder[default]>{lang orderby_default}</option>

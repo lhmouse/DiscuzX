@@ -13,6 +13,8 @@
 	<script>mobileDiy.init('{$_G['style']['tpldirectory']}', 'touch/{$_G['style']['tplfile']}', '{echo dsign({$_G['style']['tpldirectory']}.'touch/'.{$_G['style']['tplfile']})}');</script>
 <!--{/if}-->
 
+{cells common/footer/js}
+
 </body>
 </html>
 <!--{eval updatesession();}-->

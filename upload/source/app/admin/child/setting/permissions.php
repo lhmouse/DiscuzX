@@ -42,6 +42,15 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_permissions_minpostsize', 'settingnew[minpostsize]', $setting['minpostsize'], 'text');
 	showsetting('setting_permissions_minpostsize_mobile', 'settingnew[minpostsize_mobile]', $setting['minpostsize_mobile'], 'text');
 	showsetting('setting_permissions_maxpostsize', 'settingnew[maxpostsize]', $setting['maxpostsize'], 'text');
+	showsetting('setting_permissions_post_append', 'settingnew[postappend]', $setting['postappend'], 'radio');
+	showsetting('setting_permissions_hideexpiration', 'settingnew[hideexpiration]', $setting['hideexpiration'], 'text');
+	showsetting('setting_permissions_mailinterval', 'settingnew[mailinterval]', $setting['mailinterval'], 'text');
+	showsetting('setting_permissions_maxpolloptions', 'settingnew[maxpolloptions]', $setting['maxpolloptions'], 'text');
+	showsetting('setting_permissions_profilehistory', 'settingnew[profilehistory]', $setting['profilehistory'], 'radio');
+	showsetting('setting_permissions_nsprofiles', 'settingnew[nsprofiles]', $setting['nsprofiles'], 'radio');
+	showsetting('setting_permissions_modasban', 'settingnew[modasban]', $setting['modasban'], 'radio');
+
+	showtitle('setting_permissions_editpost');
 	showsetting('setting_permissions_alloweditpost', ['settingnew[alloweditpost]', [
 		cplang('thread_general'),
 		cplang('thread_poll'),
@@ -50,20 +59,16 @@ if(submitcheck('settingsubmit')) {
 		cplang('thread_activity'),
 		cplang('thread_debate')
 	]], $setting['alloweditpost'], 'binmcheckbox');
-	showsetting('setting_permissions_post_append', 'settingnew[postappend]', $setting['postappend'], 'radio');
-	showsetting('setting_permissions_mailinterval', 'settingnew[mailinterval]', $setting['mailinterval'], 'text');
-	showsetting('setting_permissions_maxpolloptions', 'settingnew[maxpolloptions]', $setting['maxpolloptions'], 'text');
+	showsetting('setting_permissions_editperdel', 'settingnew[editperdel]', $setting['editperdel'], 'radio');
 	showsetting('setting_permissions_editby', 'settingnew[editedby]', $setting['editedby'], 'radio');
-	showsetting('setting_permissions_profilehistory', 'settingnew[profilehistory]', $setting['profilehistory'], 'radio');
-	showsetting('setting_permissions_nsprofiles', 'settingnew[nsprofiles]', $setting['nsprofiles'], 'radio');
-	showsetting('setting_permissions_modasban', 'settingnew[modasban]', $setting['modasban'], 'radio');
+
+	showtitle('nav_portal');
+	showsetting('setting_permissions_maxportalsize', 'settingnew[maxportalsize]', $setting['maxportalsize'], 'text');
 
 	showtitle('nav_setting_rate');
 	showsetting('setting_permissions_karmaratelimit', 'settingnew[karmaratelimit]', $setting['karmaratelimit'], 'text');
 	showsetting('setting_permissions_modratelimit', 'settingnew[modratelimit]', $setting['modratelimit'], 'radio');
 	showsetting('setting_permissions_dupkarmarate', 'settingnew[dupkarmarate]', $setting['dupkarmarate'], 'radio');
-	showsetting('setting_permissions_editperdel', 'settingnew[editperdel]', $setting['editperdel'], 'radio');
-	showsetting('setting_permissions_hideexpiration', 'settingnew[hideexpiration]', $setting['hideexpiration'], 'text');
 	/*search*/
 
 	showsubmit('settingsubmit', 'submit', '', $extbutton.(!empty($from) ? '<input type="hidden" name="from" value="'.$from.'">' : ''));

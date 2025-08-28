@@ -58,13 +58,7 @@ if(!submitcheck('stylesubmit')) {
 	uasort($narray, 'filemtimesort');
 	$recommendaddon = dunserialize($_G['setting']['cloudaddons_recommendaddon']);
 	if(empty($recommendaddon['updatetime']) || abs($_G['timestamp'] - $recommendaddon['updatetime']) > 7200 || (isset($_GET['checknew']) && $_G['formhash'] == $_GET['formhash'])) {
-		$recommendaddon = json_decode(cloudaddons_recommendaddon($addonids), true);
-		if(empty($recommendaddon) || !is_array($recommendaddon)) {
-			$recommendaddon = [];
-		}
-		$recommendaddon['updatetime'] = $_G['timestamp'];
-		table_common_setting::t()->update('cloudaddons_recommendaddon', $recommendaddon);
-		updatecache('setting');
+		$update_recommendaddon = true;
 	}
 	if(!empty($recommendaddon['templates']) && is_array($recommendaddon['templates'])) {
 		$count = 0;
@@ -155,6 +149,9 @@ if(!submitcheck('stylesubmit')) {
 	showformfooter();
 	if($newvers) {
 		echo '<script type="text/javascript">'.$newvers.'</script>';
+	}
+	if($update_recommendaddon) {
+		echo '<script type="text/javascript" src="'.ADMINSCRIPT.'?action=misc&operation=recommendupdate"></script>';
 	}
 
 } else {

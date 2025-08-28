@@ -4,6 +4,7 @@
 <div class="header cl">
 	<div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
 	<h2>{lang album}</h2>
+	<div class="my"><a href="home.php?mod=spacecp&ac=upload"><i class="dm-plus-c"></i></a></div>
 </div>
 <!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
 <div class="dhnv flex-box cl">

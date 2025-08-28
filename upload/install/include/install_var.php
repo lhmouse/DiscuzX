@@ -72,14 +72,15 @@ $filesock_items = array('fsockopen', 'pfsockopen', 'stream_socket_client', 'curl
 $env_items = array
 (
 	'os' => array('c' => 'PHP_OS', 'r' => 'notset', 'b' => 'unix'),
-	'php' => array('c' => 'PHP_VERSION', 'r' => '8.0', 'b' => '8.1'),
+	'php' => array('c' => 'PHP_VERSION', 'r' => '8.0+', 'b' => '8.1'),
+	'mysql' => array('r' => 'MySQL 5.7+/MariaDB 10.2', 'b' => 'MySQL 8.0'),
 	'attachmentupload' => array('r' => 'notset', 'b' => '2M'),
 	'gdversion' => array('r' => '1.0', 'b' => '2.0'),
 	'curl' => array('r' => 'notset', 'b' => 'enable'),
 	'opcache' => array('r' => 'notset', 'b' => 'enable'),
 	'redis' => array('r' => 'notset', 'b' => 'enable'),
 	'imagick' => array('r' => 'notset', 'b' => 'enable'),
-	'diskspace' => array('r' => 30 * 1048576, 'b' => 'notset'),
+	'diskspace' => array('r' => 40 * 1048576, 'b' => 'notset'),
 );
 
 $dirfile_items = array

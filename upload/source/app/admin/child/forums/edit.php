@@ -686,7 +686,7 @@ EOT;
 				showtagheader('tbody', 'threadsorts_config', $forum['threadsorts']['status']);
 				showsetting('forums_edit_threadtypes_required', 'threadsortsnew[required]', $forum['threadsorts']['required'], 'radio');
 				showsetting('forums_edit_threadtypes_prefix', 'threadsortsnew[prefix]', $forum['threadsorts']['prefix'], 'radio');
-				showsetting('forums_edit_threadsorts_default', 'threadsortsnew[default]', $forum['threadsorts']['default'], 'radio');
+				showsetting('forums_edit_threadsorts_default', 'threadsortsnew[default]', $forum['threadsorts']['default'], 'radio', norelatedlink: true);
 				showtagfooter('tbody');
 				showtablefooter();
 

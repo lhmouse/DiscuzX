@@ -6,6 +6,10 @@
  * https://license.discuz.vip
  */
 
+if(!defined('IN_DISCUZ')) {
+	exit('Access Denied');
+}
+
 $lang = [
 
 	'admingroups_edit_succeed' => '管理组权限设置更新成功 ',

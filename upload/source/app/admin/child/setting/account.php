@@ -35,7 +35,7 @@ if(submitcheck('settingsubmit')) {
 		//array('appeal', $lang['security_verify_appeal']),
 	]];
 	$setting['security_verify'] = dunserialize($setting['security_verify']);
-	showsetting('setting_sec_base_security_verify', $security_verify, $setting['security_verify'], 'mcheckbox');
+	showsetting('setting_sec_base_security_verify', $security_verify, $setting['security_verify'], 'mcheckbox', norelatedlink: true);
 	showsetting('setting_sec_base_security_mobile', 'settingnew[security_mobile]', $setting['security_mobile'], 'radio');
 	showsetting('setting_sec_base_security_email', 'settingnew[security_email]', $setting['security_email'], 'radio');
 	showsetting('setting_sec_base_security_password', 'settingnew[security_password]', $setting['security_password'], 'radio');

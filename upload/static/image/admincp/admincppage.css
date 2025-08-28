@@ -624,9 +624,10 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .adminnote>a:hover::before { content: "\d7"; color: #163e69; font-weight: 700; }
 .adminnote>div { padding: 10px;color: var(--admincp-fb); }
 .team { display: flex; flex-wrap: wrap; flex-basis: calc(100% - 150px); }
-.team a { flex-basis: 25%; min-width: 200px; }
+.team a { flex-basis: 25%; min-width: 180px; }
 .team span { flex-basis: 40%; min-width: 240px; }
 .team.tm a { flex-basis: auto; min-width: auto; }
+#home_dev img { margin-left: 15px; float:right; width:100px; }
 
 /* forumlist */
 .forumheader { padding: 0px 20px;height:60px;line-height:60px; }
@@ -864,6 +865,9 @@ div.todo>em { width: 25%; }
 .dzlogo::before{ font-family: dzicon;content: "\e620";font-size: 14px; font-style: normal; }
 .dzlogo2::before{ font-family: dzicon;content: "\e61f";font-size: 14px; font-style: normal; }
 .uclogo::before{ font-family: dzicon;content: "\e618";font-size: 14px; font-style: normal; }
+.related::before{ font-family: dzicon;content: "\e622";font-size: 14px; }
+    a.related { text-decoration:none; color: var(--admincp-fd); margin-left: 5px; vertical-align: middle; }
+    a.related:hover { color: var(--admincp-fb); }
 
 .dragObj { padding: 10px; margin: 10px 0px; cursor: move; border: 1px dashed #09F; }
     .dragObj:hover { background: #FFFAD2; }

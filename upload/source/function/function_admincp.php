@@ -624,12 +624,14 @@ function showtagheader($tagname, $id, $display = FALSE, $classname = '') {
 	echo '<'.$tagname.(!isset($_G['showsetting_multi']) && $classname ? " class=\"$classname\"" : '').' id="'.$id.'"'.($display ? '' : ' style="display: none"').'>';
 }
 
-function showtitle($title, $extra = '', $multi = 1) {
+function showtitle($title, $extra = '', $multi = 1, $norelatedlink = false) {
 	global $_G;
 	if(!empty($_G['showsetting_multi'])) {
 		return;
 	}
-	echo "\n".'<tr'.($extra ? " $extra" : '').'><th colspan="15" class="partition">'.cplang($title).'</th></tr>';
+	$title = cplang($title);
+	!$norelatedlink && $title .= getrelatedlink($title);
+	echo "\n".'<tr'.($extra ? " $extra" : '').'><th colspan="15" class="partition">'.$title.'</th></tr>';
 	if($multi) {
 		showmultititle(1);
 	}
@@ -724,7 +726,7 @@ function showcomponent($setname, $varname, $value, $type, $comment = '', $conf =
 	$_G['showcomponent'][$var['type']][] = $var['variable'];
 	admin\class_component::type_plugin($var, $extra);
 
-	showsetting(dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']));
+	showsetting(dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']), $var['norelatedlink'] ?? false);
 
 	foreach($extra as $k => $v) {
 		if(!empty($showextra[$k])) {
@@ -753,7 +755,7 @@ function serializecomponent() {
 	unset($_GET['_components']);
 }
 
-function showsetting($setname, $varname, $value, $type = 'radio', $disabled = '', $hidden = 0, $comment = '', $extra = '', $setid = '', $nofaq = false, $inbox = 0, $widemode = false) {
+function showsetting($setname, $varname, $value, $type = 'radio', $disabled = '', $hidden = 0, $comment = '', $extra = '', $setid = '', $nofaq = false, $inbox = 0, $widemode = false, $norelatedlink = false) {
 
 	global $_G;
 	$s = "\n";
@@ -966,6 +968,8 @@ function showsetting($setname, $varname, $value, $type = 'radio', $disabled = ''
 	$name = cplang($setname);
 	$name .= $name && !str_ends_with($name, ':') ? ':' : '';
 	$name = $disabled ? '<span class="lightfont">'.$name.'</span>' : $name;
+	$commenttext = $comment ? $comment : cplang($setname.'_comment', false);
+	!$norelatedlink && $name .= getrelatedlink($name.' '.$commenttext);
 	$setid = !$setid ? substr(md5($setname), 0, 4) : $setid;
 	$setid = isset($_G['showsetting_multi']) ? 'S'.$setid : $setid;
 	if(!empty($_G['showsetting_multirow'])) {
@@ -1003,12 +1007,12 @@ function showsetting($setname, $varname, $value, $type = 'radio', $disabled = ''
 	if(!$nocomment && ($type != 'omcheckbox' || $varname[2] != 'isfloat')) {
 		if(!isset($_G['showsetting_multi'])) {
 			if($inbox) {
-				echo '<div>'.$s.'</div><div>'.($comment ? $comment : cplang($setname.'_comment', false)).($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
+				echo '<div>'.$s.'</div><div>'.$commenttext.($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
 					($disabled ? '<br /><span class="smalltxt" style="color:#F00">'.cplang($setname.'_disabled', false).'</span>' : NULL).'</div>';
 			} elseif(!$widemode) {
 				showtablerow('class="noborder" onmouseover="setfaq(this, \'faq'.$setid.'\')"', ['class="vtop rowform"', 'class="vtop tips2" s="1"'], [
 					$s,
-					($comment ? $comment : cplang($setname.'_comment', false)).($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
+					$commenttext.($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
 					($disabled ? '<br /><span class="smalltxt" style="color:#F00">'.cplang($setname.'_disabled', false).'</span>' : NULL)
 				]);
 			} else {
@@ -1033,6 +1037,29 @@ function showsetting($setname, $varname, $value, $type = 'radio', $disabled = ''
 		showtagheader('tbody', 'hidden_'.$setname, $value, 'sub');
 	}
 
+}
+
+function getrelatedlink($relatedtext) {
+	static $relatedlang = null;
+	if($relatedlang === null) {
+		$relatedlang = lang('admincp_related');
+	}
+	if(!$relatedlang) {
+		return '';
+	}
+	$relatedkeyword = '';
+	foreach($relatedlang as $key) {
+		if(str_contains($relatedtext, $key)) {
+			$relatedkeyword = $key;
+		}
+	}
+	if(!$relatedkeyword) {
+		return '';
+	}
+	if(str_contains($relatedkeyword, ' ')) {
+		$relatedkeyword = '('.$relatedkeyword.')';
+	}
+	return '<a href="'.ADMINSCRIPT.'?action=search&keywords='.$relatedkeyword.'&searchsubmit=yes" class="related" target="_blank" title="'.cplang('admincp_related_search').'"></a>';
 }
 
 function showmulti() {

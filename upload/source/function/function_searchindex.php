@@ -95,7 +95,7 @@ function get_searchindex($adminfile, &$indexdata) {
 			}
 			$data = $search[2][$k];
 			$l = $tm = [];
-			preg_match_all("/(showsetting|showtitle|showtableheader|showtips)\('(\w+)'/", $data, $r);
+			preg_match_all("/(showsetting|showtitle|showtableheader|showtips|showcomponent)\('(\w+)'/", $data, $r);
 			if($r[2]) {
 				if($titletext) {
 					$l[] = implode(' &raquo; ', $titletext);

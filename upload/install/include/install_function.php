@@ -133,6 +133,9 @@ function env_check(&$env_items) {
 	foreach($env_items as $key => $item) {
 		if($key == 'php') {
 			$env_items[$key]['current'] = PHP_VERSION;
+		}
+		if($key == 'mysql') {
+			$env_items[$key]['current'] = class_exists('mysqli') ? 'mysql_enable' : 'disable';
 		} elseif($key == 'attachmentupload') {
 			$env_items[$key]['current'] = @ini_get('file_uploads') ? getmaxupload() : 'unknow';
 		} elseif($key == 'gdversion') {
@@ -284,7 +287,7 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items, &$filesock_
 
 		show_header();
 
-		echo "<div class=\"box\"><h2 class=\"title\">".lang('env_check')."</h2>\n";
+		echo "<div class=\"box\"><h2 class=\"title\" id=\"_env_check\">".lang('env_check')."</h2>\n";
 		echo "<table class=\"tb\">\n";
 		echo "<tr>\n";
 		echo "\t<th>".lang('project')."</th>\n";
@@ -358,6 +361,7 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items, &$filesock_
 			});
 		}
 	});
+	document.getElementById('_env_check').click();
 </script>
 EOT;
 
@@ -660,7 +664,7 @@ function show_header() {
 	$subversion = DISCUZ_SUBVERSION;
 	$release = DISCUZ_RELEASE;
 	$install_lang = lang(INSTALL_LANG);
-	$title = lang('title_install');
+	$title = RUN_MODE == 'install' ? lang('title_install') : lang('title_tool');
 	$titlehtml = '
 <svg width="127.78282px" height="22.5px" viewBox="0 0 127.78282 22.5" version="1.1" xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -677,7 +681,7 @@ function show_header() {
 		</g>
 	</g>
 </svg>
-'.lang('install_wizard');
+'.(RUN_MODE == 'install' ? lang('install_wizard') : lang('tool_wizard'));
 	$mitframehtml = '
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="51" viewBox="0 -2 62.8641357421875 16.128326416015625">
 	<defs>
@@ -933,7 +937,7 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
 		$box[$j] = $tmp;
 	}
 
-	// 从密钥簿得出密钥进行异或，再转成字符 
+	// 从密钥簿得出密钥进行异或，再转成字符
 	for($a = $j = $i = 0; $i < $string_length; $i++) {
 		$a = ($a + 1) % 256;
 		$j = ($j + $box[$a]) % 256;
@@ -1158,7 +1162,9 @@ function show_db_install($upgrade = false) {
 				// 数据库初始化成功就进行系统初始化
 				append_notice("<p><?= lang('initsys') ?> ... </p>");
 				refresh_lastmsg();
-				ajax.get('../misc.php?mod=initsys<?php if($upgrade) { echo '&force='.rawurlencode(authcode(time(), 'ENCODE', $_config['security']['authkey'])); } ?>', function (callback, status) {
+				ajax.get('../misc.php?mod=initsys<?php if($upgrade) {
+					echo '&force='.rawurlencode(authcode(time(), 'ENCODE', $_config['security']['authkey']));
+				} ?>', function (callback, status) {
 					if (status >= 400 || callback.indexOf('Access Denied') !== -1 || callback.indexOf('Discuz! Database Error') !== -1 || callback.indexOf('Discuz! System Error') !== -1 || callback.indexOf('Fatal error') !== -1) {
 						var p = document.createElement('p');
 						p.className = 'red';
@@ -1509,50 +1515,6 @@ function dfopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE, $
 	}
 }
 
-function check_env() {
-
-	global $lang, $attachdir;
-
-	$errors = array('quit' => false);
-	$quit = false;
-
-	if(!function_exists('mysqli_connect')) {
-		$errors[] = 'mysqli_unsupport';
-		$quit = true;
-	}
-
-	if(!file_exists(ROOT_PATH.'./config.inc.php')) {
-		$errors[] = 'config_nonexistence';
-		$quit = true;
-	} elseif(!is_writeable(ROOT_PATH.'./config.inc.php')) {
-		$errors[] = 'config_unwriteable';
-		$quit = true;
-	}
-
-	$checkdirarray = array(
-		'attach' => $attachdir,
-		'forumdata' => './forumdata',
-		'cache' => './forumdata/cache',
-		'ftemplates' => './forumdata/templates',
-		'threadcache' => './forumdata/threadcaches',
-		'log' => './forumdata/logs',
-	);
-
-	foreach($checkdirarray as $key => $dir) {
-		if(!dir_writeable(ROOT_PATH.$dir)) {
-			$langkey = $key.'_unwriteable';
-			$errors[] = $key.'_unwriteable';
-			if(!in_array($key, array('ftemplate'))) {
-				$quit = TRUE;
-			}
-		}
-	}
-
-	$errors['quit'] = $quit;
-	return $errors;
-
-}
-
 function show_error($type, $errors = '', $quit = false) {
 
 	global $lang, $step;
@@ -1600,7 +1562,7 @@ function show_tips($tip, $title = '', $comment = '', $style = 1) {
 
 function show_setting($setname, $varname = '', $value = '', $type = 'text|password|checkbox', $error = '') {
 	if($setname == 'start') {
-		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<form method=\"post\" action=\""._FILE_."\">\n";
 		return;
 	} elseif($setname == 'end') {
 		echo "\n</form>\n";
@@ -1885,6 +1847,21 @@ function install_testdata($username, $uid) {
 			runquery($sql);
 		}
 	}
+}
+
+function all_done() {
+	@unlink(ROOT_PATH.'./install/'._FILE_);
+	show_header();
+	echo '</div><div class="main">';
+	echo '<div class="box">';
+	if(file_exists(ROOT_PATH.'./install/'._FILE_)) {
+		show_tips('all_done_exists');
+	} else {
+		show_tips('all_done_noexists');
+	}
+	echo '</div>';
+	show_footer();
+	exit;
 }
 
 function getvars($data, $type = 'VAR') {
@@ -2406,4 +2383,58 @@ function getmaxupload() {
 	} else {
 		return ini_get('upload_max_filesize');
 	}
+}
+
+function checkfiles($currentdir, $ext = '', $sub = 1, $skip = '') {
+	global $md5data;
+	$dir = @opendir(ROOT_PATH.$currentdir);
+	$exts = '/('.$ext.')$/i';
+	$skips = explode(',', $skip);
+
+	if(!$dir) {
+		return;
+	}
+
+	while($entry = @readdir($dir)) {
+		$file = $currentdir.$entry;
+		if($entry != '.' && $entry != '..' && (($ext && preg_match($exts, $entry) || !$ext) || $sub && is_dir(ROOT_PATH.$file)) && !in_array($entry, $skips)) {
+			if($sub && is_dir(ROOT_PATH.$file)) {
+				checkfiles($file.'/', $ext, $sub, $skip);
+			} else {
+				if(is_dir(ROOT_PATH.$file)) {
+					$md5data[$file] = md5($file);
+				} else {
+					$md5data[$file] = md5_file(ROOT_PATH.$file);
+				}
+			}
+		}
+	}
+}
+
+function checkcachefiles($currentdir) {
+	global $_config;
+	$dir = opendir(ROOT_PATH.'./'.$currentdir);
+	$exts = '/\.php$/i';
+	$showlist = $modifylist = $addlist = [];
+	while($entry = readdir($dir)) {
+		$file = $currentdir.$entry;
+		if($entry != '.' && $entry != '..' && preg_match($exts, $entry)) {
+			$fp = fopen(ROOT_PATH.'./'.$file, 'rb');
+			$cachedata = fread($fp, filesize(ROOT_PATH.'./'.$file));
+			fclose($fp);
+
+			if(preg_match("/^<\?php\n\/\/Discuz! cache file, DO NOT modify me!\n\/\/Identify: (\w+)\n\n(.+?)\?>$/s", $cachedata, $match)) {
+				$showlist[$file] = $md5 = $match[1];
+				$cachedata = $match[2];
+
+				if(md5($entry.$cachedata.$_config['security']['authkey']) != $md5) {
+					$modifylist[$file] = $md5;
+				}
+			} else {
+				$showlist[$file] = '';
+			}
+		}
+	}
+
+	return [$showlist, $modifylist, $addlist];
 }

@@ -85,7 +85,7 @@ tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:
 .op a {display:inline;margin-left:2px;line-height:22px}
 .area-none {margin-bottom:5px;padding:3px;background:#ddf0df}
 body#space .area {padding:10px 0;border:none;background:0 0}
-body .area{margin-bottom: 10px;}
+body .area{margin-bottom: 20px;}
 .frame,.frame-tab {padding:5px;    border: 1px solid #ebedf0;border-radius: 4px;background:#fff}
 #space .frame {background-color:transparent}
 .frame-tab {border-color:#ff8500}
@@ -120,20 +120,22 @@ body#space .block {margin:0 2px 5px;border:1px dashed #09f}
 .fwinmask {top:56px!important;right:0!important;left:initial!important;overflow-x:hidden;overflow-y:auto;height:calc(100% - 56px)!important;border-left:1px solid #ebedf0;background:#fff;box-shadow: 0 0px 14px 0 rgb(0 0 0 / 10%);}
 #fwin_showimport {height: auto !important;}
 #fwin_showimport .m_c .o { position: inherit; }
-.m_c .c {margin-top:55px;padding:5px 15px 10px;width:590px!important;height:100%!important;max-height:100%!important;line-height: 20px!important;}
+#fwin_showimport .m_c .c{margin-top: 80px;}
+.m_c .c {margin-top:50px;padding:5px 15px 10px;width:590px!important;height:100%!important;max-height:100%!important;line-height: 20px!important;    padding-bottom: 60px;}
+#fwin_showblock .m_c .c{margin-top:5px;}
 .vt label {margin-right:6px;color:#797c80;font-size:13px;cursor:pointer}
 .vm {vertical-align:middle}
 img.vm {vertical-align:text-bottom}
 .borderul .bordera,.borderul label {display:none}
 .flb {position:fixed;right:0;z-index:1;display:flex;margin-bottom:10px;padding:15px 15px 15px;width:590px;border-bottom:1px solid #ebebeb;background:#fff;cursor:inherit!important;justify-content:space-between}
 .flb em {float:left;color:#494b4d;font-weight:700;font-size:14px}
-.m_c .tb {position:fixed;right:0;z-index:1;display:flex;margin-top:52px;padding:10px 5px;width:519px;border-bottom:1px solid #f0f1f2;background:#fff}
+.m_c .tb {display:flex;padding:10px 5px;margin-top: 50px;border-bottom:1px solid #f0f1f2;background:#fff;position: sticky;top: 50px;}
 .m_c .tb li {padding:5px 12px;font-size:14px}
 .m_c .tb li.a a {position:relative;z-index:1;border-bottom:2px solid #1c8ce9}
 .m_c .tb li a {padding-bottom:16px}
 .m_c .o {position:fixed;right:0;bottom:0;display:flex;padding:12px 15px;width:590px;border-top:1px solid #ebebeb;background:#fff;text-align:right}
 .m_c .o button {margin-right:15px}
-.m_c #import_type { display: none; }
+.m_c #import_type { display: flex;position: relative;margin-top: 0px;width: 100%;border-top: 1px solid #f0f1f2;}
 .pipe {margin:0 5px;color:#ebebeb}
 .pn {display:inline-block;padding:0 15px;height:30px;border:none;border-radius:4px;background-color:#fff;box-shadow: 0 0 0 1px #ebedf0;color:#18191a;font-weight:inherit;line-height:30px;cursor:pointer;transition-duration:.4s}
 .pnc {background-color:#1985ff;color:#fff;box-shadow:none}

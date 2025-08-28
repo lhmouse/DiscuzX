@@ -11,6 +11,10 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 }
 
 if(submitcheck('importsubmit') || isset($_GET['dir'])) {
+	if(!is_dir(DISCUZ_PLUGIN($_GET['dir']))) {
+		echo '<script type="text/javascript">top.location.href=\''.ADMINSCRIPT.'?action=cloudaddons&frame=no&id='.$_GET['dir'].'.plugin&from=recommendaddon\';</script>';
+		exit;
+	}
 	if(!isset($_GET['installtype'])) {
 		cloudaddons_validator($_GET['dir'].'.plugin');
 		$pdir = DISCUZ_PLUGIN($_GET['dir']);

@@ -84,9 +84,9 @@ $lang = array(
 
 	'ext_info_succ' => '安装成功。',
 	'install_submit' => '提交',
-	'install_locked' => '安装锁定，已经安装过了，如果您确定要重新安装，请到服务器上删除<br /> '.str_replace(ROOT_PATH, '', $lockfile),
+	'install_locked' => '安装锁定，已经安装过了，如果您确定要重新安装，请到服务器上删除<br /> '.str_replace(ROOT_PATH, '', $lockfile).'<br /><br />如果您要进入工具箱，请修改本安装文件的文件名(./install/index.php)，然后用修改后的文件名访问',
 	'error_stuck_msg' => '安装进程已经很久没有进展了，可能相关请求已经因网络超时或服务器严重错误而异常退出',
-	'error_quit_msg' => '您必须解决以上问题，安装才可以继续',
+	'error_quit_msg' => '您必须解决以上问题，才可以继续进行',
 	'error_reinstall_msg' => '您的数据库可能InnoDB性能不佳，请调高PHP超时时间，刷新页面尝试重新安装',
 
 	'step_app_reg_title' => '设置运行环境',
@@ -363,11 +363,13 @@ $lang = array(
 	'max_size' => '支持/最大尺寸',
 	'project' => '项目',
 	'ucenter_required' => 'Discuz! 所需配置',
-	'ucenter_best' => 'Discuz! 最佳',
+	'ucenter_best' => 'Discuz! 推荐',
 	'curr_server' => '当前服务器',
 	'env_check' => '环境检查',
 	'os' => '操作系统',
 	'php' => 'PHP 版本',
+	'mysql' => 'MySQL 版本',
+	'mysql_enable' => '未连接无法获知具体版本',
 	'attachmentupload' => '附件上传',
 	'unlimit' => '不限制',
 	'version' => '版本',
@@ -435,6 +437,37 @@ $lang = array(
 	',
 	'upgrade_version_error' => '无法升级，旧版本的 Discuz! 必须是 '.UPGRADE_FROM_VERSION.' 版本',
 
+	'title_tool' => SOFT_NAME.' 工具箱',
+	'tool_wizard' => '工具箱',
+	'tool_start' => '开始',
+
+	'install_locked_exists' => '无法进入工具箱，请修改本安装脚本的文件名为 index.php 执行安装模式',
+	'install_locked_format_error' => '无法进入工具箱，修改的文件名不能包含 "index"',
+
+	'tool_tips' => '为了安全起见，如果您已完成全部操作请点击“完成”，我们将帮助您删除当前脚本',
+	'tool_select_resetpw' => '<div class="selradio"><input type="radio" name="method" id="select_resetpw" value="resetpw" /><label for="select_resetpw">重置创始人密码</label></div>',
+	'tool_select_dircheck' => '<div class="selradio"><input type="radio" name="method" id="select_dircheck" value="dircheck" /><label for="select_dircheck">文件目录检测</label></div>',
+	'tool_select_updatecache' => '<div class="selradio"><input type="radio" name="method" id="select_updatecache" value="updatecache" /><label for="select_updatecache">更新缓存</label></div>',
+
+	'tool_resetpw_uid1' => '本工具只恢复 UID 为 1 的创始人密码，请恢复该用户为创始人后再进行此操作',
+	'tool_resetpw_founder' => '填写创始人信息',
+	'tool_resetpw_loginname' => '账号登录名',
+	'tool_resetpw_password' => '账号新密码',
+	'tool_resetpw_password2' => '请重复输入',
+	'tool_resetpw_password_error' => '两次输入密码不一致',
+	'tool_resetpw_success' => '密码已重置，请使用新密码登录',
+
+	'tool_dircheck_unwritable' => '目录不可写入，请检查目录权限',
+	'tool_dircheck_checkfile_notexists' => '校验文件不存在，无法进行文件校验',
+	'tool_dircheck_result_download' => '检测出异常文件，请<a href="?method=dircheck&getExport=%s">下载报告</a>详细查看',
+	'tool_dircheck_result_noerror' => '文件目录一切正常',
+
+	'tool_updateceche_doing' => '缓存更新中 ...',
+	'tool_updatecache_done' => '缓存更新完成',
+
+	'done' => '完成',
+	'all_done_exists' => '当前脚本删除失败，为了安全起见请人工删除',
+	'all_done_noexists' => '当前脚本删除完成',
 );
 
 $msglang = array(

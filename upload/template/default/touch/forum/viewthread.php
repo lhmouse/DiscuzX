@@ -132,7 +132,7 @@
 										<input type="button" value="{lang modmenu_grouprecommend}" class="dialog button" href="forum.php?mod=topicadmin&action=moderate&fid={$_G['fid']}&moderate[]={$_G['tid']}&operation=recommend_group&optgroup=5&from={$_G['tid']}">
 									<!--{/if}-->
 									<!--{if $_G['group']['allowmanagetag']}-->
-										<a href="forum.php?mod=tag&op=manage&tid=$_G['tid']" class="dialog button">{lang post_tag}</a>
+										<a href="misc.php?mod=tag&op=manage&tid=$_G['tid']" class="dialog button">{lang post_tag}</a>
 									<!--{/if}-->
 									<!--{if $_G['group']['alloweditusertag']}-->
 										<a href="forum.php?mod=misc&action=usertag&tid=$_G['tid']" class="dialog button">{lang usertag}</a>
@@ -273,7 +273,20 @@
 				<!--{/if}-->
 			<!--{/if}-->
 			<!--{/if}-->
-			<!--{if $post['first']}-->
+			<!--{if $post['first'] && ($post['tags'] || $relatedkeywords) && $_GET['from'] != 'preview'}-->
+			<div class="mt10 mb10 cl">
+				<!--{if $post['tags']}-->
+				<div class="tags xg1">
+					<i class="fico-tag"></i>
+					<!--{eval $tagi = 0;}-->
+					<!--{loop $post['tags'] $var}-->
+					<!--{if $tagi}-->, <!--{/if}--><a class="tag-item" title="$var[1]" href="misc.php?mod=tag&id=$var[0]" target="_blank">$var[1]</a>
+					<!--{eval $tagi++;}-->
+					<!--{/loop}-->
+				</div>
+				<!--{/if}-->
+				<!--{if $relatedkeywords}--><span>$relatedkeywords</span><!--{/if}-->
+			</div>
 			<!--{/if}-->
 			<div id="comment_$post['pid']">
 			<!--{if $_GET['from'] != 'preview' && $_G['setting']['commentnumber'] && !empty($comments[$post['pid']])}-->

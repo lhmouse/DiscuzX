@@ -13,6 +13,11 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 if(!submitcheck('submit')) {
 
+	$recommendaddon = dunserialize($_G['setting']['cloudaddons_recommendaddon']);
+	if(empty($recommendaddon['updatetime']) || abs($_G['timestamp'] - $recommendaddon['updatetime']) > 7200 || (isset($_GET['checknew']) && $_G['formhash'] == $_GET['formhash'])) {
+		$update_recommendaddon = true;
+	}
+
 	loadcache('plugin');
 	$outputsubmit = false;
 	$plugins = $addonids = $pluginlist = [];
@@ -54,7 +59,7 @@ if(!submitcheck('submit')) {
 	}
 
 	$updatecount = 0;
-	$splitavailable = [];
+	$splitavailable = $addonids = [];
 	foreach($plugins as $plugin) {
 		$addonid = $plugin['identifier'].'.plugin';
 		$updateinfo = $newver = $sysver = '';
@@ -66,7 +71,6 @@ if(!submitcheck('submit')) {
 		} elseif(!empty($newver)) {
 			$updateinfo = '<a href="'.ADMINSCRIPT.'?action=cloudaddons&frame=no&id='.$addonid.'&from=newver" title="'.$lang['plugins_online_update'].'" target="_blank"><font color="red">'.$lang['plugins_find_newversion'].'<span class="w1000hide w1300hide"> '.$newver.'</span></font></a>';
 		}
-		$plugins[] = $plugin['identifier'];
 		$hookexists = FALSE;
 		$plugin['modules'] = dunserialize($plugin['modules']);
 		$submenuitem = [];
@@ -140,6 +144,7 @@ if(!submitcheck('submit')) {
 		include template('admin/plugin_list');
 		$pluginlist[$order][$plugin['pluginid']] = $title.'<div class="boxbody'.($hl ? ' hl' : '').'">'.showboxrow('', ['class="dcol"', 'class="dcol d-1"', 'class="plugin_control"'],
 				[$col1, $col2, $col3], true).'</div>';
+		$addonids[] = $plugin['identifier'];
 	}
 
 	shownav('plugin', 'plugins_list');
@@ -163,7 +168,7 @@ if(!submitcheck('submit')) {
 		$newplugins = [];
 		$newlist = '';
 		while($entry = $pluginsdir->read()) {
-			if(!in_array($entry, ['.', '..']) && is_dir($plugindir.'/'.$entry) && !in_array($entry, $plugins)) {
+			if(!in_array($entry, ['.', '..']) && is_dir($plugindir.'/'.$entry) && !in_array($entry, $addonids)) {
 				$entrydir = DISCUZ_PLUGIN($entry);
 				$d = dir($entrydir);
 				$filemtime = filemtime($entrydir);
@@ -189,7 +194,27 @@ if(!submitcheck('submit')) {
 					$newlist .= '<div class="boxbody">'.showboxrow('', ['class="dcol"', 'class="dcol d-1"', ' class="plugin_control"'],
 							[$col1, $col2, $col3], true).'</div>';
 				}
+				$addonids[] = $entry;
 			}
+		}
+		$recommendlist = '';
+		if($recommendaddon['plugins']) {
+			$title = '<div class="boxheader">'.cplang('cloudaddons_recommendaddon').'</div>';
+			foreach($recommendaddon['plugins'] as $plugin) {
+				if(in_array($plugin['identifier'], $addonids)) {
+					continue;
+				}
+				$filemtime = TIMESTAMP;
+				$entry = $plugin['identifier'];
+				$logo = cloudaddons_pluginlogo_url($plugin['identifier']);
+				$entrytitle = dhtmlspecialchars($plugin['name']);
+				$entryversion = dhtmlspecialchars($plugin['version']);
+				$entrycopyright = dhtmlspecialchars($plugin['copyright']);
+				include template('admin/plugin_newlist');
+				$recommendlist .= '<div class="boxbody">'.showboxrow('', ['class="dcol"', 'class="dcol d-1"', 'class="plugin_control"'],
+						[$col1, $col2, $col3], true).'</div>';
+			}
+			$newlist .= $recommendlist;
 		}
 		if($newlist) {
 			showboxheader('', 'psetting', '', 1);
@@ -207,6 +232,10 @@ if(!submitcheck('submit')) {
 	}
 	showtablefooter();
 	showformfooter();
+
+	if($update_recommendaddon) {
+		echo '<script type="text/javascript" src="'.ADMINSCRIPT.'?action=misc&operation=recommendupdate"></script>';
+	}
 
 } else {
 
