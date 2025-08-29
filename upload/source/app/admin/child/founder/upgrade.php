@@ -138,8 +138,11 @@ class discuzUpgrade {
 		}
 		if(!is_dir($this->pPath)) {
 			$this->clearEvent();
-			cpmsg('upgrade_latest', '', 'error');
+			cpmsg('upgrade_latest', '', 'succeed');
 		}
+		$newMd5file = substr(self::RemoteMd5, 1);
+		mkdir(dirname($this->pPath.$newMd5file), 0777, true);
+		copy($this->ePath.self::RemoteBasePath.$newMd5file, $this->pPath.$newMd5file);
 
 		$patchFile = $this->getPatchFile();
 		$zip = new ZipArchive;
