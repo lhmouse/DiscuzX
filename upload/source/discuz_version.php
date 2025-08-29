@@ -14,6 +14,6 @@ if(!defined('DISCUZ_VERSION')) {
 	define('DISCUZ_VERSION_NAME', 'Discuz! &#x5F00;&#x53D1;&#x8005;&#x9884;&#x89C8;&#x7248;');
 	define('DISCUZ_VERSION', 'X5.0');
 	define('DISCUZ_SUBVERSION', '.0.Open');
-	define('DISCUZ_RELEASE', '20250801');
+	define('DISCUZ_RELEASE', '20250901');
 }
 
