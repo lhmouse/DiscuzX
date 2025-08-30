@@ -45,10 +45,12 @@ class account_ucenter extends account_base {
 
 		$ret = $this->_request('/user/authorize', $post);
 		if(!$ret || $ret['ret'] > 0) {
-			showmessage('account_api_error', '', ['message' => ': '.$ret['ret'].', /user/authorize']);
+			echo lang('message', 'account_api_error', ['message' => ': '.$ret['ret'].', /user/authorize']);
+			exit;
 		}
 		if(empty($ret['data']['url'])) {
-			showmessage('account_api_error', '', ['message' => ': no locationUrl']);
+			echo lang('message', 'account_api_error', ['message' => ': no locationUrl']);
+			exit;
 		}
 
 		dsetcookie('authtoken', authcode($this->token."\t".$referer, 'ENCODE', $_G['config']['security']['authkey']));

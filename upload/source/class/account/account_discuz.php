@@ -46,10 +46,12 @@ class account_discuz extends account_base {
 
 		$ret = $this->_request('/member/loginInfo', $post);
 		if(!$ret || $ret['ret'] > 0) {
-			showmessage('account_api_error', '', ['message' => ': '.$ret['ret'].', /index/forumlist']);
+			echo lang('message', 'account_api_error', ['message' => ': '.$ret['ret'].', /member/loginInfo']);
+			exit;
 		}
 		if(empty($ret['data']['locationUrl'])) {
-			showmessage('account_api_error', '', ['message' => ': no locationUrl']);
+			echo lang('message', 'account_api_error', ['message' => ': no locationUrl']);
+			exit;
 		}
 
 		dsetcookie('authtoken', authcode($this->token."\t".$ret['data']['authtoken']."\t".$referer, 'ENCODE', $_G['config']['security']['authkey']));
