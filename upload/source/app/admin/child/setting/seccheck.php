@@ -80,6 +80,7 @@ if(submitcheck('settingsubmit')) {
 	$setting['secqaa'] = dunserialize($setting['secqaa']);
 	$setting['secqaa']['status'] = bindec(intval($settingnew['secqaa']['status'][5]).intval($settingnew['secqaa']['status'][4]).intval($settingnew['secqaa']['status'][3]).intval($settingnew['secqaa']['status'][2]).intval($settingnew['secqaa']['status'][1]));
 	$setting['secqaa']['minposts'] = intval($settingnew['secqaa']['minposts']);
+	$setting['secqaa']['allowqa'] = intval($settingnew['secqaa']['allowqa']);
 	$_G['setting']['secqaa'] = $setting['secqaa'];
 	$settingnew['secqaa'] = serialize($setting['secqaa']);
 	updatecache('secqaa');
