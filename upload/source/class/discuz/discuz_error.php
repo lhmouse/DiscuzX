@@ -21,9 +21,10 @@ class discuz_error {
 
 		list($showtrace, $logtrace) = discuz_error::debug_backtrace();
 
+		$backtraceid = '';
 		if($save) {
 			$messagesave = '<b>'.$message.'</b><br><b>PHP:</b>'.$logtrace;
-			discuz_error::write_error_log($messagesave);
+			$backtraceid = discuz_error::write_error_log($messagesave);
 		}
 
 		if(!empty($GLOBALS['_G']['config']['security']['error']['showerror']) && $halt) {
@@ -31,7 +32,8 @@ class discuz_error {
 		}
 
 		if($show) {
-			discuz_error::show_error('system', "<li>$message</li>", $showtrace, '', md5(discuz_error::clear($messagesave)));
+			$backtraceid = !empty($backtraceid) ? $backtraceid : md5(discuz_error::clear($messagesave));
+			discuz_error::show_error('system', "<li>$message</li>", $showtrace, '', $backtraceid);
 		}
 
 		if($halt) {
@@ -51,7 +53,6 @@ class discuz_error {
 
 	public static function debug_backtrace() {
 		$skipfunc[] = 'discuz_error->debug_backtrace';
-		$skipfunc[] = 'discuz_error->db_error';
 		$skipfunc[] = 'discuz_error->template_error';
 		$skipfunc[] = 'discuz_error->system_error';
 		$skipfunc[] = 'db_mysql->halt';
@@ -75,40 +76,6 @@ class discuz_error {
 			$log .= (!empty($log) ? ' -> ' : '').$file.'#'.$func.':'.$error['line'];
 		}
 		return [$show, $log];
-	}
-
-	public static function db_error($message, $sql) {
-		global $_G;
-
-		list($showtrace, $logtrace) = discuz_error::debug_backtrace();
-
-		$title = lang('error', 'db_'.$message);
-		$title_msg = lang('error', 'db_error_message');
-		$title_sql = lang('error', 'db_query_sql');
-		$title_backtrace = lang('error', 'backtrace');
-		$title_help = lang('error', 'db_help_link');
-
-		$db = DB::object();
-		$dberrno = $db->errno();
-		$dberror = str_replace($db->tablepre, '', $db->error());
-		$sql = dhtmlspecialchars(str_replace($db->tablepre, '', $sql));
-
-		$msg = '<li>[Type] '.$title.'</li>';
-		$msg .= $dberrno ? '<li>['.$dberrno.'] '.$dberror.'</li>' : '';
-		$msg .= $sql ? '<li>[Query] '.$sql.'</li>' : '';
-
-		$errormsg = '<b>'.$title.'</b>';
-		$errormsg .= "[$dberrno]<br /><b>ERR:</b> $dberror<br />";
-		if($sql) {
-			$errormsg .= '<b>SQL:</b> '.$sql;
-		}
-		$errormsg .= '<br />';
-		$errormsg .= '<b>PHP:</b> '.$logtrace;
-
-		discuz_error::write_error_log($errormsg);
-		discuz_error::show_error('db', $msg, $showtrace, '', md5(discuz_error::clear($errormsg)));
-		exit();
-
 	}
 
 	public static function exception_error($exception) {
@@ -185,8 +152,7 @@ class discuz_error {
 		}
 
 		$messagesave = '<b>'.$errormsg.'</b><br><b>PHP:</b>'.$logmsg;
-		$backtraceid = md5(discuz_error::clear($messagesave));
-		self::write_error_log($messagesave.'<br>BackTraceID:'.$backtraceid);
+		$backtraceid = self::write_error_log($messagesave);
 
 		self::show_error($type, $errormsg, $phpmsg, '', $backtraceid);
 		exit();
