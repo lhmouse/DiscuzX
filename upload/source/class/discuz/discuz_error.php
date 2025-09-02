@@ -329,7 +329,6 @@ EOT;
 	public static function write_error_log($message) {
 		global $_G;
 		$message = discuz_error::clear($message);
-		$time = time();
 		$hash = md5($message);
 
 		$uid = $_G['uid'] ?? 0;
@@ -349,6 +348,7 @@ EOT;
 			$member_log = getuserbyuid($uid);
 			logger('error', $member_log, $uid, $errorlog);
 		}
+		return $hash;
 	}
 
 }
