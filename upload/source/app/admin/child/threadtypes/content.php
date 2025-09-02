@@ -20,11 +20,14 @@ if(!submitcheck('searchsortsubmit', 1) && !submitcheck('delsortsubmit') && !subm
 		[['menu' => ($curclassname ? $curclassname : 'threadtype_infotypes_option'), 'submenu' => $classoptionmenu]]
 	]);
 
+	require_once libfile('function/post');
+
 	$_GET['sortid'] = intval($_GET['sortid']);
-	$threadtypes = '<select name="sortid" onchange="window.location.href = \'?action=threadtypes&operation=content&sortid=\'+ this.options[this.selectedIndex].value"><option value="0">'.cplang('none').'</option>';
+	$threadtypes = '<select name="sortid" onchange="window.location.href = \''.ADMINSCRIPT.'?action=threadtypes&operation=content&sortid=\'+ this.options[this.selectedIndex].value"><option value="0">'.cplang('none').'</option>';
 	$query = table_forum_threadtype::t()->fetch_all_for_order();
 	foreach($query as $type) {
-		$threadtypes .= '<option value="'.$type['typeid'].'" '.($_GET['sortid'] == $type['typeid'] ? 'selected="selected"' : '').'>'.dhtmlspecialchars($type['name']).'</option>';
+		$name = messagecutstr($type['name'], 0, '');
+		$threadtypes .= '<option value="'.$type['typeid'].'" '.($_GET['sortid'] == $type['typeid'] ? 'selected="selected"' : '').'>'.dhtmlspecialchars($name).'</option>';
 	}
 	$threadtypes .= '</select>';
 

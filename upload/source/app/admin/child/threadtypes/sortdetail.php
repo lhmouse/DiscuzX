@@ -76,10 +76,11 @@ if(!submitcheck('sortdetailsubmit')) {
 	}
 
 	shownav('forum', 'threadtype_infotypes');
-	showsubmenu('threadtype_infotypes', [
-		['threadtype_infotypes_type', 'threadtypes', 1],
-		['threadtype_infotypes_content', 'threadtypes&operation=content', 0],
-		[['menu' => ($curclassname ? $curclassname : 'threadtype_infotypes_option'), 'submenu' => $classoptionmenu], '', 0]
+	require_once libfile('function/discuzcode');
+	$name = discuzcode($threadtype['name'], 0, 0, 0, 1, 1, 0, 0, 0, 0, 0);
+	showsubmenu(cplang('threadtype_infotypes').' - '.$name, [
+		['config', 'threadtypes&operation=sortdetail&sortid='.$_GET['sortid'], 1],
+		['threadtype_template', 'threadtypes&operation=sorttemplate&sortid='.$_GET['sortid'], 0],
 	]);
 	showtips('forums_edit_threadsorts_tips');
 

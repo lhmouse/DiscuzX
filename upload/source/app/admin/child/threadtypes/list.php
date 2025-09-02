@@ -31,16 +31,14 @@ if(!submitcheck('typesubmit')) {
 	$threadtypes = '';
 	$query = table_forum_threadtype::t()->fetch_all_for_order();
 	foreach($query as $type) {
-		$tmpstr = "<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=export&sortid={$type['typeid']}\" class=\"act nowrap\">{$lang['export']}</a>";
-		$threadtypes .= showtablerow('', ['class="td25"', 'class="td28"', 'class="td29"', 'class="td29"', 'title="'.cplang('forums_threadtypes_forums_comment').'"'], [
+		$threadtypes .= showtablerow('', ['class="td25"', 'class="td28"', 'class="td29"', 'class="td29"', '', ''], [
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$type['typeid']}\">",
 			"<input type=\"text\" class=\"txt\" size=\"2\" name=\"displayordernew[{$type['typeid']}]\" value=\"{$type['displayorder']}\">",
 			"<input type=\"text\" class=\"txt\" size=\"15\" name=\"namenew[{$type['typeid']}]\" value=\"".dhtmlspecialchars($type['name'])."\">",
 			"<input type=\"text\" class=\"txt\" size=\"30\" name=\"descriptionnew[{$type['typeid']}]\" value=\"{$type['description']}\">",
 			is_array($forumsarray[$type['typeid']]) ? '<ul class="lineheight"><li class="left">'.implode(',&nbsp;</li><li class="left"> ', $forumsarray[$type['typeid']])."</li></ul><input type=\"hidden\" name=\"fids[{$type['typeid']}]\" value=\"".implode(', ', $fidsarray[$type['typeid']])."\">" : '',
-			"<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=sortdetail&sortid={$type['typeid']}\" class=\"act nowrap\">{$lang['detail']}</a>&nbsp;&nbsp;
-				<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=sorttemplate&sortid={$type['typeid']}\" class=\"act nowrap\">{$lang['threadtype_template']}</a>",
-			$tmpstr,
+			"<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=sortdetail&sortid={$type['typeid']}\" class=\"act nowrap\">{$lang['edit']}</a>".
+				"<a href=\"".ADMINSCRIPT."?action=threadtypes&operation=export&sortid={$type['typeid']}\" class=\"act nowrap\">{$lang['export']}</a>",
 		], TRUE);
 	}
 
@@ -67,7 +65,7 @@ if(!submitcheck('typesubmit')) {
 
 	showformheader('threadtypes&', 'enctype', 'threadtypeform');
 	showtableheader('');
-	showsubtitle(['', 'display_order', cplang('name').' '.cplang('tiny_bbcode_support'), 'description', 'forums_relation', '', ''], 'header', ['', 'width="100"', 'width="200"', 'width="300"', '', 'width="100"', 'width="60"']);
+	showsubtitle(['', 'display_order', cplang('name').' '.cplang('tiny_bbcode_support'), 'description', 'forums_relation', ''], 'header', ['', 'width="100"', 'width="200"', 'width="300"', '', 'width="100"', 'width="60"']);
 	echo $threadtypes;
 	echo '<tr><td class="td25"></td><td colspan="5"><div>'.'<span class="filebtn"><input type="hidden" name="importtype" value="file" /><input type="file" name="importfile" class="pf" size="1" onchange="uploadthreadtypexml($(\'threadtypeform\'), \''.ADMINSCRIPT.'?action=threadtypes&operation=import\');" /><a class="addtr" href="JavaScript:;">'.$lang['import'].'</a></span>'.'<a href="###" onclick="addrow(this, 0)" class="addtr">'.$lang['threadtype_infotypes_add'].'</a></div></td>';
 

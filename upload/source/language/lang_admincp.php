@@ -3318,7 +3318,7 @@ $lang =
 	'forums_merge_source_comment' => '源版块的帖子全部转入目标版块，同时删除源版块',
 	'forums_merge_target' => '目标版块',
 
-	'threadtype_infotypes' => '分类信息管理',
+	'threadtype_infotypes' => '分类信息',
 	'threadtype_infotypes_type' => '分类管理',
 	'threadtype_infotypes_option' => '字段管理',
 	'threadtype_infotypes_content' => '内容管理',

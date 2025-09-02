@@ -22,15 +22,16 @@ if(!submitcheck('sorttemplatesubmit')) {
 		$showoption .= '<button onclick="settip(this, \''.$option['identifier'].'\')" type="button" style="margin: 5px 5px 5px 0px;">'.$option['title'].'</button>&nbsp;&nbsp;';
 	}
 	unset($typevararr, $typeoptionarr);
-	showsubmenu('threadtype_infotypes', [
-		['threadtype_infotypes_type', 'threadtypes', 1],
-		['threadtype_infotypes_content', 'threadtypes&operation=content', 0],
-		[['menu' => ($curclassname ? $curclassname : 'threadtype_infotypes_option'), 'submenu' => $classoptionmenu], '', 0]
+	require_once libfile('function/discuzcode');
+	$name = discuzcode($threadtype['name'], 0, 0, 0, 1, 1, 0, 0, 0, 0, 0);
+	showsubmenu(cplang('threadtype_infotypes').' - '.$name, [
+		['config', 'threadtypes&operation=sortdetail&sortid='.$_GET['sortid'], 0],
+		['threadtype_template', 'threadtypes&operation=sorttemplate&sortid='.$_GET['sortid'], 1],
 	]);
 	showtips('threadtype_tips');
 	showtableheader();
 	echo '<tr><td>';
-	showformheader("threadtypes&operation=sorttemplate&sortid={$_GET['sortid']}");
+	showformheader('threadtypes&operation=sorttemplate&sortid='.$_GET['sortid']);
 	echo '<script type="text/JavaScript">var currentAnchor = \'ltype\';</script>'.
 		'<div class="itemtitle" style="width:100%;margin-bottom:5px;padding-left: 0px;"><ul class="tab1" id="submenu">'.
 		'<li id="nav_ttype" onclick="showanchor(this)" class="current"><a href="#"><span>'.$lang['threadtype_template_viewthread'].'</span></a></li>'.

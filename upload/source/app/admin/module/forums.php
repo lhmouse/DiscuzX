@@ -22,8 +22,17 @@ if(!file_exists($file)) {
 require_once $file;
 
 function showforum(&$forum, $type = '', $last = '', $toggle = false, $more = false) {
-
 	global $_G;
+
+	static $threadtypes = null;
+
+	if($threadtypes == null) {
+		require_once libfile('function/post');
+		$query = table_forum_threadtype::t()->fetch_all_for_order();
+		foreach($query as $_v) {
+			$threadtypes[$_v['typeid']] = messagecutstr($_v['name'], 0, '');
+		}
+	}
 
 	if($last == '') {
 
@@ -53,8 +62,10 @@ function showforum(&$forum, $type = '', $last = '', $toggle = false, $more = fal
 		} else {
 			$vfidstr = !empty($_GET['fid']) ? '&vfid='.$_GET['fid'] : '';
 			$boardattr = '';
-			if(!$forum['status'] || $forum['password'] || $forum['redirect'] || in_array($forum['fid'], $navs)) {
+			$threadsorts = dunserialize($forum['threadsorts']);
+			if(!$forum['status'] || $forum['password'] || $forum['redirect'] || in_array($forum['fid'], $navs) || !empty($threadsorts['suptypeid'])) {
 				$boardattr = '<div class="boardattr">';
+				$boardattr .= !empty($threadsorts['suptypeid']) ? $threadtypes[$threadsorts['suptypeid']].' ' : '';
 				$boardattr .= $forum['status'] ? '' : cplang('forums_admin_hidden');
 				$boardattr .= !$forum['password'] ? '' : ' '.cplang('forums_admin_password');
 				$boardattr .= !$forum['redirect'] ? '' : ' '.cplang('forums_admin_url');

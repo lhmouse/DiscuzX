@@ -123,6 +123,7 @@ if($newthreadtype) {
 		'special' => $value['special'],
 		'modelid' => $value['modelid'],
 		'expiration' => $value['ttexpiration'],
+		'super' => $value['super'],
 		'template' => str_replace($searcharr, $replacearr, $value['template']),
 		'stemplate' => str_replace($searcharr, $replacearr, $value['stemplate']),
 		'ptemplate' => str_replace($searcharr, $replacearr, $value['ptemplate']),
