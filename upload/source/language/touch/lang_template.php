@@ -221,4 +221,9 @@ $lang = [
 	'mob_sort_urlerr' => '请正确填写以http或https开头的URL地址',
 	'mob_sort_uploaderr' => '暂不支持上传图片',
 
+	'login_confirm' => '登录确认',
+	'wechat_confirm_tip1' => '即将在电脑上登录微信账号',
+	'wechat_confirm_tip2' => '请确认是否是本人操作',
+	'wechat_confirm_btn' => '确认登录',
+	'wechat_cancel_btn' => '取消',
 ];

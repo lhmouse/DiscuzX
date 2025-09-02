@@ -164,7 +164,7 @@
                     <td><a href="home.php?mod=spacecp&ac=account&op=unbind&method={$value[0]}&formhash={FORMHASH}" style="color: red;">{lang action_account_operate_unbind}</a></td>
                 <!--{else}-->
                     <td></td>
-                    <td><a href="login.php?method={$value[0]}" style="color: green;">{lang action_account_operate_bind}</a></td>
+                    <td><a href="login.php?method={$value[0]}&formhash={FORMHASH}" style="color: green;">{lang action_account_operate_bind}</a></td>
                 <!--{/if}-->
                 </tr>
                 <!--{/loop}-->

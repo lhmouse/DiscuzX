@@ -1217,5 +1217,13 @@ $lang = [
 	'forum_member_apply_succeed' => '您已提交申请，请等待版主审核',
 	'forum_member_exit_confirm' => '退出后需要重新申请才能进入当前版块，您确定吗？<br /><br /><a href="{url}">[ 确定退出 ]</a>',
 	'forum_member_exit' => '您已从当前版块退出',
+
+	'members_chgusername_check_failed' => '用户名合法性检测失败',
+	'members_chgusername_name_badword' => '用户名包含被系统屏蔽的字符',
+	'members_chgusername_name_exists' => '用户名已经存在',
+	'members_chgusername_change_failed' => '用户名修改操作提交失败',
+	'members_add_username_duplicate' => '用户名已经存在',
+
+	'illegal_operation' => '非法操作，请刷新页面重试',
 ];
 

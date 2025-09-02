@@ -10,8 +10,4 @@ $discuz->init_cron = false;
 $discuz->init_session = false;
 $discuz->init();
 
-if(!account_base::validatorSign()) {
-	dheader('location: '.$_G['siteurl']);
-}
-
 (new account_wechat())->getLoginUser();

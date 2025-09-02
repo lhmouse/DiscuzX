@@ -9,8 +9,12 @@ if(empty($_G['setting']['wechat']['appId']) || empty($_G['setting']['wechat']['a
 }
 
 $ac = !empty($_GET['ac']) ? $_GET['ac'] : '';
-if(!empty($ac) && $_GET['formhash'] != FORMHASH) {
-	jsonMsg('formhash error');
+if(!empty($ac) && !in_array($ac, ['confirm']) && $_GET['formhash'] != FORMHASH) {
+	if(in_array($ac, ['confirm_ok'])) {
+		showmessage('illegal_operation');
+	} else {
+		jsonMsg('formhash error');
+	}
 }
 
 switch($ac) {
@@ -48,6 +52,31 @@ switch($ac) {
 		include template('common/header_ajax');
 		echo $echostr;
 		include template('common/footer_ajax');
+		break;
+	case 'confirm':
+		$authcode = !empty($_GET['authcode']) ? $_GET['authcode'] : '';
+		if(!empty($authcode) && defined('IN_MOBILE')) {
+			include template('wechat/confirm');
+		} else {
+			showmessage('illegal_operation', $_G['siteurl']);
+		}
+		break;
+	case 'confirm_ok':
+		$authcode = !empty($_GET['authcode']) ? $_GET['authcode'] : '';
+		$authcode_decode = authcode(base64_decode(urldecode($authcode)), 'DECODE', $_G['config']['security']['authkey']);
+		list($code, $uid) = explode('_', $authcode_decode);
+		$pc_login_data = memory('get', 'wechat_code_'.$code);
+		if($pc_login_data && ($pc_login_data['uid'] <= 0 || $pc_login_data['uid'] == $_G['uid']) && intval($uid) > 0 && defined('IN_MOBILE')) {
+			$data = [
+				'uid' => intval($uid),
+				'code' => $code,
+				'status' => 1,
+			];
+			memory('set', 'wechat_code_'.$code, $data, 300);
+			dheader('location:'.$_G['siteurl']);
+		} else {
+			showmessage('illegal_operation', $_G['siteurl']);
+		}
 		break;
 	case 'getauthcode':
 		require_once libfile('account/wechat', 'class');

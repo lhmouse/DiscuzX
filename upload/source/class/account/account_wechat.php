@@ -132,12 +132,8 @@ class account_wechat extends account_base {
 
 		$authcode = authcode(base64_decode(urldecode($paramBase['authcode'])), 'DECODE', $_G['config']['security']['authkey']);
 		if($authcode) {
-			$data = [
-				'uid' => $uid,
-				'code' => $authcode,
-				'status' => 1,
-			];
-			memory('set', 'wechat_code_'.$authcode, $data, 300);
+			$confirm_authcode = urlencode(base64_encode(authcode($authcode.'_'.$uid, 'ENCODE', $_G['config']['security']['authkey'])));
+			$_GET['referer'] = $_G['siteurl'].'misc.php?mod=wechat&ac=confirm&authcode='.$confirm_authcode;
 		}
 		dsetcookie('accountUDAuth', '', -1);
 		dsetcookie('accountHeadImg', '', -1);
@@ -193,14 +189,7 @@ class account_wechat extends account_base {
 					showmessage('account_bind_exists');
 				}
 				$account->userBind($_G['uid'], $paramBase);
-				if($authcode) {
-					$data = [
-						'uid' => $_G['uid'],
-						'code' => $authcode,
-						'status' => 1,
-					];
-					memory('set', 'wechat_code_'.$authcode, $data, 300);
-				}
+
 				// 绑定时同步头像
 				$avatarBindAuto = $account->getSwitch('avatarBindAuto');
 				if(in_array('wechat', $avatarBindAuto)) {
@@ -221,6 +210,11 @@ class account_wechat extends account_base {
 							}
 						}
 					}
+				}
+
+				if($authcode) {
+					$confirm_authcode = urlencode(base64_encode(authcode($authcode.'_'.$_G['uid'], 'ENCODE', $_G['config']['security']['authkey'])));
+					dheader('Location: '.$_G['siteurl'].'misc.php?mod=wechat&ac=confirm&authcode='.$confirm_authcode);
 				}
 
 				dheader('Location: '.(!empty($_GET['referer_url']) ? $_GET['referer_url'] : $_G['siteurl']), true, 302);
@@ -304,12 +298,8 @@ class account_wechat extends account_base {
 		}
 
 		if($authcode) {
-			$data = [
-				'uid' => $_G['uid'],
-				'code' => $authcode,
-				'status' => 1,
-			];
-			memory('set', 'wechat_code_'.$authcode, $data, 300);
+			$confirm_authcode = urlencode(base64_encode(authcode($authcode.'_'.$_G['uid'], 'ENCODE', $_G['config']['security']['authkey'])));
+			dheader('Location: '.$_G['siteurl'].'misc.php?mod=wechat&ac=confirm&authcode='.$confirm_authcode);
 		}
 
 		// 如果关联了微信开放平台，补充绑定 openid
