@@ -110,6 +110,8 @@ class rp {
 
 	public static function appAdd() {
 		if(!submitcheck('submit')) {
+			showchildmenu([['menu_founder_restful', 'restful&operation=list'], ['restful_app_list', 'restful&operation=appList']], cplang('restful_app_add'));
+
 			showformheader('restful&operation=appAdd');
 			showtableheader('restful_app_add', 'tb2');
 			/*search={"founder":"action=restful&operation=appAdd"}*/
@@ -182,6 +184,8 @@ class rp {
 			}
 			cpmsg('restful_reset_secret_confirm', 'action=restful&operation=app&id='.$appid.'&do=resetSecret&resetsubmit=yes', 'form');
 		} else {
+			showchildmenu([['menu_founder_restful', 'restful&operation=list'], ['restful_app_list', 'restful&operation=appList']], $app['name']);
+
 			showformheader('restful&operation=app&id='.$appid);
 			showtableheader('restful_app_edit', 'tb2');
 			showsetting('appid', '', '', $app['appid']);
@@ -330,7 +334,15 @@ class rp {
 
 		$appid = dintval($_GET['id']);
 		$api = $_GET['api'];
+
+		$app = table_restful_app::t()->fetch($appid);
+		if(!$app) {
+			cpmsg('restful_app_not_found', '', 'error');
+		}
+
 		if(empty($_GET['data'])) {
+			showchildmenu([['menu_founder_restful', 'restful&operation=list'], ['restful_app_list', 'restful&operation=appList'], [$app['name'], 'restful&operation=app&id='.$appid]], $api);
+
 			showtableheader('restful_chart_title');
 			echo '<tr><td><div class="charts">
 			<script src="'.STATICURL.'js/echarts/echarts.common.min.js"></script>
@@ -344,10 +356,6 @@ class rp {
 		}
 		define('FOOTERDISABLED', true);
 		ob_end_clean();
-		$app = table_restful_app::t()->fetch($appid);
-		if(!$app) {
-			cpmsg('restful_app_not_found', '', 'error');
-		}
 
 		$start = dgmdate(TIMESTAMP - 30 * 86400, 'Ymd');
 		$end = dgmdate(TIMESTAMP, 'Ymd');
@@ -643,6 +651,7 @@ class rp {
 			cpmsg('restful_api_not_found', '', 'error');
 		}
 		$data['data'] = json_decode($data['data'], true);
+		showchildmenu([['menu_founder_restful', 'restful&operation=list']], $data['name'] ?: $data['baseuri']);
 		showtableheader($data['name'] ?: $data['baseuri'], 'nobottom nobdb');
 		foreach($data['data'] as $uri => $row) {
 			$url = $_G['siteurl'].'api/restful/?'.$uri;
@@ -668,10 +677,12 @@ class rp {
 		$baseuri = substr($_GET['id'], 7);
 		switch($baseuri) {
 			case 'global':
+				showchildmenu([['menu_founder_restful', 'restful&operation=list']], cplang('restful_global'));
 				showtableheader(cplang('restful_global'), 'nobottom nobdb');
 				echo '<tr><td class="vtop" style="width: 100px !important;">'.cplang('restful_request_header').'</td><td class="vtop tips2">'.cplang('restful_global_detail').'</td></tr>';
 				break;
 			case '/token':
+				showchildmenu([['menu_founder_restful', 'restful&operation=list']], cplang('restful_token'));
 				$url = $_G['siteurl'].'api/restful/?'.$baseuri;
 				showtableheader(cplang('restful_token'), 'nobottom nobdb');
 				echo '<tr><td class="td27" colspan="2">'.cplang('restful_token').'</td></tr>'.
@@ -679,6 +690,7 @@ class rp {
 					'<tr><td class="vtop">'.cplang('restful_request_param').'</td><td class="vtop tips2">'.cplang('restful_token_detail').'</td></tr>';
 				break;
 			case '/authtoken':
+				showchildmenu([['menu_founder_restful', 'restful&operation=list']], cplang('restful_authtoken'));
 				$url = $_G['siteurl'].'api/restful/?'.$baseuri;
 				showtableheader(cplang('restful_authtoken'), 'nobottom nobdb');
 				echo '<tr><td class="td27" colspan="2">'.cplang('restful_authtoken').'</td></tr>'.
@@ -686,6 +698,7 @@ class rp {
 					'<tr><td class="vtop">'.cplang('restful_request_param').'</td><td class="vtop tips2">'.cplang('restful_authtoken_detail').'</td></tr>';
 				break;
 			case '/deltoken':
+				showchildmenu([['menu_founder_restful', 'restful&operation=list']], cplang('restful_deltoken'));
 				$url = $_G['siteurl'].'api/restful/?'.$baseuri;
 				showtableheader(cplang('restful_deltoken'), 'nobottom nobdb');
 				echo '<tr><td class="td27" colspan="2">'.cplang('restful_deltoken').'</td></tr>'.

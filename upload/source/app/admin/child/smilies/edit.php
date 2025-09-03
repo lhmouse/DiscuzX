@@ -85,8 +85,7 @@ if(!$do) {
 EOT;
 
 		shownav('style', 'nav_smilies');
-		showsubmenu(cplang('smilies_edit').' - '.$type['name'], [
-			['smilies_type', 'smilies', 0],
+		showchildmenu([['menu_posting_smilies', 'smilies']], $type['name'], [
 			['admin', "smilies&operation=edit&id=$id", !$do],
 			['add', "smilies&operation=edit&do=add&id=$id", $do == 'add']
 		]);
@@ -137,9 +136,8 @@ EOT;
 	if(!submitcheck('editsubmit')) {
 
 		shownav('style', 'nav_smilies');
-		showsubmenu(cplang('smilies_edit').' - '.$type['name'], [
-			['smilies_type', 'smilies', 0],
-			['admin', "smilies&operation=edit&id=$id", !$do],
+		showchildmenu([['menu_posting_smilies', 'smilies']], $type['name'], [
+			['admin', "smilies&operation=edit&id=$id", 0],
 			['add', "smilies&operation=edit&do=add&id=$id", $do == 'add']
 		]);
 		showtips('smilies_tips');

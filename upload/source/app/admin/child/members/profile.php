@@ -26,10 +26,9 @@ if($fieldid) {
 	include childfile('profilevalidate', 'home/spacecp');
 	$field['validate'] = $field['validate'] ? $field['validate'] : ($profilevalidate[$fieldid] ? $profilevalidate[$fieldid] : '');
 	if(!submitcheck('editsubmit')) {
-		showsubmenu($lang['members_profile'].'-'.$field['title'], [
-			['members_profile_list', 'members&operation=profile', 0],
-			[$lang['edit'], 'members&operation=profile&fieldid='.$_GET['fieldid'], 1]
-		]);
+
+		showchildmenu([['members_profile', 'members&operation=profile']], $field['title']);
+
 		showformheader('members&operation=profile&fieldid='.$fieldid);
 		showtableheader();
 		showsetting('members_profile_edit_name', 'title', $field['title'], 'text');

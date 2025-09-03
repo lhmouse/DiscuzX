@@ -32,7 +32,7 @@ if(!submitcheck('copysubmit')) {
 	$usergroupselect = '<select name="target" size="10">'.$groupselect.'</select>';
 
 	shownav('user', 'usergroups_merge');
-	showsubmenu('usergroups_merge');
+	showchildmenu([['nav_usergroups', 'usergroups']], cplang('usergroups_merge'));
 	showtips('usergroups_merge_tips');
 	showformheader('usergroups&operation=merge');
 	showhiddenfields(['source' => $source]);

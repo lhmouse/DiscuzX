@@ -45,7 +45,7 @@ if(!submitcheck('copysubmit')) {
 	}
 	$optselect .= '</select>';
 	shownav('forum', 'forums_copy');
-	showsubmenu('forums_copy');
+	showchildmenu([['nav_forums', 'forums']], cplang('forums_copy'));
 	showtips('forums_copy_tips');
 	showformheader('forums&operation=copy'.$vfidstr);
 	showhiddenfields(['source' => $source]);

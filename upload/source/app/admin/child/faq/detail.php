@@ -23,7 +23,7 @@ if(!submitcheck('detailsubmit')) {
 	}
 
 	shownav('extended', 'faq');
-	showsubmenu('faq');
+	showchildmenu([['faq', 'faq']], $faq['title']);
 	showformheader("faq&operation=detail&id=$id");
 	showtableheader();
 	showtitle('faq_edit');

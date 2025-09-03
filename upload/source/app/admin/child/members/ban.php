@@ -30,7 +30,9 @@ if(!submitcheck('bansubmit')) {
 
 	echo '<script src="'.STATICURL.'js/calendar.js" type="text/javascript"></script>';
 	shownav('user', 'members_ban_user');
-	showsubmenu($lang['members_ban_user'].($member['username'] ? ' - '.$member['username'] : ''));
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('members_ban_user'));
+
 	showtips('members_ban_tips');
 	showformheader('members&operation=ban');
 	showtableheader();

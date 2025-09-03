@@ -67,7 +67,9 @@ if(!submitcheck('editsubmit')) {
 
 	/*search={"members_group":"action=members&operation=group"}*/
 	shownav('user', 'members_group');
-	showsubmenu('members_group_member', [], '', ['username' => $member['username']]);
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('members_group'));
+
 	echo '<script src="'.STATICURL.'js/calendar.js" type="text/javascript"></script>';
 	showformheader("members&operation=group&uid={$member['uid']}");
 	showtableheader('usergroup', 'nobottom');

@@ -109,12 +109,12 @@ if($optype == 'moveforum') {
 	loadcache(['forums', 'grouptype']);
 	$forumstickthreads = table_common_setting::t()->fetch_setting('forumstickthreads', true);
 	if(!submitcheck('forumsticksubmit')) {
-		showsubmenu('threads_forumstick', [
-			['admin', 'threads&operation=forumstick', !$do],
-			['add', 'threads&operation=forumstick&do=add', $do == 'add'],
-		]);
-		showtips('threads_forumstick_tips');
 		if(!$do) {
+			showsubmenu('threads_forumstick', [
+				['admin', 'threads&operation=forumstick', !$do],
+				['add', 'threads&operation=forumstick&do=add', $do == 'add'],
+			]);
+			showtips('threads_forumstick_tips');
 			showformheader('threads&operation=forumstick');
 			showtableheader('admin', 'fixpadding');
 			showsubtitle(['', 'subject', 'threads_forumstick_forum', 'threads_forumstick_group', 'edit']);
@@ -143,6 +143,10 @@ if($optype == 'moveforum') {
 			showtablefooter();
 			showformfooter();
 		} elseif($do == 'add') {
+			showsubmenu('threads_forumstick', [
+				['admin', 'threads&operation=forumstick', !$do],
+				['add', 'threads&operation=forumstick&do=add', $do == 'add'],
+			]);
 			require_once libfile('function/forumlist');
 			showformheader('threads&operation=forumstick&do=add');
 			showtableheader('add', 'fixpadding');
@@ -157,6 +161,7 @@ if($optype == 'moveforum') {
 			showtablefooter();
 			showformfooter();
 		} elseif($do == 'edit') {
+			showchildmenu([['threads_forumstick', 'threads&operation=forumstick'], ['id:'.$_GET['id'], '']], cplang('edit'));
 			require_once libfile('function/forumlist');
 			showformheader("threads&operation=forumstick&do=edit&id={$_GET['id']}");
 			showtableheader('edit', 'fixpadding');

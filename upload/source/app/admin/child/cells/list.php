@@ -16,7 +16,8 @@ if(!$files) {
 	cpmsg('cells_not_found', '', 'error');
 }
 
-showsubmenu('cells');
+showchildmenu([['styles_admin', 'styles'], [$style['name'].' ', '']], cplang('cells'));
+
 showtableheader($style['name']);
 foreach($files as $file) {
 	$cellId = cells::getClass($file);

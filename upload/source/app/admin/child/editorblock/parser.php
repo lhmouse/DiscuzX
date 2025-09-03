@@ -43,9 +43,10 @@ if(empty($editorblock['style'])) {
 if(!submitcheck('editorblocksubmit')) {
 	$parameter = $editorblockclass->getParameter();
 
-	showsubmenu('parser');
+	showchildmenu([['setting_editor', 'setting&operation=editor'], ['setting_editor_block', 'editorblock&operation=list']], $editorblock['name']);
+
 	showformheader('editorblock&operation=parser&blockid='.$blockid.'&type='.$type, 'target="hframe"');
-	showtableheader('<a href="'.ADMINSCRIPT.'?action=editorblock&operation=list">'.cplang('list').'</a> &raquo; <a href="'.ADMINSCRIPT.'?action=editorblock&operation=parser&blockid='.$blockid.'">'.$editorblock['name'].'</a>', 'tb2');
+	showtableheader('', 'tb2');
 	echo '<tr style="height: 600px">';
 	echo '<td valign="top" width="70%">';
 	echo '<div class="itemtitle">';

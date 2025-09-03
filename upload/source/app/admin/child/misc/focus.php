@@ -28,9 +28,9 @@ if(!$do) {
 
 		shownav('extended', 'misc_focus');
 		showsubmenu('misc_focus', [
-			['config', 'misc&operation=focus&do=config', 0],
 			['admin', 'misc&operation=focus', 1],
-			['add', 'misc&operation=focus&do=add']
+			['add', 'misc&operation=focus&do=add'],
+			['config', 'misc&operation=focus&do=config', 0],
 		]);
 		/*search={"misc_focus":"action=misc&operation=focus","admin":"action=misc&operation=focus"}*/
 		showtips('misc_focus_tips');
@@ -84,9 +84,9 @@ if(!$do) {
 
 		shownav('extended', 'misc_focus');
 		showsubmenu('misc_focus', [
-			['config', 'misc&operation=focus&do=config', 0],
 			['admin', 'misc&operation=focus', 0],
-			['add', 'misc&operation=focus&do=add', 1]
+			['add', 'misc&operation=focus&do=add', 1],
+			['config', 'misc&operation=focus&do=config', 0],
 		]);
 		/*search={"misc_focus":"action=misc&operation=focus","add":"action=misc&operation=focus&do=add"}*/
 		showformheader('misc&operation=focus&do=add');
@@ -141,11 +141,7 @@ if(!$do) {
 	if(!submitcheck('editsubmit')) {
 
 		shownav('extended', 'misc_focus');
-		showsubmenu('misc_focus', [
-			['config', 'misc&operation=focus&do=config', 0],
-			['admin', 'misc&operation=focus', 0],
-			['add', 'misc&operation=focus&do=add', 0]
-		]);
+		showchildmenu([['misc_focus', 'misc&operation=focus']], $item['subject']);
 
 		showformheader('misc&operation=focus&do=edit&id='.$id);
 		showtableheader('misc_focus_edit', 'fixpadding');
@@ -193,9 +189,9 @@ if(!$do) {
 
 		shownav('extended', 'misc_focus');
 		showsubmenu('misc_focus', [
-			['config', 'misc&operation=focus&do=config', 1],
 			['admin', 'misc&operation=focus', 0],
-			['add', 'misc&operation=focus&do=add', 0]
+			['add', 'misc&operation=focus&do=add', 0],
+			['config', 'misc&operation=focus&do=config', 1],
 		]);
 		/*search={"misc_focus":"action=misc&operation=focus","config":"action=misc&operation=focus&do=config"}*/
 		showformheader('misc&operation=focus&do=config');

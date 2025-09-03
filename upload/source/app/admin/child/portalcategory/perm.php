@@ -14,8 +14,12 @@ $catid = intval($_GET['catid']);
 if(!submitcheck('permsubmit')) {
 	$category = table_portal_category::t()->fetch($catid);
 	shownav('portal', 'portalcategory');
-	$upcat = $category['upid'] ? ' - <a href="'.ADMINSCRIPT.'?action=portalcategory&operation=perm&catid='.$category['upid'].'">'.$portalcategory[$category['upid']]['catname'].'</a> ' : '';
-	showsubmenu('<a href="'.ADMINSCRIPT.'?action=portalcategory">'.cplang('portalcategory_perm_edit').'</a>'.$upcat.' - '.$category['catname']);
+	$parents = [['portalcategory', 'portalcategory']];
+	if($category['upid']) {
+		$parents[] = [$portalcategory[$category['upid']]['catname'], 'portalcategory&operation=perm&catid='.$category['upid']];
+	}
+	$parents[] = [$category['catname'].' ', ''];
+	showchildmenu($parents, cplang('portalcategory_perm_edit'));
 	showtips('portalcategory_article_perm_tips');
 	showformheader("portalcategory&operation=perm&catid=$catid");
 

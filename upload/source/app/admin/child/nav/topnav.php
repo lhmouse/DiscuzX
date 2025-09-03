@@ -121,11 +121,10 @@ EOT;
 		$string = sprintf('%02d', $nav['highlight']);
 
 		shownav('style', 'nav_setting_customnav');
-		showsubmenu('nav_setting_customnav', $navdata);
+		showchildmenu([['nav_setting_customnav', 'nav'], ['nav_nav_topnav', 'nav&operation=topnav']], $nav['name']);
 
 		showformheader("nav&operation=topnav&do=edit&id=$id");
 		showtableheader();
-		showtitle(cplang('nav_nav_topnav').' - '.$nav['name']);
 		showsetting('misc_customnav_name', 'namenew', $nav['name'], 'text');
 		showsetting('setting_styles_global_topnavtype', ['subtypenew', [
 			[0, cplang('setting_styles_global_topnavtype_0')],

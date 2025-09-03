@@ -25,11 +25,6 @@ if(submitcheck('settingsubmit')) {
 } else {
 	shownav('style', 'setting_styles', 'setting_threadprofile');
 
-	showsubmenu('setting_'.$operation);
-
-	showformheader('setting&edit=yes', 'enctype');
-	showhiddenfields(['operation' => $operation]);
-
 	$authorinfoitems = [];
 	$authorinfoitems = [
 		'{numbercard}' => $lang['setting_styles_threadprofile_attrcard'],
@@ -89,6 +84,11 @@ if(submitcheck('settingsubmit')) {
 	}
 
 	if($_GET['do'] == 'add') {
+		showchildmenu([['setting_styles_threadprofile', 'setting&operation=styles&anchor=threadprofile']], cplang('setting_styles_threadprofile_addplan'));
+
+		showformheader('setting&edit=yes', 'enctype');
+		showhiddenfields(['operation' => $operation]);
+
 		/*search={"setting_styles":"action=setting&operation=threadprofile&do=add"}*/
 		showtips('setting_threadprofile_tpl_tpls');
 		showtableheader('');
@@ -103,7 +103,11 @@ if(submitcheck('settingsubmit')) {
 		if(!$threadprofile) {
 			dheader('location: '.ADMINSCRIPT.'?action=setting&operation=styles&anchor=threadprofile');
 		}
+		showchildmenu([['setting_styles', 'setting&operation=styles'], ['setting_styles_threadprofile', 'setting&operation=styles&anchor=threadprofile']], $threadprofile['name']);
+
 		showtips('setting_threadprofile_tpl_tpls');
+		showformheader('setting&edit=yes', 'enctype');
+		showhiddenfields(['operation' => $operation]);
 		showtableheader('');
 		showhiddenfields(['do' => 'edit', 'id' => $id]);
 		$threadprofile['template'] = dunserialize($threadprofile['template']);

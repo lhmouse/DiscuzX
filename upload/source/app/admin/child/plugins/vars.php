@@ -10,6 +10,11 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 	exit('Access Denied');
 }
 
+$plugin = table_common_plugin::t()->fetch($pluginid);
+if(!$plugin) {
+	cpmsg('plugin_not_found', '', 'error');
+}
+
 $pluginvarid = $_GET['pluginvarid'];
 $pluginvar = table_common_plugin::t()->fetch_by_pluginvarid($pluginid, $pluginvarid);
 if(!$pluginvar) {
@@ -18,13 +23,10 @@ if(!$pluginvar) {
 
 if(!submitcheck('varsubmit')) {
 	shownav('plugin');
-	showsubmenu($lang['plugins_edit'].' - '.$pluginvar['name'], [
-		['plugins_list', 'plugins', 0],
-		['config', 'plugins&operation=edit&pluginid='.$pluginid.'&anchor=config', 0],
-		['plugins_config_module', 'plugins&operation=edit&pluginid='.$pluginid.'&anchor=modules', 0],
-		['plugins_config_vars', 'plugins&operation=edit&pluginid='.$pluginid.'&anchor=vars', 1],
-		['export', 'plugins&operation=export&pluginid='.$pluginid, 0],
-	]);
+
+	showchildmenu([['nav_plugins', 'plugins'], [$plugin['name'].($plugin['available'] ? cplang('plugins_edit_available') : ' '), ' '],
+		[cplang('plugins_editlink'), 'plugins&operation=edit&pluginid='.$pluginid.'&anchor=vars']],
+		$pluginvar['title']);
 
 	$typeselect = '<select name="typenew" onchange="if(this.value.indexOf(\'select\') != -1) $(\'extra\').style.display=\'\'; else $(\'extra\').style.display=\'none\';">';
 	$typeselect .= !str_starts_with($pluginvar['type'], 'style') ? admin\class_component::get_optgroup($pluginvar['type']) : '<option value="'.$pluginvar['type'].'" selected>'.cplang('plugins_edit_vars_type_'.$pluginvar['type']).'</option>';
@@ -32,7 +34,7 @@ if(!submitcheck('varsubmit')) {
 
 	showformheader("plugins&operation=vars&pluginid=$pluginid&pluginvarid=$pluginvarid");
 	showtableheader();
-	showtitle($lang['plugins_edit_vars'].' - '.$pluginvar['title']);
+	showtitle($lang['plugins_edit_vars']);
 	showsetting('plugins_edit_vars_title', 'titlenew', $pluginvar['title'], 'text');
 	showsetting('plugins_edit_vars_description', 'descriptionnew', $pluginvar['description'], 'textarea');
 	showsetting('plugins_edit_vars_type', '', '', $typeselect);

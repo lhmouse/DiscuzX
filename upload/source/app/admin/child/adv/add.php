@@ -36,11 +36,11 @@ if(!submitcheck('advsubmit')) {
 	$advclass = new $advclass;
 	$advsetting = $advclass->getsetting();
 	$advtitle = lang('adv/'.$type, $advclass->name).($type != 'custom' ? '' : ' '.$advclass->customname);
-	$returnurl = 'action=adv&operation=ad'.(empty($_GET['from']) ? '&type='.$type.($type != 'custom' ? '' : '&customid='.$_GET['customid']) : '');
+	$returnurl = 'adv&operation=ad'.(empty($_GET['from']) ? '&type='.$type.($type != 'custom' ? '' : '&customid='.$_GET['customid']) : '');
 
-	$return = '<a href="'.ADMINSCRIPT.'?'.$returnurl.'">'.cplang('adv_list').(empty($_GET['from']) ? ' - '.$advtitle : '').'</a>';
 	shownav('extended', 'adv_admin');
-	showsubmenu($root.' &raquo; '.$return.' &raquo; '.($operation == 'edit' ? cplang('adv_edit') : cplang('adv_add')));
+	showchildmenu([['adv_admin', 'adv'], [!empty($_GET['from']) ? cplang('adv_admin_listall') : $advtitle.' ', $returnurl]], ($operation == 'edit' ? $adv['title'] : cplang('adv_add')));
+
 	echo '<br />';
 
 	$targets = [];
@@ -86,7 +86,7 @@ if(!submitcheck('advsubmit')) {
 	}
 	showhiddenfields(['referer' => $returnurl]);
 	showtableheader();
-	showtableheader(($operation == 'edit' ? cplang('adv_edit') : cplang('adv_add')).' - '.lang('adv/'.$type, $advclass->name), 'fixpadding');
+	showtableheader('', 'fixpadding');
 	showsetting('adv_edit_title', 'advnew[title]', $adv['title'], 'text');
 	if($type != 'custom') {
 		showsetting('adv_edit_targets', ['advnew[targets]', $targets], explode("\t", $adv['targets']), 'mcheckbox');

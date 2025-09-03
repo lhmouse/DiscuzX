@@ -74,18 +74,13 @@ if($do == 'list') {
 } elseif($do == 'edit') {
 	if(!submitcheck('submit')) {
 
-		showsubmenu('menu_platform');
-
-		showtips('platform_tips', 'tips', true, 'platform_tips_title');
-
-		showformheader('founder&operation=platform&do=edit&id='.$_GET['id'], 'target="hframe"');
-
 		if($_GET['id'] == 'new') {
+			showchildmenu([['menu_platform', 'founder&operation=platform']], cplang('platform_new'));
+
 			$value = menu::newTemplate;
-			showtableheader('<a href="'.ADMINSCRIPT.'?action=founder&operation=platform">'.cplang('platform_list').'</a> &raquo; '.cplang('platform_new'));
+			showtableheader('');
 			showsetting('platform_id', 'newid', '', 'text');
 		} else {
-
 			$menuData = table_common_admincp_menu_platform::t()->fetch($_GET['id']);
 			if(!$menuData) {
 				cpmsg('undefined_action', '', 'error');
@@ -95,11 +90,19 @@ if($do == 'list') {
 			if(!empty($menu['custom'])) {
 				$menu = $menu['custom'];
 			}
+
+			$enter = '<a href="'.$adminscript.'?platform='.$menuData['platform'].'" target="_blank">'.cplang('platform_enter').'</a>';
+
+			showchildmenu([['menu_platform', 'founder&operation=platform']], $menu['name'].'('.$_GET['id'].')', [], $enter);
+
+			showtips('platform_tips', 'tips', true, 'platform_tips_title');
+
+			showformheader('founder&operation=platform&do=edit&id='.$_GET['id'], 'target="hframe"');
+
 			require_once libfile('class/xml');
 			$value = menu::array2menu($menu);
 			$adminscript = preg_replace('#\?platform=\w+#', '', ADMINSCRIPT);
-			$enter = '<div style="float: right"><a href="'.$adminscript.'?platform='.$menuData['platform'].'" target="_blank">'.cplang('platform_enter').'</a></div>';
-			showtableheader($enter.'<a href="'.ADMINSCRIPT.'?action=founder&operation=platform">'.cplang('platform_list').'</a> &raquo; '.$menu['name'].'('.$_GET['id'].')');
+			showtableheader('');
 		}
 
 		echo '<tr style="height: 600px"><td colspan="2">';

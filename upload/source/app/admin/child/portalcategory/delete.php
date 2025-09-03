@@ -28,10 +28,7 @@ if(!submitcheck('deletesubmit')) {
 	}
 
 	shownav('portal', 'portalcategory');
-	showsubmenu('portalcategory', [
-		['list', 'portalcategory', 0],
-		['delete', 'portalcategory&operation=delete&catid='.$_GET['catid'], 1]
-	]);
+	showchildmenu([['portalcategory', 'portalcategory']], cplang('delete'));
 
 	showformheader('portalcategory&operation=delete&catid='.$_GET['catid']);
 	showtableheader();

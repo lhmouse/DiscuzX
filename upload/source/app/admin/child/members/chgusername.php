@@ -13,7 +13,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 if(!submitcheck('chgusernamesubmit')) {
 
 	shownav('user', 'members_chgusername');
-	showsubmenu($lang['members_chgusername'].($member['username'] ? ' - '.$member['username'] : ''));
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('members_chgusername'));
 	showformheader('members&operation=chgusername&uid='.$member['uid']);
 	showtableheader();
 	showsetting('members_chgusername_oldusername', '', '', $member['username']);

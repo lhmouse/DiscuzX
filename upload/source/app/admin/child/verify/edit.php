@@ -12,7 +12,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 shownav('user', 'nav_members_verify');
 $vid = $_GET['vid'] < 8 ? intval($_GET['vid']) : 0;
-showsubmenu($lang['members_verify'].'-verify'.$vid);
+showchildmenu([['members_verify', 'verify']], 'verify'.$vid);
+
 $verifyarr = $_G['setting']['verify'][$vid];
 if(!submitcheck('verifysubmit')) {
 	if($vid == 7) {

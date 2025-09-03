@@ -454,6 +454,19 @@ function showsubmenu($title, $menus = [], $right = '', $replace = []) {
 	echo '</div><div class="cpcontainer">';
 }
 
+function showchildmenu($parents, $title, $menus = [], $right = '', $isanchor = false) {
+	$parenttitle = '';
+	foreach($parents as $parent) {
+		if($parent[0] === '') {
+			continue;
+		}
+		$parenttitle .= !empty($parent[1]) ? '<a href="'.ADMINSCRIPT.'?action='.$parent[1].'" class="parent">'.cplang($parent[0], $parent[2] ?? []).'</a>' : cplang($parent[0], $parent[2] ?? []);
+		$parenttitle .= ' <em>&raquo;</em> ';
+	}
+	$parenttitle .= dhtmlspecialchars($title);
+	$isanchor ? showsubmenuanchors($parenttitle, $menus, $right) : showsubmenu($parenttitle, $menus, $right);
+}
+
 function showsubmenusteps($title, $menus = [], $mleft = [], $mright = []) {
 	$s = '<div class="itemtitle"'.(empty($title) ? ' style="margin-bottom: 12px;"' : '').'>'.($title ? '<h3>'.cplang($title).'</h3>' : '');
 	if(is_array($mleft) && !empty($mleft)) {

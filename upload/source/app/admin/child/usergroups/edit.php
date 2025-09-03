@@ -91,7 +91,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 	$anchor = in_array($_GET['anchor'], ['basic', 'system', 'special', 'post', 'attach', 'magic', 'invite', 'pm', 'credit', 'home', 'group', 'portal', 'plugin', 'style']) ? $_GET['anchor'] : 'basic';
 	showformheader('', '', 'menuform', 'get');
 	showhiddenfields(['action' => 'usergroups', 'operation' => 'edit']);
-	showsubmenuanchors(cplang('usergroups_edit').(count($mgroup) == 1 ? ' - '.$mgroup[0]['grouptitle'].'(groupid:'.$mgroup[0]['groupid'].')' : ''), [
+	showchildmenu([['nav_usergroups', 'usergroups']], (count($mgroup) == 1 ? $mgroup[0]['grouptitle'].'(groupid:'.$mgroup[0]['groupid'].')' : cplang('multiedit')), [
 		['usergroups_edit_basic', 'basic', $anchor == 'basic'],
 		count($mgroup) == 1 && $mgroup[0]['type'] == 'special' && $mgroup[0]['radminid'] < 1 ? ['usergroups_edit_system', 'system', $anchor == 'system'] : [],
 		[['menu' => 'usergroups_edit_forum', 'submenu' => [
@@ -109,7 +109,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			!$pluginsetting ? [] : ['usergroups_edit_plugin', 'plugin', $anchor == 'plugin'],
 			!$stylesetting ? [] : ['usergroups_edit_style', 'style', $anchor == 'style'],
 		]]] : [],
-	], $gselect);
+	], $gselect, true);
 	showformfooter();
 
 	if(count($mgroup) == 1 && $mgroup[0]['type'] == 'special' && $mgroup[0]['radminid'] < 1) {

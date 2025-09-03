@@ -83,7 +83,8 @@ if($do == 'group') {
 			$grouplist = '<span id="cpgselect" class="right popupmenu_dropmenu" onmouseover="showMenu({\'ctrlid\':this.id,\'pos\':\'34\'});$(\'cpgselect_menu\').style.top=(parseInt($(\'cpgselect_menu\').style.top)-document.documentElement.scrollTop)+\'px\'">'.cplang('founder_group_switch').'<em>&nbsp;&nbsp;</em></span>'.
 				'<div id="cpgselect_menu" class="popupmenu_popup" style="display:none">'.$grouplist.'</div>';
 
-			showsubmenu('menu_founder_groupperm', [], $grouplist, ['group' => $cpgroupname]);
+			showchildmenu([['menu_founder_perm', 'founder&operation=perm'], ['nav_founder_perm_group', 'founder&operation=perm&do=group']], $cpgroupname, [], $grouplist);
+
 			showformheader('founder&operation=perm&do=group&id='.$id);
 			showboxheader('', '', '', 1);
 

@@ -10,8 +10,6 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 	exit('Access Denied');
 }
 
-$root = '<a href="'.ADMINSCRIPT.'?action=adv">'.cplang('adv_admin').'</a>';
-
 $operation = $operation ? $operation : 'list';
 
 $defaulttargets = ['portal', 'home', 'member', 'forum', 'group', 'plugin'];

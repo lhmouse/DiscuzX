@@ -29,7 +29,7 @@ if(!submitcheck('magicsubmit')) {
 
 	showtableheader('magics_list', 'fixpadding');
 	$newmagics = getmagics();
-	showsubtitle(['', 'display_order', '<input type="checkbox" onclick="checkAll(\'prefix\', this.form, \'available\', \'availablechk\')" class="checkbox" id="availablechk" name="availablechk">'.cplang('available'), 'name', $lang['price'], $lang['magics_num'], 'weight']);
+	showsubtitle(['', 'display_order', '<input type="checkbox" onclick="checkAll(\'prefix\', this.form, \'available\', \'availablechk\')" class="checkbox" id="availablechk" name="availablechk">'.cplang('available'), 'name', $lang['price'], $lang['magics_num'], 'weight', '']);
 
 	foreach(table_common_magic::t()->fetch_all_data() as $magic) {
 		$magic['credit'] = $magic['credit'] ? $magic['credit'] : $_G['setting']['creditstransextra'][3];

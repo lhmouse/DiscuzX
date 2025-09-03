@@ -13,7 +13,11 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 if(!submitcheck('testsubmit')) {
 
 	shownav('extended', 'smsgw_admin');
-	showsubmenu($root.' &raquo; '.cplang('smsgw_test'));
+	showsubmenu('smsgw_admin', [
+		['smsgw_admin_setting', 'smsgw&operation=setting', 0],
+		['smsgw_admin_list', 'smsgw&operation=list', 0],
+		['smsgw_admin_test', 'smsgw&operation=test', 1]
+	]);
 	showformheader("smsgw&operation=$operation", 'enctype');
 	showtableheader(cplang('smsgw_send_test'), 'fixpadding');
 

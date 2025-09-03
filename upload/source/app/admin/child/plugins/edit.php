@@ -44,13 +44,13 @@ if(!submitcheck('editsubmit')) {
 
 	shownav('plugin');
 	$anchor = in_array($_GET['anchor'], ['config', 'modules', 'vars']) ? $_GET['anchor'] : 'config';
-	showsubmenuanchors($lang['plugins_edit'].' - '.$plugin['name'].($plugin['available'] ? cplang('plugins_edit_available') : ''), [
-		['plugins_list', 'plugins', 0, 1],
+	showchildmenu([['nav_plugins', 'plugins'], [$plugin['name'].($plugin['available'] ? cplang('plugins_edit_available') : ' '), '']], cplang('plugins_editlink'), [
 		['config', 'config', $anchor == 'config'],
 		['plugins_config_module', 'modules', $anchor == 'modules'],
 		['plugins_config_vars', 'vars', $anchor == 'vars'],
 		['export', 'plugins&operation=export&pluginid='.$plugin['pluginid'], 0, 1],
-	]);
+	], '', true);
+
 	showtips('plugins_edit_tips');
 
 	showtagheader('div', 'config', $anchor == 'config');

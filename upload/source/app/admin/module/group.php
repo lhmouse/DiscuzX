@@ -136,7 +136,7 @@ function countgroups() {
 		$conditions .= ' AND ('.implode(' OR ', $srchnameary).')';
 	}
 	$conditions .= intval($_GET['srchfid']) ? " AND f.fid='".intval($_GET['srchfid'])."'" : '';
-	$conditions .= !empty($_GET['selectgroupid']) && !in_array('all', $_GET['selectgroupid']) != '' ? " AND f.fup IN ('".implode('\',\'', dintval($_GET['selectgroupid'], true))."')" : '';
+	$conditions .= !empty($_GET['selectgroupid']) && is_array($_GET['selectgroupid']) && !in_array('all', $_GET['selectgroupid']) != '' ? " AND f.fup IN ('".implode('\',\'', dintval($_GET['selectgroupid'], true))."')" : '';
 
 	$conditions .= $_GET['postshigher'] != '' ? " AND f.posts>'".intval($_GET['postshigher'])."'" : '';
 	$conditions .= $_GET['postslower'] != '' ? " AND f.posts<'".intval($_GET['postslower'])."'" : '';

@@ -9,19 +9,18 @@ cpheader();
 shownav('global', 'account');
 
 $method = $_GET['method'] ?? '';
-$menus = [
-	['account_base', 'account', !$method],
-];
+$menus = [];
 
 $interfaces = account_base::getInterfaces();
 if(in_array($method, $interfaces)) {
 	$menus[] = [account_base::getName($method), 'account&method='.$method, true];
 }
 
-showsubmenu('account', $menus);
-
 if($method) {
+	showchildmenu([['account', 'account']], account_base::getName($method));
 	require_once childfile('account/interface');
 }
+
+showsubmenu('account', $menus);
 
 require_once childfile('account/list');

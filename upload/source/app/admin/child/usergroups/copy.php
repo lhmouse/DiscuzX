@@ -50,7 +50,7 @@ if(!submitcheck('copysubmit')) {
 	}
 	$optselect .= '</select>';
 	shownav('user', 'usergroups_copy');
-	showsubmenu('usergroups_copy');
+	showchildmenu([['nav_usergroups', 'usergroups']], cplang('usergroups_copy'));
 	showtips('usergroups_copy_tips');
 	showformheader('usergroups&operation=copy');
 	showhiddenfields(['source' => $source]);

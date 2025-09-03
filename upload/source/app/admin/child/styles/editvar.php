@@ -21,15 +21,15 @@ if(!$style) {
 
 shownav('template', 'styles_edit');
 
-showsubmenu(cplang('styles_edit').' - '.$style['name'], [
-	['plugins_config_vars', 'styles&operation=editvar&id='.$id, 1],
-	['export', 'styles&operation=export&id='.$id, 0],
-]);
-
 $stylevarid = !empty($_GET['stylevarid']) ? $_GET['stylevarid'] : 0;
 
 if(!$stylevarid) {
 	if(!submitcheck('editsubmit')) {
+
+		showchildmenu([['styles_admin', 'styles'], [$style['name'].' ', '']], cplang('plugins_editlink'), [
+			['plugins_config_vars', 'styles&operation=editvar&id='.$id, 1],
+			['export', 'styles&operation=export&id='.$id, 0],
+		]);
 
 		showformheader("styles&operation=editvar&id=$id");
 		showtableheader('styles_vars');
@@ -114,13 +114,18 @@ if(!$stylevarid) {
 
 	if(!submitcheck('varsubmit')) {
 
+		showchildmenu([['styles_admin', 'styles'], [$style['name'].' ', ''],
+			[cplang('plugins_editlink'), 'styles&operation=editvar&id='.$id]], $stylevar['title']);
+
+
+
 		$typeselect = '<select name="typenew" onchange="if(this.value.indexOf(\'select\') != -1) $(\'extra\').style.display=\'\'; else $(\'extra\').style.display=\'none\';">';
 		$typeselect .= !str_starts_with($stylevar['type'], 'style') ? admin\class_component::get_optgroup($stylevar['type']) : '<option value="'.$stylevar['type'].'" selected>'.cplang('plugins_edit_vars_type_'.$stylevar['type']).'</option>';
 		$typeselect .= '</select>';
 
 		showformheader("styles&operation=editvar&id=$id&stylevarid=$stylevarid");
 		showtableheader();
-		showtitle($lang['styles_edit_vars'].' - '.$stylevar['title']);
+		showtitle('styles_edit_vars');
 		showsetting('styles_edit_vars_title', 'titlenew', $stylevar['title'], 'text');
 		showsetting('styles_edit_vars_description', 'descriptionnew', $stylevar['description'], 'textarea');
 		showsetting('plugins_edit_vars_type', '', '', $typeselect);

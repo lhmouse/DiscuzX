@@ -14,12 +14,13 @@ require_once childfile('threadtypes/function');
 
 cpheader();
 
-$classoptionmenu = [];
+$classoptionmenu = $classids = [];
 $curclassname = '';
 foreach(table_forum_typeoption::t()->fetch_all_by_classid(0) as $option) {
 	if($_GET['classid'] == $option['optionid']) {
 		$curclassname = $option['title'];
 	}
+	$classids[$option['optionid']] = $option['title'];
 	$classoptionmenu[] = [$option['title'], "threadtypes&operation=typeoption&classid={$option['optionid']}", $_GET['classid'] == $option['optionid']];
 }
 

@@ -133,7 +133,8 @@ if(!submitcheck('bbcodessubmit') && !$edit) {
 		$bbcode['prompt'] = str_replace("\t", "\n", $bbcode['prompt']);
 
 		shownav('style', 'nav_posting_bbcode');
-		showsubmenu($lang['misc_bbcode_edit'].' - '.$bbcode['tag']);
+		showchildmenu([['setting_editor', 'setting&operation=editor'], ['setting_editor_code', 'misc&operation=bbcode']], $bbcode['tag']);
+
 		showformheader("misc&operation=bbcode&edit=$edit");
 		showtableheader();
 		showsetting('misc_bbcode_edit_tag', 'tagnew', $bbcode['tag'], 'text');

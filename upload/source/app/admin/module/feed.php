@@ -17,10 +17,12 @@ $operation = $operation ? $operation : 'search';
 shownav('topic', 'nav_feed');
 $anchor = in_array($operation, ['search', 'global']) ? $operation : 'search';
 $current = [$anchor => 1];
-showsubmenu('nav_feed', [
-	['nav_feed', 'feed', $current['search']],
-	['feed_global', 'feed&operation=global', $current['global']],
-]);
+if(empty($_GET['feedid'])) {
+	showsubmenu('nav_feed', [
+		['nav_feed', 'feed', $current['search']],
+		['feed_global', 'feed&operation=global', $current['global']],
+	]);
+}
 
 $file = childfile('feed/'.$operation);
 if(!file_exists($file)) {

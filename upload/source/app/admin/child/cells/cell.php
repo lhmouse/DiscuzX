@@ -71,10 +71,11 @@ if(!empty($_G['cache']['styleconsts']) && !empty($_G['cache']['styleconsts'][$id
 	$list .= '</select>';
 }
 
-showsubmenu('cells');
+showchildmenu([['styles_admin', 'styles'], [$style['name'].' ', ''], [cplang('cells'), 'cells&id='.$id]], $c::$name);
+
 $value = $_G['setting']['cells'][cells::getTplKey($type)][$id][$cellId] ?: $c::getDefault($type);
 showformheader('cells&id='.$id.'&cellId='.$cellId.'&type='.$type, 'target="hframe"');
-showtableheader('<a href="'.ADMINSCRIPT.'?action=cells&id='.$id.'">'.$style['name'].'</a> &raquo; '.$c::$name, 'tb2');
+showtableheader('', 'tb2');
 echo '<tr style="height: 600px">';
 echo '<td valign="top" width="70%">';
 echo '<div class="itemtitle">';

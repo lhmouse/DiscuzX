@@ -19,7 +19,8 @@ if($firstgroup[$fid]['secondlist']) {
 	cpmsg('grouptype_delete_sub_notnull');
 }
 shownav('group', 'nav_group_type');
-showsubmenu(cplang('nav_group_type').' - '.cplang('group_mergetype').' - '.$sourcetype['name']);
+showchildmenu([['nav_group_type', 'group&operation=type'], [$sourcetype['name'].' ', '']], cplang('group_mergetype'));
+
 if(!submitcheck('mergesubmit', 1)) {
 	$groupselect = get_groupselect(0, 0, 0);
 	showformheader("group&operation=mergetype&fid=$fid", 'enctype');

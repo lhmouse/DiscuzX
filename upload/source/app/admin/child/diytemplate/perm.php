@@ -19,7 +19,7 @@ if(empty($diydata)) {
 }
 if(!submitcheck('permsubmit')) {
 	shownav('portal', 'diytemplate', 'diytemplate_perm');
-	showsubmenu(cplang('diytemplate_perm_edit').' - '.($diydata['name'] ? cplang($diydata['name']) : $_G['cache']['diytemplatename'][$diydata['targettplname']]));
+	showchildmenu([['diytemplate', 'diytemplate'], [$diydata['name'] ?: $_G['cache']['diytemplatename'][$diydata['targettplname']].' ', '']], cplang('diytemplate_perm_edit'));
 	showtips('diytemplate_perm_tips');
 	showformheader("diytemplate&operation=perm&targettplname=$targettplname&tpldirectory=$tpldirectory");
 	showtableheader('', 'fixpadding');

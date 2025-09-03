@@ -51,11 +51,13 @@ if(!submitcheck('creditsubmit')) {
 </script>
 EOT;
 	shownav('user', 'members_credit');
-	showsubmenu('members_credit');
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('members_credit'));
+
 	/*search={"members_credit":"action=members&operation=credit"}*/
 	showtips('members_credit_tips');
 	showformheader("members&operation=credit&uid={$_GET['uid']}");
-	showboxheader('<em class="right"><a href="'.ADMINSCRIPT.'?action=logs&operation=credit&srch_uid='.$_GET['uid'].'&frame=yes" target="_blank">'.cplang('members_credit_logs').'</a></em>'.cplang('members_credit').' - '.$member['username'].'('.$member['grouptitle'].')', 'nobottom');
+	showboxheader('<em class="right"><a href="'.ADMINSCRIPT.'?action=logs&operation=credit&srch_uid='.$_GET['uid'].'&frame=yes" target="_blank">'.cplang('members_credit_logs').'</a></em>'.cplang('usergroup').': '.$member['grouptitle'], 'nobottom');
 	showtableheader();
 	showsubtitle($creditscols);
 	showtablerow('', ['', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"', 'class="td28"'], $creditsvalue);

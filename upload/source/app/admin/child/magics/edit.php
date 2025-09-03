@@ -25,10 +25,8 @@ if(!submitcheck('magiceditsubmit')) {
 	$typeselect = [$magic['type'] => 'selected'];
 
 	shownav('extended', 'magics', 'admin');
-	showsubmenu('nav_magics', [
-		['admin', 'magics&operation=admin', 0],
-		['nav_magics_confer', 'members&operation=confermagic', 0]
-	]);
+	showchildmenu([['nav_magics', 'magics']], $magic['name'].'('.$magic['identifier'].')');
+
 	echo '<br />';
 
 	$eidentifier = explode(':', $magic['identifier']);
@@ -55,7 +53,7 @@ if(!submitcheck('magiceditsubmit')) {
 
 	showformheader('magics&operation=edit&magicid='.$magicid);
 	showtableheader();
-	showtitle($lang['magics_edit'].' - '.$magic['name'].'('.$magic['identifier'].')');
+	showtitle('');
 	showsetting('magics_edit_name', 'namenew', $magic['name'], 'text');
 	showsetting('magics_edit_credit', ['creditnew', $credits], $magic['credit'], 'select');
 	showsetting('magics_edit_price', 'pricenew', $magic['price'], 'text');

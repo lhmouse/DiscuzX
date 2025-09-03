@@ -16,24 +16,28 @@ shownav('forum', 'menu_forums_portal');
 
 $operation = $operation ? $operation : 'list';
 
-showsubmenu('menu_forums_portal', [
-	['forumportal_nav_list', 'forumportal', in_array($operation, ['list', 'add', 'edit'])],
-	['forumportal_nav_setting', 'forumportal&operation=setting', $operation == 'setting'],
-]);
-
 require_once childfile('forumportal/class');
 
 switch($operation) {
 	case 'list':
+		showsubmenu('menu_forums_portal', [
+			['forumportal_nav_list', 'forumportal', 1],
+			['forumportal_nav_setting', 'forumportal&operation=setting', 0],
+		]);
 		fp::list();
 		break;
 	case 'add':
+		showchildmenu([['menu_forums_portal', 'forumportal']], cplang('add'));
 		fp::add();
 		break;
 	case 'edit':
 		fp::edit();
 		break;
 	case 'setting':
+		showsubmenu('menu_forums_portal', [
+			['forumportal_nav_list', 'forumportal', 0],
+			['forumportal_nav_setting', 'forumportal&operation=setting', 1],
+		]);
 		fp::setting();
 		break;
 }

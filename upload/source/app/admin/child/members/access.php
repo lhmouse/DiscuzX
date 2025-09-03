@@ -18,10 +18,12 @@ loadcache('forums');
 if(!submitcheck('accesssubmit')) {
 
 	shownav('user', 'members_access_edit');
-	showsubmenu('members_access_edit');
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('members_access_edit'));
+
 	/*search={"members_access_edit":"action=members&operation=access"}*/
 	showtips('members_access_tips');
-	showtableheader(cplang('members_access_now').' - '.$member['username'], 'nobottom fixpadding');
+	showtableheader(cplang('members_access_now'), 'nobottom fixpadding');
 	showsubtitle(['forum', 'members_access_view', 'members_access_post', 'members_access_reply', 'members_access_getattach', 'members_access_getimage', 'members_access_postattach', 'members_access_postimage', 'members_access_adminuser', 'members_access_dateline']);
 
 

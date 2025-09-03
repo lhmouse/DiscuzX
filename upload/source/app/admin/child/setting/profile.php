@@ -65,10 +65,8 @@ if(submitcheck('settingsubmit')) {
 	if($_GET['anchor'] == 'edit' && in_array($_GET['type'], ['base', 'contact', 'edu', 'work', 'info'])) {
 		shownav('user', 'nav_members_profile_group');
 		$groupinfo = $profilegroup[$_GET['type']];
-		showsubmenu($lang['setting_profile_group_name'].'-'.$groupinfo['title'], [
-			['members_profile_group', 'setting&operation=profile&anchor=base', 0],
-			[$lang['edit'], 'setting&operation=profile&anchor=edit&type='.$_GET['type'], 1],
-		]);
+		showchildmenu([['members_profile', 'members&operation=profile'], ['members_profile_group', 'setting&operation=profile']], $groupinfo['title']);
+
 		showtableheader();
 		showsetting('setting_profile_group_name', 'settingnew[profile][title]', $groupinfo['title'], 'text');
 		showsetting('setting_profile_group_available', 'settingnew[profile][available]', $groupinfo['available'], 'radio');

@@ -38,13 +38,10 @@ if(!submitcheck('medaleditsubmit')) {
 		'<optgroup label="'.$lang['usergroups_system'].'">'.$groupselect['system'].'</optgroup></select>';
 
 	shownav('extended', 'nav_medals', 'admin');
-	showsubmenu('nav_medals', [
-		['admin', 'medals', 1],
-		['nav_medals_confer', 'members&operation=confermedal', 0],
-		['nav_medals_mod', 'medals&operation=mod', 0]
-	]);
+	showchildmenu([['nav_medals', 'medals']], $medal['name']);
+
 	showformheader("medals&operation=edit&medalid=$medalid");
-	showtableheader(cplang('medals_edit').' - '.$medal['name'], 'nobottom');
+	showtableheader('', 'nobottom');
 	showsetting('medals_name1', 'namenew', $medal['name'], 'text');
 	$image = preg_match('/^https?:\/\//is', $medal['image']) ? $medal['image'] : STATICURL.'image/common/'.$medal['image'];
 	showsetting('medals_img', '', '', '<input type="text" class="txt" size="30" name="imagenew" value="'.$medal['image'].'" ><img style="max-height:35px;" src="'.$image.'">');

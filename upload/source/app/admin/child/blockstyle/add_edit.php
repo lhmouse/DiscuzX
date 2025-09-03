@@ -10,12 +10,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 	exit('Access Denied');
 }
 
-if($operation == 'edit') {
-	showsubmenu('blockstyle', [
-		['list', 'blockstyle', 0],
-		['edit', 'blockstyle&operation=edit&blockclass='.$_GET['blockclass'].'&styleid='.$_GET['styleid'], 1]
-	]);
-} else {
+if($operation != 'edit') {
 	showsubmenu('blockstyle', [
 		['list', 'blockstyle', 0],
 		['add', 'blockstyle&operation=add', 1]
@@ -61,8 +56,6 @@ BLOCKCLASSSEL;
 
 } else {
 
-	showtips('blockstyle_add_tips');
-
 	if(submitcheck('stylesubmit')) {
 		$arr = [
 			'name' => $_POST['name'],
@@ -103,6 +96,10 @@ BLOCKCLASSSEL;
 			'template' => "<div class=\"module cl\">\n<ul>\n[loop]\n\t<li><a href=\"{url}\"{target}>{title}</a></li>\n[/loop]\n</ul>\n</div>"
 		];
 	}
+
+	showchildmenu([['blockstyle', 'blockstyle']], $thestyle['name']);
+
+	showtips('blockstyle_add_tips');
 
 	$theclass = block_getclass($_GET['blockclass']);
 

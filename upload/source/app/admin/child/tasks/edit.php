@@ -20,15 +20,12 @@ if(!submitcheck('editsubmit')) {
 
 	echo '<script type="text/javascript" src="'.STATICURL.'js/calendar.js"></script>';
 	shownav('extended', 'nav_tasks');
-	showsubmenu('nav_tasks', [
-		['admin', 'tasks', 0],
-		[['menu' => 'add', 'submenu' => $submenus]],
-		['nav_task_type', 'tasks&operation=type', 0]
-	]);
+	showchildmenu([['nav_tasks', 'tasks']], $task['name']);
+
 	$escript = explode(':', $task['scriptname']);
 
 	showformheader('tasks&operation=edit&id='.$id);
-	showtableheader(cplang('tasks_edit').' - '.$task['name'], 'fixpadding');
+	showtableheader('', 'fixpadding');
 	showsetting('tasks_add_name', 'name', $task['name'], 'text');
 	showsetting('tasks_add_desc', 'description', $task['description'], 'textarea');
 	if(count($escript) > 1 && preg_match('/^[\w\_:]+$/', $task['scriptname']) && file_exists(DISCUZ_PLUGIN($escript[0]).'/task/task_'.$escript[1].'.gif')) {

@@ -41,10 +41,7 @@ if(!submitcheck('editsubmit')) {
 	}
 
 	shownav('extended', 'announce');
-	showsubmenu('announce', [
-		['admin', 'announce', 0],
-		['add', 'announce&operation=add', 0]
-	]);
+	showchildmenu([['announce', 'announce']], $announce['subject']);
 	showformheader("announce&operation=edit&announceid={$_GET['announceid']}");
 	showtableheader();
 	/*search={"announce":"action=announce"}*/

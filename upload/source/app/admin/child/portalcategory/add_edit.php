@@ -37,9 +37,8 @@ $channeldomain = isset($rootdomain['channel']) && $rootdomain['channel'] ? $root
 if(!submitcheck('detailsubmit')) {
 	shownav('portal', 'portalcategory');
 	$url = 'portalcategory&operation='.$operation.($operation == 'add' ? '&upid='.$_GET['upid'] : '&catid='.$_GET['catid']);
-	showsubmenuanchors(cplang('portalcategory_detail').($cate['catname'] ? ' - '.$cate['catname'] : ''), [
-		['edit', 'basic', $anchor == 'basic'],
-	]);
+
+	showchildmenu([['portalcategory', 'portalcategory'], [($cate['catname'] ? $cate['catname'].' ' : ' '), ' ']], cplang('portalcategory_detail'));
 
 	showtagheader('div', 'basic', $anchor == 'basic');
 	showformheader($url);

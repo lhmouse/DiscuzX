@@ -19,7 +19,8 @@ if($isSub) {
 }
 
 shownav('global', 'credits_edit');
-showsubmenu("{$lang['setting_credits_add_sub']} - {$ruleinfo['rulename']}");
+showchildmenu([['setting_credits', 'setting&operation=credits&anchor=base'], ['setting_credits_policy', 'credits&operation=list&anchor=policytable']],
+	"{$lang['setting_credits_add_sub']} - {$ruleinfo['rulename']}");
 
 if(!submitcheck('rulesubmit')) {
 	showtips('setting_credits_sub_add_tips');

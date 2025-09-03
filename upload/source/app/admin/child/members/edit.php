@@ -13,7 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 echo '<script type="text/javascript" src="'.STATICURL.'js/home.js"></script>';
 $uid = $member['uid'];
 if($do == 'account') {
-	showsubmenu("{$lang['members_edit']} - {$member['username']}", [
+	showchildmenu([['nav_members', 'members&operation=list']], $member['username'], [
 		['connect_member_info', 'members&operation=edit&uid='.$uid, 0],
 		['account', 'members&operation=edit&do=account&uid='.$uid, 1],
 	]);
@@ -100,10 +100,11 @@ if(!submitcheck('editsubmit')) {
 
 	shownav('user', 'members_edit');
 	/*search={"members_edit":"action=members&operation=edit"}*/
-	showsubmenu("{$lang['members_edit']} - {$member['username']}", [
+	showchildmenu([['nav_members', 'members&operation=list']], $member['username'], [
 		['connect_member_info', 'members&operation=edit&uid='.$uid, 1],
 		['account', 'members&operation=edit&do=account&uid='.$uid, 0],
 	]);
+
 	showformheader("members&operation=edit&uid=$uid", 'enctype');
 	showtableheader();
 	$status = [$member['status'] => ' checked'];

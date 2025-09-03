@@ -31,7 +31,8 @@ $jointypeselect = [['-1', cplang('closed')], ['0', cplang('public')], ['1', cpla
 if(!submitcheck('editsubmit')) {
 	$groupselect = get_groupselect(0, $group['fup'], 0);
 	shownav('group', 'nav_group_manage');
-	showsubmenu('nav_group_manage');
+	showchildmenu([['nav_group_manage', 'group&operation=manage']], $group['name']);
+
 	showformheader("group&operation=editgroup&fid=$fid", 'enctype');
 	showtableheader();
 	showsetting('groups_editgroup_name', 'namenew', $group['name'], 'text');

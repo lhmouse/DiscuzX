@@ -243,14 +243,13 @@ EOT;
 		$string = sprintf('%02d', $nav['highlight']);
 
 		shownav('style', 'nav_setting_customnav');
-		showsubmenu('nav_setting_customnav', $navdata);
 		$parentselect = [['0', cplang('misc_customnav_parent_top')]];
 		$parentname = '';
 		foreach(table_common_nav::t()->fetch_all_by_navtype_parentid(0, 0) as $pnavs) {
 			if($pnavs['id'] != $id && !($pnavs['identifier'] == 6 && $pnavs['type'] == 0)) {
 				$parentselect[] = [$pnavs['id'], '&nbsp;&nbsp;'.$pnavs['name']];
 				if($nav['parentid'] == $pnavs['id']) {
-					$parentname = ' - '.$pnavs['name'];
+					$parentname = $pnavs['name'].' - ';
 				}
 			}
 		}
@@ -265,9 +264,10 @@ EOT;
 			$naviconhtml = '<br /><label><input type="checkbox" class="checkbox" name="deleteicon" value="yes" /> '.$lang['delete'].'</label><br /><img src="'.$navicon.'" width="40" height="40" />';
 		}
 
+		showchildmenu([['nav_setting_customnav', 'nav'], ['nav_nav_headernav', 'nav&operation=headernav']], $parentname.$nav['name']);
+
 		showformheader("nav&operation=headernav&do=edit&id=$id", 'enctype');
 		showtableheader();
-		showtitle(cplang('nav_nav_headernav').$parentname.' - '.$nav['name']);
 		showsetting('misc_customnav_name', 'namenew', $nav['name'], 'text', $nav['type'] == '4');
 		showsetting('misc_customnav_parent', ['parentidnew', $parentselect], $nav['parentid'], 'select');
 		showsetting('misc_customnav_title', 'titlenew', $nav['title'], 'text');

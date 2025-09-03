@@ -32,15 +32,20 @@ if(!submitcheck('advsubmit')) {
 			$advclassv = new $advclass();
 			if(class_exists($advclass)) {
 				$advsetting = $advclassv->getsetting();
-				$typeadd = ' - '.lang('adv/'.$type, $advclassv->name);
+				$typeadd = lang('adv/'.$type, $advclassv->name);
 				if($type == 'custom') {
 					$typeadd .= ' '.$advclassv->customname;
 				}
-				$typeadd .= ' <a href="'.ADMINSCRIPT.'?action=adv&operation=ad" style="font-weight:normal;font-size:12px">('.cplang('adv_admin_listall').')</a>';
 			}
 		}
+		showchildmenu([['adv_admin', 'adv']], $typeadd);
+	} else {
+		showsubmenu('adv_admin', [
+			['adv_admin_list', 'adv&operation=list', 0],
+			['adv_admin_listall', 'adv&operation=ad', 1],
+			['adv_admin_setting', 'adv&operation=setting', 0],
+		]);
 	}
-	showsubmenu($root.' &raquo; '.cplang('adv_list').$typeadd);
 
 	showformheader('adv&operation=ad');
 	showtableheader('', 'fixpadding');

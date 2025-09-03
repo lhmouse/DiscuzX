@@ -24,6 +24,8 @@ if(!submitcheck('globalsubmit')) {
 		$feed['body_general'] = dhtmlspecialchars($feed['body_general']);
 
 		$feed['dateline'] = dgmdate($feed['dateline'], 'Y-m-d H:i');
+
+		showchildmenu([['nav_feed', 'feed']], 'id:'.$feedid);
 	}
 	if(empty($feed['dateline'])) {
 		$feed['dateline'] = dgmdate($_G['timestamp'], 'Y-m-d H:i');

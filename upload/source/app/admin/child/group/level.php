@@ -89,8 +89,8 @@ EOT;
 		for($i = 0; $i < count($lowerlimit); $i++) {
 			$rangearray[$orderarray[$lowerlimit[$i]]] =
 				[
-					'creditshigher' => isset($lowerlimit[$i - 1]) ? $lowerlimit[$i] : -999999999,
-					'creditslower' => $lowerlimit[$i + 1] ?? 999999999
+				'creditshigher' => isset($lowerlimit[$i - 1]) ? $lowerlimit[$i] : -999999999,
+				'creditslower' => $lowerlimit[$i + 1] ?? 999999999
 				];
 		}
 		foreach($_GET['levelnew'] as $id => $level) {
@@ -145,7 +145,8 @@ EOT;
 	}
 	if(!submitcheck('editgrouplevel')) {
 		shownav('group', 'nav_group_level');
-		showsubmenu('nav_group_level_editor');
+		showchildmenu([['nav_group_level', 'group&operation=level']], $grouplevel['leveltitle']);
+
 		showtips('group_level_tips');
 
 		showformheader('group&operation=level&levelid='.$levelid, 'enctype');

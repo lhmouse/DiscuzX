@@ -34,8 +34,9 @@ class fp {
 			cpmsg('forumportal_nav_not_found', '', 'error');
 		}
 		if(!submitcheck('submit')) {
+			showchildmenu([['menu_forums_portal', 'forumportal']], $s['navList'][$_GET['id']]['name']);
 			showformheader('forumportal&operation=edit&id='.$_GET['id']);
-			showtableheader('<a href="'.ADMINSCRIPT.'?action=forumportal">'.cplang('setindex').'</a> &raquo; '.cplang('edit'), 'tb2');
+			showtableheader('', 'tb2');
 			self::_showForum($s['navList'][$_GET['id']]);
 			showtablefooter();
 			showformfooter();
@@ -48,7 +49,7 @@ class fp {
 	public static function add() {
 		if(!submitcheck('submit')) {
 			showformheader('forumportal&operation=add');
-			showtableheader('<a href="'.ADMINSCRIPT.'?action=forumportal">'.cplang('setindex').'</a> &raquo; '.cplang('add'), 'tb2');
+			showtableheader('', 'tb2');
 			self::_showForum();
 			showtablefooter();
 			showformfooter();
@@ -77,7 +78,7 @@ class fp {
 
 	private static function _showList($data) {
 		showtableheader('', '');
-		showsubtitle(['del', 'display_order', 'available', 'name', '']);
+		showsubtitle(['del', 'display_order', 'available', 'name']);
 		foreach($data as $id => $row) {
 			showtablerow('header', ['width="30"', 'class="td25"', 'width="30"', '', ''], [
 				'<input name="list[del][]" type="checkbox" class="checkbox" value="'.$id.'">',

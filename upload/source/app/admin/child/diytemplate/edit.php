@@ -20,10 +20,7 @@ if(empty($diydata)) {
 if(!submitcheck('editsubmit')) {
 	if(empty($diydata['name'])) $diydata['name'] = $_G['cache']['diytemplatename'][$diydata['targettplname']];
 	shownav('portal', 'diytemplate', $diydata['name']);
-	showsubmenu(cplang('diytemplate_edit').' - '.$diydata['name'], [
-		['list', 'diytemplate', 0],
-		['edit', 'diytemplate&operation=edit&targettplname='.$_GET['targettplname']."&tpldirectory=$tpldirectory", 1]
-	]);
+	showchildmenu([['diytemplate', 'diytemplate'], [$diydata['name'].' ', '']], cplang('diytemplate_edit'));
 
 	showformheader("diytemplate&operation=edit&targettplname=$targettplname&tpldirectory=$tpldirectory");
 	showtableheader();

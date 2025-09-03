@@ -155,7 +155,8 @@ if(empty($_GET['edit']) && empty($_GET['run'])) {
 		if(!submitcheck('editsubmit')) {
 
 			shownav('tools', 'misc_cron');
-			showsubmenu($lang['misc_cron_edit'].' - '.$cron['name']);
+			showchildmenu([['nav_misc_cron', 'misc&operation=cron']], $cron['name']);
+
 			showtips('misc_cron_edit_tips');
 
 			$weekdayselect = $dayselect = $hourselect = '';

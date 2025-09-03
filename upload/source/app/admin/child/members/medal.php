@@ -42,7 +42,8 @@ if(!submitcheck('medalsubmit')) {
 	}
 
 	shownav('user', 'nav_members_confermedal');
-	showsubmenu('nav_members_confermedal');
+	showchildmenu([['nav_members', 'members&operation=list'],
+		[$member['username'].' ', 'members&operation=edit&uid='.$member['uid']]], cplang('nav_members_confermedal'));
 	showformheader("members&operation=medal&uid={$_GET['uid']}");
 	showtableheader("{$lang['members_confermedal_to']} <a href='home.php?mod=space&uid={$_GET['uid']}' target='_blank'>{$member['username']}</a>", 'fixpadding');
 	showsubtitle(['medals_grant', 'medals_image', 'name']);

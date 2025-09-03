@@ -80,7 +80,8 @@ if(!$submitcheck) {
 
 	showformheader('', '', 'menuform', 'get');
 	showhiddenfields(['action' => 'admingroup', 'operation' => 'edit']);
-	showsubmenuanchors($lang['admingroup_edit'].(count($mgroup) == 1 ? ' - '.$mgroup[$_GET['id']]['grouptitle'].'(groupid:'.$mgroup[$_GET['id']]['groupid'].')' : ''), $anchorarray, $gselect);
+	showchildmenu([['nav_admingroups', 'admingroup']], (count($mgroup) == 1 ? $mgroup[$_GET['id']]['grouptitle'].'(groupid:'.$mgroup[$_GET['id']]['groupid'].')' : cplang('multiedit')),
+		$anchorarray, $gselect, true);
 	showformfooter();
 
 	if($multiset) {

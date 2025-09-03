@@ -37,13 +37,13 @@ if(!submitcheck('smsgwsubmit')) {
 	$smsgwname = lang('smsgw/'.$class, $smsgwclass->name).' '.$smsgwclass->customname;
 	$returnurl = 'action=smsgw&operation=list';
 
-	$return = '<a href="'.ADMINSCRIPT.'?'.$returnurl.'">'.cplang('smsgw_admin_list').(empty($_GET['from']) ? ' - '.$smsgwname : '').'</a>';
 	shownav('extended', 'smsgw_admin');
-	showsubmenu($root.' &raquo; '.$return.' &raquo; '.cplang('smsgw_edit'));
+
+	showchildmenu([['smsgw_admin', 'smsgw&operation=list']], $smsgwname);
 
 	showformheader("smsgw&operation=$operation&smsgwid=$smsgwid", 'enctype');
 	showhiddenfields(['referer' => $returnurl]);
-	showtableheader(cplang('smsgw_edit').' - '.lang('smsgw/'.$class, $smsgwclass->name), 'fixpadding');
+	showtableheader('', 'fixpadding');
 
 	showsetting('smsgw_edit_name', 'smsgwnew[name]', $smsgw['name'], 'text');
 	showsetting('smsgw_edit_order', 'smsgwnew[order]', $smsgw['order'], 'text');

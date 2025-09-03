@@ -118,12 +118,15 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 	showformheader('', '', 'menuform', 'get');
 	showhiddenfields(['action' => 'forums', 'operation' => 'edit']);
 	if(count($mforum) == 1 && $mforum[0]['type'] == 'group') {
-		showsubmenu(cplang('forums_cat_detail').(count($mforum) == 1 ? ' - '.$mforum[0]['name'].'(gid:'.$mforum[0]['fid'].')' : ''), [], $forumselect);
+		showchildmenu([['nav_forums', 'forums']], (count($mforum) == 1 ? $mforum[0]['name'].'(gid:'.$mforum[0]['fid'].')' : ''), [
+			['forums_edit_basic', 'basic', $anchor == 'basic'],
+			['forums_edit_perm', 'perm', $anchor == 'perm'],
+		], $forumselect, true);
 	} else {
 		if($multiset && !in_array($anchor, ['basic', 'extend', 'posts', 'perm', 'plugin', 'style'])) {
 			$anchor = 'basic';
 		}
-		showsubmenuanchors(cplang('forums_edit').(count($mforum) == 1 ? ' - '.$mforum[0]['name'].'(fid:'.$mforum[0]['fid'].')' : ''), [
+		showchildmenu([['nav_forums', 'forums']], (count($mforum) == 1 ? $mforum[0]['name'].'(fid:'.$mforum[0]['fid'].')' : cplang('multiedit')), [
 			['forums_edit_basic', 'basic', $anchor == 'basic'],
 			['forums_edit_extend', 'extend', $anchor == 'extend'],
 			['forums_edit_posts', 'posts', $anchor == 'posts'],
@@ -138,7 +141,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			]]] : [],
 			$multiset && $pluginsetting ? ['forums_edit_plugin', 'plugin', $anchor == 'plugin'] : [],
 			$multiset && $stylesetting ? ['forums_edit_style', 'style', $anchor == 'style'] : [],
-		], $forumselect);
+		], $forumselect, true);
 	}
 	showformfooter();
 

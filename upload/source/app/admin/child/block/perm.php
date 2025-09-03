@@ -15,7 +15,7 @@ if(!submitcheck('permsubmit')) {
 	loadcache('diytemplatename');
 	$block = table_common_block::t()->fetch($bid);
 	shownav('portal', 'block', 'block_perm');
-	showsubmenu(cplang('block_perm_edit').' - '.($block['name'] ? $block['name'] : cplang('block_name_null')));
+	showchildmenu([['block', 'block'], [$block['name'] ? $block['name'].' ' : cplang('block_name_null'), '']], cplang('block_perm_edit'));
 	showtips('block_perm_tips');
 	showformheader("block&operation=perm&bid=$bid");
 

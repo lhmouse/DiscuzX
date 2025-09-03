@@ -18,9 +18,9 @@ if(submitcheck('advsubmit')) {
 } else {
 	shownav('extended', 'adv_admin');
 	showsubmenu('adv_admin', [
-		['adv_admin_setting', 'adv&operation=setting', 1],
 		['adv_admin_list', 'adv&operation=list', 0],
 		['adv_admin_listall', 'adv&operation=ad', 0],
+		['adv_admin_setting', 'adv&operation=setting', 1],
 	]);
 
 	$advexpiration = table_common_setting::t()->fetch_setting('advexpiration', true);

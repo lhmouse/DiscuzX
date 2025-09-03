@@ -21,10 +21,7 @@ if(!submitcheck('movesubmit')) {
 	}
 
 	shownav('portal', 'portalcategory');
-	showsubmenu('portalcategory', [
-		['list', 'portalcategory', 0],
-		['portalcategory_move', 'portalcategory&operation=move&catid='.$_GET['catid'], 1]
-	]);
+	showchildmenu([['portalcategory', 'portalcategory']], cplang('portalcategory_move'));
 
 	showformheader('portalcategory&operation=move&catid='.$_GET['catid']);
 	showtableheader();

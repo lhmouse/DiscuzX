@@ -14,7 +14,7 @@ $_GET['id'] = intval($_GET['id']);
 if(!submitcheck('editsubmit')) {
 	$info = table_home_specialuser::t()->fetch_by_uid_status($_GET['uid'], $status);
 	shownav('user', 'nav_defaultuser');
-	showsubmenu('edit');
+	showchildmenu([!$status ? ['nav_follow', 'specialuser&operation=follow'] : ['nav_defaultuser', 'specialuser&operation=defaultuser']], $info['username']);
 	showformheader('specialuser&operation='.$op.'&do=edit&uid='.$info['uid'], '', 'userforum');
 	showtableheader();
 	showsetting('reason', 'reason', $info['reason'], 'text');

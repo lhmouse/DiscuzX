@@ -21,13 +21,14 @@ cpheader();
 shownav('founder', 'menu_founder_restful');
 
 $operation = $operation ? $operation : 'list';
-rp::showMenu($operation);
 
 switch($operation) {
 	case 'list':
+		rp::showMenu($operation);
 		rp::list();
 		break;
 	case 'add':
+		rp::showMenu($operation);
 		rp::add();
 		break;
 	case 'view':
@@ -38,6 +39,7 @@ switch($operation) {
 		}
 		break;
 	case 'appList':
+		rp::showMenu($operation);
 		rp::appList();
 		break;
 	case 'appAdd':

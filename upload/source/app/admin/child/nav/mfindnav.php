@@ -111,11 +111,10 @@ EOT;
 	if(!submitcheck('editsubmit')) {
 
 		shownav('style', 'nav_setting_customnav');
-		showsubmenu('nav_setting_customnav', $navdata);
+		showchildmenu([['nav_setting_customnav', 'nav'], ['nav_nav_mfindnav', 'nav&operation=mfindnav']], $nav['name']);
 
 		showformheader("nav&operation=mfindnav&do=edit&id=$id");
 		showtableheader();
-		showtitle(cplang('nav_nav_mfindnav').' - '.$nav['name']);
 		showsetting('misc_customnav_name', 'namenew', $nav['name'], 'text');
 		showsetting('misc_customnav_url', 'urlnew', $nav['url'], 'text', $nav['type'] == '0');
 		if($nav['type']) {

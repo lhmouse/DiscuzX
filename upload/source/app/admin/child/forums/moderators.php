@@ -18,7 +18,7 @@ if(!submitcheck('modsubmit')) {
 
 	$forum = table_forum_forum::t()->fetch($fid);
 	shownav('forum', 'forums_moderators_edit');
-	showsubmenu(cplang('forums_moderators_edit').' - '.$forum['name']);
+	showchildmenu([['nav_forums', 'forums'], [$forum['name'].' ', '']], cplang('forums_moderators_edit'));
 	showtips('forums_moderators_tips');
 	showformheader("forums&operation=moderators&fid=$fid&");
 	showtableheader('', 'fixpadding');

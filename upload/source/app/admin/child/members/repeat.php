@@ -109,7 +109,8 @@ if(empty($_GET['uid']) && empty($_GET['username']) && empty($_GET['ip'])) {
 	}
 
 	shownav('user', 'nav_repeat');
-	showsubmenu($lang['nav_repeat'].' - '.$searchmember['username']);
+	showchildmenu([['nav_members', 'members&operation=list']], cplang('nav_repeat').' - '.$searchmember['username']);
+
 	showformheader('members&operation=clean');
 	$searchadd = '';
 	if(is_array($ips) && $ips[0] != 'unknown') {

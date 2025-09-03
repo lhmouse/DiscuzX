@@ -35,7 +35,8 @@ if(!submitcheck('rulesubmit')) {
 	}
 	if(!$fid) {
 		shownav('global', 'credits_edit');
-		showsubmenu("{$lang['credits_edit']} - {$ruleinfo['rulename']}");
+		showchildmenu([['setting_credits', 'setting&operation=credits&anchor=base'], ['setting_credits_policy', 'credits&operation=list&anchor=policytable']],
+			$ruleinfo['rulename']);
 	} else {
 		if(!in_array($fid, explode(',', $globalrule['fids']))) {
 			for($i = 1; $i <= 8; $i++) {
@@ -43,7 +44,8 @@ if(!submitcheck('rulesubmit')) {
 			}
 		}
 		shownav('forum', 'forums_edit');
-		showsubmenu("$forumname - {$lang['credits_edit']} - {$ruleinfo['rulename']}");
+		showchildmenu([['nav_forums', 'forums'], [$forumname.'(fid:'.$fid.')'], ['forums_edit_credits', 'forums&operation=edit&fid='.$fid.'&anchor=credits']],
+			$ruleinfo['rulename']);
 		showtips('forums_edit_tips');
 	}
 	showformheader("credits&operation=edit&rid=$rid&".($fid ? "fid=$fid" : ''));
