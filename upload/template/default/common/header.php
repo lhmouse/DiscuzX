@@ -1,6 +1,5 @@
 <?php exit('Access Denied');?>
 <!--{subtemplate common/header_common}-->
-{cells common/header/meta}
 {cells common/header/css}
 {cells common/header/js}
 </head>
@@ -110,7 +109,7 @@
 					<a href="javascript:;" id="qmenu" onmouseover="delayShow(this, function () {showMenu({'ctrlid':'qmenu','pos':'34!','ctrlclass':'a','duration':2});showForummenu($_G[fid]);})">{lang my_nav}</a>
 					<ul>
 						<!--{loop $_G['setting']['navs'] $nav}-->
-							<!--{if is_array($nav) && $nav['available'] && (!$nav['level'] || ($nav['level'] == 1 && $_G['uid']) || ($nav['level'] == 2 && $_G['adminid'] > 0) || ($nav['level'] == 3 && $_G['adminid'] == 1))}--><li {if $mnid == $nav[navid] || substr($_SERVER['REQUEST_URI'], 1) == str_replace('./', '', $nav[filename])}class="a" {/if}$nav[nav]></li><!--{/if}-->
+							<!--{if is_array($nav) && $nav['available'] && (!$nav['level'] || ($nav['level'] == 1 && $_G['uid']) || ($nav['level'] == 2 && $_G['adminid'] > 0) || ($nav['level'] == 3 && $_G['adminid'] == 1) || ($nav['level'] == 4 && !empty($nav['data']['perm']) && forumperm($nav['data']['perm']) ) )}--><li {if $mnid == $nav[navid] || substr($_SERVER['REQUEST_URI'], 1) == str_replace('./', '', $nav[filename])}class="a" {/if}$nav[nav]></li><!--{/if}-->
 						<!--{/loop}-->
 					</ul>
 					<!--{hook/global_nav_extra}-->
