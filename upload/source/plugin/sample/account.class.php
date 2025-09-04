@@ -105,44 +105,4 @@ class account_sample extends account_base {
 		}
 	}
 
-	// 以下参数仅做范例，实际使用中请自行修改
-	var $url = 'http://x5.localhost/api/restful/';
-	var $appid = '17315194';
-	var $secret = 'CUVVRLIOVCI6VRLU';
-	var $token = '';
-
-	private function _request($uri, $post) {
-		$nonce = rand(1000, 2000);
-		$t = time();
-		$headers = array(
-			'appid' => $this->appid,
-			'nonce' => $nonce,
-			't' => $t,
-			'sign' => base64_encode(hash('sha256', $nonce.$t.$this->secret)),
-		);
-
-		if($this->token) {
-			$headers['token'] = $this->token;
-		}
-
-		$headersFmt = array();
-		foreach($headers as $name => $value) {
-			$canonicalName = implode('-', array_map('ucfirst', explode('-', $name)));
-			$headersFmt[] = $canonicalName.': '.$value;
-		}
-
-		$ch = curl_init();
-		curl_setopt_array($ch, array(
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_HTTPHEADER => $headersFmt,
-			CURLOPT_URL => $this->url.'?'.$uri,
-			CURLOPT_POST => 'POST',
-			CURLOPT_POSTFIELDS => $post,
-			CURLOPT_SSL_VERIFYHOST => false,
-			CURLOPT_SSL_VERIFYPEER => false,
-		));
-		$response = curl_exec($ch);
-		return json_decode($response, true);
-	}
-
 }
