@@ -32,7 +32,7 @@
 					return false;
 				}else{
 					clearTimeout(wechat_checkST);
-					location.href = location.href;
+					document.getElementById('login-url-qr-refresh').style.display = 'block';
 				}
 
 			});
