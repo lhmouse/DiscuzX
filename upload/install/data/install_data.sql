@@ -148,7 +148,7 @@ INSERT INTO pre_common_nav VALUES ('', '0', '站点统计', '', 'misc.php?mod=st
 INSERT INTO pre_common_nav VALUES ('', '0', '举报', '', '#', 'report', 0, 0, 1, 2, 0, 0, 0, 0, '', '', '', 1, '');
 INSERT INTO pre_common_nav VALUES ('', '0', 'Archiver', '', 'archiver/', 'archiver', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '手机版', '', 'forum.php?showmobile=yes', 'mobile', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '小黑屋', '', 'forum.php?mod=misc&action=showdarkroom', 'darkroom', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '小黑屋', '', 'misc.php?mod=darkroom', 'darkroom', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
 
 INSERT INTO pre_common_nav VALUES ('', '0', '日志', '', 'home.php?mod=space&do=blog', 'blog', 0, 0, -1, 2, 0, 0, 0, 0, '{STATICURL}image/feed/blog.gif', '发布', 'home.php?mod=spacecp&ac=blog', 2, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '相册', '', 'home.php?mod=space&do=album', 'album', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/feed/album.gif', '上传', 'home.php?mod=spacecp&ac=upload', 2, '');
