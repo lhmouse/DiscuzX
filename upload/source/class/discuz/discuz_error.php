@@ -19,11 +19,31 @@ class discuz_error {
 			$message = lang('error', 'error_unknow');
 		}
 
-		list($showtrace, $logtrace) = discuz_error::debug_backtrace();
-
+		$backtrace = debug_backtrace();
+		krsort($backtrace);
+		$logmsg = '';
+		$phpmsg = [];
+		foreach($backtrace as $error) {
+			if(!empty($error['function'])) {
+				self::format_function($error);
+			}
+			$phpmsg[] = [
+				'file' => str_replace([DISCUZ_ROOT, '\\'], ['', '/'], $error['file']),
+				'line' => $error['line'],
+				'function' => $error['function'],
+			];
+			if($save) {
+				$file = str_replace([DISCUZ_ROOT, '\\'], ['', '/'], $error['file']);
+				$func = $error['class'] ?? '';
+				$func .= $error['type'] ?? '';
+				$func .= $error['function'] ?? '';
+				$line = sprintf('%04d', $error['line']);
+				$logmsg .= (!empty($logmsg) ? ' -> ' : '').$file.'#'.$func.':'.$line;
+			}
+		}
 		$backtraceid = '';
 		if($save) {
-			$messagesave = '<b>'.$message.'</b><br><b>PHP:</b>'.$logtrace;
+			$messagesave = '<b>'.$message.'</b><br><b>PHP:</b>'.$logmsg;
 			$backtraceid = discuz_error::write_error_log($messagesave);
 		}
 
@@ -33,7 +53,7 @@ class discuz_error {
 
 		if($show) {
 			$backtraceid = !empty($backtraceid) ? $backtraceid : md5(discuz_error::clear($messagesave));
-			discuz_error::show_error('system', "<li>$message</li>", $showtrace, '', $backtraceid);
+			discuz_error::show_error('system', "<li>$message</li>", $phpmsg, '', $backtraceid);
 		}
 
 		if($halt) {
@@ -49,33 +69,6 @@ class discuz_error {
 		$tplname = str_replace(DISCUZ_ROOT, '', $tplname);
 		$message = $message.': '.$tplname;
 		discuz_error::system_error($message);
-	}
-
-	public static function debug_backtrace() {
-		$skipfunc[] = 'discuz_error->debug_backtrace';
-		$skipfunc[] = 'discuz_error->template_error';
-		$skipfunc[] = 'discuz_error->system_error';
-		$skipfunc[] = 'db_mysql->halt';
-		$skipfunc[] = 'db_mysql->query';
-		$skipfunc[] = 'DB::_execute';
-
-		$show = $log = '';
-		$debug_backtrace = debug_backtrace();
-		krsort($debug_backtrace);
-		foreach($debug_backtrace as $k => $error) {
-			$file = str_replace(DISCUZ_ROOT, '', $error['file']);
-			$func = $error['class'] ?? '';
-			$func .= $error['type'] ?? '';
-			$func .= $error['function'] ?? '';
-			if(in_array($func, $skipfunc)) {
-				break;
-			}
-			$error['line'] = sprintf('%04d', $error['line']);
-
-			$show .= "<li>[Line: {$error['line']}]".$file."($func)</li>";
-			$log .= (!empty($log) ? ' -> ' : '').$file.'#'.$func.':'.$error['line'];
-		}
-		return [$show, $log];
 	}
 
 	public static function exception_error($exception) {
@@ -106,37 +99,7 @@ class discuz_error {
 		$phpmsg = [];
 		foreach($trace as $error) {
 			if(!empty($error['function'])) {
-				$fun = '';
-				if(!empty($error['class'])) {
-					$fun .= $error['class'].$error['type'];
-				}
-				$fun .= $error['function'].'(';
-				if(!empty($error['args'])) {
-					$mark = '';
-					foreach($error['args'] as $arg) {
-						$fun .= $mark;
-						if(is_array($arg)) {
-							$fun .= 'Array';
-						} elseif(is_bool($arg)) {
-							$fun .= $arg ? 'true' : 'false';
-						} elseif(is_int($arg)) {
-							$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? $arg : '%d';
-						} elseif(is_float($arg)) {
-							$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? $arg : '%f';
-						} elseif(is_resource($arg)) {
-							$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? 'Resource' : '%f';
-						} elseif(is_object($arg)) {
-							$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? 'Object' : '%f';
-						} else {
-							$arg = (string)$arg;
-							$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? '\''.dhtmlspecialchars(substr(self::clear($arg), 0, 10)).(strlen($arg) > 10 ? ' ...' : '').'\'' : '%s';
-						}
-						$mark = ', ';
-					}
-				}
-
-				$fun .= ')';
-				$error['function'] = $fun;
+				self::format_function($error);
 			}
 			$phpmsg[] = [
 				'file' => str_replace([DISCUZ_ROOT, '\\'], ['', '/'], $error['file']),
@@ -157,6 +120,40 @@ class discuz_error {
 		self::show_error($type, $errormsg, $phpmsg, '', $backtraceid);
 		exit();
 
+	}
+
+	private static function format_function(&$error) {
+		$fun = '';
+		if(!empty($error['class'])) {
+			$fun .= $error['class'].$error['type'];
+		}
+		$fun .= $error['function'].'(';
+		if(!empty($error['args'])) {
+			$mark = '';
+			foreach($error['args'] as $arg) {
+				$fun .= $mark;
+				if(is_array($arg)) {
+					$fun .= 'Array';
+				} elseif(is_bool($arg)) {
+					$fun .= $arg ? 'true' : 'false';
+				} elseif(is_int($arg)) {
+					$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? $arg : '%d';
+				} elseif(is_float($arg)) {
+					$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? $arg : '%f';
+				} elseif(is_resource($arg)) {
+					$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? 'Resource' : '%f';
+				} elseif(is_object($arg)) {
+					$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? 'Object' : '%f';
+				} else {
+					$arg = (string)$arg;
+					$fun .= (defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) ? '\''.dhtmlspecialchars(mb_substr(self::clear($arg), 0, 5)).(mb_strlen($arg) > 5 ? ' ...' : '').'\'' : '%s';
+				}
+				$mark = ', ';
+			}
+		}
+
+		$fun .= ')';
+		$error['function'] = $fun;
 	}
 
 	public static function show_error($type, $errormsg, $phpmsg = '', $typemsg = '', $backtraceid = '') {
@@ -329,6 +326,7 @@ EOT;
 	public static function write_error_log($message) {
 		global $_G;
 		$message = discuz_error::clear($message);
+		//$file =  DISCUZ_DATA.'./log/'.date("Ym").'_errorlog.php';
 		$hash = md5($message);
 
 		$uid = $_G['uid'] ?? 0;
@@ -336,6 +334,10 @@ EOT;
 
 		$user = '<b>User:</b> uid='.intval($uid).'; IP='.$ip.'; RIP:'.$_SERVER['REMOTE_ADDR'];
 		$uri = 'Request: '.htmlspecialchars(discuz_error::clear($_SERVER['REQUEST_URI']));
+		/*
+		$message = "<?PHP exit;?>\t{$time}\t$message\t$hash\t$user $uri\n";
+		*/
+		// logger start
 		if($_G['setting']['log']['error']) {
 			$errorlog = [
 				'timestamp' => TIMESTAMP,
@@ -348,6 +350,28 @@ EOT;
 			$member_log = getuserbyuid($uid);
 			logger('error', $member_log, $uid, $errorlog);
 		}
+		// logger end
+		/*
+		if($fp = @fopen($file, 'rb')) {
+			$lastlen = 50000;
+			$maxtime = 60 * 10;
+			$offset = filesize($file) - $lastlen;
+			if($offset > 0) {
+				fseek($fp, $offset);
+			}
+			if($data = fread($fp, $lastlen)) {
+				$array = explode("\n", $data);
+				if(is_array($array)) foreach($array as $key => $val) {
+					$row = explode("\t", $val);
+					if($row[0] != '<?PHP exit;?>') continue;
+					if($row[3] == $hash && ($row[1] > $time - $maxtime)) {
+						return;
+					}
+				}
+			}
+		}
+		error_log($message, 3, $file);
+		*/
 		return $hash;
 	}
 
