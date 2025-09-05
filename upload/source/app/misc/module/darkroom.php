@@ -14,7 +14,7 @@ include_once libfile('class/member');
 if($_G['setting']['darkroom']) {
 	if(getgpc('username')) {
 		$username = trim(dhtmlspecialchars(getgpc('username')));
-		$user = C::t('common_member')->fetch_by_username($username);
+		$user = table_common_member::t()->fetch_by_username($username);
 		$crimelist = [];
 		$search_no_result = 0;
 
