@@ -306,8 +306,8 @@ class credit {
 					$extra[] = 'gid:'.$rule['groupid'];
 				}
 				$extra = !empty($extra) ? '('.implode(',', $extra).')' : '';
-				credit_log($uids, 'RUL', $rule['rid'], $creditarr, $rule['rulename'].$extra);
 				$this->updatemembercount($creditarr, $uids, $checkgroup, $this->coef > 0 ? urldecode($rule['rulenameuni']) : '');
+				credit_log($uids, 'RUL', $rule['rid'], $creditarr, $rule['rulename'].$extra);
 			}
 		}
 	}

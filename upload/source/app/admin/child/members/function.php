@@ -330,11 +330,40 @@ function notifymembers($operation, $variable) {
 					foreach($insertmember as $uid) {
 						table_common_member_count::t()->insert(['uid' => $uid]);
 					}
+
+					$log = [];
 					if($_GET['updatecredittype'] == 0) {
 						table_common_member_count::t()->increase($uids, $setarr);
+
+						foreach($setarr as $key => $val) {
+							if(empty($val)) continue;
+							$val = intval($val);
+							$id = intval($key);
+							$id = !$id && substr($key, 0, -1) == 'extcredits' ? intval(substr($key, -1, 1)) : $id;
+							if(0 < $id && $id < 9) {
+								$log['extcredits'.$id] = $val;
+							}
+						}
+						$logtype = 'RPR';
 					} else {
 						table_common_member_count::t()->clear_extcredits($uids, $setarr);
+
+						foreach($setarr as $val) {
+							if(empty($val)) continue;
+							$id = intval($val);
+							$id = !$id && substr($val, 0, -1) == 'extcredits' ? intval(substr($val, -1, 1)) : $id;
+							if(0 < $id && $id < 9) {
+								$log['extcredits'.$id] = '-1';
+							}
+						}
+						$logtype = 'RPZ';
 					}
+
+					include_once libfile('function/credit');
+					foreach($uids as $uid) {
+						credit_log($uid, $logtype, $uid, $log);
+					}
+
 					if(count($uids) < $limit) break;
 					$i++;
 				}
@@ -504,32 +533,6 @@ function notifymembers($operation, $variable) {
 					sms::send($member['uid'], 1, 2, $member['secmobicc'], $member['secmobile'], "[$subject]$message$addmsg", 1);
 				}
 			}
-
-			$log = [];
-			if($_GET['updatecredittype'] == 0) {
-				foreach($setarr as $key => $val) {
-					if(empty($val)) continue;
-					$val = intval($val);
-					$id = intval($key);
-					$id = !$id && substr($key, 0, -1) == 'extcredits' ? intval(substr($key, -1, 1)) : $id;
-					if(0 < $id && $id < 9) {
-						$log['extcredits'.$id] = $val;
-					}
-				}
-				$logtype = 'RPR';
-			} else {
-				foreach($setarr as $val) {
-					if(empty($val)) continue;
-					$id = intval($val);
-					$id = !$id && substr($val, 0, -1) == 'extcredits' ? intval(substr($val, -1, 1)) : $id;
-					if(0 < $id && $id < 9) {
-						$log['extcredits'.$id] = '-1';
-					}
-				}
-				$logtype = 'RPZ';
-			}
-			include_once libfile('function/credit');
-			credit_log($member['uid'], $logtype, $member['uid'], $log);
 
 			$continue = TRUE;
 		}

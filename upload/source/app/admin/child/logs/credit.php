@@ -11,7 +11,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 }
 
 include_once libfile('function/credit');
-$operationlist = ['TRC', 'RTC', 'RAC', 'MRC', 'TFR', 'RCV', 'CEC', 'ECU', 'SAC', 'BAC', 'PRC', 'RSC', 'STC', 'BTC', 'AFD', 'UGP', 'RPC', 'ACC', 'RCT', 'RCA', 'RCB', 'CDC', 'RKC', 'BME', 'RPR', 'RPZ', 'CHU', 'RUL', 'INV'];
+$operationlist = ['TRC', 'RTC', 'RAC', 'MRC', 'TFR', 'RCV', 'CEC', 'ECU', 'SAC', 'BAC', 'PRC', 'RSC', 'STC', 'BTC', 'AFD', 'UGP', 'RPC', 'ACC', 'RCT', 'RCA', 'RCB', 'CDC', 'RKC', 'BME', 'RPR', 'RPZ', 'CHU', 'RUL', 'INV', 'ERR'];
 
 $rdata = [
 	'task' => ['TRC'],
@@ -76,6 +76,8 @@ if($srch_endtime = trim($_GET['srch_endtime'])) {
 		$srch_endtime = '';
 	}
 }
+$income = intval($_GET['income']);
+$exttype = intval($_GET['exttype']);
 
 $select_operation_html = '<select name="srch_operation">';
 $select_operation_html .= '<option>'.cplang('logs_select_operation').'</option>';
@@ -111,25 +113,42 @@ showtablerow('', ['class="td23"', 'width="150"', 'class="td23"'],
 		cplang('type'), $select_operation_html,
 	]
 );
+$select_income_html = '<select name="income"><option>'.cplang('logs_credit_select_no').'</option>';
+$select_income_html .= '<option value="1"'.($income == 1 ? ' selected="selected"' : '').'>'.cplang('logs_credit_income_in').'</option>';
+$select_income_html .= '<option value="-1"'.($income == -1 ? ' selected="selected"' : '').'>'.cplang('logs_credit_income_out').'</option>';
+$select_income_html .= '</select>';
+
+$select_operation_html = '<select name="exttype"><option>'.cplang('logs_credit_select_no').'</option>';
+foreach($_G['setting']['extcredits'] as $id => $row) {
+	$select_operation_html .= '<option value="'.$id.'"'.($exttype == $id ? ' selected="selected"' : '').'>'.$row['title'].'</option>';
+}
+
+showtablerow('', ['class="td23"', 'width="150"', 'class="td23"'],
+	[
+		cplang('logs_credit_income'), $select_income_html,
+		cplang('credits'), $select_operation_html,
+	]
+);
 showtablerow('', ['colspan="4"'], ['<input type="submit" name="srchlogbtn" class="btn" value="'.$lang['search'].'" />']);
 showtablefooter();
 echo '<script src="'.STATICURL.'js/calendar.js" type="text/javascript"></script>';
 showtableheader('', 'fixpadding');
-showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td24"'], [
+showtablerow('class="header"', ['class="td23"', 'class="td23"', 'class="td23"', 'class="td24"', 'class="td24"', 'class="td24"', 'class="td24"'], [
 	cplang('username'),
 	cplang('time'),
 	cplang('type'),
 	cplang('logs_credits_log_update'),
+	cplang('logs_credits_log_ac'),
 	cplang('detail'),
 	cplang('logs_credit_relatedid'),
 ]);
 
-$num = table_common_credit_log::t()->count_by_search($uid, $optype, $begintime, $endtime, 0, 0, [], $srch_rid);
+$num = table_common_credit_log::t()->count_by_search($uid, $optype, $begintime, $endtime, $exttype, $income, $_G['setting']['extcredits'], $srch_rid);
 
 $mpurl = ADMINSCRIPT."?action=logs&operation=$operation".$pageadd;
 $multipage = multi($num, $perpage, $page, $mpurl, 0, 3);
 
-$logs = table_common_credit_log::t()->fetch_all_by_search($uid, $optype, $begintime, $endtime, 0, 0, [], $start_limit, $perpage, $srch_rid);
+$logs = table_common_credit_log::t()->fetch_all_by_search($uid, $optype, $begintime, $endtime, $exttype, $income, $_G['setting']['extcredits'], $start_limit, $perpage, $srch_rid);
 $luid = [];
 $aids = $pids = $tids = $taskids = $uids = $loglist = [];
 loadcache(['magics']);
@@ -178,13 +197,20 @@ $otherinfo = getotherinfo($aids, $pids, $tids, $taskids, $uids);
 $members = table_common_member::t()->fetch_all($luid);
 foreach($logs as $log) {
 	$log['username'] = $members[$log['uid']]['username'];
-	$log['update'] = '';
+	$log['update'] = $log['ac'] = '';
+	$haveaccredit = false;
 	foreach($_G['setting']['extcredits'] as $id => $credit) {
 		if($log['extcredits'.$id]) {
 			if($log['operation'] == 'RPZ') {
 				$log['update'] .= $credit['title'].$lang['logs_credit_update_reward_clean'].'&nbsp;';
 			} else {
 				$log['update'] .= $credit['title'].($log['extcredits'.$id] > 0 ? '+' : '').$log['extcredits'.$id].$credit['unit'].'&nbsp;';
+			}
+			if(isset($log['ac_extcredits'.$id]) && $log['ac_extcredits'.$id]) {
+				$haveaccredit = true;
+			}
+			if(isset($log['ac_extcredits'.$id])) {
+				$log['ac'] .= $credit['title'].' '.$log['ac_extcredits'.$id].$credit['unit'].'&nbsp;';
 			}
 		}
 	}
@@ -224,6 +250,7 @@ foreach($logs as $log) {
 		$log['dateline'],
 		$log['operation'] ? $log['optype'] : $log['title'],
 		$log['update'],
+		$haveaccredit ? $log['ac'] : '',
 		$log['operation'] ? $log['opinfo'] : $log['text'],
 		$related.($log['relatedid'] ? '&nbsp;&nbsp;<a href="'.ADMINSCRIPT.'?action=logs&operation=credit&srch_rtype='.$rtype.'&srch_rid='.$log['relatedid'].'" target="_blank">'.cplang('sameinfo').'</a>' : ''),
 	]);

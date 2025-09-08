@@ -27,9 +27,14 @@ if($_GET['op'] == 'base') {
 	if($count) {
 		loadcache(['magics']);
 		foreach(table_common_credit_log::t()->fetch_all_by_uid($_G['uid'], 0, 10) as $log) {
-			$credits = [];
-			$havecredit = false;
+			$credits = $ac_credits = [];
+			$havecredit = $haveaccredit = false;
 			$maxid = $minid = 0;
+			for($id = 1; $id <= 8;$id++) {
+				if(isset($log['ac_extcredits'.$id]) && $log['ac_extcredits'.$id]) {
+					$haveaccredit = true;
+				}
+			}
 			foreach($_G['setting']['extcredits'] as $id => $credit) {
 				if($log['extcredits'.$id]) {
 					$havecredit = true;
@@ -45,12 +50,16 @@ if($_GET['op'] == 'base') {
 							$log['minid'] = $id;
 						}
 					}
+					if($haveaccredit && isset($log['ac_extcredits'.$id])) {
+						$ac_credits[] = $credit['title'].' '.$log['ac_extcredits'.$id];
+					}
 				}
 			}
 			if(!$havecredit) {
 				continue;
 			}
 			$log['credit'] = implode('<br/>', $credits);
+			$log['ac_credit'] = implode('<br/>', $ac_credits);
 			if(in_array($log['operation'], ['RTC', 'RAC', 'STC', 'BTC', 'ACC', 'RCT', 'RCA', 'RCB'])) {
 				$tids[$log['relatedid']] = $log['relatedid'];
 			} elseif(in_array($log['operation'], ['SAC', 'BAC'])) {

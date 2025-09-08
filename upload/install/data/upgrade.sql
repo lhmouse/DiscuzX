@@ -545,3 +545,23 @@ ALTER TABLE `pre_portal_article_title` DROP `tag`;
 ALTER TABLE `pre_portal_article_title` ADD `tags` VARCHAR(255) NOT NULL AFTER `click8`;
 
 ALTER TABLE `pre_forum_threadtype` ADD super text NOT NULL;
+
+ALTER TABLE pre_common_credit_log_field
+	ADD COLUMN dateline int(10) unsigned NOT NULL DEFAULT 0;
+
+ALTER TABLE pre_common_credit_log_field
+	ADD INDEX dateline (dateline);
+
+ALTER TABLE pre_common_credit_log_field
+	ADD COLUMN ac_extcredits1 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits2 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits3 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits4 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits5 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits6 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits7 int(10)          NOT NULL,
+    	ADD COLUMN ac_extcredits8 int(10)          NOT NULL;
+
+UPDATE pre_common_credit_log_field f
+	JOIN pre_common_credit_log l ON f.logid = l.logid
+	SET f.dateline = l.dateline;

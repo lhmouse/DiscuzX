@@ -56,7 +56,9 @@ function show_todo() {
 		}
 	}
 
-	$show = $membersmod || $threadsmod || $postsmod || $medalsmod || $blogsmod || $picturesmod || $doingsmod || $sharesmod || $commentsmod || $articlesmod || $articlecommentsmod || $topiccommentsmod || $reportcount || $threadsdel || !empty($verify);
+	$errcredits = table_common_credit_log::t()->count_by_search(0, 'ERR', TIMESTAMP - 86400 * 7);
+
+	$show = $membersmod || $threadsmod || $postsmod || $medalsmod || $blogsmod || $picturesmod || $doingsmod || $sharesmod || $commentsmod || $articlesmod || $articlecommentsmod || $topiccommentsmod || $reportcount || $threadsdel || !empty($verify) || $errcredits;
 	if(!$show) {
 		return;
 	}

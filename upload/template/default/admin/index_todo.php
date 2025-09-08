@@ -53,6 +53,9 @@
 			<!--{loop $verify $n $row}-->
 			<em>{lang home_mod_verify_prefix}{$row[0]}<span><a href="{ADMINSCRIPT}?action=verify&operation=verify&do={$n}">{$row[1]}</a></span></em>
 			<!--{/loop}-->
+			<!--{if $errcredits}-->
+			<em>{lang home_err_credits}<span><a href="{ADMINSCRIPT}?action=logs&operation=credit&srch_operation=ERR" style="color: red">{$errcredits}</a></span></em>
+			<!--{/if}-->
 		</div>
 	</div>
 </div>

@@ -38,6 +38,7 @@ $lang = [
 	'home_mod_topiccomments' => '待审专题评论',
 	'home_mod_reports' => '待审举报',
 	'home_del_threads' => '回收站主题',
+	'home_err_credits' => '近日积分错误',
 
 	'main_nav' => '主导航',
 	'quick_nav' => '快捷导航',

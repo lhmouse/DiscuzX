@@ -82,7 +82,7 @@ if(!submitcheck('modsubmit') && !$_GET['fast']) {
 			$censor->check($doing['message']);
 		}
 		$doing_censor_words = $censor->words_found;
-		if(count($post_censor_words) > 3) {
+		if(count($doing_censor_words) > 3) {
 			$doing_censor_words = array_slice($doing_censor_words, 0, 3);
 		}
 		$doing['censorwords'] = implode(', ', $doing_censor_words);

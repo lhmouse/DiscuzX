@@ -269,7 +269,7 @@ class uc_note {
 		}
 
 		updatemembercount($uid, [$credit => $amount]);
-		table_common_credit_log::t()->insert(['uid' => $uid, 'operation' => 'ECU', 'relatedid' => $uid, 'dateline' => time(), 'extcredits'.$credit => $amount]);
+		credit_log($uid, 'ECU', $uid, ['extcredits'.$credit => $amount]);
 
 		return API_RETURN_SUCCEED;
 	}

@@ -419,10 +419,20 @@ CREATE TABLE pre_common_credit_log
 DROP TABLE IF EXISTS pre_common_credit_log_field;
 CREATE TABLE pre_common_credit_log_field
 (
-	logid  mediumint(8) unsigned NOT NULL,
-	title  varchar(100)          NOT NULL,
-	`text` text                  NOT NULL,
-	KEY logid (logid)
+	logid    mediumint(8) unsigned 	NOT NULL,
+	title    varchar(100)          	NOT NULL,
+	`text`   text                  	NOT NULL,
+	dateline int(10) unsigned       NOT NULL,
+	ac_extcredits1 int(10)          NOT NULL,
+	ac_extcredits2 int(10)          NOT NULL,
+	ac_extcredits3 int(10)          NOT NULL,
+	ac_extcredits4 int(10)          NOT NULL,
+	ac_extcredits5 int(10)          NOT NULL,
+	ac_extcredits6 int(10)          NOT NULL,
+	ac_extcredits7 int(10)          NOT NULL,
+	ac_extcredits8 int(10)          NOT NULL,
+	KEY logid (logid),
+	KEY dateline (dateline)
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_common_credit_rule;

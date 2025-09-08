@@ -58,6 +58,7 @@
 					<tr>
 						<th width="80">{lang operation}</th>
 						<th width="80">{lang credit_change}</th>
+						<th width="80">{lang credit_after_change}</th>
 						<th>{lang detail}</th>
 						<th width="110">{lang changedateline}</th>
 					</tr>
@@ -66,6 +67,7 @@
 					<tr>
 						<td><!--{if $value['operation']}--><a href="home.php?mod=spacecp&ac=credit&op=log&optype=$value['operation']">$value['optype']</a><!--{else}-->$value['title']<!--{/if}--></td>
 						<td>$value['credit']</td>
+						<td>$value['ac_credit']</td>
 						<td><!--{if $value['operation']}-->$value['opinfo']<!--{else}-->$value['text']<!--{/if}--></td>
 						<td>$value['dateline']</td>
 					</tr>

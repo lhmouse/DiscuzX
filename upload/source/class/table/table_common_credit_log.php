@@ -61,12 +61,7 @@ class table_common_credit_log extends discuz_table {
 		if(!$array) {
 			return [];
 		}
-		$fieldids = [];
-		foreach($array as $key => $value) {
-			if(!in_array($value['operation'], lang('spacecp', 'logs_credit_update_INDEX'))) {
-				$fieldids[] = $key;
-			}
-		}
+		$fieldids = array_keys($array);
 		if($fieldids) {
 			$arrayfield = DB::fetch_all('SELECT * FROM %t WHERE logid IN(%n)', ['common_credit_log_field', $fieldids], 'logid');
 			foreach($arrayfield as $key => $value) {
@@ -82,12 +77,7 @@ class table_common_credit_log extends discuz_table {
 		if(!$array) {
 			return [];
 		}
-		$fieldids = [];
-		foreach($array as $key => $value) {
-			if(!in_array($value['operation'], lang('spacecp', 'logs_credit_update_INDEX'))) {
-				$fieldids[] = $key;
-			}
-		}
+		$fieldids = array_keys($array);
 		if($fieldids) {
 			$arrayfield = DB::fetch_all('SELECT * FROM %t WHERE logid IN(%n)', ['common_credit_log_field', $fieldids], 'logid');
 			foreach($arrayfield as $key => $value) {
@@ -95,6 +85,14 @@ class table_common_credit_log extends discuz_table {
 			}
 		}
 		return $array;
+	}
+
+	public function fetch_last_by_uid($uid) {
+		$logid = DB::result_first('SELECT logid FROM %t WHERE uid=%d ORDER BY logid DESC LIMIT 1', [$this->_table, $uid]);
+		if(!$logid) {
+			return [];
+		}
+		return DB::fetch_first('SELECT * FROM %t WHERE logid=%d', ['common_credit_log_field', $logid]);
 	}
 
 	public function delete_by_operation_relatedid($operation, $relatedid) {
@@ -211,6 +209,10 @@ class table_common_credit_log extends discuz_table {
 		}
 		$wheresql = !empty($wherearr) && is_array($wherearr) ? ' WHERE '.implode(' AND ', $wherearr) : '';
 		return [$wheresql, $parameter];
+	}
+
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
 	}
 }
 

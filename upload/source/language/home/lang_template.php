@@ -1046,6 +1046,7 @@ $lang = [
 	'my_credits' => '我的积分',
 	'transfer_credits' => '转账',
 	'credit_change' => '积分变更',
+	'credit_after_change' => '变更后',
 	'credit_income' => '收支',
 	'credit_income_0' => '不限',
 	'credit_income_1' => '收入',

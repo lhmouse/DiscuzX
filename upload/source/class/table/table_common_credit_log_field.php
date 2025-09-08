@@ -26,5 +26,9 @@ class table_common_credit_log_field extends discuz_table {
 
 		parent::__construct();
 	}
+
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 

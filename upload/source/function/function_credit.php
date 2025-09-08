@@ -74,13 +74,13 @@ function _updatemembercount($uids, $dataarr = [], $checkgroup = true, $operation
 			$data[$key] = $val;
 		}
 	}
-	if($writelog) {
-		credit_log($uids, $operation, $relatedid, $log, $customtitle, $custommemo);
-	}
 	if($data) {
 		include_once libfile('class/credit');
 		$credit = &credit::instance();
 		$credit->updatemembercount($data, $uids, $checkgroup, $ruletxt);
+	}
+	if($writelog) {
+		credit_log($uids, $operation, $relatedid, $log, $customtitle, $custommemo);
 	}
 }
 
@@ -89,24 +89,65 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 		return;
 	}
 	$log = [
-		'uid' => $uids,
 		'operation' => $operation,
-		'relatedid' => $relatedid,
 		'dateline' => TIMESTAMP,
 	];
 	foreach($data as $k => $v) {
 		$log[$k] = $v;
 	}
-	if(is_array($uids)) {
-		foreach($uids as $k => $uid) {
-			$log['uid'] = $uid;
-			$log['relatedid'] = is_array($relatedid) ? $relatedid[$k] : $relatedid;
-			$insertid = table_common_credit_log::t()->insert($log, true);
-			table_common_credit_log_field::t()->insert(['logid' => $insertid, 'title' => $customtitle, 'text' => $custommemo]);
+	$uids = (array)$uids;
+	foreach($uids as $k => $uid) {
+		$user = table_common_member_count::t()->fetch($uid);
+		if(!$user) {
+			continue;
 		}
-	} else {
+		$last = table_common_credit_log::t()->fetch_last_by_uid($uid);;
+		if($last) {
+			$errlog = [];
+			$haveaccredit = false;
+			for($i = 1; $i <= 8; $i++) {
+				if(!isset($log['extcredits'.$i])) {
+					continue;
+				}
+				$checkcredit = $last['ac_extcredits'.$i] + $log['extcredits'.$i];
+				if($checkcredit != $user['extcredits'.$i]) {
+					$errlog['extcredits'.$i] = $user['extcredits'.$i] - $checkcredit;
+				}
+				if($last['ac_extcredits'.$i]) {
+					$haveaccredit = true;
+				}
+			}
+			if($haveaccredit && $errlog) {
+				$errlog['operation'] = 'ERR';
+				$errlog['dateline'] = TIMESTAMP;
+				$errlog['uid'] = $uid;
+				$errlog['relatedid'] = 0;
+				$insertid = table_common_credit_log::t()->insert($errlog, true);
+				$logfield = [
+					'logid' => $insertid,
+					'title' => '',
+					'text' => '',
+					'dateline' => TIMESTAMP,
+				];
+				for($i = 1; $i <= 8; $i++) {
+					$logfield['ac_extcredits'.$i] = $user['extcredits'.$i];
+				}
+				table_common_credit_log_field::t()->insert($logfield);
+			}
+		}
+		$log['uid'] = $uid;
+		$log['relatedid'] = is_array($relatedid) ? $relatedid[$k] : $relatedid;
 		$insertid = table_common_credit_log::t()->insert($log, true);
-		table_common_credit_log_field::t()->insert(['logid' => $insertid, 'title' => $customtitle, 'text' => $custommemo]);
+		$logfield = [
+			'logid' => $insertid,
+			'title' => $customtitle,
+			'text' => $custommemo,
+			'dateline' => TIMESTAMP,
+		];
+		for($i = 1; $i <= 8; $i++) {
+			$logfield['ac_extcredits'.$i] = $user['extcredits'.$i];
+		}
+		table_common_credit_log_field::t()->insert($logfield);
 	}
 }
 
