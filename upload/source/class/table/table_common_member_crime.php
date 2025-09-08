@@ -61,5 +61,9 @@ class table_common_member_crime extends discuz_table {
 		}
 		DB::delete($this->_table, DB::field('uid', $uids));
 	}
+
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 

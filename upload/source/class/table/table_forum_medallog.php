@@ -71,7 +71,7 @@ class table_forum_medallog extends discuz_table {
 		$start_limit = intval($start_limit);
 		$lpp = intval($lpp);
 
-		return DB::fetch_all('SELECT * FROM ' .DB::table('forum_medallog')." $where ORDER BY dateline DESC LIMIT $start_limit, $lpp");
+		return DB::fetch_all('SELECT * FROM '.DB::table('forum_medallog')." $where ORDER BY dateline DESC LIMIT $start_limit, $lpp");
 	}
 
 	public function count_by_type_medalid($type, $medalid) {
@@ -84,12 +84,15 @@ class table_forum_medallog extends discuz_table {
 		}
 		$where = $where ? 'WHERE '.implode(' AND ', $where) : '';
 
-		return DB::result_first('SELECT COUNT(*) FROM ' .DB::table('forum_medallog')." $where");
+		return DB::result_first('SELECT COUNT(*) FROM '.DB::table('forum_medallog')." $where");
 	}
 
 	public function count_by_verify_medalid($uid, $medalid) {
 		return DB::result_first('SELECT COUNT(*) FROM %t WHERE uid=%d AND medalid=%d AND type=2', [$this->_table, $uid, $medalid]);
 	}
 
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 

@@ -126,6 +126,8 @@ class table_common_invite extends discuz_table {
 		return [$wheresql, $parameter];
 	}
 
-
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 

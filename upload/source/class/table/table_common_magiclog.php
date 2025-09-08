@@ -101,5 +101,8 @@ class table_common_magiclog extends discuz_table_archive {
 		return 0;
 	}
 
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 

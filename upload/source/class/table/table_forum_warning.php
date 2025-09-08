@@ -50,5 +50,8 @@ class table_forum_warning extends discuz_table {
 		return DB::query('DELETE FROM %t WHERE '.DB::field('pid', $pids), [$this->_table], false, true);
 	}
 
+	public function delete_by_removetime($removetime) {
+		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
+	}
 }
 
