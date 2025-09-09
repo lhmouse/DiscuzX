@@ -50,6 +50,18 @@ updatecache(['plugin', 'setting', 'styles']);
 cleartemplatecache();
 updatemenu('plugin');
 
+if(file_exists(DISCUZ_PLUGIN($dir).'/block/blockclass.php')) {
+	$blockstyles= table_common_block_style::t()->fetch_all_by_where(DB::field('blockclass', $plugin['identifier'].'%', 'like'), '', 0, 0);
+	foreach($blockstyles as $blockstyle) {
+		$f = substr($blockstyle['blockclass'], strlen($plugin['identifier']) + 1);
+		if(file_exists(DISCUZ_PLUGIN($dir).'/block/block_'.$f.'.php')) {
+			table_common_block_style::t()->delete($blockstyle['styleid']);
+		}
+	}
+	include_once libfile('function/block');
+	blockclass_cache();
+}
+
 if(!empty($pluginarray['uninstallfile']) && preg_match('/^[\w\.]+$/', $pluginarray['uninstallfile'])) {
 	$filename = DISCUZ_PLUGIN($plugin['identifier']).'/'.$pluginarray['uninstallfile'];
 	if(file_exists($filename)) {

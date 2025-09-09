@@ -1043,6 +1043,7 @@ function blockclass_cache() {
 						'name' => $value['name']
 					];
 					block_parse_template($value['template'], $arr);
+					$arr['hash'] = !empty($value['id']) ? substr(md5($arr['blockclass'].'|'.$value['id']), 8, 8) : $arr['hash'];
 					$styles[$arr['hash']] = $arr;
 				}
 			}
@@ -1057,6 +1058,7 @@ function blockclass_cache() {
 	if($styles) {
 		$hashes = array_keys($styles);
 		foreach(table_common_block_style::t()->fetch_all_by_hash($hashes) as $value) {
+			table_common_block_style::t()->update($value['styleid'], $styles[$value['hash']]);
 			unset($styles[$value['hash']]);
 		}
 		if($styles) {

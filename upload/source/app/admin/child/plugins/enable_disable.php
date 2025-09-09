@@ -89,6 +89,12 @@ table_common_plugin::t()->update($_GET['pluginid'], ['available' => $available])
 updatecache(['plugin', 'setting', 'styles']);
 cleartemplatecache();
 updatemenu('plugin');
+
+if(file_exists(DISCUZ_PLUGIN($dir).'/block/blockclass.php')) {
+	include_once libfile('function/block');
+	blockclass_cache();
+}
+
 if($operation == 'enable') {
 	if(!$conflictplugins) {
 		cpmsg('plugins_enable_succeed', 'action=plugins'.(!empty($_GET['system']) ? '&system=1' : ''), 'succeed');
