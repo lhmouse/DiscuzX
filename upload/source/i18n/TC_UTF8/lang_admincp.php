@@ -1433,6 +1433,15 @@ $lang =
 
 	'district' => '地區設置',
 	'district_tips' => '<li>您可以自己編輯地區數據</li><li>添加，編輯或刪除操作後需要點擊“提交”按鈕才生效</li>',
+	'district_import_tips' => '<li>數據格式示例如下：<pre>
+中國
+	北京市
+		東城區
+			東華門街道
+			東四街道
+		西城區
+			什剎海街道	
+</pre></li>',
 	'district_choose' => '選擇地區',
 	'district_birthcity' => '<input type="checkbox" name="birthcitychkall" onclick="checkAll(\'prefix\', this.form, \'birthcity\', \'birthcitychkall\')" class="checkbox">出生地',
 	'district_residecity' => '<input type="checkbox" name="residecitychkall" onclick="checkAll(\'prefix\', this.form, \'residecity\', \'residecitychkall\')" class="checkbox">居住地',

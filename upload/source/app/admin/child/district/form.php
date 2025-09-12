@@ -10,7 +10,6 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 	exit('Access Denied');
 }
 
-showsubmenu('district');
 /*search={"district":"action=district"}*/
 showtips('district_tips');
 /*search*/
