@@ -29,7 +29,8 @@
 	</div>
 	<ul id="dkm_menu" style="display: none;"><li class="current">$by_system</li><li>$normal_mode</li><li>$dark_mode</li></ul>
 </div>
-<!--{if $cpaccess != -2 && $cpaccess != -3}-->
+{eval $simple = $cpaccess != -1 && $cpaccess != -2 && $cpaccess != -3 && $cpaccess != -4;}
+<!--{if $simple}-->
 <div class="container">
 	<div class="intro">
 		<h3>$cptitle</h3>
@@ -44,10 +45,10 @@
 	<div class="container loginbox"><span>{echo lang('admincp_login', 'login_cp_noaccess');}</span></div>
 <!--{elseif $cpaccess == -1}-->
 	{eval $ltime = $this->sessionlife - (TIMESTAMP - $this->adminsession['dateline']);}
-	<div class="loginbox"><span>{echo lang('admincp_login', 'login_cplock', array('ltime' => $ltime));}</span></div>
+	<div class="container loginbox"><span>{echo lang('admincp_login', 'login_cplock', array('ltime' => $ltime));}</span></div>
 <!--{elseif $cpaccess == -4}-->
 	{eval $ltime = $this->sessionlife - (TIMESTAMP - $this->adminsession['dateline']);}
-	<div class="loginbox"><span>{echo lang('admincp_login', 'login_user_lock');}</span></div>
+	<div class="container loginbox"><span>{echo lang('admincp_login', 'login_user_lock');}</span></div>
 <!--{else}-->
 	<form method="post" autocomplete="off" name="login" id="loginform" action="$extra" class="loginbox">
 		<input type="hidden" name="sid" value="$sid">
@@ -105,7 +106,7 @@
 	<!--{/if}-->
 <!--{/if}-->
 
-<!--{if $cpaccess != -2 && $cpaccess != -3}-->
+<!--{if $simple}-->
 </div>
 <!--{/if}-->
 
