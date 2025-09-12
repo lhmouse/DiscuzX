@@ -199,6 +199,15 @@ function show_filecheck() {
 	}
 }
 
+function _getSysLang() {
+	$lang = [];
+	@include DISCUZ_ROOT.'./source/i18n/'.currentlang().'/lang.php';
+	if(!empty($lang['name'])) {
+		return $lang['name'];
+	}
+	return '';
+}
+
 function show_sysinfo() {
 	global $newversion, $reldisp, $lang, $_G;
 
@@ -226,6 +235,11 @@ function show_sysinfo() {
 	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
 		cplang('home_mitframe_version'),
 		'<i class="mitframe_gray"></i> '.MITFRAME_VERSION_NAME.' '.MITFRAME_VERSION,
+	]);
+
+	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+		cplang('home_sys_lang'),
+		'<i class="i18n_ico"></i> '._getSysLang(),
 	]);
 
 	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [

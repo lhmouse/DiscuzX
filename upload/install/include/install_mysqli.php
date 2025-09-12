@@ -6,7 +6,7 @@
  * https://license.discuz.vip
  */
 
-if(!defined('IN_COMSENZ')) {
+if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
@@ -17,7 +17,7 @@ class dbstuff {
 	var $time;
 	var $tablepre;
 
-	function connect($dbhost, $dbuser, $dbpw, $dbname = '', $dbcharset = '', $pconnect = 0, $tablepre = '', $time = 0) {
+	function connect($dbhost, $dbuser, $dbpw, $dbname = '', $dbcharset = '', $pconnect = 0, $tablepre='', $time = 0) {
 		$this->time = $time;
 		$this->tablepre = $tablepre;
 
@@ -28,7 +28,7 @@ class dbstuff {
 			$this->halt('Can not connect to MySQL server');
 		}
 
-		if(version_compare($this->version(), '5.5.3', '<')) {
+		if (version_compare($this->version(), '5.5.3', '<')) {
 			$this->halt('MySQL version must be 5.5.3 or greater');
 		}
 

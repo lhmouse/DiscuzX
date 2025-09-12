@@ -41,6 +41,10 @@ if(isset($_COOKIE['ULTRAXINSTID']) && strpos($_COOKIE['ULTRAXINSTID'], 'ULTRAXIN
 	setcookie('ULTRAXINSTID', $instid);
 }
 
+if(empty($_COOKIE['LANG'])) {
+	show_select_lang();
+}
+
 if($method == 'show_license') {
 
 	transfer_ucinfo($_POST);
@@ -329,6 +333,7 @@ if($method == 'show_license') {
 		$_config['security']['authkey'] = $authkey;
 		$_config['cookie']['cookiepre'] = secrandom(4).'_';
 		$_config['memory']['prefix'] = secrandom(6).'_';
+		$_config['lang'] = $_COOKIE['LANG'];
 
 		save_config_file(ROOT_PATH.CONFIG, $_config, $default_config);
 
@@ -391,8 +396,7 @@ if($method == 'show_license') {
 		install_uc_sql();
 	}
 
-	$sql = file_get_contents($sqlfile);
-	$sql = str_replace("\r\n", "\n", $sql);
+	$sql = read_sql($sqlfile);
 	if(!runquery($sql)) {
 		exit();
 	}
@@ -402,6 +406,7 @@ if($method == 'show_license') {
 } elseif($method == 'do_db_upgrade') {
 	include ROOT_PATH.CONFIG;
 	$_config['memory']['redis']['server'] = '';
+	$_config['lang'] = $_COOKIE['LANG'];
 	save_config_file(ROOT_PATH.CONFIG, $_config, []);
 
 	$allinfo = getgpc('allinfo');
@@ -416,8 +421,7 @@ if($method == 'show_license') {
 	$db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
 
-	$sql = file_get_contents($upgrade_sqlfile);
-	$sql = str_replace("\r\n", "\n", $sql);
+	$sql = read_sql($upgrade_sqlfile);
 	if(!runquery($sql, true)) {
 		exit();
 	}
@@ -439,11 +443,7 @@ if($method == 'show_license') {
 	$db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
 
-	$sql = file_get_contents(ROOT_PATH.'./install/data/install_data.sql');
-	if(file_exists(ROOT_PATH.'./install/data/install_data_appendage.sql')) {
-		$sql .= "\n".file_get_contents(ROOT_PATH.'./install/data/install_data_appendage.sql');
-	}
-	$sql = str_replace("\r\n", "\n", $sql);
+	$sql = read_sql($data_sqlfile);
 	if(!runquery($sql)) {
 		exit();
 	}
@@ -493,12 +493,8 @@ if($method == 'show_license') {
 
 	install_data($username, $uid);
 
-	$testdata = $portalstatus = 1;
+	$portalstatus = 1;
 	$groupstatus = $homestatus = 0;
-
-	if($testdata) {
-		install_testdata($username, $uid);
-	}
 
 	if(!$portalstatus) {
 		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('portalstatus', '0')");
@@ -527,10 +523,6 @@ if($method == 'show_license') {
 	$ctype = 1;
 	$data = addslashes(serialize($userstats));
 	$db->query("REPLACE INTO {$tablepre}common_syscache (cname, ctype, dateline, data) VALUES ('userstats', '$ctype', '".time()."', '$data')");
-
-	if(file_exists(ROOT_PATH.'./install/data/install_data_appendage.sql')) {
-		@unlink(ROOT_PATH.'./install/data/install_data_appendage.sql');
-	}
 
 	//自动登录前台
 	$saltkey = random(8);

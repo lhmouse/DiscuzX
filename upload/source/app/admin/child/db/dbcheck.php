@@ -13,10 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 if(!table_common_setting::t()->fetch_all_field()) {
 	cpmsg('dbcheck_permissions_invalid', '', 'error');
 }
-$installSqlPath = DISCUZ_ROOT.'./install/install.sql';
-if(!file_exists($installSqlPath)) {
-	$installSqlPath = DISCUZ_ROOT.'./install/data/install.sql';
-}
+$installSqlPath = DISCUZ_ROOT.'./source/i18n/'.$_G['config']['lang'].'/install/lang_install.php';
 $step = max(1, intval($_GET['step']));
 if($step == 3) {
 
@@ -54,6 +51,7 @@ if($step == 3) {
 				$fp = fopen($installSqlPath, 'rb');
 				$installdata = fread($fp, filesize($installSqlPath));
 				fclose($fp);
+				$installdata = substr($installdata, 30);
 			}
 			preg_match('/CREATE TABLE '.DB::table($value).'\s+\(.+?;/is', $installdata, $a);
 			DB::query(createtable($a[0], $dbcharset));

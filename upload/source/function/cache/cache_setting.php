@@ -1284,7 +1284,7 @@ function init_i18n(&$data) {
 	global $_G;
 
 	$jslangs = [
-		'default' => DISCUZ_ROOT.'./source/language/lang_js.php',
+		'default' => DISCUZ_ROOT.'./source/i18n/'.currentlang().'/lang_js.php',
 	];
 
 	foreach(glob(DISCUZ_ROOT.'./source/i18n/*') as $path) {

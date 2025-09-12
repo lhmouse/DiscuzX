@@ -6,7 +6,7 @@
  * https://license.discuz.vip
  */
 
-if(!defined('IN_COMSENZ')) {
+if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 $settings = array(

@@ -6,7 +6,7 @@
  * https://license.discuz.vip
  */
 
-if(!defined('IN_COMSENZ')) {
+if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
@@ -560,6 +560,65 @@ EOT;
 	}
 }
 
+function get_langs() {
+	$lang_items = [];
+	foreach(glob(ROOT_PATH.'./source/i18n/*') as $langdir) {
+		if(is_dir($langdir) && file_exists($langdir.'/lang.php') && file_exists($langdir.'/install/lang_install.php')) {
+			require $langdir.'/lang.php';
+			$lang_items[basename($langdir)] = $lang['name'];
+		}
+	}
+	return $lang_items;
+}
+
+function set_lang() {
+	if(!empty($_GET['lang'])) {
+		if($_GET['lang'] != '_') {
+			$lang_items = get_langs();
+			$v = $lang_items[$_GET['lang']] ? $_GET['lang'] : 'SC_UTF8';
+			setcookie('LANG', $v, time() + 86400);
+			$_COOKIE['LANG'] = $v;
+		} else {
+			setcookie('LANG', '', -1);
+			$_COOKIE['LANG'] = '';
+		}
+	}
+
+	define('INSTALL_LANG', !empty($_COOKIE['LANG']) ? $_COOKIE['LANG'] : (!empty($_config['lang']) ? $_config['lang'] : 'SC_UTF8'));
+}
+
+function show_select_lang() {
+
+	$version = DISCUZ_VERSION;
+	$version_title = lang('version_title');
+
+	show_header();
+
+	$langs = '';
+	$select = lang('select');
+	$lang_items = get_langs();
+	foreach($lang_items as $k => $v) {
+		$langs .= '<input type="button" class="btn" onclick="location.href=\'?lang='.$k.'\'" value="'.$v.'" style="margin: 0 10px;">';
+	}
+
+	echo <<<EOT
+</div>
+<div class="main" id="startdiv">
+	<div class="startblock">
+		<div class="start">
+			<h1>$select</h1>
+		</div>
+	</div>
+	<div class="btnbox">
+		$langs
+	</div>
+EOT;
+
+	show_footer();
+	exit;
+
+}
+
 function show_version_notice() {
 	global $self, $uchidden, $step, $instid;
 	$next = $step;
@@ -574,6 +633,7 @@ function show_version_notice() {
 
 		show_header();
 
+		$back = lang('click_to_back');
 		$notice = str_replace('  ', '&nbsp; ', lang('version_notice'));
 		$start_install = lang('start_install');
 
@@ -591,7 +651,8 @@ function show_version_notice() {
 		<input type="hidden" name="step" value="$next">
 		<input type="hidden" name="start" value="yes">
 		<input type="hidden" name="uchidden" value="$uchidden">
-		<input type="submit" class="btn" name="submit" value="{$start_install}"">
+		<input type="button" class="btn oldbtn" name="exit" value="$back" onclick="location.href='?lang=_'">
+		<input type="submit" class="btn" name="submit" value="{$start_install}">
 		</form>
 	</div>
 EOT;
@@ -663,7 +724,7 @@ function show_header() {
 	$mversion = MITFRAME_VERSION;
 	$subversion = DISCUZ_SUBVERSION;
 	$release = DISCUZ_RELEASE;
-	$install_lang = lang(INSTALL_LANG);
+	$install_lang = lang('name');
 	$title = RUN_MODE == 'install' ? lang('title_install') : lang('title_tool');
 	$titlehtml = '
 <svg width="127.78282px" height="22.5px" viewBox="0 0 127.78282 22.5" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -1764,7 +1825,7 @@ function _generate_key($length = 32) {
 function install_uc_sql() {
 	global $db, $dbhost, $dbuser, $dbpw, $dbname, $tablepre, $username, $password, $email, $dzucstl, $myisam2innodb;
 
-	$ucsql = file_get_contents(ROOT_PATH.'./install/data/uc.sql');
+	$ucsql = read_sql('lang_sql_uc');
 	$uctablepre = $tablepre.'ucenter_';
 	$ucsql = str_replace(' uc_', ' '.$uctablepre, $ucsql);
 	if($ucsql) {
@@ -1832,21 +1893,6 @@ function install_data($username, $uid) {
 	}
 
 	showjsmessage(lang('install_data').lang('succeed')."\n");
-}
-
-function install_testdata($username, $uid) {
-	global $_G, $db, $tablepre;
-
-	showjsmessage(lang('install_test_data')." :  \n");
-	$sqlfile = ROOT_PATH.'./install/data/common_district_{#id}.sql';
-	for($i = 1; $i < 4; $i++) {
-		$sqlfileid = str_replace('{#id}', $i, $sqlfile);
-		if(file_exists($sqlfileid)) {
-			$sql = file_get_contents($sqlfileid);
-			$sql = str_replace("\r\n", "\n", $sql);
-			runquery($sql);
-		}
-	}
 }
 
 function all_done() {
@@ -2309,6 +2355,14 @@ function append_to_install_log_file($message, $close = false) {
 			fclose($fh);
 		}
 	}
+}
+
+function read_sql($f) {
+	if(!file_exists($file = ROOT_PATH.'./source/i18n/'.INSTALL_LANG.'/install/'.$f.'.php')) {
+		return '';
+	}
+	$s = file_get_contents($file);
+	return str_replace("\r\n", "\n", substr($s, 30));
 }
 
 function read_install_log_file() {

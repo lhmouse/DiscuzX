@@ -2744,7 +2744,9 @@ function currentlang() {
 	$charset = strtoupper(CHARSET);
 	if($charset == 'UTF-8') {
 		global $_G;
-		if($_G['config']['output']['language'] == 'zh_cn') {
+		if(!empty($_G['config']['lang'])) {
+			return $_G['config']['lang'];
+		} elseif($_G['config']['output']['language'] == 'zh_cn') {
 			return 'SC_UTF8';
 		} elseif($_G['config']['output']['language'] == 'zh_tw') {
 			return 'TC_UTF8';

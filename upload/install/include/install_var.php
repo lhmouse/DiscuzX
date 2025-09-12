@@ -6,22 +6,22 @@
  * https://license.discuz.vip
  */
 
-if(!defined('IN_COMSENZ')) {
+if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
 define('SOFT_NAME', DISCUZ_VERSION_NAME);
 
-define('INSTALL_LANG', 'SC_UTF8');
-
 define('CONFIG', './config/config_global.php');
 define('CONFIG_UC', './config/config_ucenter.php');
 
-$sqlfile = ROOT_PATH.((file_exists(ROOT_PATH.'./install/data/install_dev.sql')) ? './install/data/install_dev.sql' : './install/data/install.sql');
-$upgrade_sqlfile = ROOT_PATH.'./install/data/upgrade.sql';
 $lockfile = ROOT_PATH.'./data/install.lock';
 
 @include ROOT_PATH.CONFIG;
+
+$sqlfile = 'lang_sql_install';
+$upgrade_sqlfile = 'lang_sql_upgrade';
+$data_sqlfile = 'lang_sql_data';
 
 define('CHARSET', 'utf-8');
 define('DBCHARSET', 'utf8mb4');

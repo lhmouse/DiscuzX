@@ -72,7 +72,7 @@ if($attackevasive & 8) {
 function securitymessage($subject, $message, $reload = TRUE, $form = FALSE) {
 	global $_G;
 
-	include_once DISCUZ_ROOT.'./source/language/lang_security.php';
+	include_once DISCUZ_ROOT.'./source/i18n/'.currentlang().'/lang_security.php';
 
 	if(!is_array($lang)) {
 		$lang = [];

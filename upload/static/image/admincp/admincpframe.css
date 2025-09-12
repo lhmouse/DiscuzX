@@ -236,7 +236,7 @@ button::-moz-focus-inner { border: none; padding: 0; }
 
 #copyright { color: #ddd;font-size: 9px;text-align: center; margin-bottom: 3px; line-height: 20px; }
 #copyright a { color: #ddd; text-decoration-line: none; }
-#copyright img { height: 14px; }
+#copyright img { height: 18px; }
 
 
 .mainhd form { height: 45px; display: flex; justify-content: flex-end; align-items: center; flex-grow: 1; }

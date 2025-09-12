@@ -16,9 +16,9 @@ function searchindex_cache() {
 
 	$siteurl = $_G['siteurl'];
 	$_G['siteurl'] = '';
-	require DISCUZ_ROOT.'./source/language/lang_admincp_menu.php';
+	require DISCUZ_ROOT.'./source/i18n/'.currentlang().'/lang_admincp_menu.php';
 	$menulang = $lang;
-	require DISCUZ_ROOT.'./source/language/lang_admincp.php';
+	require DISCUZ_ROOT.'./source/i18n/'.currentlang().'/lang_admincp.php';
 	$_G['genlang'] = $lang + $menulang;
 	$_G['genlangi'] = '|'.implode('|', array_keys($_G['genlang'])).'|';
 	$_G['siteurl'] = $siteurl;

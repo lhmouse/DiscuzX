@@ -10,14 +10,13 @@ error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(1000);
 
 define('IN_DISCUZ', true);
-define('IN_COMSENZ', true);
 define('ROOT_PATH', dirname(__DIR__).'/');
 define('INST_LOG_PATH', realpath(ROOT_PATH.'data/log/').'/install.log');
 define('DISCUZ_DATA', ROOT_PATH.'./data');
 
 define('_FILE_', basename(__FILE__));
 if(basename(dirname(__FILE__)) != 'install') {
-	show_msg('method_undefined', $method, 0);
+	exit('method undefined');
 }
 define('RUN_MODE', _FILE_ == 'index.php' ? 'install' : 'tool');
 
@@ -26,7 +25,12 @@ require ROOT_PATH.'./source/mitframe_version.php';
 require ROOT_PATH.'./install/include/install_var.php';
 require ROOT_PATH.'./install/include/install_mysqli.php';
 require ROOT_PATH.'./install/include/install_function.php';
-require ROOT_PATH.'./install/include/install_lang.php';
+set_lang();
+if(!file_exists($_langfile = ROOT_PATH.'./source/i18n/'.INSTALL_LANG.'/install/lang_install.php')) {
+	exit('language undefined');
+}
+
+require $_langfile;
 
 $view_off = getgpc('view_off');
 define('VIEW_OFF', (bool)$view_off);

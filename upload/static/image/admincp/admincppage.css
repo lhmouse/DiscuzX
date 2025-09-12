@@ -882,6 +882,7 @@ div.todo>em { width: 25%; }
 
 .mitframe_gray::before{ font-style: normal; font-family: mitframeicon;content: "\e60e";font-size: 10px; margin-right: -5px; }
 .mitframe_color::before{ font-style: normal; font-family: mitframeicon;content: "\e60d";font-size: 10px; }
+.i18n_ico::before { font-family: normal; font-family: mitframeicon; content: "\e61b";font-size: 10px; }
 #calendar{margin-top: 10px;background: var(--admincp-bgf)!important;border: 1px solid var(--admincp-borderb)!important; font-size: 12px;}
 #calendar input { width: 30px !important; }
 #calendar_year, #calendar_month { font-size: 12px; }

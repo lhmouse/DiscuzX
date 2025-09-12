@@ -2,7 +2,7 @@
 
 class i18n {
 
-	const defaultPath = DISCUZ_ROOT.'./source/language/';
+	const defaultPath = DISCUZ_ROOT.'./source/i18n/'.DISCUZ_LANG.'/';
 
 	public static function getLang($file, $i18n = '') {
 		global $_G;
@@ -20,7 +20,20 @@ class i18n {
 		$lang = [];
 
 		if($i18n && !empty($_G['setting']['i18n'][$i18n])) {
-			if(is_dir($path = $_G['setting']['i18n'][$i18n].'/')) {
+			if(isset($_G['setting']['i18n_custom'][$i18n])) {
+				$customSource = $_G['setting']['i18n_custom'][$i18n] ?? 'default';
+				loadcache('lang');
+				if(!empty($_G['cache']['lang'][$_G['setting']['i18n'][$i18n]][$file])) {
+					return $loaded[$file] = $_G['cache']['lang'][$_G['setting']['i18n'][$i18n]][$file];
+				} elseif(is_dir($path = $_G['setting']['i18n'][$customSource].'/')) {
+					if(file_exists($path.$file)) {
+						require $path.$file;
+					}
+					if(!empty($lang)) {
+						return $loaded[$file] = $lang;
+					}
+				}
+			} elseif(is_dir($path = $_G['setting']['i18n'][$i18n].'/')) {
 				if(file_exists($path.$file)) {
 					require $path.$file;
 				}

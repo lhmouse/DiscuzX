@@ -143,6 +143,8 @@ class discuz_application extends discuz_base {
 			define('CURSCRIPT', MITFRAME_APP);
 		}
 
+		define('DISCUZ_LANG', $this->config['lang'] ?? 'SC_UTF8');
+
 		global $_G;
 		$_G = [
 			'uid' => 0,

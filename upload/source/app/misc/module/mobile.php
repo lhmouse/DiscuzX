@@ -17,7 +17,7 @@ if($mod == 'mobile' && defined('IN_MOBILE')) {
 } elseif(!$_G['setting']['mobile']['allowmobile']) {
 	dheader('Location:'.($_G['setting']['domain']['app']['default'] ? $_G['scheme'].'://'.$_G['setting']['domain']['app']['default'] : $_G['siteurl']));
 }
-include DISCUZ_ROOT.'./source/language/touch/lang_template.php';
+include DISCUZ_ROOT.'./source/i18n/'.currentlang().'/touch/lang_template.php';
 $_G['lang'] = array_merge($_G['lang'], $lang);
 $navtitle = $_G['lang']['misc_mobile_title'];
 if(getgpc('view')) {
