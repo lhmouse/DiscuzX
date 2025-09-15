@@ -46,7 +46,7 @@ foreach(table_common_card_type::t()->range(0, 0, 'ASC') as $result) {
 	$card_type[$result['id']] = $result;
 	$card_type_option .= "<option value=\"{$result['id']}\" ".($_GET['srch_card_type'] == $result['id'] ? 'selected' : '').">{$result['typename']}</option>";
 }
-showformheader('card', '', 'cdform', 'get');
+showformheader('card');
 showtableheader('', 'fixpadding');
 showtablerow('', ['width="80"', 'width="160"', 'width=100'],
 	[
