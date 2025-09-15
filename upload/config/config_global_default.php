@@ -37,7 +37,7 @@ $_config['db'][1]['dbuser']  		= 'root';
 $_config['db'][1]['dbpw'] 	 	= '';
 $_config['db'][1]['dbcharset'] 		= 'utf8mb4';
 $_config['db'][1]['pconnect'] 		= 0;
-$_config['db'][1]['dbname']  		= 'ultrax';
+$_config['db'][1]['dbname']  		= 'mitframe';
 $_config['db'][1]['tablepre'] 		= 'pre_';
 
 /**

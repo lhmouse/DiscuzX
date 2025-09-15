@@ -1885,13 +1885,6 @@ function install_data($username, $uid) {
 
 	$_G = array('db' => $db, 'tablepre' => $tablepre, 'uid' => $uid, 'username' => $username);
 
-	$arr = array(
-		0 => array('importfile' => './data/group_index.xml', 'primaltplname' => 'group/index', 'targettplname' => 'group/index'),
-	);
-	foreach($arr as $v) {
-		import_diy($v['importfile'], $v['primaltplname'], $v['targettplname']);
-	}
-
 	showjsmessage(lang('install_data').lang('succeed')."\n");
 }
 
