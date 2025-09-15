@@ -6709,6 +6709,8 @@ URL转换绝对网址：<pre>
 	'db_optimize_done' => '数据表没有碎片，不需要再优化',
 
 	'logs' => '操作日志',
+	'logs_clear' => '自动清理',
+	'logs_cleardays' => '清理时间(天)',
 	'logs_lpp' => '每页显示',
 	'logs_credit_income' => '收支',
 	'logs_credit_income_in' => '收入',
@@ -6852,11 +6854,6 @@ URL转换绝对网址：<pre>
 
 	'nav_logs_setting' => '设置',
 	'nav_logs_setting_tips' => '<li>请为需要启用操作日志记录的功能选择“<span style="color: blue;"><strong>是</strong></span>”，选择“<span style="color: red;"><strong>否</strong></span>”则不对该功能记录操作日志。</li>',
-	'nav_logs_clearlogs' => '自动清理日志',
-	'nav_logs_clearlogs_time' => '自动清理日志时间',
-	'nav_logs_clearlogs_time_comment' => '自动清理日志时间，单位：天，默认：0，表示不自动清理。开启后配合计划任务(cron_clearlog_daily.php)执行日志清理，计划任务设置为每日执行，即：每日清理 当前设置天数 之前的日志。',
-	'nav_logs_clearlogs_types' => '参与自动清理日志的类型',
-	'nav_logs_clearlogs_types_comment' => '参与自动清理日志的类型，即：只清理选中类型的日志信息。',
 	'logs_list' => '列表',
 	'logs_search' => '搜索',
 	'logs_data' => '详细数据',

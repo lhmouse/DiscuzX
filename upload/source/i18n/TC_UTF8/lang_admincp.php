@@ -6709,6 +6709,8 @@ URL轉換絕對網址：<pre>
 	'db_optimize_done' => '數據表沒有碎片，不需要再優化',
 
 	'logs' => '操作日誌',
+	'logs_clear' => '自動清理',
+	'logs_cleardays' => '清理時間(天)',
 	'logs_lpp' => '每頁顯示',
 	'logs_credit_income' => '收支',
 	'logs_credit_income_in' => '收入',
@@ -6852,11 +6854,6 @@ URL轉換絕對網址：<pre>
 
 	'nav_logs_setting' => '設置',
 	'nav_logs_setting_tips' => '<li>請為需要啓用操作日誌記錄的功能選擇“<span style="color: blue;"><strong>是</strong></span>”，選擇“<span style="color: red;"><strong>否</strong></span>”則不對該功能記錄操作日誌。</li>',
-	'nav_logs_clearlogs' => '自動清理日誌',
-	'nav_logs_clearlogs_time' => '自動清理日誌時間',
-	'nav_logs_clearlogs_time_comment' => '自動清理日誌時間，單位：天，默認：0，表示不自動清理。開啓後配合計劃任務(cron_clearlog_daily.php)執行日誌清理，計劃任務設置為每日執行，即：每日清理 當前設置天數 之前的日誌。',
-	'nav_logs_clearlogs_types' => '參與自動清理日誌的類型',
-	'nav_logs_clearlogs_types_comment' => '參與自動清理日誌的類型，即：只清理選中類型的日誌資訊。',
 	'logs_list' => '列表',
 	'logs_search' => '搜索',
 	'logs_data' => '詳細數據',

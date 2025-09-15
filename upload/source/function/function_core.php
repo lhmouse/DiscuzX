@@ -2152,6 +2152,12 @@ function writelog($file, $log) {
 }
 
 function logger($type, $member, $operationuid, $data = [], $device = [], $record = '', $source = 'Web') {
+	global $_G;
+
+	if(empty($_G['setting']['log'][$type])) {
+		return;
+	}
+
 	$log_data = [
 		'uid' => !empty($member['uid']) ? $member['uid'] : 0,
 		'loginname' => !empty($member['loginname']) ? $member['loginname'] : '',
