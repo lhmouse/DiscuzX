@@ -122,7 +122,7 @@
 						<a href="forum.php?mod=modcp&fid=$_G['fid']" class="info_portalcp" target="_blank">{lang forum_manager}</a>
 					<!--{/if}-->
 					<!--{if $_G['uid'] && getstatus($_G['member']['allowadmincp'], 1)}-->
-						<a href="admin.php" class="info_admin" target="_blank">{lang admincp}</a>
+						<a href="?app=admin" class="info_admin" target="_blank">{lang admincp}</a>
 					<!--{/if}-->
 				</div>
 				<div class="user-card-area">
