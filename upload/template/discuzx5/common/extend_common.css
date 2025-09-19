@@ -358,7 +358,7 @@ input:focus{border-color:var(--dz-nvbg);outline:0}
 a{text-decoration:none;}
 a:hover{text-decoration:none;}
 *{padding:0px;margin:0px;-webkit-font-smoothing:subpixel-antialiased;font-smoothing:subpixel-antialiased;}
-ul li{list-style:none!important;}
+ul li{list-style:none;}
 img{border:none;}
 .clear{clear:both;}
 
@@ -752,7 +752,7 @@ body .colorwd {width:36px !important;height:36px !important;line-height:36px !im
 .pgb a:hover {background-image:url({STYLEIMGDIR}/svg/arw_ls.svg);background-repeat:no-repeat;background-size:14px}
 .pg a.nxt {background-image:url({STYLEIMGDIR}/svg/arw_r.svg);background-position:90% 50%;background-size:14px;padding-right:25px}
 .pg a:hover.nxt {background-image:url({STYLEIMGDIR}/svg/arw_rs.svg);background-repeat:no-repeat;background-position:90% 50%;background-size:14px}
-.pgb a:before, .pg a.nxt:after, .pg a.prev:after, .oshr:before, .tbms_r:before, .ptg:before, .tbms:before, .fico-bell:before, .xl a.d:before, .attc a.d:before, .c a.d:before, .fico-mypost:before, #scbar_btn:before, .fico-group:before, #task_ntc:before {display:none}
+.pgb a:before, .pg a.nxt:after, .pg a.prev:after, .oshr:before, .tbms_r:before, .ptg:before, .tbms:before, .fico-bell:before, .xl a.d:before,  .c a.d:before, .fico-mypost:before, #scbar_btn:before, .fico-group:before, #task_ntc:before {display:none}
 
 .reason_slct .pt, .reason_slct .px {width: 298px !important;margin-bottom: 5px;}
 #uhd{background: #ffffff;border: 1px solid var(--dz-borderb);    border-bottom: none;}
@@ -1050,3 +1050,34 @@ body .colorwd {width:36px !important;height:36px !important;line-height:36px !im
 .card .mgc a, .card .f a {float:left;line-height:16px;margin:0 5px 10px}
 .card .mgc a img, .card .f a img {float:left;height:16px;margin-right:6px}
 .card_mn .c span.y, .card_mn .c div, .card_mn .c div a {font-size:12px;color:var(--dz-fc)}
+
+
+/* 快速回复 */
+.tedt {width:99%;border-color:var(--dz-borderc);border-radius:var(--dz-radius-s)}
+.tedt .pt {background:none;font-size:14px}
+.tedt .pt a img {max-height:24px;margin-left:6px}
+.tedt .bar {padding:5px 10px 5px 6px;height:26px;line-height:26px;background:var(--dz-bgc);border-bottom:1px solid var(--dz-borderb);border-radius:var(--dz-radius-s) var(--dz-radius-s) 0 0}
+.tedt .area {padding:6px 8px;background:var(--dz-bgf);border-radius:var(--dz-radius-s)}
+.fpd a {width:24px;height:24px;margin:1px 8px 0 0}
+.fpd a.fbld {background:url({STYLEIMGDIR}/svg/dz_e_bold.svg) no-repeat center 4px;background-size:16px}
+.fpd a.fclr {background:url({STYLEIMGDIR}/svg/dz_e_forecolor.svg) no-repeat center 3px;background-size:18px}
+.fpd a.fmg {background:url({STYLEIMGDIR}/svg/dz_e_image.svg) no-repeat center 3px;background-size:20px}
+.fpd a.flnk {background:url({STYLEIMGDIR}/svg/dz_e_url.svg) no-repeat center 3px;background-size:18px}
+.fpd a.fqt {background:url({STYLEIMGDIR}/svg/dz_e_quote.svg) no-repeat center 2px;background-size:20px}
+.fpd a.fcd {background:url({STYLEIMGDIR}/svg/dz_e_code.svg) no-repeat center 2px;background-size:20px}
+.fpd a.fsml {background:url({STYLEIMGDIR}/svg/dz_e_sml.svg) no-repeat center 2px;background-size:20px}
+.fpd a.fat {background:url({STYLEIMGDIR}/svg/dz_e_at.svg) no-repeat center 2px;background-size:20px}
+.tedt .bar .webuploader-container {margin:1px 8px 0 0 !important;padding:0 !important;width:24px !important;height:24px !important;background:url({STYLEIMGDIR}/svg/dz_e_attach.svg) no-repeat center 2px !important;background-size:20px !important}
+#fastposteditor .tedt .bar .fpd .pipe {display:none}
+.tedt .bar .y.xg1.cur1 img {float:left;margin:5px 5px 0 0}
+.tedt #comment_message {height:84px}
+.dz_kmarea .area, #mood_statusinput .hm {background:var(--dz-bgc)}
+.dz_kmarea, #mood_statusinput .hm {border:1px solid var(--dz-borderb)}
+.dz_kmarea .hm, #mood_statusinput .hm {color:var(--dz-fc)}
+#fastpostimg_menu.p_pof[style*="270"], #replyimg_menu.p_pof[style*="270"], #pmimg_menu.p_pof[style*="270"] {width:292px !important}
+.tedt .webuploader-pick {text-indent:-999em !important}
+
+.dz_rbox_btn {display:block;height:46px;line-height:46px;font-size:16px;font-weight:400;text-align:center;background:var(--dz-btnbg);color:var(--dz-btntxt) !important;border-radius:var(--dz-radius-b)}
+.dz_rbox_btn:hover {cursor:pointer;opacity:0.8}
+#postbox .mbn, #psd .mbn {padding:0;height:36px;line-height:36px;font-size:14px}
+#pmsmiliesdiv_tb, #sendsmiliesdiv_tb {width:365px !important}
