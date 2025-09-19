@@ -287,6 +287,13 @@ function block_template($bid) {
 		return false;
 	}
 	$template = block_build_template($thestyle['template']);
+	if(!empty($block['param']) && is_array($block['param'])) {
+		foreach($block['param'] as $key => $value) {
+			if(is_string($value)) {
+				$template = str_replace('{'.$key.'}', $value, $template);
+			}
+		}
+	}
 	if(!empty($block['itemlist'])) {
 		if($thestyle['moreurl']) {
 			$template = str_replace('{moreurl}', 'portal.php?mod=block&bid='.$bid, $template);
