@@ -14,7 +14,7 @@ $log = $_G['setting']['log'];
 if(!submitcheck('submit')) {
 	showformheader('logs&operation=setting');
 	showtableheader();
-	if($_G['config']['log']['type'] == 'mysql') {
+	if($_G['config']['log']['type'] != 'file') {
 		$options = [];
 		foreach($menu as $row) {
 			if(empty($row[0]['menu']) || !str_starts_with($row[0]['menu'], 'nav_logs')) {
