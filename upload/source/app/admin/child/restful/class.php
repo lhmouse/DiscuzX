@@ -191,6 +191,7 @@ class rp {
 			showsetting('appid', '', '', $app['appid']);
 			showsetting('secret', '', '', $app['secret'].'<a href="'.ADMINSCRIPT.'?action=restful&operation=app&id='.$appid.'&do=resetSecret" class="lightnum marginleft10">['.cplang('restful_reset_secret').']</a>');
 			showsetting('restful_app_name', 'name', $app['name'], 'text');
+			showsetting('restful_app_seccheck', 'datanew[seccheck]', $app['data']['seccheck'] ?? 0, 'radio');
 			showsetting('restful_app_log', 'datanew[log]', $app['data']['log'] ?? 0, 'radio');
 			showsetting('restful_app_tokenTTL', 'datanew[tokenTTL]', $app['data']['tokenTTL'] ?? 0, 'text');
 			showsetting('restful_app_refreshTokenTTL', 'datanew[refreshTokenTTL]', $app['data']['refreshTokenTTL'] ?? 0, 'text');

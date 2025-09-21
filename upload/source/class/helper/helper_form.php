@@ -25,7 +25,7 @@ class helper_form {
 				($_SERVER['REQUEST_METHOD'] == 'POST' && $formhashChecked && empty($_SERVER['HTTP_X_FLASH_VERSION']) &&
 					(empty($_SERVER['HTTP_REFERER']) ||
 						preg_replace('/https?:\/\/([^\:\/]+).*/i', "\\1", $_SERVER['HTTP_REFERER']) == preg_replace('/([^\:]+).*/', "\\1", $_SERVER['HTTP_HOST'])))) {
-				if(checkperm('seccode')) {
+				if(checkperm('seccode') && !defined('DISABLE_SECCHECK')) {
 					if($secqaacheck && !check_secqaa($_GET['secanswer'], $_GET['secqaahash'])) {
 						showmessage('submit_secqaa_invalid');
 					}

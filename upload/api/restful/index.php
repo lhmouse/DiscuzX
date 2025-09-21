@@ -166,6 +166,10 @@ if($api[0] == 'token') {
 		!empty($v) && setcookie($k, $v);
 	}
 
+	if(empty($_ENV['restful']->tokenData['_conf']['seccheck'])) {
+		define('DISABLE_SECCHECK', true);
+	}
+
 	if(!defined('IN_RESTFUL_DEBUG')) {
 		// 准备输出
 		[$shutdownFunc, $output] = $_ENV['restful']->getShutdownFunc();

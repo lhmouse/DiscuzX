@@ -70,6 +70,7 @@ class restful {
 							'secret' => $data['secret'],
 							'apis' => $apis,
 							'freq' => $freq,
+							'seccheck' => $appData['seccheck'] ?? 0,
 							'log' => $appData['log'] ?? false,
 							'token' => $appData['tokenTTL'] ?? 0,
 							'refreshTokenTTL' => $appData['refreshTokenTTL'] ?? 0,
