@@ -1834,6 +1834,9 @@ function check_secqaa($value, $idhash, $verifyonly = false) {
 }
 
 function seccheck($rule, $param = []) {
+	if(defined('DISABLE_SECCHECK')) {
+		return [];
+	}
 	$f = childfile('seccheck', 'global/core');
 	if($f) {
 		require $f;

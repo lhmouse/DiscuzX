@@ -12,6 +12,8 @@ if(!defined('IN_DISCUZ')) {
 
 class helper_seccheck {
 
+	const RESTFUL_QAA = ['calc', 'calcmad'];
+
 	private static function _check($type) {
 		global $_G;
 		$secappend = '';
@@ -108,6 +110,9 @@ class helper_seccheck {
 		loadcache('secqaa');
 		$secqaakey = max(1, random(1, 1));
 		if($_G['cache']['secqaa'][$secqaakey]['type']) {
+			if(defined('IN_RESTFUL')) {
+				$_G['cache']['secqaa'][$secqaakey]['question'] = self::RESTFUL_QAA[array_rand(self::RESTFUL_QAA)];
+			}
 			$etype = explode(':', $_G['cache']['secqaa'][$secqaakey]['question']);
 			if(count($etype) > 1) {
 				if(!preg_match('/^\w+$/', $etype[0]) || !preg_match('/^\w+$/', $etype[1])) {

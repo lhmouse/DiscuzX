@@ -36,8 +36,8 @@ if(!submitcheck('submit')) {
 				$options[] = [$p['operation'], cplang($txt)];
 			}
 		}
-		$clearlogstypes = dunserialize($log['clearlogstypes']);
-		$allowlogstypes = dunserialize($log['allowlogstypes']);
+		$clearlogstypes = (array)dunserialize($log['clearlogstypes']);
+		$allowlogstypes = (array)dunserialize($log['allowlogstypes']);
 
 		showtablefooter();
 		showtableheader('', 'noborder fixpadding', 'style="width: auto;"');

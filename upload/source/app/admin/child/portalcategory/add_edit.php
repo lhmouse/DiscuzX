@@ -38,7 +38,11 @@ if(!submitcheck('detailsubmit')) {
 	shownav('portal', 'portalcategory');
 	$url = 'portalcategory&operation='.$operation.($operation == 'add' ? '&upid='.$_GET['upid'] : '&catid='.$_GET['catid']);
 
-	showchildmenu([['portalcategory', 'portalcategory'], [($cate['catname'] ? $cate['catname'].' ' : ' '), ' ']], cplang('portalcategory_detail'));
+	$parents = [['portalcategory', 'portalcategory']];
+	if($operation !== 'add') {
+		$parents[] = [($cate['catname'] ? $cate['catname'].' ' : ' '), ' '];
+	}
+	showchildmenu($parents, cplang('portalcategory_detail'));
 
 	showtagheader('div', 'basic', $anchor == 'basic');
 	showformheader($url);
