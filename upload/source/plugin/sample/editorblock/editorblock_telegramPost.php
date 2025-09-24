@@ -10,9 +10,9 @@ class editorblock_telegramPost {
 	var $name = '联系方式';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
-	var $identifier = 'telegramPost'; // 标识
+	var $identifier = 'telegramPost'; // 标识，与editorblock_telegramPost后缀、与tools文件夹下功能区块文件夹名一致
 	var $description = '插入联系方式信息区块，可用于插入电话、微信号、QQ号等，添加内容格式为：类型标识(mobile、wechat、qq)/联系人名称/联系方式(电话、微信等)';
-	var $filename = 'telegramPost';
+	var $filename = 'telegramPost'; // 区块静态文件名，与tools文件夹下功能区块文件夹下js名一致
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
 	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型
 
@@ -62,7 +62,19 @@ EOF;
          class: TelegramPost,
          tunes: ['anchorTune']
       },
-   }
+   },
+   i18n: {
+       messages: {
+          tools: {
+            'telegramPost': {
+                  'English': '中文名称',
+            }
+          },
+          toolNames: {
+                'English': '中文名称',
+          }
+        },
+    },
 }
 EOF;
 	}
