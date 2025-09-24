@@ -61,15 +61,18 @@ if(!submitcheck('modsubmit')) {
 
 	include_once libfile('function/member');
 
+	$modtids = 0;
 	$pids = $comma = '';
 	foreach($posts as $k => $post) {
 		if($banned) {
 			table_forum_postcomment::t()->delete_by_rpid($post['pid']);
 			table_forum_post::t()->increase_status_by_pid('tid:'.$_G['tid'], $post['pid'], 1, '|', true);
 			crime('recordaction', $post['authorid'], 'crime_banpost', lang('forum/misc', 'crime_postreason', ['reason' => $reason, 'tid' => $_G['tid'], 'pid' => $post['pid']]));
-
 		} else {
 			table_forum_post::t()->increase_status_by_pid('tid:'.$_G['tid'], $post['pid'], 1, '&~', true);
+		}
+		if($post['first']) {
+			$modtids = $thread['tid'];
 		}
 		$pids .= $comma.$post['pid'];
 		$comma = ',';
@@ -79,7 +82,7 @@ if(!submitcheck('modsubmit')) {
 		'redirect' => "forum.php?mod=viewthread&tid={$_G['tid']}&page=$page",
 		'reasonpm' => ($sendreasonpm ? ['data' => $posts, 'var' => 'post', 'item' => 'reason_ban_post', 'notictype' => 'post'] : []),
 		'reasonvar' => ['tid' => $thread['tid'], 'subject' => $thread['subject'], 'modaction' => $modaction, 'reason' => $reason],
-		'modtids' => 0,
+		'modtids' => $modtids,
 		'modlog' => $thread
 	];
 
