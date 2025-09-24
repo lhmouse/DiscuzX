@@ -328,7 +328,7 @@ class restful {
 		$this->_log($value);
 		$newTokenData = $this->updateTokenData();
 		if($newTokenData) {
-			$ttl = $this->tokenData['refreshExptime'] - time();
+			$ttl = $this->tokenData['refreshExptime'];
 			$this->setToken($this->token, $newTokenData, $ttl);
 		}
 		exit;
