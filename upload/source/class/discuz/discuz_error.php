@@ -261,7 +261,7 @@ EOT;
 					}
 					echo '<tr class="'.$bg.'">';
 					echo '<td>'.$k.'</td>';
-					echo '<td>'.$msg['file'].':'.$msg['line'].'</td>';
+					echo '<td>'.($msg['file'] ? $msg['file'].':'.$msg['line'] : '').'</td>';
 					echo '<td>'.$msg['function'].'</td>';
 					echo '</tr>';
 				}
