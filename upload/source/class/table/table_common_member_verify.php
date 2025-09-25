@@ -38,7 +38,7 @@ class table_common_member_verify extends discuz_table {
 			}
 			$parameter[] = $flag;
 			$wherearr[] = "verify{$vid}=%d";
-			return DB::fetch_all('SELECT * FROM %t WHERE ' .implode(' AND ', $wherearr), $parameter, $this->_pk);
+			return DB::fetch_all('SELECT * FROM %t WHERE '.implode(' AND ', $wherearr), $parameter, $this->_pk);
 		} else {
 			return [];
 		}

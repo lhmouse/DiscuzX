@@ -44,6 +44,7 @@ if($anchor == 'add') {
 			} else {
 				table_common_member_verify::t()->insert(['uid' => $member['uid'], "verify$vid" => 1]);
 			}
+			helper_forumperm::clear_cache($member['uid']);
 			$haveuser = true;
 		}
 		if($haveuser) {
@@ -362,6 +363,7 @@ EOF;
 					$verifyuids['refusal'][] = $uid;
 					notification_add($uid, 'verify', 'profile_verify_pass_refusal', $note_values, 1);
 				}
+				helper_forumperm::clear_cache($uid);
 			}
 			if(is_array($verifyuids['refusal']) && !empty($verifyuids['refusal'])) {
 				table_common_member_verify::t()->update($verifyuids['refusal'], ["verify$vid" => '0']);
@@ -428,6 +430,7 @@ EOF;
 				}
 				foreach($_GET['verify'] as $id => $type) {
 					$vids[] = $id;
+					helper_forumperm::clear_cache($id);
 				}
 
 				$verifysetting = $_G['setting']['verify'];

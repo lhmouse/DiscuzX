@@ -27,7 +27,7 @@ if(submitcheck('submit')) {
 			if(empty($uid)) continue;
 			foreach($tagarray as $tagid => $tagname) {
 				table_common_tagitem::t()->insert(['tagid' => $tagid, 'itemid' => $uid, 'idtype' => 'uid', 'created_at' => TIMESTAMP], 0, 1);
-				helper_forumperm::tag_clear_cache($uid);
+				helper_forumperm::clear_cache($uid);
 			}
 		}
 		foreach($tagarray as $tagid => $tagname) {

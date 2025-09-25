@@ -30,6 +30,7 @@ class table_common_member_account extends discuz_table {
 
 	public function insert($data, $return_insert_id = false, $replace = false, $silent = false) {
 		$this->clear_cache($data['uid']);
+		helper_forumperm::clear_cache($data['uid']);
 		return parent::insert($data, $return_insert_id, $replace, $silent);
 	}
 
@@ -52,6 +53,7 @@ class table_common_member_account extends discuz_table {
 
 	public function update_by_uid_and_atype($uid, $atype, $data = []) {
 		if($uid && $atype) {
+			helper_forumperm::clear_cache($uid);
 			DB::update($this->_table, $data, ['uid' => intval($uid), 'atype' => $atype], 'UNBUFFERED');
 		}
 	}
@@ -63,6 +65,7 @@ class table_common_member_account extends discuz_table {
 		}
 		$uids = dimplode((array)$uid);
 		$this->clear_cache($uid);
+		helper_forumperm::clear_cache($uid);
 		return DB::delete($this->_table, "uid IN ($uids) $append");
 	}
 
@@ -79,7 +82,7 @@ class table_common_member_account extends discuz_table {
 	}
 
 	public function fetch_all_by_atype($atype, $start = 0, $limit = 0) {
-		$data = DB::fetch_all('SELECT * FROM %t WHERE atype=%d ' .DB::limit($start, $limit), [$this->_table, $atype]);
+		$data = DB::fetch_all('SELECT * FROM %t WHERE atype=%d '.DB::limit($start, $limit), [$this->_table, $atype]);
 	}
 
 }

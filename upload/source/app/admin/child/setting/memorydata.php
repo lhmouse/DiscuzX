@@ -25,6 +25,7 @@ if(submitcheck('memorydatasubmit')) {
 				table_common_member_field_home::t()->clear_cache($uid);
 				table_common_member_field_forum::t()->clear_cache($uid);
 				table_common_member_verify::t()->clear_cache($uid);
+				helper_forumperm::clear_cache($uid);
 			} elseif($k == 'forum_thread_forumdisplay') {
 				memory('rm', $id, 'forumdisplay_');
 			} elseif($k == 'forumindex') {

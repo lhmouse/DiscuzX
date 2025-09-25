@@ -18,6 +18,7 @@ class helper_forumperm {
 	private $formula_cells = [];
 
 	const CacheKey = 'forumperm_';
+	const CacheTTL = 300;
 
 	function __construct($permstr) {
 		$this->permstr = $permstr;
@@ -37,6 +38,12 @@ class helper_forumperm {
 		self::init_formula();
 
 		return self::run_formula();
+	}
+
+	public static function clear_cache($uid) {
+		memory('rm', $uid, self::CacheKey.'tag_');
+		memory('rm', $uid, self::CacheKey.'account_');
+		memory('rm', $uid, self::CacheKey.'verify_');
 	}
 
 	private function get_group() {
@@ -72,14 +79,26 @@ class helper_forumperm {
 
 		$newCells = [];
 		if($_G['setting']['verify']['enabled'] && $_G['uid']) {
-			getuserprofile('verify1');
-			foreach($_G['setting']['verify'] as $vid => $verify) {
-				if(!$verify['available']) {
-					continue;
+			static $member_verify = null;
+			if($member_verify === null) {
+				$_v = memory('get', self::CacheKey.'verify_'.$_G['uid']);
+				if(!$_v) {
+					$member_verify = table_common_member_verify::t()->fetch($_G['uid']);
+					memory('set', self::CacheKey.'verify_'.$_G['uid'], [$member_verify, time()], self::CacheTTL);
+				} else {
+					$member_verify = $_v[0];
 				}
-				if($_G['member']['verify'.$vid] == 1) {
-					$newCells['v'.$vid] = 1;
-					$newCells['verify'] = 1;
+			}
+
+			if($member_verify) {
+				foreach($_G['setting']['verify'] as $vid => $verify) {
+					if(!$verify['available']) {
+						continue;
+					}
+					if($member_verify['verify'.$vid] == 1) {
+						$newCells['v'.$vid] = 1;
+						$newCells['verify'] = 1;
+					}
 				}
 			}
 		}
@@ -100,7 +119,7 @@ class helper_forumperm {
 			$_v = memory('get', self::CacheKey.'tag_'.$_G['uid']);
 			if(!$_v) {
 				$member_tags = table_common_tagitem::t()->select(0, $_G['uid'], 'uid');
-				memory('set', self::CacheKey.'tag_'.$_G['uid'], [$member_tags, time()], 3600);
+				memory('set', self::CacheKey.'tag_'.$_G['uid'], [$member_tags, time()], self::CacheTTL);
 			} else {
 				$member_tags = $_v[0];
 			}
@@ -113,10 +132,6 @@ class helper_forumperm {
 		}
 
 		$this->formula_cells = array_merge($this->formula_cells, $got = $newCells);
-	}
-
-	public static function tag_clear_cache($uid) {
-		memory('rm', $uid, self::CacheKey.'tag_');
 	}
 
 	private function get_plugin() {
@@ -158,8 +173,14 @@ class helper_forumperm {
 		global $_G;
 
 		static $member_accounts = null;
-		if($member_accounts === null) {
-			$member_accounts = table_common_member_account::t()->fetch_all_by_uid($_G['uid'], false);
+		if($member_accounts === null && $_G['uid']) {
+			$_v = memory('get', self::CacheKey.'account_'.$_G['uid']);
+			if(!$_v) {
+				$member_accounts = table_common_member_account::t()->fetch_all_by_uid($_G['uid'], false);
+				memory('set', self::CacheKey.'account_'.$_G['uid'], [$member_accounts, time()], self::CacheTTL);
+			} else {
+				$member_accounts = $_v[0];
+			}
 		}
 
 		$newCells = [];

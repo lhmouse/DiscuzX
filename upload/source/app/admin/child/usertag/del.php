@@ -20,6 +20,6 @@ if(empty($_GET['confirmed']) || FORMHASH != $_GET['formhash']) {
 } else {
 	table_common_tagitem::t()->delete_tagitem($_GET['tagid'], $_GET['uid'], 'uid');
 	table_common_tag::t()->increase($_GET['tagid'], ['related_count' => -1]);
-	helper_forumperm::tag_clear_cache($_GET['uid']);
+	helper_forumperm::clear_cache($_GET['uid']);
 	cpmsg('usertag_delete_succeed', 'action=members&operation=edit&uid='.$_GET['uid'], 'succeed');
 }
