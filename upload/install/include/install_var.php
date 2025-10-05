@@ -90,7 +90,10 @@ $dirfile_items = array
 	'ucenter config' => array('type' => 'file', 'path' => CONFIG_UC),
 	'config_dir' => array('type' => 'dir', 'path' => './config'),
 	'data' => array('type' => 'dir', 'path' => './data'),
+	'diy' => array('type' => 'dir', 'path' => './data/diy'),
+	'logs' => array('type' => 'dir', 'path' => './data/log'),
 	'cache' => array('type' => 'dir', 'path' => './data/cache'),
+	'syscache' => array('type' => 'dir', 'path' => './data/sysdata'),
 	'avatar' => array('type' => 'dir', 'path' => './data/avatar'),
 	'plugindata' => array('type' => 'dir', 'path' => './data/plugindata'),
 	'plugindownload' => array('type' => 'dir', 'path' => './data/download'),
@@ -98,6 +101,7 @@ $dirfile_items = array
 	'ftemplates' => array('type' => 'dir', 'path' => './data/template'),
 	'threadcache' => array('type' => 'dir', 'path' => './data/threadcache'),
 	'attach' => array('type' => 'dir', 'path' => './data/attachment'),
+	'attach_avatar' => array('type' => 'dir', 'path' => './data/attachment/avatar'),
 	'attach_album' => array('type' => 'dir', 'path' => './data/attachment/album'),
 	'attach_category' => array('type' => 'dir', 'path' => './data/attachment/category'),
 	'attach_common' => array('type' => 'dir', 'path' => './data/attachment/common'),
@@ -107,8 +111,6 @@ $dirfile_items = array
 	'attach_profile' => array('type' => 'dir', 'path' => './data/attachment/profile'),
 	'attach_swfupload' => array('type' => 'dir', 'path' => './data/attachment/swfupload'),
 	'attach_temp' => array('type' => 'dir', 'path' => './data/attachment/temp'),
-
-	'logs' => array('type' => 'dir', 'path' => './data/log'),
 );
 
 
