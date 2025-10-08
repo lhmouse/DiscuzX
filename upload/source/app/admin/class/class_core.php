@@ -80,8 +80,10 @@ class class_core {
 		} elseif($f = childfile('adminvalidate/'.$_G['config']['admincp']['validate']['method'], 'global')) {
 			require_once $f;
 		} else {
-			header('HTTP/1.1 404 Not Found');
-			exit;
+			if(basename($_SERVER['PHP_SELF']) == 'index.php') {
+				header('HTTP/1.1 404 Not Found');
+				exit;
+			}
 		}
 	}
 
@@ -235,6 +237,15 @@ class class_core {
 
 	}
 
+	function location() {
+		$platform = !empty($_POST['admin_platform']) ? $_POST['admin_platform'] : PLATFORM;
+		if(basename($_SERVER['PHP_SELF']) == 'index.php') {
+			dheader('Location: ?app=admin&platform='.$platform.'?'.cpurl('url', ['sid']));
+		} else {
+			dheader('Location: '.getglobal('scheme').'://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?platform='.$platform.'?'.cpurl('url', ['sid']));
+		}
+	}
+
 	function check_admin_login() {
 		global $_G;
 		if((empty($_POST['admin_questionid']) || empty($_POST['admin_answer'])) && ($_G['config']['admincp']['forcesecques'] || $_G['group']['forcesecques'])) {
@@ -244,7 +255,7 @@ class class_core {
 		$ucresult = uc_user_login($this->adminuser['uid'], $_POST['admin_password'], 1, 1, $_POST['admin_questionid'], $_POST['admin_answer'], $this->core->var['clientip']);
 		if($ucresult[0] > 0) {
 			table_common_admincp_session::t()->update_session($this->adminuser['uid'], $this->panel, ['dateline' => TIMESTAMP, 'ip' => $this->core->var['clientip'], 'errorcount' => -1]);
-			dheader('Location: '.ADMINSCRIPT.'?'.cpurl('url', ['sid']));
+			$this->location();
 		} else {
 			$errorcount = $this->adminsession['errorcount'] + 1;
 			table_common_admincp_session::t()->update_session($this->adminuser['uid'], $this->panel, ['dateline' => TIMESTAMP, 'ip' => $this->core->var['clientip'], 'errorcount' => $errorcount]);
@@ -284,8 +295,7 @@ class class_core {
 						if(getglobal('config/admincp/synclogin_front') || empty($_G['cookie']['auth'])) {
 							setloginstatus($result['member'], 0);
 						}
-						$platform = !empty($_POST['admin_platform']) ? $_POST['admin_platform'] : PLATFORM;
-						dheader('Location: ?app=admin&platform='.$platform.'?'.cpurl('url', ['sid']));
+						$this->location();
 					} else {
 						$this->cpaccess = -2;
 					}
