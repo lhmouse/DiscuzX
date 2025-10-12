@@ -48,60 +48,6 @@ function pvadd($s, $t = []) {
 
 }
 
-function checkfiles($currentdir, $ext = '', $sub = 1, $skip = '') {
-	global $md5data;
-	$dir = @opendir(DISCUZ_ROOT.$currentdir);
-	$exts = '/('.$ext.')$/i';
-	$skips = explode(',', $skip);
-
-	if(!$dir) {
-		return;
-	}
-
-	while($entry = @readdir($dir)) {
-		$file = $currentdir.$entry;
-		if($entry != '.' && $entry != '..' && (($ext && preg_match($exts, $entry) || !$ext) || $sub && is_dir($file)) && !in_array($entry, $skips)) {
-			if($sub && is_dir($file)) {
-				checkfiles($file.'/', $ext, $sub, $skip);
-			} else {
-				if(is_dir($file)) {
-					$md5data[$file] = md5($file);
-				} else {
-					$md5data[$file] = md5_file($file);
-				}
-			}
-		}
-	}
-}
-
-function checkcachefiles($currentdir) {
-	global $_G;
-	$dir = opendir($currentdir);
-	$exts = '/\.php$/i';
-	$showlist = $modifylist = $addlist = [];
-	while($entry = readdir($dir)) {
-		$file = $currentdir.$entry;
-		if($entry != '.' && $entry != '..' && preg_match($exts, $entry)) {
-			$fp = fopen($file, 'rb');
-			$cachedata = fread($fp, filesize($file));
-			fclose($fp);
-
-			if(preg_match("/^<\?php\n\/\/Discuz! cache file, DO NOT modify me!\n\/\/Identify: (\w+)\n\n(.+?)\?>$/s", $cachedata, $match)) {
-				$showlist[$file] = $md5 = $match[1];
-				$cachedata = $match[2];
-
-				if(md5($entry.$cachedata.$_G['config']['security']['authkey']) != $md5) {
-					$modifylist[$file] = $md5;
-				}
-			} else {
-				$showlist[$file] = '';
-			}
-		}
-	}
-
-	return [$showlist, $modifylist, $addlist];
-}
-
 function checkmailerror($type, $error) {
 	global $alertmsg;
 	$alertmsg .= !$alertmsg ? $error : '';

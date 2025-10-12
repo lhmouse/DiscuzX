@@ -684,7 +684,7 @@ function lang($file, $langvar = null, $vars = [], $default = null) {
 			$lang = i18n::getLang($f);
 			if(!empty($_G['i18n']) && file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/i18n/'.$_G['i18n'].'/'.$f)) {
 				include $loadfile;
-			} elseif(file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/language/'.$f)) {
+			} elseif(file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/i18n/'.currentlang().'/'.$f)) {
 				include $loadfile;
 			}
 			$_G['lang'][$key] = (array)$lang;
@@ -694,7 +694,7 @@ function lang($file, $langvar = null, $vars = [], $default = null) {
 			$lang = i18n::getLang($f);
 			if(!empty($_G['i18n']) && file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/i18n/'.$_G['i18n'].'/'.$f)) {
 				include $loadfile;
-			} elseif(file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/language/'.$f)) {
+			} elseif(file_exists($loadfile = MITFRAME_APP(MITFRAME_APP).'/i18n/'.currentlang().'/'.$f)) {
 				include $loadfile;
 			}
 			$_G['lang'][$key] = array_merge((array)$_G['lang'][$key], (array)$lang);

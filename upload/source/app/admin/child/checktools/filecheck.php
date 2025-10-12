@@ -31,97 +31,18 @@ if($step == 1) {
 	cpmsg(cplang('filecheck_verifying'), 'action=checktools&operation=filecheck&step=3', 'loading', '', FALSE);
 } elseif($step == 3) {
 
-	if(!$discuzfiles = @file('./source/data/admincp/discuzfiles.md5')) {
+	$result = (new check())->run();
+
+	if($result === false) {
 		if(!$homecheck) {
 			cpmsg('filecheck_nofound_md5file', '', 'error');
 		} else {
 			ajaxshowheader();
 			ajaxshowfooter();
 		}
+	} else {
+		list($modifiedfiles, $deletedfiles, $unknownfiles, $doubt, $dirlist) = $result;
 	}
-
-	$md5data = $md5datanew = $addlist = $dellist = $modifylist = $showlist = [];
-	$cachelist = checkcachefiles('data/sysdata/');
-	checkfiles('./', '', 0);
-	checkfiles('config/', '', 1, 'config_global.php,config_ucenter.php');
-	checkfiles('data/', '\.xml', 0);
-	checkfiles('data/', '\.htm', 0);
-	checkfiles('data/log/', '\.htm', 0);
-	checkfiles('data/plugindata/', '\.htm', 0);
-	checkfiles('data/download/', '\.htm', 0);
-	checkfiles('data/addonmd5/', '\.htm', 0);
-	checkfiles('data/avatar/', '\.htm', 0);
-	checkfiles('data/cache/', '\.htm', 0);
-	checkfiles('data/ipdata/', '\.htm|\.dat', 0);
-	checkfiles('data/template/', '\.htm', 0);
-	checkfiles('data/threadcache/', '\.htm', 0);
-	checkfiles('template/', '');
-	checkfiles('api/', '');
-	checkfiles('source/', '', 1, 'discuzfiles.md5,plugin');
-	checkfiles('source/app/plugin/', '', 1);
-	checkfiles('static/', '');
-	checkfiles('archiver/', '');
-
-
-	table_common_cache::t()->insert([
-		'cachekey' => 'checktools_filecheck',
-		'cachevalue' => serialize(['dateline' => $_G['timestamp']]),
-		'dateline' => $_G['timestamp'],
-	], false, true);
-
-	foreach($discuzfiles as $line) {
-		$file = trim(substr($line, 34));
-		$md5datanew[$file] = substr($line, 0, 32);
-		if($md5datanew[$file] != $md5data[$file]) {
-			$modifylist[$file] = $md5data[$file];
-		}
-		$md5datanew[$file] = $md5data[$file];
-	}
-
-	$weekbefore = TIMESTAMP - 604800;
-	$md5data = is_array($md5data) ? $md5data : [];
-	$md5datanew = is_array($md5datanew) ? $md5datanew : [];
-	$addlist = array_merge(array_diff_assoc($md5data, $md5datanew), is_array($cachelist[2]) ? $cachelist[2] : []);
-	$dellist = array_diff_assoc($md5datanew, $md5data);
-	$modifylist = array_merge(array_diff_assoc($modifylist, $dellist), is_array($cachelist[1]) ? $cachelist[1] : []);
-	$showlist = array_merge($md5data, $md5datanew, $cachelist[0]);
-	$doubt = 0;
-	$dirlist = $dirlog = [];
-	foreach($showlist as $file => $md5) {
-		$dir = dirname($file);
-		if(is_array($modifylist) && array_key_exists($file, $modifylist)) {
-			$fileststus = 'modify';
-		} elseif(is_array($dellist) && array_key_exists($file, $dellist)) {
-			$fileststus = 'del';
-		} elseif(is_array($addlist) && array_key_exists($file, $addlist)) {
-			$fileststus = 'add';
-		} else {
-			$filemtime = @filemtime($file);
-			if($filemtime > $weekbefore) {
-				$fileststus = 'doubt';
-				$doubt++;
-			} else {
-				$fileststus = '';
-			}
-		}
-		if(file_exists($file)) {
-			$filemtime = @filemtime($file);
-			$fileststus && $dirlist[$fileststus][$dir][basename($file)] = [number_format(filesize($file)).' Bytes', dgmdate($filemtime)];
-		} else {
-			$fileststus && $dirlist[$fileststus][$dir][basename($file)] = ['', ''];
-		}
-	}
-
-	$modifiedfiles = count($modifylist);
-	$deletedfiles = count($dellist);
-	$unknownfiles = count($addlist);
-	$doubt = intval($doubt);
-
-	table_common_cache::t()->insert([
-		'cachekey' => 'checktools_filecheck_result',
-		'cachevalue' => serialize([$modifiedfiles, $deletedfiles, $unknownfiles, $doubt]),
-		'dateline' => $_G['timestamp'],
-	], false, true);
 
 	if($homecheck) {
 		ajaxshowheader();

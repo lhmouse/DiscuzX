@@ -129,7 +129,7 @@ if(!empty($url)) {
 		$url .= sprintf('%sfromuser=%s', $delimiter, rawurlencode($_GET['fromuser']));
 	}
 	$parse = parse_url($url);
-	if(!isset($parse['host']) && preg_match('/^[\w-]+\.php$/i', $parse['path'])) {
+	if(!$jump && !isset($parse['host']) && preg_match('/^[\w-]+\.php$/i', $parse['path'])) {
 		$app = str_replace('.php', '', $parse['path']);
 		if(!empty($parse['query'])) {
 			$get = [];
@@ -154,7 +154,7 @@ if(!empty($url)) {
 		header("location: $url");
 	}
 } else {
-	if(preg_match('/^[\w-]+$/i', $_ENV['curapp'])) {
+	if(!$jump && preg_match('/^[\w-]+$/i', $_ENV['curapp'])) {
 		define('MITFRAME_APP', $_ENV['curapp']);
 		require './source/app/'.$_ENV['curapp'].'/'.$_ENV['curapp'].'.php';
 	} else {

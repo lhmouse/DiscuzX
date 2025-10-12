@@ -22,5 +22,5 @@ logger('sample:text', $_G['member'], $_G['member']['uid'], ['p' => $text, 't' =>
 //新数据库类调用方式
 print_r(sample\table_test::t()->fetch_all_by_uid($_G['member']['uid']));
 
-require_once template('diy:sample', 0, 'source/plugin/sample/template');
+require_once template('diy:sample', 0, DISCUZ_PLUGIN('sample').'/template');
 
