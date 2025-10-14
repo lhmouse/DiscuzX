@@ -215,7 +215,11 @@ class account_base {
 		@header('Cache-Control: private, post-check=0, pre-check=0, max-age=0', FALSE);
 		@header('Pragma: no-cache');
 
-		define('ACCOUNT_DATADIR', DISCUZ_DATA.'./attachment/');
+		if($_G['setting']['ftp']['on'] == 2) {
+			define('ACCOUNT_DATADIR', DISCUZ_DATA.'./attachment/');
+		} else {
+			define('ACCOUNT_DATADIR', DISCUZ_ROOT.'data/');
+		}
 		define('ACCOUNT_UPAVTDIR', 'avatar/');
 
 		@chmod(ACCOUNT_DATADIR.ACCOUNT_UPAVTDIR, 0777);
