@@ -566,3 +566,5 @@ ALTER TABLE pre_common_credit_log_field
 UPDATE pre_common_credit_log_field f
 	JOIN pre_common_credit_log l ON f.logid = l.logid
 	SET f.dateline = l.dateline;
+
+INSERT INTO pre_restful_source (sourceid, name, url) VALUES (1, 'Discuz! Team', 'https://api.witframe.com/discuzrestful');

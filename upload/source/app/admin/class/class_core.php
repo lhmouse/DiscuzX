@@ -81,8 +81,7 @@ class class_core {
 			require_once $f;
 		} else {
 			if(basename($_SERVER['PHP_SELF']) == 'index.php') {
-				header('HTTP/1.1 404 Not Found');
-				exit;
+				$this->_isIllegal = true;
 			}
 		}
 	}
@@ -413,6 +412,10 @@ class class_core {
 	}
 
 	function do_user_login() {
+		if(!empty($this->_isIllegal)) {
+			header('HTTP/1.1 404 Not Found');
+			exit;
+		}
 		require $this->admincpfile('login');
 	}
 

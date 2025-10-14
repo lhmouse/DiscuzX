@@ -5,6 +5,7 @@
 	$_G['home_tpl_titles'][] = $navsubject;
 	$_G['home_tpl_titles'][] = $specialtype[1];
 	$_G['home_tpl_titles'][] = '{lang portal}';
+	$post = &$postlist[$_G['forum_firstpid']];
 }
 
 <!--{template common/header}-->
@@ -89,7 +90,7 @@
 											<!--{/if}-->
 										<!--{/if}-->
 										<!--{if $_G['group']['raterange'] && $post['authorid']}-->
-											<a href="javascript:;" id="ak_rate" onclick="showWindow('rate', 'forum.php?mod=misc&action=rate&tid=$_G[tid]&pid=$post[pid]{if $_GET[from]}&from=$_GET[from]{/if}');return false;" title="{echo count($postlist[$post[pid]][totalrate]);} {lang people_score}"><i><img src="{IMGDIR}/agree.gif" alt="{lang rate}" />{lang rate}</i></a>
+											<a href="javascript:;" id="ak_rate" onclick="showWindow('rate', 'forum.php?mod=misc&action=rate&tid=$_G[tid]&pid=$post[pid]{if $_GET[from]}&from=$_GET[from]{/if}');return false;" title="<!--{if !empty($postlist[$post[pid]]['totalrate'])}-->{echo count($postlist[$post[pid]][totalrate]);}<!--{else}-->0<!--{/if}--> {lang people_score}"><i><img src="{IMGDIR}/agree.gif" alt="{lang rate}" />{lang rate}</i></a>
 										<!--{/if}-->
 										<!--{if $post['first'] && $_G[uid] && $_G[uid] == $post[authorid] && helper_access::check_module('friend')}-->
 											<a href="misc.php?mod=invite&action=thread&id=$_G[tid]" onclick="showWindow('invite', this.href, 'get', 0);"><i><img src="{IMGDIR}/activitysmall.gif" alt="{lang invite}" />{lang invite}</i></a>
