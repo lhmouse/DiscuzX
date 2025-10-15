@@ -19,7 +19,7 @@ if(!submitcheck('editsubmit')) {
 
 
 	shownav('forum', 'threadtype_infotypes');
-	showchildmenu([['threadtype_infotypes', 'threadtypes'], [$classids[$option['classid'].' '], 'threadtypes&operation=typeoption&classid='.$option['classid']]], $option['title']);
+	showchildmenu([['threadtype_infotypes', 'threadtypes'], [$classids[$option['classid']], 'threadtypes&operation=typeoption&classid='.$option['classid']]], $option['title']);
 
 	$typeselect = '<select name="typenew" onchange="var styles, key;styles=new Array(\'number\',\'text\',\'radio\', \'checkbox\', \'textarea\', \'select\', \'image\', \'calendar\', \'range\', \'info\'); for(key in styles) {var obj=$(\'style_\'+styles[key]); if(obj) { obj.style.display=styles[key]==this.options[this.selectedIndex].value?\'\':\'none\';}}">';
 	foreach(['number', 'text', 'radio', 'checkbox', 'textarea', 'select', 'calendar', 'email', 'url', 'image', 'range', 'plugin'] as $type) {

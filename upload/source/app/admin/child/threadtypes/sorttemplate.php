@@ -24,7 +24,7 @@ if(!submitcheck('sorttemplatesubmit')) {
 	unset($typevararr, $typeoptionarr);
 	require_once libfile('function/discuzcode');
 	$name = discuzcode($threadtype['name'], 0, 0, 0, 1, 1, 0, 0, 0, 0, 0);
-	showsubmenu(cplang('threadtype_infotypes').' - '.$name, [
+	showchildmenu([['threadtype_infotypes', 'threadtypes']], $name, [
 		['config', 'threadtypes&operation=sortdetail&sortid='.$_GET['sortid'], 0],
 		['threadtype_template', 'threadtypes&operation=sorttemplate&sortid='.$_GET['sortid'], 1],
 	]);
