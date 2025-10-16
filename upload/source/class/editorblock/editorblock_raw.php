@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_raw {
 
-	var $version = '1.0.1';
+	var $version = '1.0.2';
 	var $name = 'HTML代码';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -58,7 +58,7 @@ EOF;
       raw: {
          class: RawTool,
          placeholder: "请输入HTML代码...",
-         tunes: ['anchorTune']
+         tunes: ['anchorTune', 'hideTune']
       },
    }
 }

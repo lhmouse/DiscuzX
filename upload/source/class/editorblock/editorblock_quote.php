@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_quote {
 
-	var $version = '1.0.3';
+	var $version = '1.0.5';
 	var $name = '引言';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -65,7 +65,7 @@ EOF;
 			quotePlaceholder: '请输入引言内容',
 			captionPlaceholder: '请输入引言说明',
 		  },
-                  tunes: ['anchorTune']
+                  tunes: ['anchorTune', 'hideTune']
 	},
    },
    i18n: {

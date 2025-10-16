@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_image {
 
-	var $version = '1.1.3';
+	var $version = '1.1.5';
 	var $name = '图片';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -78,7 +78,7 @@ EOF;
                 captionPlaceholder: '描述信息',
                 buttonContent: '请选择需要上传的图片',
             },
-            tunes: ['anchorTune']
+            tunes: ['anchorTune', 'hideTune']
         },
    },
    i18n: {

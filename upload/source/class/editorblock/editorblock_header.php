@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_header {
 
-	var $version = '2.7.6';
+	var $version = '2.7.7';
 	var $name = '标题区块 Header';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -65,7 +65,7 @@ EOF;
             defaultLevel: 3,
             defaultAlignment: 'left'
          },
-         tunes: ['anchorTune']
+         tunes: ['anchorTune', 'hideTune']
       }
    }
 }

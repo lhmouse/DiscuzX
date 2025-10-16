@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_paragraph {
 
-	var $version = '1.1.5';
+	var $version = '1.1.6';
 	var $name = '文本段落(增强版)';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -243,7 +243,7 @@ EOF;
 	            }
             ]
          },
-         tunes: ['anchorTune']
+         tunes: ['anchorTune', 'hideTune']
       },
    }
 }

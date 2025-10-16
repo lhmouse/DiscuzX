@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_codeflask {
 
-	var $version = '1.0.2';
+	var $version = '1.0.3';
 	var $name = '代码';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -60,7 +60,7 @@ EOF;
    tools_codeflask: {
       codeflask: {
          class : editorjsCodeflask,
-         tunes: ['anchorTune']
+         tunes: ['anchorTune', 'hideTune']
       },
    }
 }

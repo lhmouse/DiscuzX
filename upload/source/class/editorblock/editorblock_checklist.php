@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_checklist {
 
-	var $version = '1.5.5';
+	var $version = '1.5.6';
 	var $name = '多选列表';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -67,7 +67,7 @@ EOF;
       checklist: {
          class: Checklist,
          inlineToolbar: true,
-         tunes: ['anchorTune']
+         tunes: ['anchorTune', 'hideTune']
       },
    }
 }

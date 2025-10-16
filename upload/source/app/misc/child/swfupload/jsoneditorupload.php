@@ -10,19 +10,19 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-if(empty($_G['setting']['editormodetype'])) {
-	$ret = [
-		'success' => 0
-	];
-	echo json_encode($ret);
-	exit();
-}
-
 $_FILES['Filedata']['name'] = addslashes(diconv(urldecode($_FILES['Filedata']['name']), 'UTF-8'));
 $forumattachextensions = '';
 $fid = intval($_GET['fid']);
 if($fid) {
-	$forum = $fid != $_G['fid'] ? table_forum_forum::t()->fetch_info_by_fid($fid) : $_G['forum'];
+	$forum = $fid != $_G['fid'] || !$_G['forum'] ? table_forum_forum::t()->fetch_info_by_fid($fid) : $_G['forum'];
+	if(empty($_G['setting']['editormodetype']) && $forum['editormode'] != 2) {
+		$ret = [
+			'success' => 0
+		];
+		echo json_encode($ret);
+		exit();
+	}
+
 	if($forum['status'] == 3 && $forum['level']) {
 		$levelinfo = table_forum_grouplevel::t()->fetch($forum['level']);
 		if($postpolicy = $levelinfo['postpolicy']) {
@@ -37,7 +37,6 @@ if($fid) {
 	}
 }
 $upload = new forum_upload(1);
-
 if($upload) {
 	$aid = $upload->getaid;
 	if($aid < 0) {

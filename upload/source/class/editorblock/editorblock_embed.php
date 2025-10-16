@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_embed {
 
-	var $version = '1.0.1';
+	var $version = '1.0.2';
 	var $name = '多媒体资源嵌入';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 0; //  默认是否支持多列 0:不支持 1:支持
@@ -65,39 +65,39 @@ EOF;
          class: Embed,
          inlineToolbar: true,
          config: {
-			services: {
-			  codepen: true,
-			  github: true,
-			  bilibili: {
-                      regex: /https?:\/\/www\.bilibili\.com\/video\/([^\/\?\&]*)\/?(.*)/,
-                      embedUrl: '//player.bilibili.com/player.html?aid=&bvid=<%= remote_id %>&cid=&p=1',
-                      html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
-        				height: 500,
-        				id: (ids) => {
-                          return ids[0];
+         services: {
+                      codepen: true,
+                      github: true,
+                      bilibili: {
+                              regex: /https?:\/\/www\.bilibili\.com\/video\/([^\/\?\&]*)\/?(.*)/,
+                              embedUrl: '//player.bilibili.com/player.html?aid=&bvid=<%= remote_id %>&cid=&p=1',
+                              html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                                                height: 500,
+                                                id: (ids) => {
+                                  return ids[0];
+                                },
                         },
-              },
-              youku: {
-                      regex: /https?:\/\/v\.youku\.com\/v_show\/id_([^\/\?\&]*).html(.*)/,
-                      embedUrl: 'https://player.youku.com/embed/<%= remote_id %>',
-                      html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
-        				height: 500,
-        				id: (ids) => {
-                          return ids[0];
-                        },
-              },
-              qq: {
-                      regex: /https?:\/\/v\.qq\.com\/x\/cover\/([^\/\?\&]*)\/([^\/\?\&]*).html(.*)/,
-                      embedUrl: 'https://v.qq.com/txp/iframe/player.html?vid=<%= remote_id %>',
-                      html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
-        				height: 500,
-        				id: (ids) => {
-                          return ids[1];
-                        },
-              },
-			}
-		 },
-         tunes: ['anchorTune']
+                        youku: {
+                              regex: /https?:\/\/v\.youku\.com\/v_show\/id_([^\/\?\&]*).html(.*)/,
+                              embedUrl: 'https://player.youku.com/embed/<%= remote_id %>',
+                              html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                                                height: 500,
+                                                id: (ids) => {
+                                  return ids[0];
+                                },
+                         },
+                         qq: {
+                              regex: /https?:\/\/v\.qq\.com\/x\/cover\/([^\/\?\&]*)\/([^\/\?\&]*).html(.*)/,
+                              embedUrl: 'https://v.qq.com/txp/iframe/player.html?vid=<%= remote_id %>',
+                              html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                                                height: 500,
+                                                id: (ids) => {
+                                  return ids[1];
+                                },
+                          },
+            }
+         },
+         tunes: ['anchorTune', 'hideTune']
       },
    }
 }
