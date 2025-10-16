@@ -525,7 +525,7 @@ h6.ce-header {
 /* notify */
 .cdx-notifies {
     position: fixed;
-    z-index: 2;
+    z-index: 999;
     top: 20px;
     bottom: unset;
     width: 100%;

@@ -25,6 +25,13 @@ if(submitcheck('settingsubmit')) {
 		$settingnew['smcols'] = $settingnew['smcols'] >= 8 && $settingnew['smcols'] <= 12 ? $settingnew['smcols'] : 8;
 	}
 	$settingnew['editormodetype'] = $settingnew['defaulteditormode'] == 2;
+
+	if($settingnew['defaulteditormode'] == 2) {
+		$action = 'editorblock';
+		$operation = 'list';
+		$_GET['anchor'] = '';
+		$from = '';
+	}
 } else {
 	shownav('style', 'setting_editor');
 

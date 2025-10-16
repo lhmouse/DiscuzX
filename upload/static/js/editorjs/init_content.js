@@ -29,6 +29,9 @@ var i18n_default = {
 			anchorTune: {
 				'Anchor': $L("json_editor_tools_Anchor"),
 			},
+			hideTune: {
+				'hide': $L("json_editor_tools_Hide"),
+			},
 			columns: {
 				'2 Columns': $L("json_editor_tools_2Columns"),
 				'3 Columns': $L("json_editor_tools_3Columns"),
@@ -69,6 +72,7 @@ var i18n_default = {
 			"Attachment": $L("json_editor_toolNames_Attachment"),
 			"Hyperlink": $L("json_editor_toolNames_Hyperlink"),
 			'Anchor': $L("json_editor_toolNames_Anchor"),
+			'hide': $L("json_editor_tools_Hide"),
 			'Embed': $L("json_editor_toolNames_Embed"),
 		},
 		"ui": {
@@ -117,6 +121,9 @@ var i18n_default = {
 			},
 			"anchorTune": {
 				'Anchor': $L("json_editor_tools_Anchor"),
+			},
+			"hideTune": {
+				'hide': $L("json_editor_tools_Hide"),
 			},
 			"image": {
 				'With border': $L("json_editor_tools_Withborder"),

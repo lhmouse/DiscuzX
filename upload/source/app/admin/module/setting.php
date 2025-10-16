@@ -39,7 +39,7 @@ if(!submitcheck('settingsubmit')) {
 
 	require_once childfile('setting/updatecache');
 
-	cpmsg('setting_update_succeed', 'action=setting&operation='.$operation.(!empty($_GET['anchor']) ? '&anchor='.$_GET['anchor'] : '').(!empty($from) ? '&from='.$from : ''), 'succeed');
+	cpmsg('setting_update_succeed', 'action='.(!empty($action) ? $action : 'setting').'&operation='.$operation.(!empty($_GET['anchor']) ? '&anchor='.$_GET['anchor'] : '').(!empty($from) ? '&from='.$from : ''), 'succeed');
 }
 
 
