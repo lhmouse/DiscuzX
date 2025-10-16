@@ -452,6 +452,7 @@ $lang = [
 	'json_editor_tools_Ordered' => '有序列表',
 	'json_editor_tools_Unordered' => '无序列表',
 	'json_editor_tools_Anchor' => '锚点ID',
+	'json_editor_tools_Hide' => '用户回帖可见',
 
 	'json_editor_tools_Clicktotune' => '单击以调整',
 	'json_editor_tools_ordragtomove' => '点击并拖动，可重新排序',

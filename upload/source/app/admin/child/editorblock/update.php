@@ -75,6 +75,6 @@ if(!submitcheck('editorupdatesubmit')) {
 		updatecache('setting');
 	}
 
-	cpmsg('editorblock_succeed', 'action=editorblock&operation=list&lpp='.$lpp.'&page='.$page, 'success');
+	cpmsg('editorblock_succeed', 'action=editorblock&operation=list&lpp='.$lpp.'&page='.$page, 'succeed');
 }
 	

@@ -249,6 +249,7 @@ $lang = [
 	'post_hide_credits' => '以下内容需要积分高于 $creditsrequire 才可浏览',
 	'post_hide_credits_hidden' => '，本帖隐藏的内容需要积分高于 $creditsrequire 才可浏览，您当前积分为 {$_G[\'member\'][\'credits\']}',
 	'post_hide_reply_hidden' => '，如果您要查看本帖隐藏内容请<a href="forum.php?mod=post&action=reply&fid={$_G[\'fid\']}&tid={$_G[\'tid\']}" onclick="showWindow(\'reply\', this.href)">回复</a>',
+	'post_hide_reply_hidden_text' => '，如果您要查看本帖隐藏内容请',
 	'set_cover' => '设为封面',
 	'upload' => '上传',
 	'attachment_allow_exts' => '可用扩展名',

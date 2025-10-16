@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_raw {
 
-	var $version = '1.0.2';
+	var $version = '1.0.3';
 	var $name = 'HTML代码';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -109,7 +109,7 @@ EOF;
 	<div class="ce-block__content">
 		<div class="cdx-block ce-rawtool">
 			<textarea class="ce-rawtool__textarea cdx-input">
-			{data.html}				
+{data.html}
 			</textarea>
 		</div>
 	</div>

@@ -708,17 +708,20 @@ if($_G['forum_attachpids'] && !defined('IN_ARCHIVER')) {
 	}
 	parseattach($_G['forum_attachpids'], $_G['forum_attachtags'], $postlist, $skipaids);
 }
-
 // 开始将json编辑器中的图片从未使用列表中移除
-if(!empty($postlist[$pid]) && is_valid_non_empty_json($post['content'], true)) {
-	$content = json_decode($post['content'], true);
-	if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
-		$postlist[$pid]['imagelist'] = [];
-		$postlist[$pid]['imagelistcount'] = 0;
-		$postlist[$pid]['attachlist'] = [];
+foreach($postlist as $pid => $post){
+	if(!empty($post) && is_valid_non_empty_json($post['content'], true)) {
+		$content = json_decode($post['content'], true);
+		if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
+			$post['imagelist'] = [];
+			$post['imagelistcount'] = 0;
+			$post['attachlist'] = [];
+		}
 	}
+	$postlist[$pid] = $post;
 }
 // 结束将json编辑器中的图片从未使用列表中移除
+
 if(empty($postlist)) {
 	if($thread['closed'] > 1 && $thread['isgroup'] != 1) {
 		if(rewriterulecheck('forum_viewthread')) {
