@@ -716,9 +716,9 @@ foreach($postlist as $pid => $post){
 			$post['imagelist'] = [];
 			$post['imagelistcount'] = 0;
 			$post['attachlist'] = [];
+			$postlist[$pid] = $post;
 		}
 	}
-	$postlist[$pid] = $post;
 }
 // 结束将json编辑器中的图片从未使用列表中移除
 

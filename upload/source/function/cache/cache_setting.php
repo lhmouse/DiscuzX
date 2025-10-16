@@ -323,6 +323,12 @@ function build_cache_setting() {
 	$data['avatarurl'] = empty(UC_AVTURL) ? $data['ucenterurl'].'/data/avatar' : UC_AVTURL;
 	$data['avatarpath'] = UC_STANDALONE ? (UC_AVTPATH ? substr(realpath(DISCUZ_ROOT.str_replace('..', '', UC_AVTPATH)), strlen(DISCUZ_ROOT)).'/' : 'data/avatar/') : '';
 
+	if($data['ftp']['on'] == 2 && $data['oss']['oss_avatar']) {
+		$data['defaultavatar'] = $data['ftp']['attachurl'].'avatar/noavatar.'.(!empty($data['avatar_default']) ? $data['avatar_default'] : 'svg');
+	} else {
+		$data['defaultavatar'] = $data['avatarurl'].'/noavatar.'.(!empty($data['avatar_default']) ? $data['avatar_default'] : 'svg');
+	}
+
 	foreach(table_common_magic::t()->fetch_all_data(1) as $magic) {
 		$magic['identifier'] = str_replace(':', '_', $magic['identifier']);
 		$data['magics'][$magic['identifier']] = $magic['name'];

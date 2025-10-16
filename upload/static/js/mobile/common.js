@@ -1493,6 +1493,19 @@ function home_getgroup(gid) {
     }
 }
 
+function loadAvatar() {
+	var defaulturl = typeof DEFAULTAVATAR == 'undefined' ? './data/avatar/noavatar.svg' : DEFAULTAVATAR;
+
+	document.querySelectorAll('._avt').forEach(img => {
+		img.onerror = function () {
+			this.onerror = null;
+			this.src = defaulturl;
+		};
+		img.src = img.dataset.src;
+	});
+}
+
 _attachEvent(window, 'load', footlink, document);
+_attachEvent(window, 'load', loadAvatar, document);
 
 var mlast = getcookie('mfootlink');

@@ -552,7 +552,7 @@ function strexists($string, $find) {
 	return !(!str_contains($string, $find));
 }
 
-function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static = FALSE, $ucenterurl = '', $class = '', $extra = '', $random = 0, $avatarapi = false) {
+function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static = FALSE, $ucenterurl = '', $class = '', $extra = '', $random = 0, $avatarapi = false, $datasrc = true) {
 	global $_G;
 	if(!empty($_G['setting']['plugins']['func'][HOOKTYPE]['avatar']) && !defined('IN_ADMINCP')) {
 		$_G['hookavatar'] = '';
@@ -596,6 +596,8 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 	if(!$returnsrc) {
 		$class = trim($class.' user_avatar');
 	}
+	$src = $datasrc ? 'data-src' : 'src';
+	$defaultclass = $datasrc ? '_avt' : '';
 	if(!$staticavatar && !$static && $ucenterurl != '.' || $avatarapi) {
 		$trandom = '';
 		if($random == 1) {
@@ -611,7 +613,7 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 			}
 			$url = $ucenterurl.'/avatar.php';
 		}
-		return $returnsrc ? $url.'?uid='.$uid.'&size='.$size.($real ? '&type=real' : '').$trandom : '<img src="'.$url.'?uid='.$uid.'&size='.$size.($real ? '&type=real' : '').$trandom.'"'.($class ? ' class="'.$class.'"' : '').($extra ? ' '.$extra : '').'>';
+		return $returnsrc ? $url.'?uid='.$uid.'&size='.$size.($real ? '&type=real' : '').$trandom : '<img '.$src.'="'.$url.'?uid='.$uid.'&size='.$size.($real ? '&type=real' : '').$trandom.'" class="'.$defaultclass.($class ? ' '.$class : '').'"'.($extra ? ' '.$extra : '').'>';
 	} else {
 		$uid = sprintf('%09d', $uid);
 		$dir1 = substr($uid, 0, 3);
@@ -619,7 +621,7 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 		$dir3 = substr($uid, 5, 2);
 		$filepath = $dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).($real ? '_real' : '').'_avatar_'.$size.'.jpg';
 		$file = $avatarurl.'/'.$filepath;
-		$noavt = $avatarurl.'/noavatar.svg';
+		$noavt = $avatarurl.'/noavatar.'.(!empty($_G['setting']['avatar_default']) ? $_G['setting']['avatar_default'] : 'svg');
 		$trandom = '';
 		$avtexist = -1;
 		if(!$staticavatar && !$static) {
@@ -649,7 +651,7 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 		if($trandom) {
 			$file = $file.$trandom;
 		}
-		return $returnsrc ? $file : '<img src="'.$file.'"'.(($avtexist == -1) ? ' onerror="this.onerror=null;this.src=\''.$noavt.'\'"' : '').($class ? ' class="'.$class.'"' : '').($extra ? ' '.$extra : '').'>';
+		return $returnsrc ? $file : '<img '.$src.'="'.$file.'" class="'.$defaultclass.($class ? ' '.$class : '').'"'.($extra ? ' '.$extra : '').'>';
 	}
 }
 

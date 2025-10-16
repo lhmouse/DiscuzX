@@ -2412,6 +2412,18 @@ function $L(key, param) {
 	return key;
 }
 
+function loadAvatar() {
+	var defaulturl = typeof DEFAULTAVATAR == 'undefined' ? './data/avatar/noavatar.svg' : DEFAULTAVATAR;
+
+	document.querySelectorAll('._avt').forEach(img => {
+		img.onerror = function () {
+			this.onerror = null;
+			this.src = defaulturl;
+		};
+		img.src = img.dataset.src;
+	});
+}
+
 var BROWSER = {};
 var USERAGENT = navigator.userAgent.toLowerCase();
 browserVersion({
@@ -2543,3 +2555,5 @@ if (typeof IN_ADMINCP == 'undefined') {
 if (BROWSER.ie) {
 	document.documentElement.addBehavior("#default#userdata");
 }
+
+_attachEvent(window, 'load', loadAvatar, document);
