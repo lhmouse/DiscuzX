@@ -89,12 +89,29 @@ class editor {
 	}
 
 	public static function parser($content) {
+		global $_G;
 		$blocksData = self::toArray($content);
 		$parserData = '';
 		$styleData = ['types' => [], 'style' => ''];
 		foreach($blocksData['blocks'] as $key => $value) {
 			list($editorblock_parser, $editorblock_style) = self::getBlockTemplate($value['type']);
-			$parser = (new editorBlock($editorblock_parser, $value))->replace();
+			// 是否用户回帖可见
+			$allowParser = true;
+			if($value['tunes']['hideTune']['hide']) {
+				$authorreplyexist = null;
+				if($_G['uid']) {
+					$authorreplyexist = table_forum_post::t()->fetch_pid_by_tid_authorid($_G['tid'], $_G['uid']);
+				}
+				if(!$authorreplyexist) {
+					$allowParser = false;
+				}
+			}
+			if(!$allowParser) {
+				$parser = '<div class="locked">'.($_G['uid'] ? $_G['username'] : lang('forum/template', 'guest')).lang('forum/template', 'post_hide_reply_hidden_text').'<a href="forum.php?mod=post&action=reply&fid='.$_G['fid'].'&tid='.$_G['tid'].'" onclick="showWindow(\'reply\', this.href)">'.lang('forum/template', 'reply').'</a></div>';
+			} else {
+				$parser = (new editorBlock($editorblock_parser, $value))->replace();
+			}
+
 			// 锚点解析
 			$anchorparse = explode(',', getglobal('setting/anchorparse')) ?? [];
 			if(in_array($value['type'], $anchorparse)) {
@@ -142,16 +159,20 @@ class editorBlock {
 	 */
 	const rUrl = '/\[url ([a-zA-Z\.]+)\]/s';
 	/*
-     * [column blocks]
-     */
+	 * [url data.url]
+	 */
+	const rAttach = '/\[attach ([a-zA-Z\.]+)\]/s';
+	/*
+	* [column blocks]
+	*/
 	const rColumn = '/\[column ([a-zA-Z\.]+)\]/s';
 	/*
-     * [script path]
-     */
+	 * [script path]
+	 */
 	const rScript = '/\[script (.+?)\]/s';
 	/*
-     * [codeflask id,language,code,jspath]
-     */
+	* [codeflask id,language,code,jspath]
+	*/
 	const rCodeflask = '/\[codeflask ([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),(.+?)\]/s';
 
 	public function __construct($html, $block) {
@@ -166,6 +187,7 @@ class editorBlock {
 		$this->html = preg_replace_callback(self::rLoopObject, [$this, '_object'], $this->html);
 		$this->html = preg_replace_callback(self::rVar, [$this, '_var'], $this->html);
 		$this->html = preg_replace_callback(self::rUrl, [$this, '_url'], $this->html);
+		$this->html = preg_replace_callback(self::rAttach, [$this, '_attach'], $this->html);
 		$this->html = preg_replace_callback(self::rIf, [$this, '_if'], $this->html);
 		return $this->html;
 	}
@@ -270,6 +292,16 @@ EOF;
 			} else {
 				return getglobal('siteurl').$url;
 			}
+		}
+	}
+
+	private function _attach($m, $value = null) {
+		global $_G;
+		$aid = $this->_value($m[1], $value);
+		if(!$aid) {
+			return '';
+		} else {
+			return aidencode($aid, 0, $_G['tid']);
 		}
 	}
 

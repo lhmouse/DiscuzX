@@ -16,6 +16,7 @@ if(empty($_GET['fid']) || empty($_GET['time'])) {
 	include template('common/footer_ajax');
 	exit;
 }
+
 $fid = intval($_GET['fid']);
 $time = intval($_GET['time']);
 
@@ -55,7 +56,7 @@ if(!getgpc('uncheck')) {
 			$thread['icontid'] = $thread['closed'] > 1 ? $thread['closed'] : $thread['tid'];
 		}
 		list($thread['subject'], $thread['author'], $thread['lastposter']) = daddslashes([$thread['subject'], $thread['author'], $thread['lastposter']]);
-		$thread['dateline'] = $thread['dateline'] > $todaytime ? "<span class=\"xi1\">".dgmdate($thread['dateline'], 'd'). '</span>' : '<span>' .dgmdate($thread['dateline'], 'd'). '</span>';
+		$thread['dateline'] = $thread['dateline'] > $todaytime ? "<span class=\"xi1\">".dgmdate($thread['dateline'], 'd').'</span>' : '<span>'.dgmdate($thread['dateline'], 'd').'</span>';
 		$thread['lastpost'] = dgmdate($thread['lastpost']);
 		if(isset($forum_field['threadtypes']['prefix'])) {
 			if($forum_field['threadtypes']['prefix'] == 1) {
@@ -84,18 +85,18 @@ if(!getgpc('uncheck')) {
 			$thread['highlight'] = '';
 		}
 		$target = $thread['isgroup'] == 1 || $thread['forumstick'] ? ' target="_blank"' : ' onclick="atarget(this)"';
-		if(is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus'])) {
+		if(rewriterulecheck('forum_viewthread')) {
 			$thread['threadurl'] = '<a href="'.rewriteoutput('forum_viewthread', 1, '', $thread['tid'], 1, '', '').'"'.$thread['highlight'].$target.'class="s xst">'.$thread['subject'].'</a>';
 		} else {
 			$thread['threadurl'] = '<a href="forum.php?mod=viewthread&amp;tid='.$thread['tid'].'"'.$thread['highlight'].$target.'class="s xst">'.$thread['subject'].'</a>';
 		}
-		if(is_array($_G['setting']['rewritestatus']) && in_array($thread['displayorder'], [1, 2, 3, 4])) {
+		if(rewriterulecheck() && in_array($thread['displayorder'], [1, 2, 3, 4])) {
 			$thread['id'] = 'stickthread_'.$thread['tid'];
 		} else {
 			$thread['id'] = 'normalthread_'.$thread['tid'];
 		}
 		$thread['threadurl'] = $thread['threadtype'].$thread['threadsort'].$thread['threadurl'];
-		if(is_array($_G['setting']['rewritestatus']) && in_array('home_space', $_G['setting']['rewritestatus'])) {
+		if(rewriterulecheck('home_space')) {
 			$thread['authorurl'] = '<a href="'.rewriteoutput('home_space', 1, '', $thread['authorid'], '', '').'">'.$thread['author'].'</a>';
 			$thread['lastposterurl'] = '<a href="'.rewriteoutput('home_space', 1, '', '', rawurlencode($thread['lastposter']), '').'">'.$thread['lastposter'].'</a>';
 		} else {

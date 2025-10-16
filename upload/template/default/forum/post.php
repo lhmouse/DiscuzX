@@ -90,7 +90,7 @@
 	{elseif $_GET[action] == 'reply'}action="forum.php?mod=post&action=reply&fid=$_G[fid]&tid=$_G[tid]&extra=$extra&replysubmit=yes"
 	{elseif $_GET[action] == 'edit'}action="forum.php?mod=post&action=edit&extra=$extra&editsubmit=yes" $enctype
 	{/if}
-	{if !(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'])}
+	{if !((!empty($_G['setting']['editormodetype']) && $_GET[action] != 'edit') || ($_GET[action] == 'edit' && $isJsonContent))}
 	onsubmit="return validate(this)"
 	{else}
 	onsubmit="saveJsonContent();return false;"
@@ -199,7 +199,7 @@
 
 			<!--{if !empty($_G['setting']['pluginhooks']['post_editor_body'])}-->
 				<!--{hook/post_editor_body}-->
-			<!--{elseif !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence']}-->
+			<!--{elseif (!empty($_G['setting']['editormodetype']) && $_GET[action] != 'edit') || ($_GET[action] == 'edit' && $isJsonContent)}-->
 				<!--{subtemplate forum/jsoneditor_content}-->
 			<!--{else}-->
 				<!--{subtemplate forum/post_editor_body}-->
@@ -268,7 +268,7 @@
 </form>
 <iframe name="ajaxpostframe" id="ajaxpostframe" style="display: none;"></iframe>
 
-<!--{if empty($_G['setting']['pluginhooks']['post_editor_body']) && !(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids'])) && !$_G['setting']['json_independence'])}-->
+<!--{if empty($_G['setting']['pluginhooks']['post_editor_body']) && !((!empty($_G['setting']['editormodetype']) && $_GET[action] != 'edit') || ($_GET[action] == 'edit' && $isfirstpost && $isJsonContent))}-->
 <div id="{$editorid}_menus" class="editorrow" style="overflow: hidden; margin-top: -5px; height: 0; border: none; background: transparent;">
 	<!--{subtemplate common/editor_menu}-->
 	<!--{subtemplate forum/editor_menu_forum}-->

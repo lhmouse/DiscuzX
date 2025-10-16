@@ -515,6 +515,12 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			]], $forum['modnewposts'], 'mradio');
 			showsetting('forums_edit_posts_alloweditpost', 'alloweditpostnew', $forum['alloweditpost'], 'radio');
 			showsetting('forums_edit_posts_recyclebin', 'recyclebinnew', $forum['recyclebin'], 'radio');
+			showsetting('forums_edit_posts_editormode', ['editormodenew', [
+				[-1, $lang['forums_edit_posts_editormode_global']],
+				[0, $lang['forums_edit_posts_editormode_discuzcode']],
+				[1, $lang['forums_edit_posts_editormode_wysiwyg']],
+				[2, $lang['forums_edit_posts_editormode_json']],
+			]], $forum['editormode'], 'mradio');
 			showsetting('forums_edit_posts_html', 'allowhtmlnew', $forum['allowhtml'], 'radio');
 			showsetting('forums_edit_posts_bbcode', 'allowbbcodenew', $forum['allowbbcode'], 'radio');
 			showsetting('forums_edit_posts_imgcode', 'allowimgcodenew', $forum['allowimgcode'], 'radio');
@@ -1002,6 +1008,7 @@ EOT;
 				'autoclose' => (!empty($_GET['autoclosenew']) && !empty($_GET['autoclosetimenew'])) ? (intval((int)$_GET['autoclosenew'] * (int)$_GET['autoclosetimenew'])) : 0,
 				'allowfeed' => $_GET['allowfeednew'],
 				'domain' => $domain,
+				'editormode' => $_GET['editormodenew'],
 			]);
 			table_forum_forum::t()->update($fid, $forumdata);
 

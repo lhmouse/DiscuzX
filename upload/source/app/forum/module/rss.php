@@ -55,10 +55,10 @@ if(empty($rssfid)) {
 
 $frewriteflag = $trewriteflag = 0;
 $havedomain = implode('', $_G['setting']['domain']['app']);
-if(is_array($_G['setting']['rewritestatus']) && in_array('forum_forumdisplay', $_G['setting']['rewritestatus'])) {
+if(rewriterulecheck('forum_forumdisplay')) {
 	$frewriteflag = 1;
 }
-if(is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus'])) {
+if(rewriterulecheck('forum_viewthread')) {
 	$trewriteflag = 1;
 }
 

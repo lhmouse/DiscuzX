@@ -1,16 +1,14 @@
 <?php exit('Access Denied');?>
 
 <!--  Load Editor.js's Css -->
-<link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs.css?{VERHASH}" />
+<link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs_mobile.css?{VERHASH}" />
 
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
-		<input type="hidden" name="inajax" id="inajax" value="1" />
-		<input type="hidden" name="message" id="{$editorid}_textarea" value="json_content" />
+		<input type="hidden" name="message" id="needmessage" value="json_content" />
+		<input type="hidden" name="content" id="content" value="" />
 		<input type="hidden" name="contentType" id="contentType" value="json" />
 		<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
-		<input type="hidden" name="content" id="content" value="" />
-		<input type="hidden" name="handlekey" id="handlekey" value="postform" />
-		<!--{template forum/jsoneditor_toolbar}-->
+		
 		<div class="json-editor__content _json-editor__content--small">
 			<div id="editorjs"></div>
 		</div>
@@ -18,7 +16,14 @@
 			<pre class="json-editor__output-content" id="output"></pre>
 		</div>
 </div>
-
+<style>
+	body {
+		background-color: #EEEEEE;
+	}
+	.json-editor {
+		min-height: 200px;
+	}
+</style>
 <!-- 常量 -->
 <script type="text/javascript">
     const editorid = '{$editorid}';
@@ -100,7 +105,7 @@
     }
 </script>
 <!-- Initialization -->
-<script src="{STATICURL}js/editorjs/init_content.js?{VERHASH}"></script>
+<script src="{STATICURL}js/editorjs/init_content_touch.js?{VERHASH}"></script>
 
 <!--  Load icon -->
 <script src="{STATICURL}js/iconfont.js?{VERHASH}"></script>

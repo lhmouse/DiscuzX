@@ -158,7 +158,7 @@ if($_GET['from'] == 'portal') {
 
 $_GET['extra'] = getgpc('extra') ? rawurlencode($_GET['extra']) : '';
 
-if(is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus'])) {
+if(rewriterulecheck('forum_viewthread')) {
 	$canonical = rewriteoutput('forum_viewthread', 1, '', $_G['tid'], 1, '', '');
 } else {
 	$canonical = 'forum.php?mod=viewthread&tid='.$_G['tid'];
@@ -536,23 +536,26 @@ foreach($postarr as $post) {
 		$post['incurpage'] = in_array($post['pid'], $curpagepids);
 		$postusers[$post['authorid']] = [];
 		// 开始解析json编辑器内容
-		if($post['content'] && !in_array($post['content'], ['{}', null, 'null', ''])) {
-			list($parserData, $styleData) = editor::parser($post['content']);
-			if($_G['setting']['editor_global_css']) {
-				$styleData .= $_G['setting']['editor_global_css'];
-			}
-			if(!defined('IN_RESTFUL')) {
-				$post['message'] = $parserData.$styleData;
-			} else {
-				$post['message'] = $parserData;
-				if($_REQUEST['removestyle']) {
-					$pattern = '/\<style(\s+.*?)?\>/s';
-					$styleData = preg_replace($pattern, '', $styleData);
-					$pattern = '/\<\/style(\s+.*?)?\>/s';
-					$styleData = preg_replace($pattern, '', $styleData);
+		if(is_valid_non_empty_json($post['content'], true)) {
+			$content = json_decode($post['content'], true);
+			if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
+				list($parserData, $styleData) = editor::parser($content['content']);
+				if($_G['setting']['editor_global_css']) {
+					$styleData .= $_G['setting']['editor_global_css'];
 				}
-				$styleData = str_replace(["\r", "\n", "\t"], '', $styleData);
-				$post['style'] = $styleData;
+				if(!defined('IN_RESTFUL')) {
+					$post['message'] = $parserData.$styleData;
+				} else {
+					$post['message'] = $parserData;
+					if($_REQUEST['removestyle']) {
+						$pattern = '/\<style(\s+.*?)?\>/s';
+						$styleData = preg_replace($pattern, '', $styleData);
+						$pattern = '/\<\/style(\s+.*?)?\>/s';
+						$styleData = preg_replace($pattern, '', $styleData);
+					}
+					$styleData = str_replace(["\r", "\n", "\t"], '', $styleData);
+					$post['style'] = $styleData;
+				}
 			}
 		}
 		// 结束解析json编辑器内容
@@ -707,15 +710,18 @@ if($_G['forum_attachpids'] && !defined('IN_ARCHIVER')) {
 }
 
 // 开始将json编辑器中的图片从未使用列表中移除
-if(!empty($postlist[$pid]) && $post['content'] && !in_array($post['content'], ['{}', null, 'null', ''])) {
-	$postlist[$pid]['imagelist'] = [];
-	$postlist[$pid]['imagelistcount'] = 0;
-	$postlist[$pid]['attachlist'] = [];
+if(!empty($postlist[$pid]) && is_valid_non_empty_json($post['content'], true)) {
+	$content = json_decode($post['content'], true);
+	if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
+		$postlist[$pid]['imagelist'] = [];
+		$postlist[$pid]['imagelistcount'] = 0;
+		$postlist[$pid]['attachlist'] = [];
+	}
 }
 // 结束将json编辑器中的图片从未使用列表中移除
 if(empty($postlist)) {
 	if($thread['closed'] > 1 && $thread['isgroup'] != 1) {
-		if(is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus'])) {
+		if(rewriterulecheck('forum_viewthread')) {
 			$canonical = rewriteoutput('forum_viewthread', 1, '', $thread['closed'], 1, '', '');
 		} else {
 			$canonical = 'forum.php?mod=viewthread&tid='.$thread['closed'];
@@ -1059,7 +1065,16 @@ function viewthread_procpost($post, $lastvisit, $ordertype, $maxposition = 0) {
 			$_G['forum_posthtml']['header'][$post['pid']] .= '<div id="threadindex"></div><script type="text/javascript" reload="1">show_threadindex(0, '.($_GET['from'] == 'preview' ? '1' : '0').');</script>';
 		}
 		if(!$imgcontent) {
-			$post['message'] = discuzcode($post['message'], $post['smileyoff'], $post['bbcodeoff'], ($post['htmlon'] || (!empty($post['content']) && $post['content'] != '{}')) & 1, $_G['forum']['allowsmilies'], $forum_allowbbcode, ($_G['forum']['allowimgcode'] && $_G['setting']['showimages'] ? 1 : 0), $_G['forum']['allowhtml'], ($_G['forum']['jammer'] && $post['authorid'] != $_G['uid'] ? 1 : 0), 0, $post['authorid'], $_G['cache']['usergroups'][$post['groupid']]['allowmediacode'] && $_G['forum']['allowmediacode'], $post['pid'], getglobal('setting/lazyload'), $post['dbdateline'], $post['first'], (!empty($post['content']) && $post['content'] != '{}') & 1);
+			// 开始json编辑器的处理
+			$htmlon_jsonContent = false;
+			if(is_valid_non_empty_json($post['content'], true)) {
+				$content = json_decode($post['content'], true);
+				if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
+					$htmlon_jsonContent = true;
+				}
+			}
+			// 结束json编辑器的处理
+			$post['message'] = discuzcode($post['message'], $post['smileyoff'], $post['bbcodeoff'], ($post['htmlon'] || $htmlon_jsonContent) & 1, $_G['forum']['allowsmilies'], $forum_allowbbcode, ($_G['forum']['allowimgcode'] && $_G['setting']['showimages'] ? 1 : 0), $_G['forum']['allowhtml'] || $htmlon_jsonContent, ($_G['forum']['jammer'] && $post['authorid'] != $_G['uid'] ? 1 : 0), 0, $post['authorid'], $_G['cache']['usergroups'][$post['groupid']]['allowmediacode'] && $_G['forum']['allowmediacode'], $post['pid'], getglobal('setting/lazyload'), $post['dbdateline'], $post['first'], (!empty($post['content']) && $post['content'] != '{}') & 1);
 			if($post['first']) {
 				$_G['relatedlinks'] = '';
 				$relatedtype = !$_G['forum_thread']['isgroup'] ? 'forum' : 'group';

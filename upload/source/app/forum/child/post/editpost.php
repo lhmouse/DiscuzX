@@ -211,10 +211,17 @@ if(!submitcheck('editsubmit')) {
 
 	$postinfo['subject'] = str_replace('"', '&quot;', $postinfo['subject']);
 	$postinfo['message'] = dhtmlspecialchars($postinfo['message']);
-	if(!empty($postinfo['content']) && !in_array($postinfo['content'], ['{}', null, 'null', ''])) {
+
+	$isJsonContent = false;
+	if(is_valid_non_empty_json($postinfo['content'], true)) {
 		$content = json_decode($postinfo['content'], true);
-		$postinfo['content'] = json_encode($content['blocks']);
+		if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
+			$_content = json_decode($content['content'], true);
+			$postinfo['content'] = json_encode($_content['blocks']);
+			$isJsonContent = true;
+		}
 	}
+
 	$selectgroupid = 0;
 	if($postinfo['first'] == 1) {
 		preg_match('/(\[groupid=(\d+)\].*\[\/groupid\])/i', $postinfo['message'], $matchs);
@@ -295,7 +302,7 @@ if(!submitcheck('editsubmit')) {
 
 	$imgattachs['unused'] = !$sortid ? ($imgattachs['unused'] ?? '') : '';
 
-	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
+	if((!empty($_G['setting']['editormodetype']) && $_GET['action'] != 'edit') || ($_GET['action'] == 'edit' && $isJsonContent)) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -310,9 +317,6 @@ if(!submitcheck('editsubmit')) {
 			$postinfo['source'] = json_decode($postinfo['source'], true);
 		}
 
-		if($postinfo['content'] === '{}'){
-			$postinfo['content'] = '[]';
-		}
 
 		$thread_cover = table_forum_thread::t()->fetch_thread($postinfo['tid']);
 		if($thread_cover && $thread_cover['cover']) {
@@ -403,6 +407,8 @@ if(!submitcheck('editsubmit')) {
 			'original' => $original,
 			'message' => $message,
 			'content' => $content,
+			'contentType' => $contentType,
+			'contentEditor' => $contentEditor,
 			'source' => $source,
 			'special' => $special,
 			'sortid' => $sortid,
@@ -464,7 +470,7 @@ if(!submitcheck('editsubmit')) {
 		}
 		// cover end
 		// 开始处理json编辑器内容中的图片
-		if($param['content'] && !in_array($param['content'], ['{}', null, 'null', ''])) {
+		if(is_valid_non_empty_json($param['content'], true)) {
 			$blocksData = json_decode($param['content'], true);
 			$withImage = 0;
 			foreach($blocksData['blocks'] as $key => $value) {

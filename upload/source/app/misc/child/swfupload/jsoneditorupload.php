@@ -40,6 +40,13 @@ $upload = new forum_upload(1);
 
 if($upload) {
 	$aid = $upload->getaid;
+	if($aid < 0) {
+		$ret = [
+			'success' => 0
+		];
+		echo json_encode($ret);
+		exit();
+	}
 	$attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$aid, $aid);
 	$picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
 	$ret = [

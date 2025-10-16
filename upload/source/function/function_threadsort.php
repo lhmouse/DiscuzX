@@ -341,8 +341,8 @@ function showsortmodetemplate($sortid, $fid, $sortoptionarray, $templatearray, $
 		$templatearray[$sortid] = stripslashes($r[2]);
 		$sorttemplate['footer'] = stripslashes($r[3]);
 	}
-	$rewritespace = is_array($_G['setting']['rewritestatus']) && in_array('home_space', $_G['setting']['rewritestatus']);
-	$rewriteviewthread = is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus']);
+	$rewritespace = rewriterulecheck('home_space');
+	$rewriteviewthread = rewriterulecheck('forum_viewthread');
 	$sortlistarray = showsorttemplate($sortid, $fid, $sortoptionarray, $templatearray, $threadlist, $threadids, true);
 	foreach($threadlist as $thread) {
 		foreach($thread as $k => $v) {

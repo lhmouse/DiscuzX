@@ -2598,6 +2598,7 @@ CREATE TABLE pre_forum_forum
 	sharetimes       mediumint(8) unsigned        NOT NULL DEFAULT '0',
 	disablethumb     tinyint(1)                   NOT NULL DEFAULT '0',
 	disablecollect   tinyint(1)                   NOT NULL DEFAULT '0',
+	editormode       tinyint(1)                   NOT NULL DEFAULT '-1',
 	PRIMARY KEY (fid),
 	KEY forum (`status`, `type`, displayorder),
 	KEY fup_type (fup, `type`, displayorder),

@@ -60,7 +60,7 @@ class model_thread extends discuz_model {
 			return $this->showmessage('post_sm_isnull');
 		}
 
-		if(!$this->param['sortid'] && (!$this->setting['json_independence'] && !$this->param['special']) && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
+		if(!$this->param['sortid'] && (!$this->setting['json_independence'] && !$this->param['special']) && ((in_array($this->param['contentType'], ['text', '']) && empty(trim($this->param['message']))) || (!empty($this->param['contentType']) && $this->param['contentType'] != 'text' && empty(trim($this->param['content']))))) {
 			return $this->showmessage('post_sm_isnull');
 		}
 		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);
@@ -132,7 +132,8 @@ class model_thread extends discuz_model {
 
 		// 更新摘要
 		$summary = '';
-		if(!empty($this->param['content']) && $this->param['content'] != '{}') {
+		if($this->param['contentType'] == 'json' && $this->param['contentEditor'] == 'jsonEditor'
+			&& is_valid_non_empty_json($this->param['content'], true)) {
 			$ctmp = json_decode($this->param['content'], true);
 			foreach($ctmp['blocks'] as $ckey => $cvalue) {
 				if($cvalue['type'] == 'paragraph') {
@@ -222,6 +223,11 @@ class model_thread extends discuz_model {
 		if($this->param['imgcontent']) {
 			stringtopic($this->param['message'], $this->tid, true, $this->param['imgcontentwidth']);
 		}
+
+		$contentType = $this->param['contentType'] ?? 'text';
+		$contentEditor = $this->param['contentEditor'] ?? 'default';
+		$content = generate_content_json($contentType, $contentEditor, (!empty($this->param['content']) ? $this->param['content'] : '{}'));
+
 		$this->pid = insertpost([
 			'fid' => $this->forum['fid'],
 			'tid' => $this->tid,
@@ -232,7 +238,7 @@ class model_thread extends discuz_model {
 			'original' => !empty($this->param['original']) ? $this->param['original'] : 0,
 			'dateline' => $this->param['publishdate'],
 			'message' => $this->param['message'],
-			'content' => !empty($this->param['content']) ? $this->param['content'] : '{}',
+			'content' => $content,
 			'source' => !empty($this->param['source']) ? $this->param['source'] : '{}',
 			'useip' => $this->param['clientip'] ? $this->param['clientip'] : getglobal('clientip'),
 			'port' => $this->param['remoteport'] ? $this->param['remoteport'] : getglobal('remoteport'),
@@ -359,7 +365,7 @@ class model_thread extends discuz_model {
 			'publishdate', 'digest', 'moderated', 'tstatus', 'isgroup', 'imgcontent', 'imgcontentwidth',
 			'replycredit', 'closed', 'special', 'tags',
 			'message', 'content', 'clientip', 'invisible', 'isanonymous', 'usesig',
-			'htmlon', 'bbcodeoff', 'smileyoff', 'parseurloff', 'pstatus', 'geoloc', 'original', 'source',
+			'htmlon', 'bbcodeoff', 'smileyoff', 'parseurloff', 'pstatus', 'geoloc', 'original', 'source', 'contentType', 'contentEditor'
 		];
 		foreach($varname as $name) {
 			if(!isset($this->param[$name])) {

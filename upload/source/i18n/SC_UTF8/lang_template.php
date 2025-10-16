@@ -217,6 +217,7 @@ $lang = [
 	'e_attach_insert' => '点击附件文件名添加到帖子内容中',
 	'e_attach_inserturl' => '，"attach://" 开头的附件地址支持任何人下载请谨慎添加',
 	'e_img_albumlist' => '相册图片',
+	'e_camera_attach' => '拍照',
 	'e_img_attach' => '上传图片',
 	'e_img_height' => '高(可选)',
 	'e_img_insertphoto' => '点击图片添加到帖子内容中',
@@ -547,5 +548,6 @@ $lang = [
 	'darkroom_search' => '搜索',
 	'darkroom_search_placeholder' => '请输入搜索用户名',
 	'darkroom_no_search_result' => '无搜索结果',
+	'post_sm_isnull' => '抱歉，您尚未输入标题或内容',
 ];
 

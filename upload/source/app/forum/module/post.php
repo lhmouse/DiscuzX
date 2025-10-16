@@ -206,6 +206,8 @@ $subject = isset($_GET['subject']) ? dhtmlspecialchars(censor(trim($_GET['subjec
 $subject = !empty($subject) ? str_replace("\t", ' ', $subject) : $subject;
 $message = isset($_GET['message']) ? censor($_GET['message'], NULL, FALSE, FALSE) : '';
 $content = $_GET['content'] ?? '';
+$contentType = daddslashes($_GET['contentType']) ?? 'text';
+$contentEditor = daddslashes($_GET['contentEditor']) ?? 'default';
 $polloptions = isset($polloptions) ? censor(trim($polloptions)) : '';
 $readperm = isset($_GET['readperm']) ? intval($_GET['readperm']) : 0;
 $price = isset($_GET['price']) ? intval($_GET['price']) : 0;
@@ -282,9 +284,14 @@ if(!$sortid && !$specialextra) {
 }
 
 $editorid = 'e';
-$_G['setting']['editoroptions'] = str_pad(decbin($_G['setting']['editoroptions']), 3, 0, STR_PAD_LEFT);
-$editormode = $_G['setting']['editoroptions'][0];
-$allowswitcheditor = $_G['setting']['editoroptions'][1];
+$_G['setting']['editoroptions'] = str_pad(decbin($_G['setting']['editoroptions']), 4, 0, STR_PAD_LEFT);
+if(isset($_G['forum']['editormode']) && $_G['forum']['editormode'] != -1) {
+	$editormode = $_G['forum']['editormode'];
+	$_G['setting']['editormodetype'] = $editormode == 2;
+} else {
+	$editormode = bindec($_G['setting']['editoroptions'][0].$_G['setting']['editoroptions'][1]);
+}
+$allowswitcheditor = $_G['setting']['editoroptions'][2];
 $editor = [
 	'editormode' => $editormode,
 	'allowswitcheditor' => $allowswitcheditor,
@@ -296,7 +303,7 @@ $editor = [
 	'allowchecklength' => 1,
 	'allowtopicreset' => 1,
 	'textarea' => 'message',
-	'simplemode' => !isset($_G['cookie']['editormode_'.$editorid]) ? !$_G['setting']['editoroptions'][2] : $_G['cookie']['editormode_'.$editorid],
+	'simplemode' => !isset($_G['cookie']['editormode_'.$editorid]) ? !$_G['setting']['editoroptions'][3] : $_G['cookie']['editormode_'.$editorid],
 ];
 if($specialextra) {
 	$special = 127;

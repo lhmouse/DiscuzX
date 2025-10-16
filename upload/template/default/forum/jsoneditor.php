@@ -1,25 +1,21 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
-<div class="header cl">
-    <div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
-    <h2><!--{eval echo strip_tags($_G['forum']['name']) ? strip_tags($_G['forum']['name']) : $_G['forum']['name'];}--> - <!--{if $_GET['action'] == 'edit'}-->{lang edit}<!--{else}-->{lang send_threads}<!--{/if}--></h2>
-    <div class="my"></div>
-</div>
 <!--  Load Layui -->
 <link rel="stylesheet" type="text/css" href="{STATICURL}js/layui/layui.css?{VERHASH}" />
 <link rel="stylesheet" type="text/css" href="{STATICURL}js/layui/extend/inputTags.css?{VERHASH}" />
 <!--  Load Editor.js's Css -->
-<link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs_mobile.css?{VERHASH}" />
+<link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs.css?{VERHASH}" />
 
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
     <form method="post" id="postform"
-          {if $_GET[action] == 'newthread'}action="forum.php?mod=post&action={if $special != 2}newthread{else}newtrade{/if}&fid=$_G[fid]&extra=$extra&topicsubmit=yes&mobile=2"
-    {elseif $_GET[action] == 'reply'}action="forum.php?mod=post&action=reply&fid=$_G[fid]&tid=$_G[tid]&extra=$extra&replysubmit=yes&mobile=2"
-    {elseif $_GET[action] == 'edit'}action="forum.php?mod=post&action=edit&extra=$extra&editsubmit=yes&mobile=2" $enctype
-    {/if}>
-    <h3 class="flb">
+          {if $_GET[action] == 'newthread'}action="forum.php?mod=post&action={if $special != 2}newthread{else}newtrade{/if}&fid=$_G[fid]&extra=$extra&topicsubmit=yes"
+    {elseif $_GET[action] == 'reply'}action="forum.php?mod=post&action=reply&fid=$_G[fid]&tid=$_G[tid]&extra=$extra&replysubmit=yes"
+    {elseif $_GET[action] == 'edit'}action="forum.php?mod=post&action=edit&extra=$extra&editsubmit=yes" $enctype
+    {/if}
+    onsubmit="ajaxpost('postform', 'return_postform', 'return_postform', 'onerror');return false;">
+    <div>
         <em id="return_postform"></em>
-    </h3>
+    </div>
     <input type="hidden" name="formhash" id="formhash" value="{FORMHASH}" />
     <input type="hidden" name="posttime" id="posttime" value="{TIMESTAMP}" />
     <!--{if $_GET['action'] == 'edit'}-->
@@ -29,10 +25,10 @@
     <input type="hidden" name="inajax" id="inajax" value="1" />
     <input type="hidden" name="message" id="message" value="json_content" />
     <input type="hidden" name="content" id="content" value="" />
-	<input type="hidden" name="contentType" id="contentType" value="json" />
-	<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
+    <input type="hidden" name="contentType" id="contentType" value="json" />
+    <input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
     <input type="hidden" id="postsave" name="save" value="">
-    <input type="hidden" id="mobileeditor" name="mobileeditor" value="1">
+    <input type="hidden" id="mobileeditor" name="mobileeditor" value="0">
     <!--{if !empty($_GET['modthreadkey'])}--><input type="hidden" name="modthreadkey" id="modthreadkey" value="$_GET['modthreadkey']" /><!--{/if}-->
     <!--{if $_GET['action'] == 'reply'}-->
     <input type="hidden" name="noticeauthor" value="$noticeauthor" />
@@ -54,6 +50,7 @@
     <input type="hidden" name="page" value="$_GET[page]" />
     <!--{/if}-->
     <div class="json-editor__content _json-editor__content--small">
+	<!--{template forum/jsoneditor_toolbar}-->
         <div class="json-editor-subject">
             <input id="subject" name="subject" class="subject" placeholder="{lang json_editor_title_placeholder}" <!--{if $_GET[action] == 'edit'}-->value="{$postinfo['subject']}"<!--{elseif $_GET[action] == 'reply'}-->value="RE: {$thread['subject']}"<!--{/if}-->/>
         </div>
@@ -70,7 +67,7 @@
                                 <svg style="width:4em; height:4em;" class="icon" aria-hidden="true">
                                     <use xlink:href="#icon-shangchuan"></use>
                                 </svg>
-                                <div>{lang json_editor_upload_mobile_tip}</div>
+                                <div>{lang json_editor_upload_tip}</div>
                                 <div class="<!--{if !$postinfo['coverpath']}-->layui-hide<!--{/if}-->" id="upload-cover-preview">
                                     <hr> <img src="<!--{if $postinfo['coverpath']}-->{$postinfo['coverpath']}?{VERHASH}<!--{/if}-->" style="max-width: 100%">
                                 </div>
@@ -125,7 +122,7 @@
                         <label class="css-publish__div_title">{lang json_editor_title_tags}</label>
                         <div class="layui-form layui-row">
                             <div class="layui-col-sm12 tags">
-                                <input type="text" id="inputtags" name="inputtags" placeholder="{lang json_editor_tags_enter}" autocomplete="off" class="layui-input" style="width: 245px;"/>
+                                <input type="text" id="inputtags" name="inputtags" placeholder="{lang json_editor_tags_enter}" autocomplete="off" class="layui-input" style="width: 500px;"/>
                                 <input type="hidden" id="tags" name="tags" autocomplete="off" <!--{if $postinfo['tag']}-->value="{$postinfo['tag']}"<!--{/if}--> class="layui-input" style="width: 500px;"/>
                             </div>
                         </div>
@@ -140,7 +137,7 @@
                                 <input type="text" name="source_title" placeholder="{lang json_editor_source_title}" class="layui-input" <!--{if $postinfo['source']['title']}-->value="{$postinfo['source']['title']}"<!--{/if}-->>
                             </div>
                             <div class="layui-col-sm8">
-                                <input type="text" name="source_url" placeholder="{lang json_editor_source_url}" class="layui-input" style="width: 245px;" <!--{if $postinfo['source']['url']}-->value="{$postinfo['source']['url']}"<!--{/if}-->>
+                                <input type="text" name="source_url" placeholder="{lang json_editor_source_url}" class="layui-input" style="width: 305px;" <!--{if $postinfo['source']['url']}-->value="{$postinfo['source']['url']}"<!--{/if}-->>
                             </div>
                         </div>
                     </div>
@@ -148,31 +145,27 @@
                 <!--{if $_GET[action] != 'edit'}-->
 	            {cell common/seccheck/code_start}
 	                <div class="css-publish__div">
-		            <div class="css-publish__div_content">
-			        <label class="css-publish__div_title">{lang json_editor_title_seccode}</label>
-			        <div class="layui-form layui-row layui-col-space16">
-				    <div class="layui-col-sm4" style="width: 150px;">
-				        <input type="text" name="seccodeverify" placeholder="{lang json_editor_seccode_desc}" class="layui-input"/>
-				    </div>
-				    <div class="layui-col-sm4">{cell common/seccheck/code_image}  {cell common/seccheck/code_text}</div>
-			        </div>
-		            </div>
+	                    <div class="css-publish__div_content">
+	                        <label class="css-publish__div_title">{lang json_editor_title_seccode}</label>
+		                <div class="layui-col-sm4" style="width: 150px;">
+		                    <input type="text" name="seccodeverify" placeholder="{lang json_editor_seccode_desc}" class="layui-input"/>
+	                        </div>
+	                        <div class="layui-col-sm4">{cell common/seccheck/code_image} {cell common/seccheck/code_text}</div>
+	                    </div>
 	                </div>
 	            {cell common/seccheck/code_end}
 	            {cell common/seccheck/qaa_start}
 	            <div class="css-publish__div">
-	                <div class="css-publish__div_content">
-		            <label class="css-publish__div_title">{lang json_editor_title_seccode}</label>
-		            <div class="layui-form layui-row layui-col-space16">
-		                <div class="layui-col-sm4" style="width: 150px;">
-			            <input type="text" name="secanswer" class="layui-input"/>
-		                </div>
-		                <div class="layui-col-sm4">{cell common/seccheck/qaa_question} {cell common/seccheck/qaa_change}</div>
-		            </div>
-	                </div>
+		        <div class="css-publish__div_content">
+			    <label class="css-publish__div_title">{lang json_editor_title_seccode}</label>
+			    <div class="layui-col-sm4" style="width: 150px;">
+			        <input type="text" name="secanswer" class="layui-input"/>
+			    </div>
+			    <div class="layui-col-sm4">{cell common/seccheck/qaa_question} {cell common/seccheck/qaa_change}</div>
+		        </div>
 	            </div>
 	            {cell common/seccheck/qaa_end}
-	        <!--{/if}-->
+                <!--{/if}-->
             </div>
 
         </div>
@@ -192,11 +185,11 @@
             <div class="css-publish__bar__draft__tip"></div>
             <div class="css-publish__bar__save">
                 <div class="layui-btn-container">
-                    <button type="button" id="saveButton" class="formdialog layui-btn layui-btn-primary layui-border" <!--{if $_GET[action] == 'edit'}-->style="display: none;"<!--{/if}-->>{lang json_editor_save}</button>
+                    <button type="button" id="saveButton" class="layui-btn layui-btn-primary layui-border" <!--{if $_GET[action] == 'edit'}-->style="display: none;"<!--{/if}-->>{lang json_editor_save}</button>
                 </div>
             </div>
             <div class="layui-btn-container">
-                <button type="button" id="submitButton" class="formdialog layui-btn layui-bg-blue">{lang json_editor_submit}</button>
+                <button type="button" id="submitButton" class="layui-btn layui-bg-blue">{lang json_editor_submit}</button>
             </div>
         </div>
     </div>
@@ -230,7 +223,6 @@
 <!-- Load Ajax Core -->
 <script src="{STATICURL}js/editorjs/ajax.js?{VERHASH}"></script>
 <script src="{STATICURL}js/editorjs/util.js?{VERHASH}"></script>
-
 <!-- Initialization -->
 <script src="{STATICURL}js/editorjs/tools/editorjs-drag-drop/editorjs-drag-drop.js?{VERHASH}"></script><!-- editorjs-drag-drop.js -->
 <script src="{STATICURL}js/editorjs/tools/editorjs-undo/editorjs-undo.js?{VERHASH}"></script><!-- editorjs-undo.js -->

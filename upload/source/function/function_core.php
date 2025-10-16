@@ -1328,6 +1328,16 @@ function getforumimg($aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
 	return 'forum.php?mod=image&aid='.$aid.'&size='.$w.'x'.$h.'&key='.rawurlencode($key).($nocache ? '&nocache=yes' : '').($type ? '&type='.$type : '');
 }
 
+function rewriterulecheck($type = '') {
+	global $_G;
+
+	if($type) {
+		return is_array($_G['setting']['rewritestatus']) && in_array($type, $_G['setting']['rewritestatus']);
+	} else {
+		return $_G['setting']['rewritestatus'];
+	}
+}
+
 function rewriteoutput($type, $returntype, $host) {
 	global $_G;
 	$fextra = '';
@@ -2945,4 +2955,81 @@ function recent_use_tag($idtype = 'tid') {
 		}
 	}
 	return $tagarray;
+}
+
+/**
+ * 生成内容发布格式的JSON响应
+ * @param string $type 类型，默认：text
+ * @param string $editor 编辑器类型，默认：default
+ * @param mixed $content 内容，默认空字符串，可以是任意类型
+ * @param array $extend 扩展字段，JSON类型，默认空数组
+ * @return string JSON格式的字符串
+ */
+function generate_content_json($type = 'text', $editor = 'default', $content = '', $extend = []) {
+
+	$data = [
+		'type' => $type,
+		'editor' => $editor,
+		'content' => $content,
+		'extend' => $extend
+	];
+
+	return json_encode($data, JSON_UNESCAPED_UNICODE);
+}
+
+/**
+ * 判断传入内容是否为有效JSON格式且不为空JSON对象
+ * @param mixed $content 要检查的内容
+ * @param bool $check_null_empty 是否单独验证null或空字符串，默认true
+ * @param bool $return_decode_assoc 是否返回decode后的数组，默认false
+ * @return bool 是有效的非空JSON返回true，否则返回false
+ */
+function is_valid_non_empty_json($content, $check_null_empty = true, $return_decode_assoc = false) {
+	// 如果开启了null和空字符串检查
+	if($check_null_empty) {
+		// 检查是否为null
+		if($content === null) {
+			return false;
+		}
+
+		// 检查是否为空字符串
+		if(is_string($content) && trim($content) === '') {
+			return false;
+		}
+	}
+
+	// 确保内容是字符串类型
+	if(!is_string($content)) {
+		return false;
+	}
+
+	// 去除首尾空白字符
+	$content = trim($content);
+
+	// 检查是否为空字符串
+	if(empty($content)) {
+		return false;
+	}
+
+	// 检查是否为有效的JSON格式
+	json_decode($content);
+	if(json_last_error() !== JSON_ERROR_NONE) {
+		return false;
+	}
+
+	// 检查是否为JSON对象且不为空
+	if(strpos($content, '{') === 0 && strrpos($content, '}') === strlen($content) - 1) {
+		$decoded = json_decode($content, true);
+		if(is_array($decoded) && empty($decoded)) {
+			return false;
+		}
+	}
+
+	// 通过所有检查，是有效的非空JSON
+	if($return_decode_assoc) {
+		$decoded = json_decode($content, true);
+		return $decoded;
+	} else {
+		return true;
+	}
 }

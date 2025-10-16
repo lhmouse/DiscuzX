@@ -185,6 +185,22 @@ class memory_driver_redis {
 		return $this->obj->sCard($key);
 	}
 
+	function rPush($key, $value) {
+		return $this->obj->rPush($key, $value);
+	}
+
+	function blPop($key, $value) {
+		return $this->obj->blPop($key, $value);
+	}
+
+	function lLen($key) {
+		return $this->obj->lLen($key);
+	}
+
+	function lPop($key) {
+		return $this->obj->lPop($key);
+	}
+
 	function hSet($key, $field, $value) {
 		return $this->obj->hSet($key, $field, $value);
 	}

@@ -18,7 +18,7 @@ if(!submitcheck('mediacodesubmit')) {
 		['setting_editor_global', 'setting&operation=editor', 0],
 		['setting_editor_code', 'misc&operation=bbcode', 0],
 		['setting_editor_media', 'misc&operation=mediacode', 1],
-		['setting_editor_block', 'editorblock&operation=list', 0],
+		['setting_editor_block', 'editorblock&operation=list', 0]
 	]);
 
 	/*search={"setting_editor":"action=setting&operation=editor","setting_editor_code":"action=setting&operation=mediacode"}*/

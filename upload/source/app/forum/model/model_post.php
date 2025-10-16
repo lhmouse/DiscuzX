@@ -65,7 +65,7 @@ class model_post extends discuz_model {
 
 			'subject', 'special', 'sortid', 'typeid', 'isanonymous', 'cronpublish', 'cronpublishdate', 'save',
 			'readperm', 'price', 'ordertype', 'hiddenreplies', 'allownoticeauthor', 'audit', 'tags', 'bbcodeoff', 'imgcontent', 'imgcontentwidth',
-			'smileyoff', 'parseurloff', 'usesig', 'htmlon', 'extramessage', 'original', 'source',
+			'smileyoff', 'parseurloff', 'usesig', 'htmlon', 'extramessage', 'original', 'source', 'contentType', 'contentEditor',
 
 		];
 		foreach($varname as $name) {
@@ -132,6 +132,10 @@ class model_post extends discuz_model {
 			}
 		}
 
+		$contentType = $this->param['contentType'] ?? 'text';
+		$contentEditor = $this->param['contentEditor'] ?? 'default';
+		$content = generate_content_json($contentType, $contentEditor, (!empty($this->param['content']) ? $this->param['content'] : '{}'));
+
 		$this->pid = insertpost([
 			'fid' => $this->forum['fid'],
 			'tid' => $this->thread['tid'],
@@ -142,7 +146,7 @@ class model_post extends discuz_model {
 			'original' => !empty($this->param['original']) ? $this->param['original'] : 0,
 			'dateline' => $this->param['timestamp'] ? $this->param['timestamp'] : getglobal('timestamp'),
 			'message' => $this->param['message'],
-			'content' => !empty($this->param['content']) ? $this->param['content'] : '{}',
+			'content' => $content,
 			'source' => !empty($this->param['source']) ? $this->param['source'] : '{}',
 			'useip' => $this->param['clientip'] ? $this->param['clientip'] : getglobal('clientip'),
 			'port' => $this->param['remoteport'] ? $this->param['remoteport'] : getglobal('remoteport'),
@@ -396,10 +400,9 @@ class model_post extends discuz_model {
 				showmessage('post_sm_isnull');
 			}
 
-			if(!$this->param['sortid'] && (!$this->setting['json_independence'] && !$this->param['special']) && (trim($this->param['message']) == '' || (trim($this->param['message']) == 'json_content' && trim($this->param['content']) == ''))) {
+			if(!$this->param['sortid'] && (!$this->setting['json_independence'] && !$this->param['special']) && ((in_array($this->param['contentType'], ['text', '']) && empty(trim($this->param['message']))) || (!empty($this->param['contentType']) && $this->param['contentType'] != 'text' && empty(trim($this->param['content']))))) {
 				showmessage('post_sm_isnull');
 			}
-
 
 			$publishdate = null;
 			if($this->group['allowsetpublishdate'] && $this->thread['displayorder'] == -4) {
@@ -465,7 +468,8 @@ class model_post extends discuz_model {
 
 			// 更新摘要
 			$summary = '';
-			if(!empty($this->param['content']) && $this->param['content'] != '{}') {
+			if($this->param['contentType'] == 'json' && $this->param['contentEditor'] == 'jsonEditor'
+				&& is_valid_non_empty_json($this->param['content'], true)) {
 				$ctmp = json_decode($this->param['content'], true);
 				foreach($ctmp['blocks'] as $ckey => $cvalue) {
 					if($cvalue['type'] == 'paragraph') {
@@ -539,10 +543,15 @@ class model_post extends discuz_model {
 
 		$this->param['message'] = preg_replace('/\[attachimg\](\d+)\[\/attachimg\]/is', '[attach]\1[/attach]', $this->param['message']);
 		$this->param['parseurloff'] = !empty($this->param['parseurloff']);
+
+		$contentType = $this->param['contentType'] ?? 'text';
+		$contentEditor = $this->param['contentEditor'] ?? 'default';
+		$content = generate_content_json($contentType, $contentEditor, (!empty($this->param['content']) ? $this->param['content'] : '{}'));
+
 		$setarr = [
 			'original' => $this->param['original'],
 			'message' => $this->param['message'],
-			'content' => !empty($this->param['content']) ? $this->param['content'] : '{}',
+			'content' => $content,
 			'source' => !empty($this->param['source']) ? $this->param['source'] : '{}',
 			'usesig' => $this->param['usesig'],
 			'htmlon' => $this->param['htmlon'],
@@ -573,7 +582,6 @@ class model_post extends discuz_model {
 			$setarr['invisible'] = $pinvisible;
 		}
 		table_forum_post::t()->update_post('tid:'.$this->thread['tid'], $this->post['pid'], $setarr);
-
 
 		$this->forum['lastpost'] = explode("\t", $this->forum['lastpost']);
 

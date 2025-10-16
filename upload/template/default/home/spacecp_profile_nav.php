@@ -12,7 +12,7 @@
 	<!--{else}-->
 		<!--{if $_G[setting][verify]}-->
 			<!--{loop $_G['setting']['verify'] $vid $verify}-->
-				<!--{if $verify['available'] && (empty($verify['groupid']) || (is_array($verify['groupid']) && in_array($_G['groupid'], $verify['groupid'])))}-->
+				<!--{if $verify['available'] && checkverifyperm($verify)}-->
 					<!--{if $vid != 7}-->
 						<li $opactives['verify'.$vid]><a href="home.php?mod=spacecp&ac=profile&op=verify&vid=$vid">$verify['title']</a></li>					
 					<!--{/if}-->

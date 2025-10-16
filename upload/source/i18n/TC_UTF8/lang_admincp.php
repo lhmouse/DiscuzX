@@ -1955,6 +1955,7 @@ $lang =
 	'setting_editor_code' => 'Discuz! 代碼',
 	'setting_editor_media' => '多媒體代碼',
 	'setting_editor_block' => 'JSON 編輯器區塊',
+	'setting_editor_mode_type_wysiwyg' => '富文字编辑器',
 	'setting_editor_mode_type_json' => 'JSON 編輯器',
 	'setting_editor_mode_type_default' => '默認編輯器',
 	'setting_editor_mode_default' => '默認的編輯器模式',
@@ -1966,6 +1967,7 @@ $lang =
 	'setting_editor_simplemode_0' => '常用',
 	'setting_editor_mode_discuzcode' => '純文本模式',
 	'setting_editor_mode_wysiwyg' => '所見即所得模式',
+	'setting_editor_mode_json' => 'JSON 編輯器模式',
 	'setting_editor_smthumb' => '表情圖片的寬高',
 	'setting_editor_smthumb_comment' => '允許範圍在 20～40 之間，圖片實際尺寸超出設置值時將自動縮略顯示',
 	'setting_editor_smcols' => '表情列數',
@@ -1978,6 +1980,8 @@ $lang =
 	'setting_editor_forum_comment' => '勾選的版塊允許使用該功能，可以按住 CTRL 多選<br/>選中的版塊需要前往 論壇 - 對應版塊 - 編輯 - 帖子選項 中，啓用“允許使用 HTML 代碼”功能。',
 	'setting_editor_anchorparse' => '錨點解析',
 	'setting_editor_anchorparse_comment' => '此處填寫區塊標識，多個用英文逗號分隔，如：paragraph,quote。如果區塊內容存在a標籤的錨點鏈接（href內容以#號開頭，如：#abc），則自動轉為為js跳轉方式。',
+	'setting_editor_json_independence' => '是否獨立頁面使用 JSON 編輯器',
+	'setting_editor_json_independence_comment' => '是否獨立頁面使用 JSON 編輯器。',
 
 	'setting_permissions' => '用戶權限',
 	'setting_permissions_alloweditpost' => '允許用戶隨時編輯的帖子類型',
@@ -3136,6 +3140,12 @@ $lang =
 	'forums_edit_posts_modposts_posts' => '審核新主題和新回覆',
 	'forums_edit_posts_recyclebin' => '回收站',
 	'forums_edit_posts_recyclebin_comment' => '是否在本版啓用回收站功能，打開此功能後，所有被刪除主題和回帖將被放在回收站中，而不會被直接刪除',
+	'forums_edit_posts_editormode' => '默认编辑器模式',
+	'forums_edit_posts_editormode_global' => '全局設置',
+	'forums_edit_posts_editormode_discuzcode' => '純文本模式',
+	'forums_edit_posts_editormode_wysiwyg' => '所見即所得模式',
+	'forums_edit_posts_editormode_json' => 'JSON 編輯器模式',
+	'forums_edit_posts_editormode_comment' => '設置用戶在本版默認使用的編輯器模式',
 	'forums_edit_posts_html' => '允許使用 HTML 代碼',
 	'forums_edit_posts_html_comment' => '注意: 選擇“是”將不屏蔽帖子中的任何代碼，將帶來嚴重的安全隱患，請慎用',
 	'forums_edit_posts_bbcode' => '允許使用 Discuz! 代碼',
@@ -5923,7 +5933,14 @@ IF判斷方式：<pre>
 <br/>
 URL轉換絕對網址：<pre>
 [url data.file.url]
-</pre></li><li>CSS樣式代碼部分必須嚴格書寫在&lt;style type="text/css"&gt;......&lt;/style&gt;內部。</li></ul>',
+</pre>
+<br/>
+取得附件aid加密串：<pre>
+[attach data.file.aid]
+</pre>
+</li><li>CSS樣式代碼部分必須嚴格書寫在&lt;style type="text/css"&gt;......&lt;/style&gt;內部。</li></ul>',
+
+	'editorblock_usage_css_content' => '<ul><li>全局CSS樣式會在JSON編輯器發佈的內容頁面全局加載；</li><li>CSS樣式代碼部分必須嚴格書寫在&lt;style type="text/css"&gt;......&lt;/style&gt;內部。</li></ul>',
 
 	'card' => '充值卡密',
 	'card_make_tips' => '<li>生成卡密時，簡單的規則或較小的生成張數可能導致實際生成張數小於預設生成張數。</li>',

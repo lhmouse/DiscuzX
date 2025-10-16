@@ -21,7 +21,7 @@ if(!submitcheck('editorblocksubmit')) {
 		['setting_editor_global', 'setting&operation=editor', 0],
 		['setting_editor_code', 'misc&operation=bbcode', 0],
 		['setting_editor_media', 'misc&operation=mediacode', 0],
-		['setting_editor_block', 'editorblock&operation=list', 1],
+		['setting_editor_block', 'editorblock&operation=list', 1]
 	]);
 	showtips('editorblock_admin_list_tips');
 	showformheader("editorblock&operation=$operation");

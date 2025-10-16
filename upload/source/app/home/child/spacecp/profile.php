@@ -77,7 +77,7 @@ if(submitcheck('profilesubmit')) {
 			showmessage('spacecp_profile_message2');
 		}
 		$verifyconfig = $_G['setting']['verify'][$vid];
-		if($verifyconfig['available'] && (empty($verifyconfig['groupid']) || in_array($_G['groupid'], $verifyconfig['groupid']))) {
+		if($verifyconfig['available'] && checkverifyperm($verifyconfig)) {
 			$verifyinfo = table_common_member_verify_info::t()->fetch_by_uid_verifytype($_G['uid'], $vid);
 			if(!empty($verifyinfo)) {
 				$verifyinfo['field'] = dunserialize($verifyinfo['field']);
@@ -586,14 +586,14 @@ if($operation == 'password') {
 	} elseif($operation == 'verify') {
 		if($vid == 0) {
 			foreach($_G['setting']['verify'] as $key => $setting) {
-				if($setting['available'] && (empty($setting['groupid']) || in_array($_G['groupid'], $setting['groupid']))) {
+				if($setting['available'] && checkverifyperm($setting)) {
 					$_GET['vid'] = $vid = $key;
 					break;
 				}
 			}
 		}
 
-		if(empty($_G['setting']['verify'][$vid]['groupid']) || in_array($_G['groupid'], $_G['setting']['verify'][$vid]['groupid'])) {
+		if(checkverifyperm($_G['setting']['verify'][$vid])) {
 			$actives = ['verify' => ' class="a"'];
 			$opactives = [$operation.$vid => ' class="a"'];
 			$allowitems = $_G['setting']['verify'][$vid]['field'];
@@ -653,3 +653,8 @@ function profile_showsuccess($message = '') {
 	}
 }
 
+function checkverifyperm($verifyconfig) {
+	global $_G;
+
+	return empty($verifyconfig['groupid']) || in_array($_G['groupid'], $verifyconfig['groupid']);
+}

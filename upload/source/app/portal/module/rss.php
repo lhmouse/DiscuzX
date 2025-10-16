@@ -40,7 +40,7 @@ if(empty($rsscatid)) {
 
 $rewriteflag = 0;
 $havedomain = implode('', $_G['setting']['domain']['app']);
-if(is_array($_G['setting']['rewritestatus']) && in_array('portal_article', $_G['setting']['rewritestatus'])) {
+if(rewriterulecheck('portal_article')) {
 	$rewriteflag = 1;
 }
 
@@ -60,7 +60,7 @@ echo "<?xml version=\"1.0\" encoding=\"".$charset."\"?>\n".
 	).
 	"    <copyright>Copyright(C) {$_G['setting']['bbname']}</copyright>\n".
 	"    <generator>Discuz! Board by Discuz! Team</generator>\n".
-	'    <lastBuildDate>' .gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
+	'    <lastBuildDate>'.gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
 	"    <ttl>$ttl</ttl>\n".
 	"    <image>\n".
 	"      <url>{$_G['siteurl']}static/image/common/logo_88_31.gif</url>\n".
@@ -85,13 +85,13 @@ if($catarray) {
 					}
 				}
 				echo "    <item>\n".
-					'      <title>' .$article['subject']."</title>\n".
+					'      <title>'.$article['subject']."</title>\n".
 					"      <link>{$_G['siteurl']}".($rewriteflag ? rewriteoutput('portal_article', 1, '', $article['aid']) : "portal.php?mod=view&amp;aid={$article['aid']}")."</link>\n".
-					'      <description><![CDATA[' .dhtmlspecialchars($article['description'])."]]></description>\n".
-					'      <category>' .dhtmlspecialchars($article['catname'])."</category>\n".
-					'      <author>' .dhtmlspecialchars($article['author'])."</author>\n".
+					'      <description><![CDATA['.dhtmlspecialchars($article['description'])."]]></description>\n".
+					'      <category>'.dhtmlspecialchars($article['catname'])."</category>\n".
+					'      <author>'.dhtmlspecialchars($article['author'])."</author>\n".
 					($attachfile ? '<enclosure url="'.$filename.'" length="'.$attachsize.'" type="image/jpeg" />'."\n" : '').
-					'      <pubDate>' .gmdate('r', $article['dateline'])."</pubDate>\n".
+					'      <pubDate>'.gmdate('r', $article['dateline'])."</pubDate>\n".
 					"    </item>\n";
 			}
 		}

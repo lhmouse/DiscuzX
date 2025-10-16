@@ -563,6 +563,9 @@ ALTER TABLE pre_common_credit_log_field
     	ADD COLUMN ac_extcredits7 int(10)          NOT NULL,
     	ADD COLUMN ac_extcredits8 int(10)          NOT NULL;
 
+ALTER TABLE pre_forum_forum
+	ADD COLUMN editormode tinyint(1) NOT NULL DEFAULT '-1';
+
 UPDATE pre_common_credit_log_field f
 	JOIN pre_common_credit_log l ON f.logid = l.logid
 	SET f.dateline = l.dateline;

@@ -136,7 +136,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 	!isset($attachs['unused']) && $attachs['unused'] = [];
 	!isset($imgattachs['unused']) && $imgattachs['unused'] = [];
 
-	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
+	if(!empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special']))) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -147,8 +147,11 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 			}
 			$editorblocks[$ekey]['jspath'] = $jspath.'/tools/'.$evalue['identifier'].'/'.$evalue['filename'].'.js';
 		}
-
-		getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
+		if($_G['setting']['json_independence']) {
+			include template('forum/jsoneditor');
+		} else {
+			getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
+		}
 
 		//getgpc('infloat') ? include template('forum/jsoneditor_infloat') : include template('forum/jsoneditor');
 	} else {
@@ -176,6 +179,8 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 		'subject' => $subject,
 		'message' => $message,
 		'content' => $content,
+		'contentType' => $contentType,
+		'contentEditor' => $contentEditor,
 		'typeid' => $typeid,
 		'sortid' => $sortid,
 		'special' => $special,
@@ -314,7 +319,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 	}
 	// cover end
 	// 开始处理json编辑器内容中的图片
-	if($params['content'] && !in_array($params['content'], ['{}', null, 'null', ''])) {
+	if(is_valid_non_empty_json($params['content'], true)) {
 		$blocksData = json_decode($params['content'], true);
 		$withImage = 0;
 		foreach($blocksData['blocks'] as $key => $value) {
@@ -331,7 +336,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 	}
 	// 结束处理json编辑器内容中的图片
 
-	if(!empty($_G['setting']['rewriterule']['forum_viewthread']) && is_array($_G['setting']['rewritestatus']) && in_array('forum_viewthread', $_G['setting']['rewritestatus'])) {
+	if(rewriterulecheck('forum_viewthread')) {
 		$returnurl = rewriteoutput('forum_viewthread', 1, '', $modthread->tid, 1, '', $extra);
 	} else {
 		$returnurl = "forum.php?mod=viewthread&tid={$modthread->tid}&extra=$extra";

@@ -306,7 +306,7 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 		unset($attachlist);
 	}
 
-	if(!getgpc('infloat') && !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special'])) && in_array($_G['groupid'], dunserialize($_G['setting']['editorgroupid'])) && in_array($_G['fid'], dunserialize($_G['setting']['editorfids']))) {
+	if(!getgpc('infloat') && !empty($_G['setting']['editormodetype']) && (!$_G['setting']['json_independence'] || empty($_GET['special']))) {
 		$fields = ['blockid', 'type', 'available', 'columns', 'sort', 'name', 'identifier', 'class', 'config', 'plugin', 'filename'];
 		$editorblocks = table_common_editorblock::t()->fetch_all_block_avaliable($fields);
 		foreach($editorblocks as $ekey => $evalue) {
@@ -331,7 +331,7 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 	$modpost = C::m('\forum\model_post', $_G['tid']);
 	$bfmethods = $afmethods = [];
 
-	if(!empty($content) && $content != '{}') {
+	if(is_valid_non_empty_json($content, true)) {
 		$summary = '';
 		$ctmp = json_decode($content, true);
 		foreach($ctmp['blocks'] as $ckey => $cvalue) {
@@ -346,6 +346,8 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 		'subject' => $subject,
 		'message' => $message,
 		'content' => $content,
+		'contentType' => $contentType,
+		'contentEditor' => $contentEditor,
 		'source' => $source,
 		'tags' => $_GET['tags'],
 		'special' => $special,
@@ -465,7 +467,7 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 	}
 
 	// 开始处理json编辑器内容中的图片
-	if($params['content'] && !in_array($params['content'], ['{}', null, 'null', ''])) {
+	if(is_valid_non_empty_json($params['content'], true)) {
 		$blocksData = json_decode($params['content'], true);
 		$withImage = 0;
 		foreach($blocksData['blocks'] as $key => $value) {
