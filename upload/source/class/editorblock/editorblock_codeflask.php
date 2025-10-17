@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_codeflask {
 
-	var $version = '1.0.3';
+	var $version = '1.0.6';
 	var $name = '代码';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -83,16 +83,16 @@ EOF;
 .ce-block__content,.ce-toolbar__content {
 	/* max-width:calc(100% - 50px) */
 	margin-left: auto;
-    margin-right: auto;
-    position: relative;
+	margin-right: auto;
+	position: relative;
 }
 
 .editorjs-codeFlask_Wrapper {
-    height: 200px;
+	height: 300px;
 	border: 1px solid #dcdfe6;
 	border-radius: 5px;
 	background-color: #f0f2f5;
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .editorjs-codeFlask_Wrapper .codeflask {
@@ -105,12 +105,10 @@ EOF;
 	position: absolute;
 	height: 20px;
 	line-height: 20px;
-	font-size: 10px;
+	font-size: 12px;
 	color: #999;
 	background-color: #dcdfe6;
-	padding: 5px;
-	padding-left: 10px;
-	padding-right: 25px;
+	padding: 10px 25px 20px 10px;
 	right: 0;
 	bottom: 0;
 	border-bottom-right-radius: 5px;
@@ -118,16 +116,16 @@ EOF;
 }
 
 .editorjs-codeFlask_Wrapper .codeflask.codeflask--has-line-numbers:before{
-    background-color: #dcdfe6;
+	background-color: #dcdfe6;
 }
 
 
-  .codeflask {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+.codeflask {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
 
   .codeflask, .codeflask * {
     box-sizing: border-box;
@@ -137,13 +135,19 @@ EOF;
     pointer-events: none;
     z-index: 3;
     overflow: hidden;
+    
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    padding: 10px 20px 10px 10px;
+    border: 1px solid rgb(238, 238, 238);
   }
 
   .codeflask__textarea {
     background: none;
     border: none;
     color: #fff;
-    z-index: 1;
     resize: none;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
     -webkit-appearance: pre;
@@ -151,6 +155,12 @@ EOF;
     z-index: 2;
     width: 100%;
     height: 100%;
+    
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    padding: 10px;
   }
 
   .codeflask--has-line-numbers .codeflask__textarea {
@@ -164,10 +174,10 @@ EOF;
   }
 
   .codeflask__flatten {
-    padding: 10px;
+    /* padding: 10px; */
     font-size: 13px;
     line-height: 20px;
-    white-space: pre;
+    /* white-space: pre; */
     position: absolute;
     top: 0;
     left: 0;

@@ -363,6 +363,7 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 		'from' => getgpc('from'),
 		'sechash' => getgpc('sechash'),
 		'geoloc' => diconv(getgpc('geoloc'), 'UTF-8'),
+		'repid' => getgpc('reppid'),
 	];
 
 	// 原创声明 0未声明、1声明原创、-1非原创

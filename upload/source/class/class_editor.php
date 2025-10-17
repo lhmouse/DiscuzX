@@ -213,10 +213,12 @@ class editorBlock {
 			const flask$rand = new CodeFlask(editorElem$rand, {
 				language: '$language',
 				lineNumbers: true,
-				styleParent: this.shadowRoot
+				styleParent: this.shadowRoot,
+				rtl: false,
+				readonly: true
 			});
-            var code$rand = `$code`;
-            code$rand = decodeURIComponent(code$rand).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'"); 
+            		var code$rand = `$code`;
+            		code$rand = code$rand.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'"); 
 			flask$rand.addLanguage('$language', Prism.languages['$language']);
 			flask$rand.onUpdate((code) => {
 				// do something with code here.
@@ -230,13 +232,16 @@ class editorBlock {
 
 			const currentCode$rand = flask$rand.getCode();
             
-            var coderow = parseInt($n_count);
-            if (coderow > 10 && coderow < 20) {
-                editorElem$rand.parentElement.style.height = '300px';
-            } else if (coderow >= 20) {
-                editorElem$rand.parentElement.style.height = '500px';
-            }
-			//console.log({currentCode$rand})
+		            var coderow = parseInt('$n_count');
+			    if (coderow === undefined || coderow !== coderow || coderow === 0) {
+				    coderow = flask$rand.lineNumber;
+			    }
+		            if (coderow > 10 && coderow < 20) {
+		                editorElem$rand.parentElement.style.height = '300px';
+		            } else if (coderow >= 20) {
+		                editorElem$rand.parentElement.style.height = '500px';
+		            }
+			//console.log({currentCode$rand})    
 </script>
 EOF;
 		return $script;

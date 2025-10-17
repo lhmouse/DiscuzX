@@ -556,6 +556,9 @@ foreach($postarr as $post) {
 					$styleData = str_replace(["\r", "\n", "\t"], '', $styleData);
 					$post['style'] = $styleData;
 				}
+				if(!empty($content['extend']['quote_default'])) {
+					$post['message'] = discuzcode($content['extend']['quote_default']) . $post['message'];
+				}
 			}
 		}
 		// 结束解析json编辑器内容
