@@ -2932,9 +2932,13 @@ $lang =
 	'setting_uc_fastactivation' => '是否允許直接激活',
 	'setting_uc_fastactivation_comment' => '選擇“是”，用戶登錄即自動激活；選擇“否”，允許用戶激活，但必須填寫註冊設置中的必填項',
 	'setting_uc_avatarmethod' => '頭像調用方式',
-	'setting_uc_avatarmethod_comment' => '設置用戶頭像的調用方式，動態方式依靠服務器檢測頭像的存在情況，靜態方式不檢測，用戶直接請求頭像並在失敗後加載默認頭像。',
+	'setting_uc_avatarmethod_comment' => '設置用戶頭像的調用方式
+		<br />動態方式：依靠服務器返回頭像地址，頭像較多時服務器壓力會有增加
+		<br />靜態方式：返回固定的頭像靜態地址，不檢測頭像是否存在，失敗後加載默認頭像
+		<br />瀏覽器加載方式：通過瀏覽器加載頭像的靜態地址，失敗自動拉取默認頭像',
 	'setting_uc_avatarmethod_0' => '使用動態方式調用頭像',
 	'setting_uc_avatarmethod_1' => '使用靜態方式調用頭像',
+	'setting_uc_avatarmethod_2' => '使用瀏覽器加載方式調用頭像',
 	'setting_uc_dynavt' => '頭像緩存機制',
 	'setting_uc_dynavt_comment' => '設置用戶頭像的緩存機制，僅在動態調用模式下生效，可以避免更換頭像後無法及時看到的問題，但會增加一些服務器壓力。',
 	'setting_uc_dynavt_0' => '自動（完全由用戶瀏覽器處理，性能最好）',

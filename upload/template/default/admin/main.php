@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{$staticurl}image/admincp/admincpframe.css?{$_G['style']['verhash']}" type="text/css" media="all" />
 	$framecss
 	<script type="text/JavaScript">
-		var VERHASH = '$VERHASH', IN_ADMINCP = true, SITEURL = '{$_G['siteurl']}', JSPATH = '{$_G['setting']['jspath']}', JSCACHEPATH = '{$_G['setting']['jscachepath']}', cookiepre = '{$_G['config']['cookie']['cookiepre']}', cookiedomain = '{$_G['config']['cookie']['cookiedomain']}', cookiepath = '{$_G['config']['cookie']['cookiepath']}';
+		var VERHASH = '$VERHASH', IN_ADMINCP = true, SITEURL = '{$_G['siteurl']}', JSPATH = '{$_G['setting']['jspath']}', JSCACHEPATH = '{$_G['setting']['jscachepath']}', cookiepre = '{$_G['config']['cookie']['cookiepre']}', cookiedomain = '{$_G['config']['cookie']['cookiedomain']}', cookiepath = '{$_G['config']['cookie']['cookiepath']}', DEFAULTAVATAR = '$_G[setting][defaultavatar]';
 		var headers = new Array($headers), admincpfilename = '$basescript', admincpextra = '$extra';
 	</script>
 	<script src="{$_G['setting']['jspath']}common.js?{$_G['style']['verhash']}" type="text/javascript"></script>

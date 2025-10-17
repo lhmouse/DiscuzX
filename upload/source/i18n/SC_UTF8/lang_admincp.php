@@ -2932,9 +2932,13 @@ $lang =
 	'setting_uc_fastactivation' => '是否允许直接激活',
 	'setting_uc_fastactivation_comment' => '选择“是”，用户登录即自动激活；选择“否”，允许用户激活，但必须填写注册设置中的必填项',
 	'setting_uc_avatarmethod' => '头像调用方式',
-	'setting_uc_avatarmethod_comment' => '设置用户头像的调用方式，动态方式依靠服务器检测头像的存在情况，静态方式不检测，用户直接请求头像并在失败后加载默认头像。',
+	'setting_uc_avatarmethod_comment' => '设置用户头像的调用方式
+		<br />动态方式：依靠服务器返回头像地址，头像较多时服务器压力会有增加
+		<br />静态方式：返回固定的头像静态地址，不检测头像是否存在，失败后加载默认头像
+		<br />浏览器加载方式：通过浏览器加载头像的静态地址，失败自动拉取默认头像',
 	'setting_uc_avatarmethod_0' => '使用动态方式调用头像',
 	'setting_uc_avatarmethod_1' => '使用静态方式调用头像',
+	'setting_uc_avatarmethod_2' => '使用浏览器加载方式调用头像',
 	'setting_uc_dynavt' => '头像缓存机制',
 	'setting_uc_dynavt_comment' => '设置用户头像的缓存机制，仅在动态调用模式下生效，可以避免更换头像后无法及时看到的问题，但会增加一些服务器压力。',
 	'setting_uc_dynavt_0' => '自动（完全由用户浏览器处理，性能最好）',

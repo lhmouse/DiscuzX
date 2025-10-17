@@ -575,6 +575,14 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 	if($staticavatar === null) {
 		$staticavatar = $_G['setting']['avatarmethod'];
 	}
+	$uid = abs(intval($uid));
+	if(!$returnsrc) {
+		$class = trim($class.' user_avatar');
+	}
+
+	if($staticavatar == 2 && !$returnsrc && !$real) {
+		return '<img data-uid="'.$uid.'" data-size="'.$size.'"'.($random ? ' data-random="'.rand(1000, 9999).'"' : '').' class="_avt'.($class ? ' '.$class : '').'"'.($extra ? ' '.$extra : '').' />';
+	}
 	static $avtstatus;
 	if($avtstatus === null) {
 		$avtstatus = [];
@@ -591,11 +599,7 @@ function avatar($uid, $size = 'middle', $returnsrc = 0, $real = FALSE, $static =
 		$avatarurl = empty($_G['setting']['avatarurl']) ? $ucenterurl.'/data/avatar' : $_G['setting']['avatarurl'];
 	}
 	$size = in_array($size, ['big', 'middle', 'small']) ? $size : 'middle';
-	$uid = abs(intval($uid));
 	$rawuid = $uid;
-	if(!$returnsrc) {
-		$class = trim($class.' user_avatar');
-	}
 	$src = $datasrc ? 'data-src' : 'src';
 	$defaultclass = $datasrc ? '_avt' : '';
 	if(!$staticavatar && !$static && $ucenterurl != '.' || $avatarapi) {

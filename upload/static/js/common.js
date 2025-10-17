@@ -2414,13 +2414,25 @@ function $L(key, param) {
 
 function loadAvatar() {
 	var defaulturl = typeof DEFAULTAVATAR == 'undefined' ? './data/avatar/noavatar.svg' : DEFAULTAVATAR;
+	var avatarurl = typeof DEFAULTAVATAR != 'undefined' && DEFAULTAVATAR.lastIndexOf('/') !== -1 ? DEFAULTAVATAR.substring(0, DEFAULTAVATAR.lastIndexOf('/') + 1) : '';
 
 	document.querySelectorAll('._avt').forEach(img => {
 		img.onerror = function () {
 			this.onerror = null;
 			this.src = defaulturl;
 		};
+		if (img.dataset.uid && avatarurl != '') {
+			let size = img.dataset.size || 'middle';
+			let uid = img.dataset.uid;
+			let random = img.dataset.random ? '?r=' + img.dataset.random : '';
+			uid = uid.toString().padStart(9, '0');
+			img.dataset.src = avatarurl + `${uid.substring(0, 3)}/${uid.substring(3, 5)}/${uid.substring(5, 7)}/${uid.substring(7)}_avatar_${size}.jpg` + random;
+			img.removeAttribute('data-uid');
+			img.removeAttribute('data-size');
+			img.removeAttribute('data-random');
+		}
 		img.src = img.dataset.src;
+		img.removeAttribute('data-src');
 	});
 }
 
