@@ -107,7 +107,7 @@
 									<!--{/if}-->					
 								<!--{/if}-->
 								<!--{if $n > $nn}-->
-									<li id="top_menumore" class="dz_menumore" onmouseover="showMenu({'ctrlid':'top_menumore'});"><a href="javascript:;" >{lang unfold}</a></li>
+									<li id="top_menumore" class="dz_menumore" onmouseover="showMenu({'ctrlid':'top_menumore'});"><a href="javascript:;" >{lang tmp133}</a></li>
 									<!--{eval $n=9999;break;}-->
 								<!--{/if}-->				
 							<!--{/loop}-->
