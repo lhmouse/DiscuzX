@@ -18,7 +18,7 @@ if(!submitcheck('submit')) {
 		$update_recommendaddon = true;
 	}
 
-	loadcache('plugin');
+	loadcache(['plugin', 'pluginsetting']);
 	$outputsubmit = false;
 	$plugins = $addonids = $pluginlist = [];
 	$plugins = table_common_plugin::t()->fetch_all_data();
@@ -87,7 +87,7 @@ if(!submitcheck('submit')) {
 					}
 				}
 			}
-			if(!$configexists) {
+			if(!$configexists && !empty($_G['cache']['pluginsetting']['config'][$plugin['identifier']])) {
 				$submenuitem[] = '<a href="'.ADMINSCRIPT.'?action=plugins&operation=config&do='.$plugin['pluginid'].'">'.$lang['config'].'</a>';
 			}
 		}

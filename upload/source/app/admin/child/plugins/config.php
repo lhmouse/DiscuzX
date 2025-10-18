@@ -29,7 +29,7 @@ $plugin['modules'] = dunserialize($plugin['modules']);
 $pluginvars = [];
 $custom = $customMenus = false;
 $anchorCount = 0;
-foreach(table_common_pluginvar::t()->fetch_all_by_pluginid($pluginid) as $var) {
+foreach(table_common_pluginvar::t()->fetch_all_visible_by_pluginid($pluginid) as $var) {
 	$pluginvars[$var['variable']] = $var;
 	if(str_starts_with($var['type'], 'style')) {
 		$custom = true;

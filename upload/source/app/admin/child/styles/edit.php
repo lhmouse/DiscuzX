@@ -106,7 +106,7 @@ if(!submitcheck('editsubmit')) {
 	$submenuitem[] = ['styles_setting_basic', '_default', empty($_GET['anchor'])];
 	$custom = $customMenus = false;
 	$anchorCount = 0;
-	foreach(table_common_stylevar_extra::t()->fetch_all_by_styleid($id) as $var) {
+	foreach(table_common_stylevar_extra::t()->fetch_all_visible_by_styleid($id) as $var) {
 		$stylevars[$var['variable']] = $var;
 		if(str_starts_with($var['type'], 'style')) {
 			$custom = true;

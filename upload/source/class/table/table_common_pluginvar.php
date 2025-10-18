@@ -31,6 +31,10 @@ class table_common_pluginvar extends discuz_table {
 		return DB::fetch_all('SELECT * FROM %t WHERE pluginid=%d ORDER BY displayorder', [$this->_table, $pluginid]);
 	}
 
+	public function fetch_all_visible_by_pluginid($pluginid) {
+		return DB::fetch_all('SELECT * FROM %t WHERE pluginid=%d AND displayorder>=0 ORDER BY displayorder', [$this->_table, $pluginid]);
+	}
+
 	public function count_by_pluginid($pluginid) {
 		return DB::result_first('SELECT COUNT(*) FROM %t WHERE pluginid=%d %i', [$this->_table, $pluginid, "AND (`type` NOT LIKE 'forum\_%' AND `type` NOT LIKE 'group\_%')"]);
 	}

@@ -31,6 +31,10 @@ class table_common_stylevar_extra extends discuz_table {
 		return DB::fetch_all('SELECT * FROM %t WHERE styleid=%d ORDER BY displayorder', [$this->_table, $styleid]);
 	}
 
+	public function fetch_all_visible_by_styleid($styleid) {
+		return DB::fetch_all('SELECT * FROM %t WHERE styleid=%d AND displayorder>=0 ORDER BY displayorder', [$this->_table, $styleid]);
+	}
+
 	public function count_by_styleid($styleid) {
 		return DB::result_first('SELECT COUNT(*) FROM %t WHERE styleid=%d', [$this->_table, $styleid]);
 	}

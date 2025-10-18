@@ -71,6 +71,9 @@ function build_cache_plugin() {
 				$pluginsetting[$stype][$plugin['identifier']]['name'] = $plugin['name'];
 				$pluginsetting[$stype][$plugin['identifier']]['setting'][$var['pluginvarid']] = ['title' => $var['title'], 'description' => $var['description'], 'type' => $type, 'select' => $var['select']];
 			}
+			if($var['displayorder'] >= 0) {
+				$pluginsetting['config'][$plugin['identifier']] = true;
+			}
 		}
 	}
 
