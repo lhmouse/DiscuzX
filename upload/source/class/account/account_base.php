@@ -210,50 +210,64 @@ class account_base {
 		$tmpavatarmiddle = $avatarpath.$tmpavatarmiddle;
 		$tmpavatarsmall = $avatarpath.$tmpavatarsmall;
 
+		if(UC_STANDALONE) {
+			if($_G['setting']['ftp']['on'] == 2) {
+				define('ACCOUNT_DATADIR', DISCUZ_DATA.'./attachment/');
+			} else {
+				define('ACCOUNT_DATADIR', DISCUZ_ROOT.'data/');
+			}
+			define('ACCOUNT_UPAVTDIR', 'avatar/');
 
-		@header('Expires: 0');
-		@header('Cache-Control: private, post-check=0, pre-check=0, max-age=0', FALSE);
-		@header('Pragma: no-cache');
+			@chmod(ACCOUNT_DATADIR.ACCOUNT_UPAVTDIR, 0777);
 
-		if($_G['setting']['ftp']['on'] == 2) {
-			define('ACCOUNT_DATADIR', DISCUZ_DATA.'./attachment/');
+			$avatartype = '';
+			$bigavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'big', $avatartype);
+			dmkdir(dirname(ACCOUNT_DATADIR.$bigavatarfile));
+			$middleavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'middle', $avatartype);
+			dmkdir(dirname(ACCOUNT_DATADIR.$middleavatarfile));
+			$smallavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'small', $avatartype);
+			dmkdir(dirname(ACCOUNT_DATADIR.$smallavatarfile));
+			$bigavatar = file_get_contents($tmpavatarbig);
+			$middleavatar = file_get_contents($tmpavatarmiddle);
+			$smallavatar = file_get_contents($tmpavatarsmall);
+			if(!$bigavatar || !$middleavatar || !$smallavatar) {
+				return false;
+			}
+
+			$fp = @fopen(ACCOUNT_DATADIR.$bigavatarfile, 'wb');
+			@fwrite($fp, $bigavatar);
+			@fclose($fp);
+
+			$fp = @fopen(ACCOUNT_DATADIR.$middleavatarfile, 'wb');
+			@fwrite($fp, $middleavatar);
+			@fclose($fp);
+
+			$fp = @fopen(ACCOUNT_DATADIR.$smallavatarfile, 'wb');
+			@fwrite($fp, $smallavatar);
+			@fclose($fp);
+
+			ftpcmd('upload', $bigavatarfile);
+			ftpcmd('upload', $middleavatarfile);
+			ftpcmd('upload', $smallavatarfile);
 		} else {
-			define('ACCOUNT_DATADIR', DISCUZ_ROOT.'data/');
+			loaducenter();
+			$uc_avatarflash = uc_avatar($uid, 'virtual', 0);
+			if(!empty($uc_avatarflash)) {
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $uc_avatarflash[11]);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+				curl_setopt($ch, CURLOPT_POST, TRUE);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, [
+					'avatar1' => base64_encode(file_get_contents($tmpavatarbig)),
+					'avatar2' => base64_encode(file_get_contents($tmpavatarmiddle)),
+					'avatar3' => base64_encode(file_get_contents($tmpavatarsmall)),
+				]);
+				curl_exec($ch);
+				curl_close($ch);
+			}
 		}
-		define('ACCOUNT_UPAVTDIR', 'avatar/');
-
-		@chmod(ACCOUNT_DATADIR.ACCOUNT_UPAVTDIR, 0777);
-
-		$avatartype = '';
-		$bigavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'big', $avatartype);
-		dmkdir(dirname(ACCOUNT_DATADIR.$bigavatarfile));
-		$middleavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'middle', $avatartype);
-		dmkdir(dirname(ACCOUNT_DATADIR.$middleavatarfile));
-		$smallavatarfile = ACCOUNT_UPAVTDIR.$this->get_avatar($uid, 'small', $avatartype);
-		dmkdir(dirname(ACCOUNT_DATADIR.$smallavatarfile));
-		$bigavatar = file_get_contents($tmpavatarbig);
-		$middleavatar = file_get_contents($tmpavatarmiddle);
-		$smallavatar = file_get_contents($tmpavatarsmall);
-		if(!$bigavatar || !$middleavatar || !$smallavatar) {
-			return false;
-		}
-
-		$fp = @fopen(ACCOUNT_DATADIR.$bigavatarfile, 'wb');
-		@fwrite($fp, $bigavatar);
-		@fclose($fp);
-
-		$fp = @fopen(ACCOUNT_DATADIR.$middleavatarfile, 'wb');
-		@fwrite($fp, $middleavatar);
-		@fclose($fp);
-
-		$fp = @fopen(ACCOUNT_DATADIR.$smallavatarfile, 'wb');
-		@fwrite($fp, $smallavatar);
-		@fclose($fp);
-
-		ftpcmd('upload', $bigavatarfile);
-		ftpcmd('upload', $middleavatarfile);
-		ftpcmd('upload', $smallavatarfile);
-
 
 		@unlink($tmpavatar);
 		@unlink($tmpavatarbig);
