@@ -1518,6 +1518,7 @@ function loadAvatar() {
 }
 
 _attachEvent(window, 'load', footlink, document);
-_attachEvent(window, 'load', loadAvatar, document);
 
 var mlast = getcookie('mfootlink');
+
+document.addEventListener('DOMContentLoaded', loadAvatar);
