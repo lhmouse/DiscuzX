@@ -102,7 +102,7 @@ if(!empty($_SERVER['QUERY_STRING']) && is_numeric($_SERVER['QUERY_STRING'])) {
 				}
 			}
 		} else {
-			$jump = true;
+			$jump = false;
 		}
 		if(empty($url) && empty($_ENV['curapp'])) {
 			if(!empty($_ENV['domain']['defaultindex']) && !$jump) {

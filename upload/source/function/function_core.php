@@ -986,13 +986,23 @@ function getcurrentnav() {
 	}
 	$mnid = '';
 	$_G['basefilename'] = $_G['basefilename'] == $_G['basescript'] ? $_G['basefilename'] : $_G['basescript'].'.php';
-	if(isset($_G['setting']['navmns'][$_G['basefilename']])) {
+	if(isset($_G['setting']['navmns']['index.php']) && !empty($_GET['app'])) {
+		foreach($_G['setting']['navmns']['index.php'] as $navmn) {
+			if($navmn[0] == array_intersect_assoc($navmn[0], $_GET)) {
+				$mnid = $navmn[1];
+				break;
+			}
+		}
+	}
+
+	if(!$mnid && isset($_G['setting']['navmns'][$_G['basefilename']])) {
 		if($_G['basefilename'] == 'home.php' && $_GET['mod'] == 'space' && (empty($_GET['do']) || in_array($_GET['do'], ['follow', 'view']))) {
 			$_GET['mod'] = 'follow';
 		}
 		foreach($_G['setting']['navmns'][$_G['basefilename']] as $navmn) {
 			if($navmn[0] == array_intersect_assoc($navmn[0], $_GET) || (isset($_GET['gid']) && $navmn[0]['mod'] == 'forumdisplay' && $navmn[0]['fid'] == $_GET['gid']) || ($navmn[0]['mod'] == 'space' && $_GET['mod'] == 'spacecp' && ($navmn[0]['do'] == $_GET['ac'] || $navmn[0]['do'] == 'album' && $_GET['ac'] == 'upload'))) {
 				$mnid = $navmn[1];
+				break;
 			}
 		}
 
