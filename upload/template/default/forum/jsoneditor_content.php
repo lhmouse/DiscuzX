@@ -5,7 +5,7 @@
 
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
 		<input type="hidden" name="inajax" id="inajax" value="1" />
-		<input type="hidden" name="message" id="{$editorid}_textarea" value="json_content" />
+		<input type="hidden" name="message" id="{$editorid}_textarea" value="" />
 		<input type="hidden" name="contentType" id="contentType" value="json" />
 		<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
 		<input type="hidden" name="content" id="content" value="" />

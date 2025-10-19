@@ -85,9 +85,9 @@ class model_post extends discuz_model {
 		} elseif(!$this->thread['isgroup'] && $post_autoclose = checkautoclose($this->thread)) {
 			return $this->showmessage($post_autoclose, '', ['autoclose' => $this->forum['autoclose']]);
 		}
-		if(trim($this->param['subject']) == '' && trim($this->param['message']) == '' && $this->thread['special'] != 2) {
+		if(trim($this->param['subject']) == '' && ((in_array($this->param['contentType'], ['text', '']) && empty(trim($this->param['message']))) || (!empty($this->param['contentType']) && $this->param['contentType'] != 'text' && empty(trim($this->param['content'])))) && $this->thread['special'] != 2) {
 			return $this->showmessage('post_sm_isnull');
-		} elseif($post_invalid = checkpost($this->param['subject'], $this->param['message'], $this->param['special'] == 2 && $this->group['allowposttrade'])) {
+		} elseif($post_invalid = checkpost($this->param['subject'], $this->param['message'], $this->param['special'] == 2 && $this->group['allowposttrade'], $this->param['contentType'] == 'json' && !empty(trim($this->param['content'])))) {
 			return $this->showmessage($post_invalid, '', ['minpostsize' => $this->setting['minpostsize'], 'maxpostsize' => $this->setting['maxpostsize']]);
 		} elseif(checkflood()) {
 			return $this->showmessage('post_flood_ctrl', '', ['floodctrl' => $this->setting['floodctrl']]);
@@ -385,7 +385,7 @@ class model_post extends discuz_model {
 
 		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);
 
-		if($post_invalid = checkpost($this->param['subject'], $this->param['message'], $isfirstpost && ($this->param['special'] || $this->param['sortid']))) {
+		if($post_invalid = checkpost($this->param['subject'], $this->param['message'], $isfirstpost && ($this->param['special'] || $this->param['sortid']), $this->param['contentType'] == 'json' && !empty(trim($this->param['content'])))) {
 			showmessage($post_invalid, '', ['minpostsize' => $this->setting['minpostsize'], 'maxpostsize' => $this->setting['maxpostsize']]);
 		}
 		if(!$isorigauthor && !$this->group['allowanonymous']) {

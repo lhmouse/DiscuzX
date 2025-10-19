@@ -346,12 +346,12 @@ function checkmaxperhour($type) {
 	return $morenumperhour;
 }
 
-function checkpost($subject, $message, $special = 0) {
+function checkpost($subject, $message, $special = 0, $isJson = false) {
 	global $_G;
 	if(dstrlen($subject) > 255) {
 		return 'post_subject_toolong';
 	}
-	if(!$_G['group']['disablepostctrl'] && !$special) {
+	if(!$_G['group']['disablepostctrl'] && !$special && !$isJson) {
 		if($_G['setting']['maxpostsize'] && strlen($message) > $_G['setting']['maxpostsize']) {
 			return 'post_message_toolong';
 		} elseif($_G['setting']['minpostsize']) {

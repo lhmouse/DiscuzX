@@ -679,7 +679,7 @@ $lang = [
 
 	'moderate_shares_succeed' => '審核操作成功，共 {validates} 個分享被通過，{ignores} 個分享被忽略，{deletes} 個分享被刪除',
 
-	'moderate_threads_succeed' => '審核操作成功，共 {validates} 個主題被通過，{ignores} 個主題被忽略，{recycles} 個主題被放入回收站，{deletes} 個主題被刪除，{dismisses} 個主題被駁回',
+	'moderate_threads_succeed' => '審核操作成功，共 {validates} 個主題被通過，{ignores} 個主題被忽略，{recycles} 個主題被放入回收站，{deletes} 個主題被刪除',
 
 	'cloudaddons_ftp_path_error' => '站點 FTP 路徑錯誤，請重新填寫',
 

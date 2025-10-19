@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs_mobile.css?{VERHASH}" />
 
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
-		<input type="hidden" name="message" id="needmessage" value="json_content" />
+		<input type="hidden" name="message" id="needmessage" value="" />
 		<input type="hidden" name="content" id="content" value="" />
 		<input type="hidden" name="contentType" id="contentType" value="json" />
 		<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />

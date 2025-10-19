@@ -27,7 +27,7 @@
     <!--{/if}-->
     <input type="hidden" name="handlekey" id="handlekey" value="postform" />
     <input type="hidden" name="inajax" id="inajax" value="1" />
-    <input type="hidden" name="message" id="message" value="json_content" />
+    <input type="hidden" name="message" id="message" value="" />
     <input type="hidden" name="content" id="content" value="" />
 	<input type="hidden" name="contentType" id="contentType" value="json" />
 	<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />

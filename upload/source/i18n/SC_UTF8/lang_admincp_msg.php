@@ -679,7 +679,7 @@ $lang = [
 
 	'moderate_shares_succeed' => '审核操作成功，共 {validates} 个分享被通过，{ignores} 个分享被忽略，{deletes} 个分享被删除',
 
-	'moderate_threads_succeed' => '审核操作成功，共 {validates} 个主题被通过，{ignores} 个主题被忽略，{recycles} 个主题被放入回收站，{deletes} 个主题被删除，{dismisses} 个主题被驳回',
+	'moderate_threads_succeed' => '审核操作成功，共 {validates} 个主题被通过，{ignores} 个主题被忽略，{recycles} 个主题被放入回收站，{deletes} 个主题被删除',
 
 	'cloudaddons_ftp_path_error' => '站点 FTP 路径错误，请重新填写',
 

@@ -65,7 +65,7 @@ class model_thread extends discuz_model {
 		}
 		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);
 
-		if(($post_invalid = checkpost($this->param['subject'], $this->param['message'], ($this->param['special'] || $this->param['sortid'])))) {
+		if(($post_invalid = checkpost($this->param['subject'], $this->param['message'], ($this->param['special'] || $this->param['sortid']), $this->param['contentType'] == 'json' && !empty(trim($this->param['content']))))) {
 			return $this->showmessage($post_invalid, '', ['minpostsize' => $this->setting['minpostsize'], 'maxpostsize' => $this->setting['maxpostsize']]);
 		}
 
