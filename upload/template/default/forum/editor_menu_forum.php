@@ -355,7 +355,6 @@
 		<!--{/if}-->
 	<!--{/if}-->
 	<!--{if $_G['group']['allowpostattach'] || $_G['group']['allowpostimage']}-->
-
 		ATTACHNUM['attachused'] = <!--{echo (isset($attachs['used']) && is_array($attachs['used'])) ? count($attachs['used']) : 0}-->;
 		<!--{if !empty($attachs['used']) || !empty($attachs['unused'])}-->
 			$(editorid + '_attach').evt = false;
@@ -381,7 +380,9 @@
 		var msg = '';
 		<!--{loop $imgattachs['unused'] $attach}-->
 			<!--{if !empty($attach['aid'])}-->
-				msg += '<p style="float:left;width:220px;"><label><input id="unused$attach[aid]" name="unused[]" value="$attach[aid]" checked type="checkbox" class="pc" /><span title="$attach[filenametitle] $attach[dateline]">$attach[filename]</span></label></p>'
+				msg += '<p style="float:left;width:220px;"><label><input id="unused$attach[aid]" name="unused[]" value="$attach[aid]" checked type="checkbox" class="pc" />';
+				msg += '<span title="$attach[filenametitle] $attach[dateline]" onmouseover="showFloatImage(this, \'$attach[url]/$attach[attachment]\')" onmouseout="hideFloatImage()">$attach[filename]</span>';
+				msg += '</label></p>';
 				IMGUNUSEDAID[{$attach[aid]}] = '$attach[aid]';
 			<!--{/if}-->
 		<!--{/loop}-->
@@ -396,4 +397,78 @@
 		loadData(1);
 		$(editorid + '_switchercheck').checked = !wysiwyg;
 	<!--{/if}-->
+
+	function showFloatImage(element, imgSrc) {
+		// 检查是否已存在浮动图片容器，如果不存在则创建
+		var floatImg = document.getElementById('floatImagePreview');
+		if (!floatImg) {
+			floatImg = document.createElement('div');
+			floatImg.id = 'floatImagePreview';
+			floatImg.style.position = 'absolute';
+			floatImg.style.display = 'none';
+			floatImg.style.padding = '5px';
+			floatImg.style.backgroundColor = 'white';
+			floatImg.style.border = '1px solid #ddd';
+			floatImg.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+			floatImg.style.zIndex = '9999';
+			floatImg.style.maxWidth = '400px';  // 容器最大宽度
+			floatImg.style.minWidth = '100px';  // 容器最小宽度
+			floatImg.style.maxHeight = '300px'; // 容器最大高度
+			floatImg.style.minHeight = '80px';  // 容器最小高度
+			floatImg.style.overflow = 'hidden'; // 防止内容溢出
+			document.body.appendChild(floatImg);
+		}
+
+		// 创建图片元素并设置属性
+		var img = new Image();
+		img.onload = function() {
+			// 计算图片应该显示的尺寸，保持原始比例
+			var maxWidth = 380;  // 图片最大宽度（减去容器内边距）
+			var maxHeight = 280; // 图片最大高度（减去容器内边距）
+			var minWidth = 90;   // 图片最小宽度
+			var minHeight = 70;  // 图片最小高度
+
+			var width = img.width;
+			var height = img.height;
+
+			// 调整图片尺寸以适应最大限制
+			if (width > maxWidth || height > maxHeight) {
+				var ratio = Math.min(maxWidth / width, maxHeight / height);
+				width = width * ratio;
+				height = height * ratio;
+			}
+
+			// 确保图片不小于最小尺寸
+			if (width < minWidth || height < minHeight) {
+				var ratio = Math.max(minWidth / width, minHeight / height);
+				width = Math.min(width * ratio, maxWidth);
+				height = Math.min(height * ratio, maxHeight);
+			}
+
+			// 设置图片样式
+			img.style.width = width + 'px';
+			img.style.height = height + 'px';
+			img.style.display = 'block';
+			img.style.margin = '0 auto'; // 水平居中
+
+			// 清空容器并添加图片
+			floatImg.innerHTML = '';
+			floatImg.appendChild(img);
+		};
+
+		img.src = imgSrc;
+
+		// 获取鼠标位置并显示浮动图片
+		var rect = element.getBoundingClientRect();
+		floatImg.style.left = (rect.left + window.pageXOffset) + 'px';
+		floatImg.style.top = (rect.bottom + window.pageYOffset + 5) + 'px';
+		floatImg.style.display = 'block';
+	}
+
+	function hideFloatImage() {
+		var floatImg = document.getElementById('floatImagePreview');
+		if (floatImg) {
+			floatImg.style.display = 'none';
+		}
+	}
 </script>

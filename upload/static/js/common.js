@@ -326,22 +326,25 @@ function Ajax(recvType, waitId) {
 			if (aj.waitId) {
 				aj.waitId.style.display = 'none';
 			}
+			var s = null;
 			if (aj.recvType == 'HTML') {
-				aj.resultHandle(aj.XMLHttpRequest.responseText, aj);
+				s = aj.XMLHttpRequest.responseText;
 			} else if (aj.recvType == 'XML') {
 				if (!aj.XMLHttpRequest.responseXML || !aj.XMLHttpRequest.responseXML.lastChild || aj.XMLHttpRequest.responseXML.lastChild.localName == 'parsererror') {
-					aj.resultHandle('', aj);
+					s = '';
 				} else {
-					aj.resultHandle(aj.XMLHttpRequest.responseXML.lastChild.firstChild.nodeValue, aj);
+					s = aj.XMLHttpRequest.responseXML.lastChild.firstChild.nodeValue;
 				}
 			} else if (aj.recvType == 'JSON') {
-				var s = null;
 				try {
 					s = (new Function("return (" + aj.XMLHttpRequest.responseText + ")"))();
 				} catch (e) {
 					s = null;
 				}
-				aj.resultHandle(s, aj);
+			}
+			aj.resultHandle(s, aj);
+			if (s.indexOf('_avt') !== -1) {
+				loadAvatar();
 			}
 		}
 	};
