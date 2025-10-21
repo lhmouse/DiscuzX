@@ -50,6 +50,12 @@
 <script type="text/javascript" src="{STATICURL}js/mobile/buildfileupload.js?{VERHASH}"></script>
 <script type="text/javascript">
 	var imgexts = typeof imgexts == 'undefined' ? 'jpg, jpeg, gif, png' : imgexts;
+	var needsubject = needmessage = false;
+	<!--{if $_GET['action'] == 'reply'}-->
+		needsubject = true;
+	<!--{elseif $_GET['action'] == 'edit'}-->
+		needsubject = needmessage = true;
+	<!--{/if}-->
 	var STATUSMSG = {
 		'-1' : '{lang uploadstatusmsgnag1}',
 		'0' : '{lang uploadstatusmsg0}',
@@ -71,7 +77,7 @@
 	$('#needmessage').on('keyup input', function() {
 		var obj = $(this);
 		if(obj.val()) {
-			needmessage = true;
+			
 			if(needsubject == true) {
 				$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
 				$('.btn_pn').attr('disable', 'false');
