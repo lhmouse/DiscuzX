@@ -56,6 +56,7 @@ var i18n_default = {
 			"Checklist": $L("json_editor_toolNames_Checklist"),
 			"Quote": $L("json_editor_toolNames_Quote"),
 			"Code": $L("json_editor_toolNames_Code"),
+			"CodeFlask": $L("json_editor_toolNames_Code"),
 			"raw": $L("json_editor_toolNames_raw"),
 			"Delimiter": $L("json_editor_toolNames_Delimiter"),
 			"Table": $L("json_editor_toolNames_Table"),

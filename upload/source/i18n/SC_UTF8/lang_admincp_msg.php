@@ -675,7 +675,7 @@ $lang = [
 	'moderate_articlecomments_succeed' => '审核操作成功，共 {validates} 个评论被通过，{ignores} 个评论被忽略，{deletes} 个评论被删除',
 	'moderate_topiccomments_succeed' => '审核操作成功，共 {validates} 个评论被通过，{ignores} 个评论被忽略，{deletes} 个评论被删除',
 
-	'moderate_replies_succeed' => '审核操作成功，共 {validates} 个回复被通过，{ignores} 个回复被忽略，{deletes} 个回复被删除，{dismisses} 个主题被驳回',
+	'moderate_replies_succeed' => '审核操作成功，共 {validates} 个回复被通过，{ignores} 个回复被忽略，{deletes} 个回复被删除',
 
 	'moderate_shares_succeed' => '审核操作成功，共 {validates} 个分享被通过，{ignores} 个分享被忽略，{deletes} 个分享被删除',
 
