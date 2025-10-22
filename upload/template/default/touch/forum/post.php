@@ -162,31 +162,42 @@
 <input type="hidden" name="{if $_GET['action'] == 'newthread'}topicsubmit{elseif $_GET['action'] == 'reply'}replysubmit{elseif $_GET['action'] == 'edit'}editsubmit{/if}" value="yes">
 </form>
 <script type="text/javascript">
-	(function() {
-		var needsubject = needmessage = false;
-		<!--{if $_GET['action'] == 'reply'}-->
+	var needsubject = needmessage = false;
+	<!--{if $_GET['action'] == 'reply'}-->
+		needsubject = true;
+	<!--{elseif $_GET['action'] == 'edit'}-->
+		needsubject = needmessage = true;
+	<!--{/if}-->
+	<!--{if $_GET['action'] == 'newthread' || ($_GET['action'] == 'edit' && $isfirstpost)}-->
+	$('#needsubject').on('keyup input', function() {
+		var obj = $(this);
+		if(obj.val()) {
 			needsubject = true;
-		<!--{elseif $_GET['action'] == 'edit'}-->
-			needsubject = needmessage = true;
-		<!--{/if}-->
-		<!--{if $_GET['action'] == 'newthread' || ($_GET['action'] == 'edit' && $isfirstpost)}-->
-		$('#needsubject').on('keyup input', function() {
-			var obj = $(this);
-			if(obj.val()) {
-				needsubject = true;
-				if(needmessage == true) {
-					$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
-					$('.btn_pn').attr('disable', 'false');
-				}
-			} else {
-				needsubject = false;
-				$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
-				$('.btn_pn').attr('disable', 'true');
+			if(needmessage == true) {
+				$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
+				$('.btn_pn').attr('disable', 'false');
 			}
-		});
-		<!--{/if}-->
-		
-	 })();
+		} else {
+			needsubject = false;
+			$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
+			$('.btn_pn').attr('disable', 'true');
+		}
+	});
+	<!--{/if}-->
+	$('#needmessage').on('keyup input', function() {
+		var obj = $(this);
+		if(obj.val()) {
+			
+			if(needsubject == true) {
+				$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
+				$('.btn_pn').attr('disable', 'false');
+			}
+		} else {
+			needmessage = false;
+			$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
+			$('.btn_pn').attr('disable', 'true');
+		}
+	});
 	
 </script>
 <script type="text/javascript">

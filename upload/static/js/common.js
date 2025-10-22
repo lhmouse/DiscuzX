@@ -2439,6 +2439,14 @@ function loadAvatar() {
 	});
 }
 
+function initZoom() {
+	document.querySelectorAll('._zoom').forEach(img => {
+		img.addEventListener('click', function () {
+			zoom(img, img.src, 0, 0, 0)
+		});
+	});
+}
+
 var BROWSER = {};
 var USERAGENT = navigator.userAgent.toLowerCase();
 browserVersion({
@@ -2572,3 +2580,4 @@ if (BROWSER.ie) {
 }
 
 document.addEventListener('DOMContentLoaded', loadAvatar);
+document.addEventListener('DOMContentLoaded', initZoom);
