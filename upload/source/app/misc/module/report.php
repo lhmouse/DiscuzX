@@ -33,8 +33,14 @@ if($rid && !empty($default_url[$rtype])) {
 	$url = addslashes(dhtmlspecialchars(base64_decode($_GET['url'])));
 	$url = preg_match("/^http[s]?:\/\/[^\[\"']+$/i", trim($url)) ? trim($url) : '';
 }
-if(empty($url) || empty($_G['inajax'])) {
-	showmessage('report_parameters_invalid');
+if(defined('IN_RESTFUL')) {
+	if(empty($url)) {
+		showmessage('report_parameters_invalid');
+	}
+}else {
+	if(empty($url) || empty($_G['inajax'])) {
+		showmessage('report_parameters_invalid');
+	}
 }
 $urlkey = md5($url);
 if(submitcheck('reportsubmit')) {

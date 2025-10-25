@@ -310,6 +310,11 @@ const blockEvent = (type, data = undefined, e) => {
 				clearFormattingBtn.click();
 				editor.inlineToolbar.close();
 				break;
+			case 'emoji':
+				const emojiTool = window.EmojiInlineTool.getInstance(null, main_tools?.emoji?.config);
+				emojiTool.saveSelection();
+				emojiTool.togglePicker();
+				break;
 			default:
 				break;
 		}

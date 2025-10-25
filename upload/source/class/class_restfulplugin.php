@@ -33,6 +33,31 @@ class restfulplugin {
 		return $s;
 	}
 
+	public static function avatar(&$data, $param) {
+		global $_G;
+		if(empty($_POST['avatar']) || !$_G['uid']) {
+			return;
+		}
+		if(!preg_match('/^(data:\s*image\/(\w+);base64,)/', $_POST['avatar'], $_r)) {
+			return;
+		}
+		$content = base64_decode(str_replace($_r[1], '', $_POST['avatar']));
+		dmkdir(DISCUZ_DATA.'./avatar/');
+		$tmpFile = DISCUZ_DATA.'./avatar/'.TIMESTAMP.random(6);
+		file_put_contents($tmpFile, $content);
+
+		if(is_file($tmpFile)) {
+			$account = new account_base();
+
+			if($account->set_avatar($_G['uid'], $tmpFile)) {
+				table_common_member::t()->update($_G['uid'], [
+					'avatarstatus' => '1'
+				]);
+			}
+			unlink($tmpFile);
+		}
+	}
+
 	public static function avatarUrl(&$data, $param) {
 		if(empty($data[$param[0]])) {
 			return;

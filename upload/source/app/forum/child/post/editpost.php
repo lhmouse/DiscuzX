@@ -328,6 +328,9 @@ if(!submitcheck('editsubmit')) {
 			getgpc('infloat') ? include template('forum/post_infloat') : include template('forum/post');
 		}
 	} else {
+		if($editor['editormode'] != 0) {
+			$editor['editormode'] = 1;
+		}
 		include template('forum/post');
 	}
 

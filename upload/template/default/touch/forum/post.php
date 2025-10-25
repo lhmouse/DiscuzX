@@ -162,7 +162,9 @@
 <input type="hidden" name="{if $_GET['action'] == 'newthread'}topicsubmit{elseif $_GET['action'] == 'reply'}replysubmit{elseif $_GET['action'] == 'edit'}editsubmit{/if}" value="yes">
 </form>
 <script type="text/javascript">
-	var needsubject = needmessage = false;
+(function($) {
+	let needsubject = false;
+	let needmessage = false;
 	<!--{if $_GET['action'] == 'reply'}-->
 		needsubject = true;
 	<!--{elseif $_GET['action'] == 'edit'}-->
@@ -198,7 +200,7 @@
 			$('.btn_pn').attr('disable', 'true');
 		}
 	});
-	
+})(jQuery);
 </script>
 <script type="text/javascript">
 	$('#postsubmit').on('click', function() {

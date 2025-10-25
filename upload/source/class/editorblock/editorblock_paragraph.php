@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_paragraph {
 
-	var $version = '1.1.6';
+	var $version = '1.1.8';
 	var $name = '文本段落(增强版)';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -52,6 +52,7 @@ EOF;
 	 * 		}
 	 * 	}
 	 */
+	// 历史配置项（废弃）：clickToShowInlineToolbar: true,
 	function getConfig() {
 		return <<<EOF
 {
@@ -207,11 +208,11 @@ EOF;
 	                pattern: /^1\.$/
 	            },
 	            {
-	                trigger: '```',
+	                trigger: '``',
 	                type: 'codeflask',
 	                data: { code: '' },
 	                settoblock: true,
-	                pattern: /^```$/
+	                pattern: /^``$/
 	            },
 	            {
 	                trigger: '|',

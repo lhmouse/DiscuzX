@@ -99,6 +99,18 @@
 					</div>
 				</button>
 			</div>
+			<div id="toolbar-emoji">
+				<button type="button"
+				        class="Button Button--plain Button--style"
+				        onclick="return blockEvent('emoji', undefined, event)">
+					<div class="button-area">
+						<span style="display:inline-flex;align-items:center">
+							<svg t="1761144282987" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1805" width="30" height="30"><path d="M512 85.290667C747.648 85.290667 938.666667 276.352 938.666667 512.042667c0 235.648-191.061333 426.709333-426.709334 426.709333-235.690667 0-426.752-191.061333-426.752-426.709333C85.248 276.352 276.309333 85.248 512 85.248z m0 64a362.752 362.752 0 1 0 0 725.461333A362.752 362.752 0 0 0 512 149.333333zM360.96 630.784A191.616 191.616 0 0 0 512 704.085333a191.616 191.616 0 0 0 150.784-73.130666 32 32 0 0 1 50.261333 39.68A255.616 255.616 0 0 1 512 768.085333a255.616 255.616 0 0 1-201.258667-97.706666 32 32 0 0 1 50.261334-39.594667zM384 373.333333a53.333333 53.333333 0 1 1 0 106.624A53.333333 53.333333 0 0 1 384 373.333333z m256 0a53.333333 53.333333 0 1 1 0 106.624 53.333333 53.333333 0 0 1 0-106.624z" fill="#212121" p-id="1806"></path></svg>
+						</span>
+						<span class="button-text">{lang json_editor_toolbar_emoji}</span>
+					</div>
+				</button>
+			</div>
 			<div id="toolbar-list">
 				<button type="button"
 				        class="Button Button--plain Button--style"

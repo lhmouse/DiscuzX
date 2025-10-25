@@ -513,6 +513,7 @@ $lang = [
 	'json_editor_toolbar_header6' => '六級標題',
 	'json_editor_toolbar_bold' => '加粗',
 	'json_editor_toolbar_italic' => '斜體',
+	'json_editor_toolbar_emoji' => 'Emoji',
 	'json_editor_toolbar_underline' => '下劃線',
 	'json_editor_toolbar_list' => '列表',
 	'json_editor_toolbar_list_unordered' => '無序列表',
