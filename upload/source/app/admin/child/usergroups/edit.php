@@ -800,14 +800,14 @@ EOF;
 			'allowinvite' => $_GET['allowinvitenew'],
 			'allowmailinvite' => $_GET['allowmailinvitenew'],
 			'inviteprice' => $_GET['invitepricenew'],
-			'upgroupid' => $upgroupidnew,
-			'creditsformula' => $creditsformulanew,
 		];
 		if(!empty($setcredits)) {
 			$dataarr['creditshigher'] = $creditshighernew;
 			$dataarr['creditslower'] = $creditslowernew;
 		}
 		if(!$multiset) {
+			$dataarr['upgroupid'] = $upgroupidnew;
+			$dataarr['creditsformula'] = $creditsformulanew;
 			$dataarr['system'] = $systemnew;
 			if($_FILES['iconnew']) {
 				$data = ['extid' => "{$_GET['id']}"];

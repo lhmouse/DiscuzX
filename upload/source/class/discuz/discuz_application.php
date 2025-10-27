@@ -363,7 +363,11 @@ class discuz_application extends discuz_base {
 			define('DISCUZ_DEPRECATED', $this->var['config']['deprecated']);
 		}
 
-		define('STATICURL', !empty($this->var['config']['output']['staticurl']) ? $this->var['config']['output']['staticurl'] : 'static/');
+		$staticurl = !empty($this->var['config']['output']['staticurl']) ? $this->var['config']['output']['staticurl'] : 'static/';
+		if(defined('IN_RESTFUL') && !preg_match('/^(https?:)?\/\//i', $staticurl)) {
+			$staticurl = $this->var['siteurl'].$staticurl;
+		}
+		define('STATICURL', $staticurl);
 		$this->var['staticurl'] = STATICURL;
 
 		if(!str_starts_with($this->var['config']['cookie']['cookiepath'], '/')) {

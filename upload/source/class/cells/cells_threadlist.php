@@ -178,8 +178,10 @@ class cells_threadlist {
 				}
 				$threadindex++;
 			}
-			unset($_G['fid']);
-			unset($_G['forum']);
+			if(!defined('IN_RESTFUL')) {
+				unset($_G['fid']);
+				unset($_G['forum']);
+			}
 
 			if($rushtids) {
 				$rushinfo = table_forum_threadrush::t()->fetch_all($rushtids);
