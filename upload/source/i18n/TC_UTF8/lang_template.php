@@ -523,6 +523,7 @@ $lang = [
 	'json_editor_toolbar_image' => '圖片',
 	'json_editor_toolbar_video' => '視頻',
 	'json_editor_toolbar_audio' => '音頻',
+	'json_editor_toolbar_attaches' => '附件',
 	'json_editor_toolbar_table' => '表格',
 	'json_editor_toolbar_code' => '代碼',
 	'json_editor_toolbar_alert' => '提示',

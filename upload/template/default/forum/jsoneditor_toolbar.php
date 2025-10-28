@@ -184,6 +184,18 @@
 					</div>
 				</button>
 			</div>
+			<div id="toolbar-attaches">
+				<button type="button"
+				        class="Button Button--plain Button--style"
+				        onclick="return addBlock('attaches', undefined, event)">
+					<div class="button-area">
+						<span style="display:inline-flex;align-items:center">
+							<svg t="1761618694747" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2661" width="30" height="30"><path d="M800 556.8L524.8 832c-38.4 38.4-83.2 64-140.8 64s-102.4-25.6-140.8-64c-76.8-76.8-76.8-204.8 0-281.6l384-384c25.6-25.6 57.6-38.4 89.6-38.4 32 0 64 12.8 89.6 38.4 44.8 44.8 44.8 128 0 172.8l-384 384c-6.4 6.4-19.2 12.8-32 12.8s-25.6-6.4-32-12.8c-19.2-19.2-19.2-44.8 0-64l384-384c12.8-12.8 12.8-32 0-44.8-6.4-6.4-12.8-12.8-25.6-12.8-6.4 0-19.2 6.4-25.6 12.8l-384 384c-19.2 19.2-32 51.2-32 76.8 0 32 12.8 57.6 32 76.8 19.2 19.2 51.2 32 76.8 32 32 0 57.6-12.8 76.8-32l384-384c38.4-38.4 57.6-83.2 57.6-134.4s-19.2-96-57.6-134.4c-32-32-76.8-51.2-128-51.2s-96 19.2-134.4 57.6l-384 384c-51.2 51.2-76.8 115.2-76.8 185.6 0 70.4 25.6 140.8 76.8 185.6C249.6 934.4 313.6 960 384 960s140.8-25.6 185.6-76.8L844.8 608c12.8-12.8 12.8-32 0-44.8-12.8-19.2-32-12.8-44.8-6.4z" fill="#333333" p-id="2662"></path></svg>
+						</span>
+						<span class="button-text">{lang json_editor_toolbar_attaches}</span>
+					</div>
+				</button>
+			</div>
 			<div id="toolbar-table">
 				<button type="button"
 				        class="Button Button--plain Button--style"
