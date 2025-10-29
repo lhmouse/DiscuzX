@@ -2,9 +2,13 @@
 <li class="mtext">
 	<textarea class="pt" id="needmessage" autocomplete="off" id="{$editorid}_textarea" name="$editor['textarea']" placeholder="<!--{if $_GET['action'] != 'reply'}-->{lang posts}<!--{/if}-->{lang thread_content}" fwin="reply"><!--{if $special != 127}-->$postinfo['message']<!--{/if}--></textarea>
 	<div class="mimg cl">
+		<!--{if $allowpostimg && $allowuploadtoday}-->
 		<a href="javascript:;" class="post_camerabtn"><i class="dm-camera"></i>{lang e_camera_attach}<input type="file" name="Filedata" id="cameradata" capture="environment" accept=".jpg,.jpeg,.gif,.png,.bmp,image/jpeg,image/gif,image/png,image/bmp" /></a>
 		<a href="javascript:;" class="post_imgbtn"><i class="dm-image"></i>{lang e_img_attach}<input type="file" name="Filedata" id="filedata" multiple="multiple" accept=".jpg,.jpeg,.gif,.png,.bmp,image/jpeg,image/gif,image/png,image/bmp" /></a>
+		<!--{/if}-->
+		<!--{if $_G['group']['allowpostattach'] && $allowuploadtoday}-->
 		<a href="javascript:;" class="post_attbtn"><i class="dm-star-fill"></i>{lang upload_attach}<input type="file" name="Filedata" id="attfiledata" multiple="multiple" /></a>
+		<!--{/if}-->
 	</div>
 	<div class="cl">
 		<ul id="imglist" class="post_imglist cl">
