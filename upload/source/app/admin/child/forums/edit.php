@@ -328,7 +328,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 				$forum['threadplugin'] = dunserialize($forum['threadplugin']);
 			}
 
-			$simplebin = sprintf('%08b', $forum['simple']);
+			$simplebin = sprintf('%09b', $forum['simple']);
 			$forum['defaultorderfield'] = bindec(substr($simplebin, 0, 3));
 			$forum['defaultorder'] = ($forum['simple'] & 32) ? 1 : 0;
 			$forum['subforumsindex'] = bindec(substr($simplebin, 3, 2));
