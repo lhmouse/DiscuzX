@@ -8,9 +8,6 @@
 <!--{template common/header}-->
 <style>.user_avatar {background-image:url(<!--{avatar($space['uid'], 'big', true)}-->) !important}</style>
 
-<!--{if !empty($_G['i18n']) && $_G['i18n'] != 'default'}-->
-<style>.myinfo_list_ico li {width: 100%;}</style>
-<!--{/if}-->
 <div class="header cl">
 	<div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
 	<h2><!--{if $_G['uid'] == $space['uid']}-->{lang myprofile}<!--{else}-->$space['username']{lang otherprofile}<!--{/if}--></h2>

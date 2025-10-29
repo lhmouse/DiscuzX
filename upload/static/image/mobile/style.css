@@ -755,8 +755,8 @@ a.flw_readfull {color: var(--dz-BG-2);}
 /*----- 快速发帖 -----*/
 .pblbox {background:var(--dz-BG-0);border-bottom:1px solid var(--dz-BOR-ed);overflow:hidden}
 .pbl {margin:0 auto;overflow:hidden}
-.pbl li {float:left;width:30%;min-height:300px;padding:8px 5px;border-left:1px solid var(--dz-BOR-ed);overflow-x:hidden;overflow-y:auto}
-.pbl li:first-child {border-left:none}
+.pbl li {float:left;width: 100%;overflow-x:hidden;overflow-y:auto}
+.pbl .forum-level-title {padding: 8px 15px;background-color: #f8f8f8;color: #666;font-size: 14px;border-bottom: 1px solid #eee;}
 .pbl li p {margin:2px 5px;height:30px;line-height:30px}
 .pbl li a {display:block;height:30px;line-height:30px;padding:0 6px;font-size:14px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;border-radius:4px}
 .pbl li .pbls a {background:var(--dz-BG-3);color:var(--dz-FC-fff)}

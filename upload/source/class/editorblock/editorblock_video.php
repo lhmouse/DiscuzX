@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_video {
 
-	var $version = '1.1.3';
+	var $version = '1.1.5';
 	var $name = '视频';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -257,7 +257,7 @@ EOF;
         <div class="cdx-block video-tool video-tool--filled [if data.withBorder=1]video-tool--withBorder[/if] [if data.stretched=1]video-tool--stretched[/if] [if data.withBackground=1]video-tool--withBackground[/if]">
             <div class="video-tool__video">
                 <div class="video-tool__video-preloader" style=""></div>
-                <video class="video-tool__video-picture" src="[url data.file.url]" type="video/mp4" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alr="{data.caption}" />
+                <video class="video-tool__video-picture" src="[url data.file.url]" type="video/mp4" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alt="{data.caption}" />
             </div>
             <div class="cdx-input video-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>

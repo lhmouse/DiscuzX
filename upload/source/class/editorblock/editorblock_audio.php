@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_audio {
 
-	var $version = '1.0.5';
+	var $version = '1.0.6';
 	var $name = '音频';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -257,7 +257,7 @@ EOF;
         <div class="cdx-block audio-tool audio-tool--filled [if data.withBorder=1]audio-tool--withBorder[/if] [if data.stretched=1]audio-tool--stretched[/if] [if data.withBackground=1]audio-tool--withBackground[/if]">
             <div class="audio-tool__audio">
                 <div class="audio-tool__audio-preloader" style=""></div>
-                <audio class="audio-tool__audio-picture" src="[url data.file.url]" type="audio/mpeg" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alr="{data.caption}" />
+                <audio class="audio-tool__audio-picture" src="[url data.file.url]" type="audio/mpeg" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alt="{data.caption}" />
             </div>
             <div class="cdx-input audio-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>
