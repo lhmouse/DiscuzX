@@ -510,6 +510,8 @@ function get_sysicon() {
 		return 'sys_fedora';
 	} elseif(str_contains($n, 'ubuntu')) {
 		return 'sys_ubuntu';
+	} elseif(str_contains($n, 'tencentos')) {
+		return 'sys_linux';
 	} elseif(str_contains($n, 'centos')) {
 		return 'sys_centos';
 	} elseif(str_contains($n, 'linux')) {
