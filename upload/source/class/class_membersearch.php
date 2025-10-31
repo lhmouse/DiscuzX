@@ -39,7 +39,9 @@ class membersearch {
 			'qq' => 'profile', 'yahoo' => 'profile', 'msn' => 'profile', 'taobao' => 'profile', 'site' => 'profile',
 			'bio' => 'profile', 'interest' => 'profile', 'field1' => 'profile', 'field2' => 'profile',
 			'field3' => 'profile', 'field4' => 'profile', 'field5' => 'profile', 'field6' => 'profile',
-			'field7' => 'profile', 'field8' => 'profile', 'fields' => 'profile', 'token' => 'token'];
+			'field7' => 'profile', 'field8' => 'profile', 'fields' => 'profile', 'token' => 'token',
+			'atype' => 'account',
+		];
 		return $fieldid ? $fields[$fieldid] : $fields;
 	}
 
@@ -295,6 +297,7 @@ class membersearch {
 			'medal' => 'common_member_medal',
 			'tag' => 'common_tagitem',
 			'token' => 'common_devicetoken',
+			'account' => 'common_member_account',
 		];
 		return DB::table($isarchive && in_array($alias, ['member', 'status', 'profile', 'count']) ? $mapping[$alias].'_archive' : $mapping[$alias]);
 	}

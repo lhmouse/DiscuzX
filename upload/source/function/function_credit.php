@@ -101,7 +101,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 		if(!$user) {
 			continue;
 		}
-		$last = table_common_credit_log::t()->fetch_last_by_uid($uid);;
+		$last = table_common_credit_log::t()->fetch_last_by_uid($uid);
 		if($last) {
 			$errlog = [];
 			$haveaccredit = false;
@@ -154,7 +154,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 function makecreditlog($log, $otherinfo = []) {
 	global $_G;
 
-	$log['dateline'] = dgmdate($log['dateline'], 'Y-m-d H:i');
+	$log['dateline'] = dgmdate($log['dateline'], 'Y-m-d H:i:s');
 	$log['optype'] = lang('spacecp', 'logs_credit_update_'.$log['operation']);
 	$log['opinfo'] = '';
 	$info = $url = '';

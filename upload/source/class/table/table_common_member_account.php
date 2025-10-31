@@ -38,6 +38,15 @@ class table_common_member_account extends discuz_table {
 		return DB::fetch_first('SELECT * FROM %t WHERE uid=%s AND atype=%d', [$this->_table, $uid, $atype]);
 	}
 
+	public function fetch_all_atype_by_uid($uids) {
+		$data = DB::fetch_all('SELECT uid,atype FROM %t WHERE uid IN('.dimplode($uids).')', [$this->_table]);
+		$return = [];
+		foreach($data as $uid => $member) {
+			$return[$member['uid']][] = $member['atype'];
+		}
+		return $return;
+	}
+
 	public function fetch_by_account($account, $atype) {
 		return DB::fetch_first('SELECT * FROM %t WHERE account=%s AND atype=%d', [$this->_table, $account, $atype]);
 	}

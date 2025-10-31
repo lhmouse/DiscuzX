@@ -3748,7 +3748,11 @@ $lang =
 	'templates_edit_select' => '请先选择您要进行操作的模板套系：',
 
 	'members' => '用户',
-
+	'members_threads_num' => '主题数',
+	'members_posts_num' => '帖子数',
+	'members_list' => '用户列表',
+	'members_list_desc' => '倒序显示',
+	'members_list_asc' => '正序显示',
 	'members_add' => '添加新用户',
 	'members_add_email_notify' => '发送通知到上述地址',
 	'members_admin_tips' => '<li>通过用户管理，您可以进行编辑会员资料、用户组、权限、积分，授予会员勋章以及删除会员等操作；</li><li>请先根据条件搜索用户，然后选择相应的操作。</li><li>输入框可使用通配符 *，多个值之间用半角逗号 "," 隔开。敏感信息加密的栏目无法进行通配符搜索。</li>',

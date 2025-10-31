@@ -3748,7 +3748,11 @@ $lang =
 	'templates_edit_select' => '請先選擇您要進行操作的模板套系：',
 
 	'members' => '用戶',
-
+	'members_threads_num' => '主題數',
+	'members_posts_num' => '帖子數',
+	'members_list' => '用戶列表',
+	'members_list_desc' => '倒序顯示',
+	'members_list_asc' => '正序顯示',
 	'members_add' => '添加新用戶',
 	'members_add_email_notify' => '發送通知到上述地址',
 	'members_admin_tips' => '<li>通過用戶管理，您可以進行編輯會員資料、用戶組、權限、積分，授予會員勳章以及刪除會員等操作；</li><li>請先根據條件搜索用戶，然後選擇相應的操作。</li><li>輸入框可使用通配符 *，多個值之間用半角逗號 "," 隔開。敏感資訊加密的欄目無法進行通配符搜索。</li>',

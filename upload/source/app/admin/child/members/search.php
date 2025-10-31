@@ -55,33 +55,52 @@ EOF;
 
 		$uids = searchmembers($search_condition, $_G['setting']['memberperpage'], $start_limit);
 		if($uids) {
+			$interfaces_aType = account_base::Interfaces_aType;
+			if(!empty($_G['setting']['account_plugin_atypes'])) {
+				foreach($_G['setting']['account_plugin_atypes'] as $pluginid => $atype) {
+					$interfaces_aType['plugin_'.$pluginid] = $atype;
+				}
+			}
+			$interfaces = array_flip($interfaces_aType);
+
 			$allmember = table_common_member::t()->fetch_all($uids);
 			$allcount = table_common_member_count::t()->fetch_all($uids);
+			$allaccount = table_common_member_account::t()->fetch_all_atype_by_uid($uids);
 			foreach($allmember as $uid => $member) {
 				$member = array_merge($member, (array)$allcount[$uid]);
 				$memberextcredits = [];
 				if($_G['setting']['extcredits']) {
 					foreach($_G['setting']['extcredits'] as $id => $credit) {
-						$memberextcredits[] = $_G['setting']['extcredits'][$id]['title'].': '.$member['extcredits'.$id].' ';
+						$memberextcredits[] = $member['extcredits'.$id];
+					}
+				}
+				$accounts = '';
+				if(!empty($allaccount[$uid])) {
+					foreach($allaccount[$uid] as $interface) {
+						$accounts .= account_base::getIcon($interfaces[$interface])[0];
 					}
 				}
 				$lockshow = $member['status'] == '-1' ? '<em class="lightnum">['.cplang('lock').']</em>' : '';
 				$freezeshow = $member['freeze'] ? '<em class="lightnum">['.cplang('freeze').']</em>' : '';
-				$members .= showtablerow('', ['class="td25"', '', '', '', 'title="'.implode("\n", $memberextcredits).'"'], [
+				$members .= showtablerow('', ['class="td25"'], [
 					"<input type=\"checkbox\" name=\"uidarray[]\" value=\"{$member['uid']}\"".($member['adminid'] == 1 ? 'disabled' : '')." class=\"checkbox\">".
 					avatar($member['uid'], 'small', class: 'vmiddle', extra: 'width="30"'),
 					"<a href=\"home.php?mod=space&uid={$member['uid']}\" target=\"_blank\">{$member['uid']}</a>",
 					"<a href=\"home.php?mod=space&uid={$member['uid']}\" target=\"_blank\">{$member['loginname']}</a>",
 					"<a href=\"home.php?mod=space&uid={$member['uid']}\" target=\"_blank\">{$member['username']}</a>",
 					$member['credits'],
+					...$memberextcredits,
+					$member['threads'],
 					$member['posts'],
 					$usergroups[$member['adminid']]['grouptitle'],
 					$usergroups[$member['groupid']]['grouptitle'].$lockshow.$freezeshow,
+					$accounts,
+
+					"<a href=\"".ADMINSCRIPT."?action=members&operation=edit&uid={$member['uid']}\" class=\"act\">{$lang['detail']}</a>".
 					"<a href=\"".ADMINSCRIPT."?action=members&operation=group&uid={$member['uid']}\" class=\"act\">{$lang['usergroup']}</a><a href=\"".ADMINSCRIPT."?action=members&operation=access&uid={$member['uid']}\" class=\"act\">{$lang['members_access']}</a>".
 					($_G['setting']['extcredits'] ? "<a href=\"".ADMINSCRIPT."?action=members&operation=credit&uid={$member['uid']}\" class=\"act\">{$lang['credits']}</a>" : "<span disabled>{$lang['edit']}</span>").
 					"<a href=\"".ADMINSCRIPT."?action=members&operation=medal&uid={$member['uid']}\" class=\"act\">{$lang['medals']}</a>".
 					"<a href=\"".ADMINSCRIPT."?action=members&operation=repeat&uid={$member['uid']}\" class=\"act\">{$lang['members_repeat']}</a>".
-					"<a href=\"".ADMINSCRIPT."?action=members&operation=edit&uid={$member['uid']}\" class=\"act\">{$lang['detail']}</a>".
 					"<a href=\"".ADMINSCRIPT."?action=members&operation=ban&uid={$member['uid']}\" class=\"act\">{$lang['members_ban']}</a>".
 					"<a href=\"".ADMINSCRIPT."?action=members&operation=chgusername&uid={$member['uid']}\" class=\"act\">{$lang['members_chgusername']}</a>"
 				], TRUE);
@@ -114,7 +133,11 @@ EOF;
 	showtableheader();
 
 	if($membernum) {
-		showsubtitle(['', 'uid', 'loginname', 'username', 'credits', 'posts', 'admingroup', 'usergroup', '']);
+		$extcredits = [];
+		foreach($_G['setting']['extcredits'] as $id => $credit) {
+			$extcredits[] = $credit['title'];
+		}
+		showsubtitle(['', 'uid', 'loginname', 'username', 'credits', ...$extcredits, 'members_threads_num', 'members_posts_num', 'admingroup', 'usergroup', 'account', '']);
 		echo $members;
 		$condition_str = str_replace('&tablename=master', '', $condition_str);
 		$unarchive = isset($_GET['tablename']) && $_GET['tablename'] == 'archive' ? '<input type="submit" class="btn" id="submit_unarchivesubmit" name="unarchivesubmit" onclick="document.cpform.action=\''.ADMINSCRIPT.'?action=members&operation=unarchive'.$condition_str.'\';document.cpform.submit();" value="'.cplang('unarchive').'">' : '';
@@ -123,5 +146,8 @@ EOF;
 	showtablefooter();
 	showboxfooter();
 	showformfooter();
+
+	echo '<script type="text/javascript" src="'.$_G['setting']['iconfont'].'"></script>';
+	echo '<style>.iconfont { width: 1.5em; height: 1.5em; vertical-align: middle; fill: currentColor; overflow: hidden; margin-right: 5px;}</style>';
 
 }

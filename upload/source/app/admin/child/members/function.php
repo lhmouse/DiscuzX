@@ -35,6 +35,21 @@ function showsearchform($operation = '') {
 		$usertagselect .= "<option value=\"{$row['tagid']}\" ".(in_array($row['tagid'], $tagid) ? 'selected' : '').">{$row['tagname']}</option>\n";
 	}
 
+
+	$interfaces_aType = account_base::Interfaces_aType;
+	if(!empty($_G['setting']['account_plugin_atypes'])) {
+		foreach($_G['setting']['account_plugin_atypes'] as $pluginid => $atype) {
+			$interfaces_aType['plugin_'.$pluginid] = $atype;
+		}
+	}
+	$accountused = account_base::getInterfaces();
+	$accouts = [['', cplang('nolimit')]];
+	foreach($interfaces_aType as $interface => $atype) {
+		if(in_array($interface, $accountused)) {
+			$accouts[] = [$atype, account_base::getName($interface)];
+		}
+	}
+
 	/*search={"nav_members":"action=members&operation=search"}*/
 	showtagheader('div', 'searchmembers', !$_GET['submit']);
 	echo '<script src="'.STATICURL.'js/calendar.js" type="text/javascript"></script>';
@@ -50,7 +65,7 @@ function showsearchform($operation = '') {
 	showsetting('members_search_user_history', 'username_his', $_GET['username_his'], 'text');
 	showsetting('members_search_uid', 'uid', $_GET['uid'], 'text');
 	showsetting('members_search_secmobile', 'secmobile', $_GET['secmobile'], 'text');
-	showsetting('members_search_group', '', '', '<select name="groupid[]" multiple="multiple" size="10">'.$groupselect.'</select>');
+	showsetting('account', ['atype', $accouts], $_GET['account'], 'select');
 	showtablefooter();
 
 	showtableheader();
@@ -632,5 +647,3 @@ function get_newsletter($cachename) {
 	}
 	return $data;
 }
-
-

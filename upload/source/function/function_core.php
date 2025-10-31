@@ -1672,12 +1672,17 @@ function pluginmodule($pluginid, $type) {
 }
 
 function updatecreditbyaction($action, $uid = 0, $extrasql = [], $needle = '', $coef = 1, $update = 1, $fid = 0) {
-
+	$key = 'updatecreditbyaction_'.$action.'_'.$uid;
+	if(discuz_process::islocked($key, 1)) {
+		return;
+	}
 	$credit = credit::instance();
 	if($extrasql) {
 		$credit->extrasql = $extrasql;
 	}
-	return $credit->execrule($action, $uid, $needle, $coef, $update, $fid);
+	$value = $credit->execrule($action, $uid, $needle, $coef, $update, $fid);
+	discuz_process::unlock($key);
+	return $value;
 }
 
 function checklowerlimit($action, $uid = 0, $coef = 1, $fid = 0, $returnonly = 0) {
