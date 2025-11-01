@@ -625,7 +625,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .adminnote>div { padding: 10px;color: var(--admincp-fb); }
 .team { display: flex; flex-wrap: wrap; flex-basis: calc(100% - 150px); }
 .team a { flex-basis: 25%; min-width: 180px; }
-.team span { flex-basis: 40%; min-width: 240px; }
+.team span { flex-basis: 40%; min-width: 200px; }
 .team.tm a { flex-basis: auto; min-width: auto; }
 #home_dev img { margin-left: 15px; float:right; width:100px; }
 
@@ -899,6 +899,8 @@ div.todo>em { width: 25%; }
 	.cpcontainer .tb2 .noborder{display: flex;flex-direction: column;}
 	.cpcontainer .tb2 .rowform{overflow: hidden;}
 	.cpcontainer .tb2 td{height: auto;padding: 5px;}
+	.stat_box .statitem { width: calc(100% - 10px); }
+	#show_widgets_right { display: none; }
 }
 
 .permitem { max-height: 300px; overflow: auto; }

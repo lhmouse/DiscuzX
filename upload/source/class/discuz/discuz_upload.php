@@ -65,9 +65,7 @@ class discuz_upload {
 				$this->errorcode = -103;
 				return false;
 			} else {
-				if($this->ftpcmd) {
-					$this->remote = ftpcmd('upload', $this->type.'/'.$this->attach['attachment']);
-				}
+				$this->ftpupload();
 				$this->errorcode = 0;
 				return true;
 			}
@@ -85,14 +83,18 @@ class discuz_upload {
 			$this->errorcode = -104;
 			@unlink($this->attach['target']);
 		} else {
-			if($this->ftpcmd) {
-				$this->remote = ftpcmd('upload', $this->type.'/'.$this->attach['attachment']);
-			}
+			$this->ftpupload();
 			$this->errorcode = 0;
 			return true;
 		}
 
 		return false;
+	}
+
+	function ftpupload() {
+		if($this->ftpcmd && ftpperm(fileext($this->attach['name']), $this->attach['size'])) {
+			$this->remote = ftpcmd('upload', $this->type.'/'.$this->attach['attachment']);
+		}
 	}
 
 	function error() {
