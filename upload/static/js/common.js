@@ -2436,6 +2436,7 @@ function loadAvatar() {
 		}
 		img.src = img.dataset.src;
 		img.removeAttribute('data-src');
+		img.classList.remove('_avt');
 	});
 }
 
