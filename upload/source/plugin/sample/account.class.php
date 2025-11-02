@@ -4,7 +4,7 @@
 class account_sample extends account_base {
 
 	// 不自动生成头像
-	public bool $interface_noAutoAvatar = true;
+	public bool $interface_noAutoAvatar = false;
 
 	// 不支持绑定
 	public bool $interface_noBind = false;
@@ -58,7 +58,14 @@ class account_sample extends account_base {
 		if(!$account->checkUser($param)) {
 			if($_G['uid']) {
 				$account->userBind($_G['uid'], $param);
+				$avatarBindAuto = $account->getSwitch('avatarBindAuto');
+				if(in_array($param['type'], $avatarBindAuto)) {
+					//$this->set_avatar($_G['uid'], $tmpFile);
+				}
 			} else {
+				if(!in_array($param['type'], $account->getSwitch('register'))) {
+					showmessage('register_disable');
+				}
 				$param += [
 					'username' => $user['username'],
 					'password' => '',
@@ -70,9 +77,16 @@ class account_sample extends account_base {
 					}
 					showmessage($msg);
 				}
+				if(in_array($param['type'], $account->getSwitch('avatarRegisterAuto'))) {
+					//$this->set_avatar($_G['uid'], $tmpFile);
+				}
 			}
 		} else {
 			$account->userLogin();
+			$avatarLoginAuto = $account->getSwitch('avatarLoginAuto');
+			if(in_array($param['type'], $account->getSwitch('avatarLoginAuto'))) {
+				//$this->set_avatar($_G['uid'], $tmpFile);
+			}
 		}
 		dheader('Location: '.$_GET['referer']);
 	}
