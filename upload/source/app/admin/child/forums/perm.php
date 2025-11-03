@@ -44,7 +44,7 @@ $permformulastr = '<p class="bold" style="margin-bottom: 10px">'.cplang('forums_
 	'<table>';
 $permtexts = ['forums_edit_perm_view', 'forums_edit_perm_post', 'forums_edit_perm_reply', 'forums_edit_perm_getattach', 'forums_edit_perm_postattach', 'forums_edit_perm_postimage'];
 foreach($permnames as $perm => $permname) {
-	preg_match("/(^|\t)_formula\[(.+?)\]/", $forum[$perm], $r);
+	preg_match("/(^|\t)_formula\[(.+?)\](\t|$)/", $forum[$perm], $r);
 	$permformulastr .= '<tr><th>'.$permname.'</th><td>'.
 		'<input name="permformula['.$perm.']" value="'.$r[2].'" type="text" class="txt" style="width:500px"></td></tr>';
 }
@@ -57,6 +57,7 @@ $formulareplace .= '\'<u>'.cplang('setting_credits_formula_digestposts').'</u>\'
 
 ?>
 	<script type="text/JavaScript">
+		var extraperms = <?php echo $extraperms;?>;
 		function foruminsertunit(text, textend) {
 			insertunit($('formulapermnew'), text, textend);
 			formulaexp();

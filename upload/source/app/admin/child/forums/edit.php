@@ -345,14 +345,17 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			$forum['threadsorts'] = is_array($forum['threadsorts']) ? $forum['threadsorts'] : [];
 			$forum['threadsorts']['default'] = $forum['threadsorts']['defaultshow'] ? 1 : 0;
 
+			$extraperms = [];
 			foreach($perms as $perm) {
 				if(in_array($perm, $sysperms)) {
 					continue;
 				}
+				$extraperms[] = $perm;
 				if(!empty($forum['extra']['perms'][$perm])) {
 					$forum[$perm] = $forum['extra']['perms'][$perm];
 				}
 			}
+			$extraperms = json_encode($extraperms);
 
 			$_G['multisetting'] = $multiset ? 1 : 0;
 			showmultititle();

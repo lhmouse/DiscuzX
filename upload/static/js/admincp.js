@@ -574,7 +574,7 @@ function perm_search(type, kw) {
 		$('append_parent').parentNode.appendChild(div);
 	}
 	showMenu({'menuid': id, 'duration': 3, 'pos': '00', 'mtype': 'win'});
-	ajaxget(admincpfilename + '?action=forums&mod=forum&operation=perm_get_item&itemtype=' + type + '&kw=' + encodeURIComponent($(kw).value), id);
+	ajaxget(admincpfilename + '?action=forums&mod=forum&operation=perm_get_item&itemtype=' + type + '&kw=' + ($(kw).type == 'text' ? encodeURIComponent($(kw).value) : '') + '&kwid=' + kw, id);
 }
 
 function perm_enter(event, obj) {
@@ -618,7 +618,7 @@ function perm_add_item(row, id, t, r) {
 
 	var row = $(row).insertRow(-1);
 	row.insertCell(0).innerHTML = '<input class="checkbox" type="checkbox" name="chkall' + t + id + '" onclick="checkAll(\'value\', this.form, \'' + t + id + '\', \'chkall' + t + id + '\')" id="chkall' + t + '_' + id + '">';
-	row.insertCell(1).innerHTML = r[0];
+	row.insertCell(1).innerHTML = '<a href="javascript:;" onclick="perm_del_item(this)">[x]</a> ' + r[0];
 	row.insertCell(2).innerHTML = r[1];
 	row.cells[2].className = 'lightfont';
 	row.insertCell(3).innerHTML = '<input class="checkbox" type="checkbox" name="viewperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
@@ -627,4 +627,72 @@ function perm_add_item(row, id, t, r) {
 	row.insertCell(6).innerHTML = '<input class="checkbox" type="checkbox" name="getattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
 	row.insertCell(7).innerHTML = '<input class="checkbox" type="checkbox" name="postattachperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
 	row.insertCell(8).innerHTML = '<input class="checkbox" type="checkbox" name="postimageperm[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	for (var i = 0; i < extraperms.length; i++) {
+		row.insertCell(9 + i).innerHTML = '<input class="checkbox" type="checkbox" name="' + extraperms[i] + '[]" value="' + r[1] + '" chkvalue="' + t + id + '">';
+	}
+}
+
+function perm_add_item_component(addname, t, id, addVariable, kwid) {
+	if ($(addVariable) && $(addVariable).type == 'textarea') {
+		if ($(addVariable).value === '') {
+			$(addVariable).value = t + id;
+		} else {
+			$(addVariable).value += ' or ' + t + id;
+		}
+		return;
+	}
+	var obj = $(kwid).parentNode.parentNode;
+	if (obj.querySelector('input[value="' + t + id + '"]')) {
+		return;
+	}
+
+	var label = document.createElement('label');
+	label.innerHTML = '<input name="' + addVariable + '[]" value="' + t + id + '" type="checkbox" checked="">' + addname +
+	    '<a href="javascript:;" onClick="perm_del_item(this, 1)">[x]</a>';
+	obj.appendChild(label);
+}
+
+function perm_del_item(o, type) {
+	var tr = !type ? o.parentNode.parentNode : o.parentNode;
+	tr.parentNode.removeChild(tr);
+}
+
+function perm_add_multi(type, addVariable, kwid) {
+	var roots = [];
+	var name = '';
+	document.querySelectorAll('#permitem_menu input[type=checkbox]').forEach(function (o) {
+		var root = o.getAttribute('_root');
+		var byroot = o.getAttribute('_byroot');
+		var disabled = o.getAttribute('_disabled');
+		if (root) {
+			roots[root] = [];
+			name = o.nextElementSibling.innerHTML;
+		} else if (byroot) {
+			root = byroot;
+		} else {
+			return;
+		}
+		if (disabled) {
+			roots[root].push(disabled);
+		}
+	});
+	for (var i in roots) {
+		var t = 'O' + i;
+		var id = '[' + roots[i].join(',') + ']';
+
+		if (!addVariable) {
+			perm_add_item('g' + type, i, type, ['<i>' + name + '</i>', t + id]);
+		} else {
+			perm_add_item_component('<i>' + name + '</i>', t, id, addVariable, kwid);
+		}
+	}
+}
+
+function perm_add_formula(id, v) {
+	var obj = $(id);
+	if (obj.value === '') {
+		obj.value = v;
+	} else {
+		obj.value += ' or ' + v;
+	}
 }
