@@ -22,6 +22,8 @@ if(!submitcheck('submit')) {
 	]';
 	showcomponent('测试4', 'ghi', '[]', 'component_list', '', $conf);
 
+	showcomponent('权限', 'perm', '', 'component_perm');
+
 	showsubmit('submit');
 	showtablefooter();
 	showformfooter();
