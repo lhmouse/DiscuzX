@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_audio {
 
-	var $version = '1.0.6';
+	var $version = '1.0.8';
 	var $name = '音频';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -14,7 +14,7 @@ class editorblock_audio {
 	var $description = '音频区块';
 	var $filename = 'audio';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '3'; // 0:数据类型 1:音频类型 2:附件类型 3:音频类型 4:音频类型 5:文件类型
+	var $type = '4'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 
@@ -36,7 +36,10 @@ class editorblock_audio {
             "type": "audio",
             "data": {
                 "file": {
-                    "url": "data/attachment/forum/202312/26/151439rv17ot1mgatw1121.mp4"
+                        "aid": 1,
+                        "remote": 0,
+                	"directory" => "forum",
+                        "url": "202312/26/151439rv17ot1mgatw1121.mp3"
                 },
                 "caption": "desc",
                 "withBorder": false,
@@ -74,6 +77,8 @@ EOF;
                     'uid': editor_uid,
                     'hash': editor_hash,
                 },
+                remote_attachurl: editor_remote_attachurl,
+                attachurl: editor_attachurl,
                 captionPlaceholder: '描述信息',
                 buttonContent: '请选择需要上传的音频（MP3）',
             },
@@ -257,7 +262,7 @@ EOF;
         <div class="cdx-block audio-tool audio-tool--filled [if data.withBorder=1]audio-tool--withBorder[/if] [if data.stretched=1]audio-tool--stretched[/if] [if data.withBackground=1]audio-tool--withBackground[/if]">
             <div class="audio-tool__audio">
                 <div class="audio-tool__audio-preloader" style=""></div>
-                <audio class="audio-tool__audio-picture" src="[url data.file.url]" type="audio/mpeg" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alt="{data.caption}" />
+                <audio class="audio-tool__audio-picture" src="[url data.file.url,data.file.remote,data.file.directory]" type="audio/mpeg" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alt="{data.caption}" />
             </div>
             <div class="cdx-input audio-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>

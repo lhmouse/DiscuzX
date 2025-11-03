@@ -14,7 +14,7 @@ class editorblock_checklist {
 	var $description = '用于添加多选类区块。';
 	var $filename = 'checklist';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型
+	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 

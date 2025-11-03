@@ -30,5 +30,9 @@ class table_common_credit_log_field extends discuz_table {
 	public function delete_by_removetime($removetime) {
 		return DB::query('DELETE FROM %t WHERE dateline < %d', [$this->_table, $removetime]);
 	}
+
+	public function fetch_last_by_uid($uid) {
+		return DB::fetch_first('SELECT * FROM %t WHERE uid=%d ORDER BY logid DESC LIMIT 1', [$this->_table, $uid]);
+	}
 }
 

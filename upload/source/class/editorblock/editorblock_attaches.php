@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_attaches {
 
-	var $version = '1.3.1';
+	var $version = '1.3.2';
 	var $name = '附件';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -14,7 +14,7 @@ class editorblock_attaches {
 	var $description = '附件上传区块';
 	var $filename = 'attaches';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '2'; // 0:数据类型 1:视频类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
+	var $type = '2'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 
@@ -36,10 +36,13 @@ class editorblock_attaches {
     "type" : "attaches",
     "data" : {
         "file": {
-            "url" : "https://www.tesla.com/tesla_theme/assets/img/_vehicle_redesign/roadster_and_semi/roadster/hero.jpg",
-            "size": 91,
-            "name": "hero.jpg",
-            "extension": "jpg"
+                "aid": 1,
+                "remote": 0,
+                "directory" => "forum",
+                "url": "202312/26/151439rv17ot1mgatw1121.png",
+                "size": 91,
+                "name": "hero.jpg",
+                "extension": "jpg"
         },
         "title": "Hero"
     }
@@ -71,6 +74,8 @@ EOF;
                     'uid': editor_uid,
                     'hash': editor_hash,
                 },
+                remote_attachurl: editor_remote_attachurl,
+                attachurl: editor_attachurl,
                 additionalRequestHeaders: {},
                 errorMessage: '文件上传失败，请重试',
                 buttonText: '请选择需要上传的文件',

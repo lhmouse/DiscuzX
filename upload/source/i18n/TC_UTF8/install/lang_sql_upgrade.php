@@ -570,4 +570,17 @@ UPDATE pre_common_credit_log_field f
 	JOIN pre_common_credit_log l ON f.logid = l.logid
 	SET f.dateline = l.dateline;
 
+ALTER TABLE pre_common_credit_log_field
+	CHANGE COLUMN logid logid int(10) unsigned NOT NULL;
+
+ALTER TABLE pre_common_credit_log_field
+	ADD COLUMN uid mediumint(8) unsigned NOT NULL DEFAULT '0' AFTER logid;
+
+ALTER TABLE pre_common_credit_log_field
+	ADD INDEX uid (uid);
+
+UPDATE pre_common_credit_log_field f
+	JOIN pre_common_credit_log l ON f.logid = l.logid
+	SET f.uid = l.uid;
+
 INSERT INTO pre_restful_source (sourceid, name, url) VALUES (1, 'Discuz! Team', 'https://api.witframe.com/discuzrestful');

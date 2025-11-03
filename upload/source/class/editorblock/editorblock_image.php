@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_image {
 
-	var $version = '1.1.6';
+	var $version = '1.1.9';
 	var $name = '图片';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -14,7 +14,7 @@ class editorblock_image {
 	var $description = '图片区块';
 	var $filename = 'image';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '1'; // 0:数据类型 1:图片类型 2:附件类型
+	var $type = '1'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 
@@ -37,7 +37,9 @@ class editorblock_image {
             "data": {
                 "file": {
                 	"aid": 1,
-                    "url": "data/attachment/forum/202312/26/151439rv17ot1mgatw1121.png"
+                	"remote": 0,
+                	"directory" => "forum",
+                        "url": "202312/26/151439rv17ot1mgatw1121.png",
                 },
                 "caption": "desc",
                 "withBorder": false,
@@ -75,6 +77,8 @@ EOF;
                     'uid': editor_uid,
                     'hash': editor_hash,
                 },
+                remote_attachurl: editor_remote_attachurl,
+                attachurl: editor_attachurl,
                 captionPlaceholder: '描述信息',
                 buttonContent: '请选择需要上传的图片',
             },
@@ -269,7 +273,7 @@ EOF;
         <div class="cdx-block image-tool image-tool--filled [if data.withBorder=1]image-tool--withBorder[/if] [if data.stretched=1]image-tool--stretched[/if] [if data.withBackground=1]image-tool--withBackground[/if]">
             <div class="image-tool__image">
                 <div class="image-tool__image-preloader" style=""></div>
-                <img id="aimg_{id}" class="image-tool__image-picture _zoom" src="[url data.file.url]" title="{data.caption}" alt="{data.caption}" data-aid="{data.aid}"/>
+                <img id="aimg_{id}" class="image-tool__image-picture _zoom" src="[url data.file.url,data.file.remote,data.file.directory]" title="{data.caption}" alt="{data.caption}" data-aid="{data.aid}"/>
             </div>
             <div class="cdx-input image-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>

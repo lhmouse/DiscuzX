@@ -101,7 +101,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 		if(!$user) {
 			continue;
 		}
-		$last = table_common_credit_log::t()->fetch_last_by_uid($uid);
+		$last = table_common_credit_log_field::t()->fetch_last_by_uid($uid);
 		if($last) {
 			$errlog = [];
 			$haveaccredit = false;
@@ -125,6 +125,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 				$insertid = table_common_credit_log::t()->insert($errlog, true);
 				$logfield = [
 					'logid' => $insertid,
+					'uid' => $uid,
 					'title' => '',
 					'text' => '',
 					'dateline' => TIMESTAMP,
@@ -132,7 +133,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 				for($i = 1; $i <= 8; $i++) {
 					$logfield['ac_extcredits'.$i] = $user['extcredits'.$i];
 				}
-				table_common_credit_log_field::t()->insert($logfield);
+				table_common_credit_log_field::t()->insert($logfield, false, false, true);
 			}
 		}
 		$log['uid'] = $uid;
@@ -140,6 +141,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 		$insertid = table_common_credit_log::t()->insert($log, true);
 		$logfield = [
 			'logid' => $insertid,
+			'uid' => $uid,
 			'title' => $customtitle,
 			'text' => $custommemo,
 			'dateline' => TIMESTAMP,
@@ -147,7 +149,7 @@ function credit_log($uids, $operation, $relatedid, $data, $customtitle = '', $cu
 		for($i = 1; $i <= 8; $i++) {
 			$logfield['ac_extcredits'.$i] = $user['extcredits'.$i];
 		}
-		table_common_credit_log_field::t()->insert($logfield);
+		table_common_credit_log_field::t()->insert($logfield, false, false, true);
 	}
 }
 

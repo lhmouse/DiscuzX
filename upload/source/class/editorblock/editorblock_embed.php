@@ -14,7 +14,7 @@ class editorblock_embed {
 	var $description = '支持外部媒体资源嵌入，在段落中粘贴视频页面链接，自动转换为iframe嵌入方式。暂不支持多列使用。可在配置文件中自定义解析规则，目前内置支持：Bilibili、优酷、腾讯视频';
 	var $filename = 'embed';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型
+	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 

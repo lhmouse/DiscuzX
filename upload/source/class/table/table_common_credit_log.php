@@ -87,14 +87,6 @@ class table_common_credit_log extends discuz_table {
 		return $array;
 	}
 
-	public function fetch_last_by_uid($uid) {
-		$logid = DB::result_first('SELECT logid FROM %t WHERE uid=%d ORDER BY logid DESC LIMIT 1', [$this->_table, $uid]);
-		if(!$logid) {
-			return [];
-		}
-		return DB::fetch_first('SELECT * FROM %t WHERE logid=%d', ['common_credit_log_field', $logid]);
-	}
-
 	public function delete_by_operation_relatedid($operation, $relatedid) {
 		$relatedid = dintval($relatedid, true);
 		if($operation && $relatedid) {

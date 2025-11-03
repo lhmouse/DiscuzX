@@ -14,7 +14,7 @@ class editorblock_paragraph {
 	var $description = '文本段落(增强版)内容区块，启用后会自动覆盖默认文本段落区块，支持配置输入指定Markdown标识切换到指定区块';
 	var $filename = 'paragraph';
 	var $copyright = '<a href="https://addon.dismall.com/developer-32563.html" target="_blank">云诺</a>';
-	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型
+	var $type = '0'; // 0:数据类型 1:图片类型 2:附件类型 3:视频类型 4:音频类型 5:文件类型
 
 	function __construct() {
 
