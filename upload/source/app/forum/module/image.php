@@ -50,16 +50,24 @@ if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid
 		dheader('location: '.$_G['siteurl'].'static/image/common/none.gif');
 	}
 	dheader('Expires: '.gmdate('D, d M Y H:i:s', TIMESTAMP + 3600).' GMT');
-	if(!empty($attach['tid']) && $_G['setting']['ftp']['on'] == 2) {
-		$filename = $_G['setting']['attachurl'].'forum/'.$attach['attachment'];
-		dheader('Content-Type: image');
-		@readfile($filename);
-		exit;
+	if($attach['remote']) {
+		$filename = $_G['setting']['ftp']['attachurl'].'forum/'.$attach['attachment'];
 	} else {
-		if($attach['remote']) {
-			$filename = $_G['setting']['ftp']['attachurl'].'forum/'.$attach['attachment'];
-		} else {
-			$filename = $_G['setting']['attachdir'].'forum/'.$attach['attachment'];
+		$filename = $_G['setting']['attachdir'].'forum/'.$attach['attachment'];
+	}
+	$e = parse_url($filename);
+	if(!empty($e['host'])) {
+		$content = dfsockopen($filename, timeout: 10);
+		if($content) {
+			$filename = $_G['setting']['attachdir'].$thumbfile;
+			dmkdir(dirname($filename));
+			file_put_contents($filename, $content);
+		}
+		if(!file_exists($filename)) {
+			$filename = $_G['setting']['attachurl'].'forum/'.$attach['attachment'];
+			dheader('Content-Type: image');
+			@readfile($filename);
+			exit;
 		}
 	}
 	require_once libfile('class/image');
@@ -72,6 +80,7 @@ if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid
 		} else {
 			if(!empty($oss)) {
 				$oss->uploadFile($_G['setting']['attachdir'].$thumbfile, $oss_config['oss_rootpath'].$thumbfile, 'public');
+				@unlink($_G['setting']['attachdir'].$thumbfile);
 			}
 			dheader('location: '.$attachurl.$thumbfile);
 		}

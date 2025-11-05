@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_embed {
 
-	var $version = '1.0.2';
+	var $version = '1.0.3';
 	var $name = '多媒体资源嵌入';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 0; //  默认是否支持多列 0:不支持 1:支持
@@ -66,6 +66,9 @@ EOF;
          inlineToolbar: true,
          config: {
          services: {
+                      youtube: true,
+                      twitter: true,
+                      coub: true,
                       codepen: true,
                       github: true,
                       bilibili: {
@@ -95,6 +98,16 @@ EOF;
                                   return ids[1];
                                 },
                           },
+                          acfun: {
+                              regex: /https?:\/\/(www.|)acfun.(cn|tv)\/v\/ac(\d+)/i,
+                              embedUrl: 'https://www.acfun.cn/player/ac<%= remote_id %>',
+                              html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                                                height: 500,
+                                                id: (ids) => {
+                                  return ids[2];
+                                },
+                          }
+                          
             }
          },
          tunes: ['anchorTune', 'hideTune']

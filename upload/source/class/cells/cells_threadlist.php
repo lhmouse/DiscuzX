@@ -258,7 +258,7 @@ class cells_threadlist {
 						$attachs = table_forum_attachment_n::t()->fetch_all_attachment($tableId, $aids);
 						foreach($attachs as $attach) {
 							if($attach['isimage'] && !empty($_G['forum_threadlist'][$rIndex[$attach['tid']]])) {
-								$_G['forum_threadlist'][$rIndex[$attach['tid']]]['images'][] = getforumimg($attach['aid'], 1, $width, $height, 'fixwr');
+								$_G['forum_threadlist'][$rIndex[$attach['tid']]]['images'][] = getforumimg($attach['aid'], 0, $width, $height, 'fixwr');
 							}
 						}
 					}
