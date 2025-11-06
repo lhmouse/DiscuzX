@@ -647,13 +647,13 @@ function perm_add_item_component(addname, t, id, addVariable, kwid) {
 	}
 
 	var label = document.createElement('label');
-	label.innerHTML = '<input name="' + addVariable + '[]" value="' + t + id + '" type="checkbox" checked="">' + addname +
-	    '<a href="javascript:;" onClick="perm_del_item(this, 1)">[x]</a>';
+	label.innerHTML = '<input name="' + addVariable + '[]" value="' + t + id + '" onclick="perm_preview(\'' + addVariable + '\', \'' + addname + '\', 0)" type="checkbox" checked="">' + addname;
 	obj.appendChild(label);
+	perm_preview(addVariable, addname, 0);
 }
 
-function perm_del_item(o, type) {
-	var tr = !type ? o.parentNode.parentNode : o.parentNode;
+function perm_del_item(o) {
+	var tr = o.parentNode.parentNode;
 	tr.parentNode.removeChild(tr);
 }
 
