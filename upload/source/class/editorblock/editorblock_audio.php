@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_audio {
 
-	var $version = '1.0.8';
+	var $version = '1.0.9';
 	var $name = '音频';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -84,7 +84,27 @@ EOF;
             },
          	tunes: ['anchorTune', 'hideTune']
         },
-   }
+   },
+   i18n: {
+       messages: {
+          tools: {
+            'audio': {
+                  'Add border': '添加边框',
+        	  'Stretch': '横向平铺',
+        	  'Add background': '添加背景色',
+        	  'Autoplay': '自动播放',
+        	  'Mute': '静音播放',
+        	  'Controls': '视频控制',
+        	  'Loop': '循环播放',
+        	  'Unsupported file type': '不支持的文件类型',
+        	  'File has exceptions': '文件存在异常',
+        	  'File size cannot exceed ': '文件大小不可超过 ',
+        	  'User group does not support uploading this type of file': '用户组不支持上传该类型的文件',
+        	  'Couldn’t upload audio. Please try another.': '无法上传音频，请尝试另一个。',
+            }
+          }
+        },
+    },
 }
 EOF;
 	}
@@ -134,7 +154,7 @@ EOF;
       background-size: cover;
       margin: auto;
       position: relative;
-      background-color: var(--bg-color);
+      background-color: #cdd1e0;
       background-position: center center;
     }
 
@@ -145,8 +165,8 @@ EOF;
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        border: 2px solid var(--bg-color);
-        border-top-color: var(--front-color);
+        border: 2px solid #cdd1e0;
+        border-top-color: #388ae5;
         left: 50%;
         top: 50%;
         margin-top: -30px;
@@ -201,7 +221,7 @@ EOF;
   .audio-tool--loading .audio-tool__audio {
       min-height: 200px;
       display: flex;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e8e8eb;
       background-color: #fff;
     }
 
@@ -219,12 +239,12 @@ EOF;
    */
 
   .audio-tool--withBorder .audio-tool__audio {
-      border: 1px solid var(--border-color);
+      border: 1px solid #e8e8eb;
     }
 
   .audio-tool--withBackground .audio-tool__audio {
       padding: 15px;
-      background: var(--bg-color);
+      background: #cdd1e0;
     }
 
   .audio-tool--withBackground .audio-tool__audio-picture {

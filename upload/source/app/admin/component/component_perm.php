@@ -30,8 +30,11 @@ formula: 按照权限公式表达式方式显示
 		static $css = null;
 		if($css === null) {
 			$css = '<style type="text/css">
-.component_perm {
-	margin-left: 1em !important;
+.component_perm .pbox {
+	padding: 10px;
+	border: 1px dotted var(--admincp-borderc);
+	margin-top: 10px;
+	clear: both;
 }
 .component_perm label {
 	float: left;
@@ -39,20 +42,20 @@ formula: 按照权限公式表达式方式显示
 	line-height: 35px;
 	cursor: pointer;
 }
-.component_perm.formula label {
+.component_perm .formula label {
 	line-height: 15px !important;
 	width: 180px;
 }
-.component_perm.formula a {
+.component_perm .formula a {
 	margin-right: 5px;
 }
 .component_perm div {
 	margin-bottom: 5px;
 }
-.component_perm.formula div {
+.component_perm .formula div {
 	margin-bottom: 5px;
 }
-.component_perm.formula textarea {
+.component_perm .formula textarea {
 	width: 80%;
 }
 .component_perm p {
@@ -65,6 +68,25 @@ formula: 按照权限公式表达式方式显示
 .component_perm.formula .search {
 	margin-left: 0;
 }
+.component_perm .ppreview {
+	float: left;
+	width: 400px;
+	padding: 6px 10px;
+	font-size: 100%;
+	border: 1px solid;
+	border-color: var(--admincp-borderc);
+	background: var(--admincp-bgc);
+	color: var(--admincp-fa);
+	border-radius: 3px;
+	margin-bottom: 10px;
+}
+.component_perm .pswitch {
+	float: left;
+	margin: 5px 0 0 5px;
+}
+.component_perm .pdesc {
+	clear: both;
+}
 </style>';
 		} else {
 			$css = '';
@@ -76,45 +98,49 @@ formula: 按照权限公式表达式方式显示
 		}
 		$conf = is_string($var['extra']) ? json_decode($var['extra'], true) : $var['extra'];
 		$data = [];
-		$perms = ['group', 'verify', 'account', 'plugin', 'tag'];
-		foreach($perms as $permfile) {
+		$permarray = ['group', 'verify', 'account', 'plugin', 'tag'];
+		foreach($permarray as $permfile) {
 			if(!$conf['permtype'] || in_array($permfile, $conf['permtype'])) {
 				call_user_func_array([$this, '_gen_'.$permfile], [&$data, $var['value'], $var['variable'], $conf]);
 			}
 		}
 
-		$var['type'] = $css;
+		$cv = $perms = '';
 		if(empty($conf['formula'])) {
-			$var['type'] .= '<div class="component_perm">';
+			$perms .= '<div id="pset_'.$var['variable'].'" class="pbox" style="display: none">';
 			foreach($data as $type => $items) {
-				$var['type'] .= '<div><p><b>'.$type.'</b>';
+				$perms .= '<div><p><b>'.$type.'</b>';
 				if(isset($items['_'])) {
-					$var['type'] .= $items['_'];
+					$perms .= $items['_'];
 					unset($items['_']);
 				}
-				$var['type'] .= '</p>';
+				$perms .= '</p>';
 				foreach($items as $item) {
-					$var['type'] .= '<label><input class="checkbox" name="'.$var['variable'].'[]" value="'.$item[0].'" type="checkbox"'.(!empty($item[2]) ? ' checked' : '').' />'.$item[1].'</label>';
+					!empty($item[2]) && $cv .= '['.$item[1].'] ';
+					$perms .= '<label><input class="checkbox" name="'.$var['variable'].'[]" onclick="perm_preview(\''.$var['variable'].'\', \''.$item[1].'\', 0)" value="'.$item[0].'" type="checkbox"'.(!empty($item[2]) ? ' checked' : '').' />'.$item[1].'</label>';
 				}
-				$var['type'] .= '</div><p></p>';
+				$perms .= '</div><p></p>';
 			}
 		} else {
-			$var['type'] .= '<div class="component_perm formula threadprofilenode">';
+			$perms .= '<div id="pset_'.$var['variable'].'" class="pbox formula threadprofilenode" style="display: none">';
 			foreach($data as $type => $items) {
-				$var['type'] .= '<div><label><b>'.$type.'</b></label>';
+				$perms .= '<div><label><b>'.$type.'</b></label>';
 				if(isset($items['_'])) {
-					$var['type'] .= '<label>'.$items['_'].'</label>';
+					$perms .= '<label>'.$items['_'].'</label>';
 					unset($items['_']);
 				}
 				foreach($items as $item) {
-					$var['type'] .= '<a href="javascript:;" onclick="perm_add_formula(\''.$var['variable'].'\', \''.$item[0].'\')">'.$item[1].'('.$item[0].')</a> ';
+					$perms .= '<a href="javascript:;" onclick="perm_add_formula(\''.$var['variable'].'\', \''.$item[0].'\')">'.$item[1].'('.$item[0].')</a> ';
 				}
-				$var['type'] .= '<p></p></div>';
+				$perms .= '<p></p></div>';
 			}
-			$var['type'] .= '<label><b>'.cplang('forums_edit_perm_formula').'</b></label><textarea rows="6" onkeyup="textareasize(this, 0)" onkeydown="textareakey(this, event)" name="'.$var['variable'].'" id="'.$var['variable'].'" cols="50" class="tarea">'.dhtmlspecialchars($var['value']).'</textarea>';
+			$cv = dhtmlspecialchars($var['value']);
+			$perms .= '<label><b>'.cplang('forums_edit_perm_formula').'</b></label><textarea rows="6" onkeyup="textareasize(this, 0);perm_preview(\''.$var['variable'].'\', this.value, 1)" onkeydown="textareakey(this, event)" name="'.$var['variable'].'" id="'.$var['variable'].'" cols="50" class="tarea">'.$cv.'</textarea>';
 		}
-		$var['type'] .= '</div>';
-		$var['type'] .= $var['description'] ? '<div class="tips2">'.$var['description'].'</div>' : '';
+		$current = '<div class="ppreview" id="ppreview_'.$var['variable'].'">'.$cv.'&nbsp;</div>'.
+			'<a href="javascript:;" onclick="display(\'pset_'.$var['variable'].'\')" class="pswitch">'.cplang('config').'</a>';
+		$description = $var['description'] ? '<div class="pdesc tips2">'.$var['description'].'</div>' : '';
+		$var['type'] = $css.'<div class="component_perm">'.$current.$description.$perms.'</div>';
 		$var['widemode'] = true;
 	}
 

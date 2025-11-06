@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_image {
 
-	var $version = '1.1.9';
+	var $version = '1.2.1';
 	var $name = '图片';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -92,6 +92,11 @@ EOF;
                   'With border': '带边框',
         	  'Stretch image': '拉伸图像',
         	  'With background': '带背景色',
+        	  'Unsupported file type': '不支持的文件类型',
+        	  'File has exceptions': '文件存在异常',
+        	  'File size cannot exceed ': '文件大小不可超过 ',
+        	  'User group does not support uploading this type of file': '用户组不支持上传该类型的文件',
+        	  'Couldn’t upload image. Please try another.': '无法上传图片，请尝试另一个。',
             }
           }
         },
@@ -145,7 +150,7 @@ EOF;
       background-size: cover;
       margin: auto;
       position: relative;
-      background-color: var(--bg-color);
+      background-color: #cdd1e0;
       background-position: center center;
     }
 
@@ -156,8 +161,8 @@ EOF;
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        border: 2px solid var(--bg-color);
-        border-top-color: var(--front-color);
+        border: 2px solid #cdd1e0;
+        border-top-color: #388ae5;
         left: 50%;
         top: 50%;
         margin-top: -30px;
@@ -212,7 +217,7 @@ EOF;
   .image-tool--loading .image-tool__image {
       min-height: 200px;
       display: flex;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e8e8eb;
       background-color: #fff;
     }
 
@@ -230,12 +235,12 @@ EOF;
    */
 
   .image-tool--withBorder .image-tool__image {
-      border: 1px solid var(--border-color);
+      border: 1px solid #e8e8eb;
     }
 
   .image-tool--withBackground .image-tool__image {
       padding: 15px;
-      background: var(--bg-color);
+      background: #cdd1e0;
     }
 
   .image-tool--withBackground .image-tool__image-picture {

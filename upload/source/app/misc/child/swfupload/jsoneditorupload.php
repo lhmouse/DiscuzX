@@ -75,10 +75,12 @@ if($isMultiUpload) {
 			$aid = $upload->getaid;
 			if($aid >= 0) {
 				$attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$aid, $aid);
-				$picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
+				// $picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
 				$files[] = [
 					'aid' => $upload->aid,
-					'url' => $picsource
+					'remote' => $attach['remote'],
+					'directory' => 'forum',
+					'url' => $attach['attachment'],
 				];
 				$successCount++;
 			}
@@ -102,18 +104,22 @@ if($isMultiUpload) {
 		$aid = $upload->getaid;
 		if($aid < 0) {
 			$ret = [
-				'success' => 0
+				'success' => 0,
+				'statusid' => $aid,
+				'sizelimit' => $upload->error_sizelimit,
 			];
 			echo json_encode($ret);
 			exit();
 		}
 		$attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$aid, $aid);
-		$picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
+		// $picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
 		$ret = [
 			'success' => 1,
 			'file' => [
 				'aid' => $upload->aid,
-				'url' => $picsource
+				'remote' => $attach['remote'],
+				'directory' => 'forum',
+				'url' => $attach['attachment'],
 			]
 		];
 		echo json_encode($ret);

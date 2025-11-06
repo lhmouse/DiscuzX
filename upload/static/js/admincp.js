@@ -695,4 +695,19 @@ function perm_add_formula(id, v) {
 	} else {
 		obj.value += ' or ' + v;
 	}
+	perm_preview(id, obj.value, 1);
+}
+
+function perm_preview(id, value, t) {
+	id = 'ppreview_' + id;
+	if (!t) {
+		let s = '[' + value + '] ';
+		if ($(id).innerHTML.indexOf(s) !== -1) {
+			$(id).innerHTML = $(id).innerHTML.replace(s, '');
+		} else {
+			$(id).innerHTML += s;
+		}
+	} else {
+		$(id).innerHTML = value;
+	}
 }

@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_attaches {
 
-	var $version = '1.3.2';
+	var $version = '1.3.3';
 	var $name = '附件';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -82,7 +82,20 @@ EOF;
             },
             tunes: ['anchorTune', 'hideTune']
         },
-   }
+   },
+   i18n: {
+       messages: {
+          tools: {
+            'attaches': {
+        	  'Unsupported file type': '不支持的文件类型',
+        	  'File has exceptions': '文件存在异常',
+        	  'File size cannot exceed ': '文件大小不可超过 ',
+        	  'User group does not support uploading this type of file': '用户组不支持上传该类型的文件',
+        	  'Couldn’t upload attachment. Please try another.': '无法上传附件，请尝试另一个。',
+            }
+          }
+        },
+    },
 }
 EOF;
 	}
@@ -116,9 +129,9 @@ EOF;
     display: flex;
     align-items: center;
     padding: 10px 12px;
-    border: 1px solid var(--color-line);
+    border: 1px solid #EFF0F1;
     border-radius: 7px;
-    background: var(--color-bg);
+    background: #fff;
   }
 
   .cdx-attaches--with-file .cdx-attaches__file-info {
@@ -132,14 +145,14 @@ EOF;
   .cdx-attaches--with-file .cdx-attaches__download-button {
       display: flex;
       align-items: center;
-      background: var(--color-bg-secondary);
+      background: #F8F8F8;
       padding: 6px;
       border-radius: 6px;
       margin: auto 0 auto auto;
     }
 
   .cdx-attaches--with-file .cdx-attaches__download-button:hover {
-        background: var(--color-bg-secondary--hover);
+        background: #f2f2f2;
       }
 
   .cdx-attaches--with-file .cdx-attaches__download-button svg {
@@ -199,7 +212,7 @@ EOF;
       }
 
   .cdx-attaches--with-file .cdx-attaches__size {
-      color: var(--color-text-secondary);
+      color: #707684;
       font-size: 12px;
       line-height: 1em;
     }
