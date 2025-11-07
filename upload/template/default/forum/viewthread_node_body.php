@@ -59,30 +59,7 @@
 	<div class="{if !$_G[forum_thread][special]}t_fsz{else}pcbs{/if}">
 		{$_G['forum_posthtml']['header'][$post[pid]] or ''}
 		<!--{if $post['first']}-->
-			<!--{if !$_G[forum_thread][special]}-->
-				<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_$post[pid]">
-				<!--{if !$_G['inajax']}-->
-					<!--{if $ad_a_pr}-->
-						$ad_a_pr
-					<!--{/if}-->
-				<!--{/if}-->
-				<!--{if !empty($_G['setting']['guesttipsinthread']['flag']) && empty($_G['uid']) && !$post['attachment'] && $_GET['from'] != 'preview'}-->
-				<div class="attach_nopermission attach_tips">
-					<div>
-						<h3><strong>
-								<!--{if !empty($_G['setting']['guesttipsinthread']['text'])}-->
-								{$_G['setting']['guesttipsinthread']['text']}
-								<!--{else}-->
-								{lang guesttipsinthread_text}
-								<!--{/if}-->
-							</strong></h3>
-						<p>{lang attach_nopermission_login} <!--{hook/global_login_text}--></p>
-					</div>
-					<span class="atips_close" onclick="this.parentNode.style.display='none'">&#215;</span>
-				</div>
-				<!--{/if}-->
-				$post[message]</td></tr></table>
-			<!--{elseif $_G[forum_thread][special] == 1}-->
+			<!--{if $_G[forum_thread][special] == 1}-->
 				<!--{template forum/viewthread_poll}-->
 			<!--{elseif $_G[forum_thread][special] == 2}-->
 				<!--{template forum/viewthread_trade}-->
@@ -95,6 +72,34 @@
 			<!--{elseif $_G[forum_thread][special] == 127}-->
 				$threadplughtml
 				<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_$post[pid]">$post[message]</td></tr></table>
+			<!--{else}-->
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="t_f" id="postmessage_$post[pid]">
+						<!--{if !$_G['inajax']}-->
+						<!--{if $ad_a_pr}-->
+						$ad_a_pr
+						<!--{/if}-->
+						<!--{/if}-->
+						<!--{if !empty($_G['setting']['guesttipsinthread']['flag']) && empty($_G['uid']) && !$post['attachment'] && $_GET['from'] != 'preview'}-->
+						<div class="attach_nopermission attach_tips">
+							<div>
+								<h3><strong>
+										<!--{if !empty($_G['setting']['guesttipsinthread']['text'])}-->
+										{$_G['setting']['guesttipsinthread']['text']}
+										<!--{else}-->
+										{lang guesttipsinthread_text}
+										<!--{/if}-->
+									</strong></h3>
+								<p>{lang attach_nopermission_login} <!--{hook/global_login_text}--></p>
+							</div>
+							<span class="atips_close" onclick="this.parentNode.style.display='none'">&#215;</span>
+						</div>
+						<!--{/if}-->
+						$post[message]
+						</td>
+					</tr>
+				</table>
 			<!--{/if}-->
 		<!--{else}-->
 			<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_$post[pid]">
