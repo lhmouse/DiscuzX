@@ -10,7 +10,7 @@
 			<td style="padding-left: 10px;">
 				<em class="ico"></em><a href="forum.php?mod=viewthread&tid=$thread['tid']" target="_blank">{$thread['subject']}</a>
 			</td>
-			<td class="td23">
+			<td class="td24">
 				{$thread['dateline']}
 			</td>
 		</tr>

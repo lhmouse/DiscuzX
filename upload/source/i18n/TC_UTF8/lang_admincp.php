@@ -8089,6 +8089,7 @@ function getSign(nonce, t, secret) {
 	'widget_show_note' => '管理團隊留言',
 	'widget_show_envcheck' => '運行環境檢測',
 	'widget_show_filecheck' => '文件校驗',
+	'widget_show_hotthreads' => '近期熱門主題',
 
 	'qrcodelogin_tips' => '<li>本功能是由 WitFrame 雲平台提供的雲服務，用戶可使用微信掃碼登錄管理中心，而無需輸入賬號密碼</li><li>初次使用需要設置綁定密碼，如有多個管理員登錄後台可將此密碼告訴其他管理員</li><li>創始人狀態的用戶在關注了 Discuz! 官方公眾號後會收到登錄提醒</li><li>已綁定的用戶修改密碼後需要重新綁定</li><li>如您不想使用此功能，可以在設置頁面關閉，並清理數據</li>',
 	'qrcodelogin_tips2' => '<li>本功能是由 WitFrame 雲平台提供的雲服務，用戶可使用微信掃碼登錄管理中心，而無需輸入賬號密碼</li><li>已綁定的用戶修改密碼後需要重新綁定</li>',
