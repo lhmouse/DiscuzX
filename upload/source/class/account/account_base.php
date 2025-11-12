@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * [Discuz!] (C)2001-2099 Discuz! Team
+ * This is NOT a freeware, use is subject to license terms
+ * https://license.discuz.vip
+ */
+
+if(!defined('IN_DISCUZ')) {
+	exit('Access Denied');
+}
+
 class account_base {
 	// 支持的所有类型
 	const Interfaces = ['wechat', 'discuz', 'ucenter'];
@@ -175,8 +185,7 @@ class account_base {
 	public function getAccountUDAuth() {
 		global $_G;
 		$auth = $_G['cookie']['accountUDAuth'];
-		$paramBase = dunserialize(authcode($auth, 'DECODE'));
-		return $paramBase;
+		return dunserialize(authcode($auth, 'DECODE'));
 	}
 
 	public function set_avatar($uid, $avatar = '') {
@@ -210,6 +219,7 @@ class account_base {
 		$tmpavatarmiddle = $avatarpath.$tmpavatarmiddle;
 		$tmpavatarsmall = $avatarpath.$tmpavatarsmall;
 
+		loaducenter();
 		if(UC_STANDALONE) {
 			if($_G['setting']['ftp']['on'] == 2) {
 				define('ACCOUNT_DATADIR', DISCUZ_DATA.'./attachment/');
