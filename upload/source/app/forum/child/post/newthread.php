@@ -265,6 +265,33 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 
 	$params['geoloc'] = diconv(getgpc('geoloc'), 'UTF-8');
 
+
+	// 开始处理json编辑器内容中的图片、视频等附件
+	if(is_valid_non_empty_json($params['content'], true)) {
+		$blocksData = json_decode($params['content'], true);
+
+		$blocks = table_common_editorblock::t()->fetch_all_block_by_type([1, 2, 3, 4, 5]);
+		$identifiers = array_map(function($block) {
+			return $block['identifier'];
+		}, $blocks);
+		$requiredIdentifiers = ['attaches', 'audio', 'image', 'video'];
+		$missingIdentifiers = array_diff($requiredIdentifiers, $identifiers);
+		if (!empty($missingIdentifiers)) {
+			$identifiers = array_merge($identifiers, $missingIdentifiers);
+		}
+
+		foreach($blocksData['blocks'] as $key => $value) {
+			if(in_array($value['type'], $identifiers)) {
+				$_aid = $value['data']['file']['aid'];
+				if(!empty($_aid)) {
+					$_GET['attachnew'][$_aid] = ['description' => '', 'readperm' => '', 'price' => 0];
+				}
+			}
+		}
+	}
+	// 结束处理json编辑器内容中的图片、视频等附件
+
+
 	if(getgpc('rushreply')) {
 		$bfmethods[] = ['class' => 'forum\extend_thread_rushreply', 'method' => 'before_newthread'];
 		$afmethods[] = ['class' => 'forum\extend_thread_rushreply', 'method' => 'after_newthread'];
@@ -318,34 +345,7 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 		}
 	}
 	// cover end
-	// 开始处理json编辑器内容中的图片
-	if(is_valid_non_empty_json($params['content'], true)) {
-		$blocksData = json_decode($params['content'], true);
-		$withImage = 0;
 
-		$blocks = table_common_editorblock::t()->fetch_all_block_by_type([1, 2, 3, 4, 5]);
-		$identifiers = array_map(function($block) {
-			return $block['identifier'];
-		}, $blocks);
-		$requiredIdentifiers = ['attaches', 'audio', 'image', 'video'];
-		$missingIdentifiers = array_diff($requiredIdentifiers, $identifiers);
-		if (!empty($missingIdentifiers)) {
-			$identifiers = array_merge($identifiers, $missingIdentifiers);
-		}
-
-		foreach($blocksData['blocks'] as $key => $value) {
-			if(in_array($value['type'], $identifiers)) {
-				$_aid = $value['data']['file']['aid'];
-				if(!empty($_aid)) {
-					convertunusedattach($_aid, $tid, $pid);
-					$withImage = 2;
-				}
-			}
-		}
-		table_forum_thread::t()->update($tid, ['attachment' => $withImage]);
-		table_forum_post::t()->update_post('tid:'.$tid, $pid, ['attachment' => $withImage], true);
-	}
-	// 结束处理json编辑器内容中的图片
 
 	if(rewriterulecheck('forum_viewthread')) {
 		$returnurl = rewriteoutput('forum_viewthread', 1, '', $modthread->tid, 1, '', $extra);

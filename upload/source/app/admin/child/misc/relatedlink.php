@@ -44,7 +44,11 @@ if(!submitcheck('linksubmit')) {
 	showtableheader('', '', 'id="relatedlinktable"');
 	showsubtitle(['', 'misc_relatedlink_edit_name', 'misc_relatedlink_edit_url', '<label><input class="checkbox" type="checkbox" name="articleall" onclick="checkAll(\'prefix\', this.form, \'article\', \'articleall\')">'.cplang('misc_relatedlink_extent_article').'</label>', '<label><input class="checkbox" type="checkbox" name="forumall" onclick="checkAll(\'prefix\', this.form, \'forum\', \'forumall\')">'.cplang('misc_relatedlink_extent_forum').'</label>', '<label><input class="checkbox" type="checkbox" name="groupall" onclick="checkAll(\'prefix\', this.form, \'group\', \'groupall\')">'.cplang('misc_relatedlink_extent_group').'</label>', '<label><input class="checkbox" type="checkbox" name="blogall" onclick="checkAll(\'prefix\', this.form, \'blog\', \'blogall\')">'.cplang('misc_relatedlink_extent_blog').'</label>'], 'header', $tdstyle);
 
-	$query = table_common_relatedlink::t()->range(0, 0, 'DESC');
+	$ppp = 50;
+	$page = max($_GET['page'], 1);
+	$start = ($page - 1) * $ppp;
+	$totalcount = table_common_relatedlink::t()->count();
+	$query = table_common_relatedlink::t()->range($start, $ppp, 'DESC');
 	foreach($query as $link) {
 		$extent = sprintf('%04b', $link['extent']);
 		showtablerow('', ['class="td25"', '', '', 'class="td26"', 'class="td26"', 'class="td26"', ''], [
@@ -59,7 +63,9 @@ if(!submitcheck('linksubmit')) {
 	}
 
 	echo '<tr><td></td><td colspan="6"><div><a href="###" onclick="addrow(this, 0)" class="addtr">'.$lang['misc_relatedlink_add'].'</a></div></td></tr>';
-	showsubmit('linksubmit', 'submit', 'del');
+	$multipage = multi($totalcount, $ppp, $page, ADMINSCRIPT.'?action=misc&operation=relatedlink');
+	showsubmit('linksubmit', 'submit', 'del', '', $multipage);
+	showhiddenfields(['page' => $page]);
 	showtablefooter();
 	showformfooter();
 	echo '<script type="text/javascript">floatbottom(\'relatedlink_header\');$(\'relatedlink_header\').style.width = $(\'relatedlinktable\').offsetWidth + \'px\';</script>';
@@ -97,7 +103,7 @@ if(!submitcheck('linksubmit')) {
 	}
 	table_common_setting::t()->update_setting('relatedlinkstatus', $_GET['relatedlinkstatus']);
 	updatecache(['relatedlink', 'setting']);
-	cpmsg('relatedlink_succeed', 'action=misc&operation=relatedlink', 'succeed');
+	cpmsg('relatedlink_succeed', 'action=misc&operation=relatedlink'.(!empty($_GET['page']) ? '&page='.$_GET['page'] : ''), 'succeed');
 
 }
 	

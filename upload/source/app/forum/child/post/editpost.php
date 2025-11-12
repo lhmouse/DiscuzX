@@ -363,6 +363,8 @@ if(!submitcheck('editsubmit')) {
 			}
 		}
 
+
+
 		$feed = [];
 		if($isfirstpost && $special == 127) {
 			$message .= chr(0).chr(0).chr(0).$specialextra;
@@ -472,10 +474,10 @@ if(!submitcheck('editsubmit')) {
 			}
 		}
 		// cover end
-		// 开始处理json编辑器内容中的图片
+
+		// 开始处理json编辑器内容中的图片、视频等附件
 		if(is_valid_non_empty_json($param['content'], true)) {
 			$blocksData = json_decode($param['content'], true);
-			$withImage = 0;
 
 			$blocks = table_common_editorblock::t()->fetch_all_block_by_type([1, 2, 3, 4, 5]);
 			$identifiers = array_map(function($block) {
@@ -491,15 +493,12 @@ if(!submitcheck('editsubmit')) {
 				if(in_array($value['type'], $identifiers)) {
 					$_aid = $value['data']['file']['aid'];
 					if(!empty($_aid)) {
-						convertunusedattach($_aid, $_G['tid'], $pid);
-						$withImage = 2;
+						$_GET['attachnew'][$_aid] = ['description' => '', 'readperm' => '', 'price' => 0];
 					}
 				}
 			}
-			table_forum_thread::t()->update($_G['tid'], ['attachment' => $withImage]);
-			table_forum_post::t()->update_post('tid:'.$_G['tid'], $pid, ['attachment' => $withImage], true);
 		}
-		// 结束处理json编辑器内容中的图片
+		// 结束处理json编辑器内容中的图片、视频等附件
 
 		$modpost->editpost($param);
 
