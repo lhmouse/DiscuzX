@@ -88,7 +88,7 @@ function parseattach($attachpids, $attachtags, &$postlist, $skipaids = []) {
 		$attach['imgalt'] = $attach['isimage'] ? strip_tags(str_replace('"', '', $attach['description'] ? $attach['description'] : $attach['filename'])) : '';
 		$attach['attachicon'] = attachtype($extension."\t".$attach['filetype']);
 		$attach['attachsize'] = sizecount($attach['filesize']);
-		if($attach['isimage'] && !$_G['setting']['attachimgpost']) {
+		if($attach['isimage'] && !$_G['setting']['attachimgpost'] || $attach['isimage'] == 2) {
 			$attach['isimage'] = 0;
 		}
 		$attach['attachimg'] = $attach['isimage'] && (!$attach['readperm'] || $_G['group']['readaccess'] >= $attach['readperm']) ? 1 : 0;
@@ -122,7 +122,7 @@ function parseattach($attachpids, $attachtags, &$postlist, $skipaids = []) {
 		}
 
 		if(!$attached) {
-			if($attach['isimage']) {
+			if(abs($attach['isimage']) == 1) {
 				if(!$hideattachs) {
 					$postlist[$attach['pid']]['imagelist'][] = $attach['aid'];
 					$postlist[$attach['pid']]['imagelistcount']++;

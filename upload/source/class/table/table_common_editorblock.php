@@ -52,5 +52,13 @@ class table_common_editorblock extends discuz_table {
 		$blocks = DB::fetch_all('SELECT * FROM '.DB::table($this->_table).'   ORDER BY available DESC, '.DB::order('sort', $order).' '.DB::limit($start, $limit));
 		return $blocks;
 	}
+
+	public function fetch_all_block_by_type($type = [], $fields = ['identifier']) {
+		$field = '*';
+		if(!empty($fields)) {
+			$field = implode(',', $fields);
+		}
+		return DB::fetch_all('SELECT '.$field." FROM %t WHERE available > %d AND type IN (%n) ORDER BY `sort`, $this->_pk", [$this->_table, 0, $type]);
+	}
 }
 

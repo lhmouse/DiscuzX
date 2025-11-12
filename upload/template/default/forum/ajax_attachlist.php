@@ -13,6 +13,9 @@
 					<!--{if $attach['pid']}-->
 						<input type="hidden" name="attachupdate[{$attach[aid]}]" id="attachupdate{$attach[aid]}" size="2" />&nbsp;
 						<!--{if !empty($allowuploadnum)}--><a href="javascript:;" onclick="uploadWindow(function (aid, url, name){$('attachupdate$attach[aid]').value = aid;$('attachname$attach[aid]').title = '';$('attachname$attach[aid]').innerHTML = name;$('attachname$attach[aid]').onmouseover=null}, 'file');return false;">{lang update}</a><!--{/if}-->
+						<!--{if $_G['forum']['picstyle'] && $attach['thumb']}-->
+							&nbsp;<a href="forum.php?mod=ajax&action=setthreadcover&aid={$attach[aid]}&fid=$_G['fid']" onclick="ajaxmenu(this);doane(event);">{lang set_cover}</a>
+						<!--{/if}-->
 					<!--{/if}-->
 				</p>
 				<span id="attachupdate$attach[aid]"></span>

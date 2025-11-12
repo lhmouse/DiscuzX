@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_image {
 
-	var $version = '1.2.1';
+	var $version = '1.2.2';
 	var $name = '图片';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -278,7 +278,7 @@ EOF;
         <div class="cdx-block image-tool image-tool--filled [if data.withBorder=1]image-tool--withBorder[/if] [if data.stretched=1]image-tool--stretched[/if] [if data.withBackground=1]image-tool--withBackground[/if]">
             <div class="image-tool__image">
                 <div class="image-tool__image-preloader" style=""></div>
-                <img id="aimg_{id}" class="image-tool__image-picture _zoom" src="[url data.file.url,data.file.remote,data.file.directory]" title="{data.caption}" alt="{data.caption}" data-aid="{data.aid}"/>
+                <img id="aimg_{id}" class="image-tool__image-picture _zoom" src="[url data.file.url,data.file.remote,data.file.directory]" title="{data.caption}" alt="{data.caption}" data-aid="{data.file.aid}"/>
             </div>
             <div class="cdx-input image-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>

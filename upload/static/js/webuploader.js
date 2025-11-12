@@ -116,7 +116,7 @@ SWFUpload.EXT_MIME_MAP = {
 
 SWFUpload.prototype.initSWFUpload = function(userSettings) {
 	try {
-		this.customSettings = {};	// A container where developers can place their own settings associated with this instance.
+		this.customSettings = {};
 		this.settings = {};
 		this.eventQueue = [];
 		this.initSettings(userSettings);
@@ -141,7 +141,7 @@ SWFUpload.prototype.initSettings = function (userSettings) {
 
 	this.ensureDefault("file_types", "*.*");
 	this.ensureDefault("file_types_description", "All Files");
-	this.ensureDefault("file_size_limit", 0);	// Default zero means "unlimited"
+	this.ensureDefault("file_size_limit", 0);
 	this.ensureDefault("file_upload_limit", 0);
 	this.ensureDefault("file_queue_limit", 0);
 
@@ -290,7 +290,17 @@ SWFUpload.prototype.initSettings = function (userSettings) {
 	});
 
 	uploader.on('fileQueued', function(file) {
-		self.queueEvent("file_queued_handler", file);
+		if (file.type == "video/mp4") {
+			const blob = file.source.source;
+			getFirstFrame(blob, function (base64Image) {
+				file.thumbBase64 = base64Image;
+				uploader.options.formData.thumbBase64 = base64Image;
+				self.queueEvent("file_queued_handler", file);
+			});
+		}else{
+			self.queueEvent("file_queued_handler", file);
+		}
+		
 	});
 
 	uploader.on('startUpload', function() {
@@ -430,6 +440,7 @@ function fileQueued(file) {
 			}
 		}
 		this.addPostParam('filetype', file.type);
+		
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		if(this.customSettings.uploadSource == 'forum') {
 			if(this.customSettings.maxAttachNum != undefined) {
@@ -511,10 +522,8 @@ function fileDialogComplete() {
 					switchAttachbutton('attachlist');
 				}
 				try {
-					//if(this.uploader.getStats().queueNum) {
-						$('attach_tblheader').style.display = '';
-						$('attach_notice').style.display = '';
-					//}
+					$('attach_tblheader').style.display = '';
+					$('attach_notice').style.display = '';
 				} catch (ex) {}
 			} else if(this.customSettings.uploadType == 'image') {
 				if(typeof switchImagebutton == "function") {
@@ -573,19 +582,18 @@ function uploadSuccess(file, serverData) {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		if(this.customSettings.uploadSource == 'forum') {
 			if(this.customSettings.uploadType == 'poll') {
-				//var data = eval('('+serverData+')');
 				var data = serverData;
 				if(parseInt(data.aid)) {
 					var preObj = $(this.customSettings.progressTarget);
 					preObj.innerHTML = "";
 					preObj.style.display = '';
 					var img = new Image();
-					img.src = IMGDIR + '/attachimg_2.png';//data.smallimg;
+					img.src = IMGDIR + '/attachimg_2.png';
 					var imgObj = document.createElement("img");
 					imgObj.src = img.src;
 					imgObj.className = "cur1";
-					imgObj.onmouseout = function(){hideMenu('poll_img_preview_'+data.aid+'_menu');};//"hideMenu('poll_img_preview_"+data.aid+"_menu');";
-					imgObj.onmouseover = function(){showMenu({'menuid':'poll_img_preview_'+data.aid+'_menu','ctrlclass':'a','duration':2,'timeout':0,'pos':'34'});};//"showMenu({'menuid':'poll_img_preview_"+data.aid+"_menu','ctrlclass':'a','duration':2,'timeout':0,'pos':'34'});";
+					imgObj.onmouseout = function(){hideMenu('poll_img_preview_'+data.aid+'_menu');};
+					imgObj.onmouseover = function(){showMenu({'menuid':'poll_img_preview_'+data.aid+'_menu','ctrlclass':'a','duration':2,'timeout':0,'pos':'34'});};
 					preObj.appendChild(imgObj);
 					var inputObj = document.createElement("input");
 					inputObj.type = 'hidden';
@@ -624,13 +632,9 @@ function uploadSuccess(file, serverData) {
 					this.uploader.cancelFile(file);
 					progress.setCancelled();
 					progress.toggleCancel(true, this.uploader);
-					//var stats = this.uploader.getStats();
-					//var obj = {'successNum':--stats.successNum, 'cancelNum':++stats.cancelNum};
-					//this.setStats(obj);
 				}
 			}
 		} else if(this.customSettings.uploadType == 'album') {
-			//var data = eval('('+serverData+')');
 			var data = serverData;
 			if(parseInt(data.picid)) {
 				var newTr = document.createElement("TR");
@@ -655,7 +659,6 @@ function uploadSuccess(file, serverData) {
 			}
 			$(file.id).style.display = 'none';
 		} else if(this.customSettings.uploadType == 'blog') {
-			//var data = eval('('+serverData+')');
 			var data = serverData;
 			if(parseInt(data.picid)) {
 				var tdObj = getInsertTdId(this.customSettings.imgBoxObj, 'image_td_'+data.picid);
@@ -676,7 +679,6 @@ function uploadSuccess(file, serverData) {
 			}
 			$(file.id).style.display = 'none';
 		} else if(this.customSettings.uploadSource == 'portal') {
-			//var data = eval('('+serverData+')');
 			var data = serverData;
 			if(data.aid) {
 				if(this.customSettings.uploadType == 'attach') {
@@ -708,7 +710,30 @@ function uploadSuccess(file, serverData) {
 
 function uploadComplete(file) {
 }
+function getFirstFrame(file, callback) {
+	const video = document.createElement('video');
+	video.preload = 'metadata';
+	video.muted = true;
+	video.playsInline = true;
+	video.crossOrigin = 'anonymous';
 
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+
+	video.onloadedmetadata = () => {
+		video.currentTime = 0;
+	};
+
+	video.onseeked = () => {
+		canvas.width = video.videoWidth;
+		canvas.height = video.videoHeight;
+		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+		const dataURL = canvas.toDataURL('image/png');
+		callback(dataURL);
+	};
+
+	video.src = URL.createObjectURL(file);
+}
 function uploadError(file, message) {
 	var progress = new FileProgress(file, this.customSettings.progressTarget);
 	progress.setStatus("Upload Failed.");
@@ -922,7 +947,7 @@ FileProgress.prototype.disappear = function() {
 
 	var reduceOpacityBy = 15;
 	var reduceHeightBy = 4;
-	var rate = 30; // 15 fps
+	var rate = 30;
 	if (this.opacity > 0) {
 		this.opacity -= reduceOpacityBy;
 		if (this.opacity < 0) {

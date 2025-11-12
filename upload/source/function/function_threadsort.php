@@ -26,7 +26,9 @@ function gettypetemplate($option, $optionvalue, $optionid) {
 			if($optionvalue['value']['url']) {
 				if($_G['setting']['ftp']['on'] == 2) {
 					$optionvalue['value']['url'] = str_replace('data/attachment/', '', $optionvalue['value']['url']);
-					$optionvalue['value']['url'] = $_G['setting']['attachurl'].$optionvalue['value']['url'];
+					if(!preg_match('/^https?:\/\//is', $optionvalue['value']['url'])) {
+						$optionvalue['value']['url'] = $_G['setting']['attachurl'].$optionvalue['value']['url'];
+					}
 				}
 				$showoption[$option['identifier']]['value'] .= '<a href="'.$optionvalue['value']['url'].'" target="_blank"><img class="spimg" src="'.$optionvalue['value']['url'].'" alt="" /></a>';
 			}
@@ -425,7 +427,9 @@ function threadsortshow($sortid, $tid) {
 						$threadsortshow['sortaids'][] = $imgoptiondata['aid'];
 						if($_G['setting']['ftp']['on'] == 2 && $imgoptiondata['url']) {
 							$imgoptiondata['url'] = str_replace('data/attachment/', '', $imgoptiondata['url']);
-							$imgoptiondata['url'] = $_G['setting']['attachurl'].$imgoptiondata['url'];
+							if(!preg_match('/^https?:\/\//is', $imgoptiondata['url'])) {
+								$imgoptiondata['url'] = $_G['setting']['attachurl'].$imgoptiondata['url'];
+							}
 						}
 						if(empty($templatearray['viewthread'])) {
 							$maxwidth = $option['maxwidth'] ? 'width="'.$option['maxwidth'].'"' : '';

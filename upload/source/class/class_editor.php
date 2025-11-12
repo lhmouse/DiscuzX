@@ -157,7 +157,7 @@ class editorBlock {
 	/*
 	 * [url data.url]
 	 */
-	const rUrl = '/\[url ([a-zA-Z\.]+)\]/s';
+	const rUrl = '/\[url ([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+)\]/s';
 	/*
 	 * [url data.url]
 	 */
@@ -175,6 +175,12 @@ class editorBlock {
 	*/
 	const rCodeflask = '/\[codeflask ([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),(.+?)\]/s';
 
+	/*
+	 * [media id,url,width]
+	 * 支持audio、video解析，用法：[media id,[url data.file.url,data.file.remote,data.file.directory],300]
+	 */
+	const rMedia = '/\[media ([a-zA-Z\.]+),([^,\]]+),([a-zA-Z0-9%\.]+)\]/s';
+
 	public function __construct($html, $block) {
 		$this->html = $html;
 		$this->block = $block;
@@ -188,6 +194,7 @@ class editorBlock {
 		$this->html = preg_replace_callback(self::rVar, [$this, '_var'], $this->html);
 		$this->html = preg_replace_callback(self::rUrl, [$this, '_url'], $this->html);
 		$this->html = preg_replace_callback(self::rAttach, [$this, '_attach'], $this->html);
+		$this->html = preg_replace_callback(self::rMedia, [$this, '_media'], $this->html);
 		$this->html = preg_replace_callback(self::rIf, [$this, '_if'], $this->html);
 		return $this->html;
 	}
@@ -247,6 +254,39 @@ EOF;
 		return $script;
 	}
 
+	private function _media($m, $value = null) {
+		$id = $this->_value($m[1], $value);
+		$url = $m[2];
+		$width = intval($m[3]) ?? 300;
+
+		// 验证URL合法性
+		$url = addslashes($url);
+		if(!in_array(strtolower(substr($url, 0, 6)), ['http:/', 'https:', 'ftp://', 'rtsp:/', 'mms://']) && !preg_match('/^static\//', $url) && !preg_match('/^data\//', $url)) {
+			return dhtmlspecialchars($url);
+		}
+
+		// 获取文件类型
+		$type = fileext($url);
+		$randomid = $id;
+
+		// 定义音频和视频扩展名数组
+		$audio = ['aac', 'flac', 'ogg', 'mp3', 'm4a', 'weba', 'wma', 'mid', 'wav', 'ra', 'ram'];
+		$video = ['rm', 'rmvb', 'flv', 'swf', 'asf', 'asx', 'wmv', 'avi', 'mpg', 'mpeg', 'mp4', 'm4v', '3gp', 'ogv', 'webm', 'mov'];
+
+		// 根据文件类型生成不同的播放器
+		if(in_array($type, $audio)) {
+			// 音频类型，高度使用固定值66
+			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "66");</script></ignore_js_op>';
+		} else if(in_array($type, $video)) {
+			// 视频类型，计算适当的高度
+			$height = intval($width * 0.75); // 保持4:3的宽高比
+			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "'.$height.'");</script></ignore_js_op>';
+		} else {
+			// 未知类型，返回链接
+			return '<a href="'.$url.'" target="_blank">'.$url.'</a>';
+		}
+	}
+
 	private function _object($m, $value = null) {
 		$t2 = '';
 		if($m[1] != 'null' && $m[1] != null) {
@@ -289,6 +329,13 @@ EOF;
 
 	private function _url($m, $value = null) {
 		$url = $this->_value($m[1], $value);
+		$remoteParam = $this->_value($m[2], $value);
+		$directoryParam = $this->_value($m[3], $value);
+
+		// 兼容旧版url格式
+		$url = isset($remoteParam) && $directoryParam ?
+			(($remoteParam ? getglobal('setting/ftp/attachurl') : getglobal('setting/attachurl')).$directoryParam.'/'.$url)
+			: (str_contains($url, 'http') ? $url : getglobal('siteurl').$url);
 		if(!$url) {
 			return '';
 		} else {
@@ -338,18 +385,21 @@ EOF;
 		$s = '';
 		foreach($nodes as $index => $node) {
 			$t = preg_replace(self::rLoopIndex, $index, $m[2]);
-			$t = preg_replace_callback(self::rLoopObject, function($m) use ($node) {
-				return $this->_object($m, $node);
+			$t = preg_replace_callback(self::rLoopObject, function($m_sub) use ($node) {
+				return $this->_object($m_sub, $node);
 			}, $t);
-			$t = preg_replace_callback(self::rVar, function($m) use ($node) {
-				return $this->_var($m, $node);
+			$t = preg_replace_callback(self::rVar, function($m_sub) use ($node) {
+				return $this->_var($m_sub, $node);
 			}, $t);
-			$t = preg_replace_callback(self::rIf, function($m) use ($node) {
-				return $this->_if($m, $node);
+			$t = preg_replace_callback(self::rUrl, function($m_sub) use ($node) {
+				return $this->_url($m_sub, $node);
 			}, $t);
-			$s .= preg_replace_callback(self::rColumn, function($m) use ($node) {
+			$t = preg_replace_callback(self::rIf, function($m_sub) use ($node) {
+				return $this->_if($m_sub, $node);
+			}, $t);
+			$s .= preg_replace_callback(self::rColumn, function($m_sub) use ($node) {
 				$data = ['blocks' => []];
-				$data['blocks'] = $this->_var($m, $node);
+				$data['blocks'] = $this->_var($m_sub, $node);
 				list($parserData, $styleData) = editor::parser(json_encode($data));
 				return $parserData.$styleData;
 			}, $t);
@@ -359,8 +409,8 @@ EOF;
 
 	private function _var($m, $value = null) {
 		$v = $this->_value($m[1], $value);
-		//return $v !== false ? $v : $m[0];
-		return $v !== false ? $v : '';
+		//return $v !== false ? $v : '';
+		return $v !== false ? $v : $m[0];
 	}
 
 	private function _value($var, $value = null) {

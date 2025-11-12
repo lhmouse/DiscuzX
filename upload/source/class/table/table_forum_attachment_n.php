@@ -32,13 +32,13 @@ class table_forum_attachment_n extends discuz_table {
 			list($idtype, $id) = explode(':', $tableid);
 			if($idtype == 'aid') {
 				$aid = dintval($id);
-				$tableid = DB::result_first('SELECT tableid FROM ' .DB::table('forum_attachment')." WHERE aid='$aid'");
+				$tableid = DB::result_first('SELECT tableid FROM '.DB::table('forum_attachment')." WHERE aid='$aid'");
 			} elseif($idtype == 'tid') {
 				$tid = (string)$id;
 				$tableid = dintval($tid[strlen($tid) - 1]);
 			} elseif($idtype == 'pid') {
 				$pid = dintval($id);
-				$tableid = DB::result_first('SELECT tableid FROM ' .DB::table('forum_attachment')." WHERE pid='$pid' LIMIT 1");
+				$tableid = DB::result_first('SELECT tableid FROM '.DB::table('forum_attachment')." WHERE pid='$pid' LIMIT 1");
 				$tableid = $tableid >= 0 && $tableid < 10 ? intval($tableid) : 127;
 			}
 		}
@@ -136,12 +136,16 @@ class table_forum_attachment_n extends discuz_table {
 		return $this->_check_id($idtype, $id) ? DB::fetch_first('SELECT * FROM %t WHERE %i AND isimage IN (1, -1) ORDER BY width DESC LIMIT 1', [$this->_get_table($tableid), DB::field($idtype, $id)]) : [];
 	}
 
+	public function fetch_thumb($tableid, $idtype, $id) {
+		return $this->_check_id($idtype, $id) ? DB::fetch_first('SELECT * FROM %t WHERE %i AND isimage=0 AND thumb=1 ORDER BY aid DESC LIMIT 1', [$this->_get_table($tableid), DB::field($idtype, $id)]) : [];
+	}
+
 	public function count_by_id($tableid, $idtype, $id) {
 		return $this->_check_id($idtype, $id) ? DB::result_first('SELECT COUNT(*) FROM %t WHERE %i', [$this->_get_table($tableid), DB::field($idtype, $id)]) : 0;
 	}
 
 	public function count_image_by_id($tableid, $idtype, $id) {
-		return $this->_check_id($idtype, $id) ? DB::result_first('SELECT COUNT(*) FROM %t WHERE %i AND isimage IN (1, -1)', [$this->_get_table($tableid), DB::field($idtype, $id)]) : 0;
+		return $this->_check_id($idtype, $id) ? DB::result_first('SELECT COUNT(*) FROM %t WHERE %i AND isimage IN (2, 1, -1)', [$this->_get_table($tableid), DB::field($idtype, $id)]) : 0;
 	}
 
 	public function fetch_all_attachment($tableid, $aids, $remote = false, $isimage = false) {
@@ -182,13 +186,13 @@ class table_forum_attachment_n extends discuz_table {
 	}
 
 	public function fetch_all_by_pid_width($tableid, $pids, $width) {
-		return DB::fetch_all("SELECT * FROM %t WHERE %i AND isimage IN ('1', '-1') AND width>=%d", [$this->_get_table($tableid), DB::field('pid', $pids), $width]);
+		return DB::fetch_all("SELECT * FROM %t WHERE %i AND isimage IN ('1', '-1') AND width>=%d OR isimage=2", [$this->_get_table($tableid), DB::field('pid', $pids), $width]);
 	}
 
 	public function get_total_filesize() {
 		$attachsize = 0;
 		for($i = 0; $i < 10; $i++) {
-			$attachsize += DB::result_first('SELECT SUM(filesize) FROM ' .DB::table('forum_attachment_'.$i));
+			$attachsize += DB::result_first('SELECT SUM(filesize) FROM '.DB::table('forum_attachment_'.$i));
 		}
 		return $attachsize;
 	}

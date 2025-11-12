@@ -740,6 +740,7 @@ function html5DPlayer(randomid, ext, src, width, height) {
 			listFolded: true,
 			video: {
 				url: src,
+				pic: src + '.thumb.jpg'
 			}
 		});
 	} else {
@@ -748,7 +749,30 @@ function html5DPlayer(randomid, ext, src, width, height) {
 		}, 50);
 	}
 }
+function getFirstFrame(file, callback) {
+	const video = document.createElement('video');
+	video.preload = 'metadata';
+	video.muted = true;
+	video.playsInline = true;
+	video.crossOrigin = 'anonymous';
 
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+
+	video.onloadedmetadata = () => {
+		video.currentTime = 0;
+	};
+
+	video.onseeked = () => {
+		canvas.width = video.videoWidth;
+		canvas.height = video.videoHeight;
+		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+		const dataURL = canvas.toDataURL('image/png');
+		callback(dataURL);
+	};
+
+	video.src = URL.createObjectURL(file);
+}
 $(document).ready(function() {
 
 	if(qSel('div.pg')) {

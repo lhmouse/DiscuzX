@@ -23,7 +23,7 @@ function getattach($pid, $posttime = 0, $aids = '') {
 				$aidsnew[] = intval($aid);
 			}
 		}
-		$aids = 'aid IN (' .dimplode($aidsnew). ') AND';
+		$aids = 'aid IN ('.dimplode($aidsnew).') AND';
 	} else {
 		$aids = '';
 	}
@@ -37,6 +37,9 @@ function getattach($pid, $posttime = 0, $aids = '') {
 	foreach(table_forum_attachment::t()->fetch_all_unused_attachment($_G['uid'], empty($aidsnew) ? null : $aidsnew, $posttime > 0 ? $posttime : null) as $attach) {
 		$attach['filenametitle'] = $attach['filename'];
 		$attach['ext'] = fileext($attach['filename']);
+		if($attach['isimage'] == 2) {
+			$attach['isimage'] = 0;
+		}
 		if($allowext && !in_array($attach['ext'], $allowext)) {
 			continue;
 		}
@@ -47,6 +50,9 @@ function getattach($pid, $posttime = 0, $aids = '') {
 		foreach(table_forum_attachment::t()->fetch_all_by_id('pid', $pid, 'aid') as $attach) {
 			if(!empty($attachmentns[$attach['aid']])) {
 				$attach = array_merge($attach, $attachmentns[$attach['aid']]);
+			}
+			if($attach['isimage'] == 2) {
+				$attach['isimage'] = 0;
 			}
 			$attach['filenametitle'] = $attach['filename'];
 			$attach['ext'] = fileext($attach['filename']);
@@ -65,7 +71,7 @@ function getattach_row($attach, &$attachs, &$imgattachs) {
 	$attach['attachsize'] = sizecount($attach['filesize']);
 	$attach['dateline'] = dgmdate($attach['dateline']);
 	$attach['filetype'] = attachtype($attach['ext']."\t".$attach['filetype']);
-	if($attach['isimage'] < 1) {
+	if($attach['isimage'] < 1 || $attach['isimage'] == 2) {
 		if($attach['isimage']) {
 			$attach['url'] = $attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl'];
 			$attach['width'] = $attach['width'] > 300 ? 300 : $attach['width'];
@@ -89,8 +95,8 @@ function getattach_row($attach, &$attachs, &$imgattachs) {
 function parseattachmedia($attach) {
 	$attachurl = 'attach://'.$attach['aid'].'.'.$attach['ext'];
 	return match (strtolower($attach['ext'])) {
-		'mp3', 'm4a', 'wma', 'ra', 'ram', 'wav', 'mid', 'ogg', 'aac', 'flac', 'weba' => '[audio]' . $attachurl . '[/audio]',
-		'wmv', 'rm', 'rmvb', 'avi', 'asf', 'asx', 'mpg', 'mpeg', 'mov', 'flv', 'swf', 'mp4', 'm4v', '3gp', 'ogv', 'webm' => '[media=' . $attach['ext'] . ',400,300]' . $attachurl . '[/media]',
+		'mp3', 'm4a', 'wma', 'ra', 'ram', 'wav', 'mid', 'ogg', 'aac', 'flac', 'weba' => '[audio]'.$attachurl.'[/audio]',
+		'wmv', 'rm', 'rmvb', 'avi', 'asf', 'asx', 'mpg', 'mpeg', 'mov', 'flv', 'swf', 'mp4', 'm4v', '3gp', 'ogv', 'webm' => '[media='.$attach['ext'].',400,300]'.$attachurl.'[/media]',
 		default => null,
 	};
 }
@@ -320,7 +326,7 @@ function updateattach($modnewthreads, $tid, $pid, $attachnew, $attachupdate = []
 function checkflood() {
 	global $_G;
 	if(!$_G['group']['disablepostctrl'] && $_G['uid']) {
-		if($_G['setting']['floodctrl'] && discuz_process::islocked('post_lock_' .$_G['uid'], $_G['setting']['floodctrl'])) {
+		if($_G['setting']['floodctrl'] && discuz_process::islocked('post_lock_'.$_G['uid'], $_G['setting']['floodctrl'])) {
 			return true;
 		}
 		return false;
@@ -634,12 +640,12 @@ function setthreadcover($pid, $tid = 0, $aid = 0, $countimg = 0, $imgurl = '') {
 		if(empty($imgurl)) {
 			if($aid) {
 				$attachtable = 'aid:'.$aid;
-				$attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$aid, $aid, [1, -1]);
+				$attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$aid, $aid);
 			} else {
 				$attachtable = 'pid:'.$pid;
 				$attach = table_forum_attachment_n::t()->fetch_max_image('pid:'.$pid, 'pid', $pid);
 			}
-			if(!$attach) {
+			if(!$attach || !in_array($attach['isimage'], [1, -1]) && !$attach['thumb']) {
 				return false;
 			}
 			if(empty($_G['forum']['ismoderator']) && $_G['uid'] != $attach['uid']) {
@@ -648,6 +654,9 @@ function setthreadcover($pid, $tid = 0, $aid = 0, $countimg = 0, $imgurl = '') {
 			$pid = empty($pid) ? $attach['pid'] : $pid;
 			$tid = empty($tid) ? $attach['tid'] : $tid;
 			$picsource = ($attach['remote'] ? $_G['setting']['ftp']['attachurl'] : $_G['setting']['attachurl']).'forum/'.$attach['attachment'];
+			if(!$attach['isimage'] && $attach['thumb']) {
+				$picsource = getimgthumbname($picsource);
+			}
 		} else {
 			return true;
 		}
@@ -666,11 +675,7 @@ function setthreadcover($pid, $tid = 0, $aid = 0, $countimg = 0, $imgurl = '') {
 					$remote = '-';
 				}
 			}
-			$cover = table_forum_attachment_n::t()->count_image_by_id($attachtable, 'pid', $pid);
-			if($imgurl && empty($cover)) {
-				$cover = 1;
-			}
-			$cover = $remote.$cover;
+			$cover = $remote.'1';
 		} else {
 			return false;
 		}

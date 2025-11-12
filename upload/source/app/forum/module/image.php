@@ -45,8 +45,9 @@ if(dsign($id.'|'.$dw.'|'.$dh) != $_GET['key']) {
 	dheader('location: '.$_G['siteurl'].'static/image/common/none.gif');
 }
 
-if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid, [1, -1])) {
-	if(!$dw && !$dh && $attach['tid'] != $id) {
+if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid, [2, 1, -1])) {
+	$isImage = abs($attach['isimage']) == 1;
+	if($isImage && !$dw && !$dh && $attach['tid'] != $id) {
 		dheader('location: '.$_G['siteurl'].'static/image/common/none.gif');
 	}
 	dheader('Expires: '.gmdate('D, d M Y H:i:s', TIMESTAMP + 3600).' GMT');
@@ -54,6 +55,9 @@ if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid
 		$filename = $_G['setting']['ftp']['attachurl'].'forum/'.$attach['attachment'];
 	} else {
 		$filename = $_G['setting']['attachdir'].'forum/'.$attach['attachment'];
+	}
+	if(!$isImage) {
+		$filename .= '.thumb.jpg';
 	}
 	$e = parse_url($filename);
 	if(!empty($e['host'])) {

@@ -590,24 +590,147 @@ function perm_show_item(data) {
 	var type = data['type'];
 	let id = 'permitem_menu';
 	$(type + '_show').innerHTML = '';
+
+
+	// ´°¿ÚÍÏ×§
+	const permitemMenu = $(id);
+	let isDragging = false;
+	let initialX, initialY, initialOffsetX, initialOffsetY;
+
+	if (permitemMenu) {
+		permitemMenu.style.cursor = 'move';
+		permitemMenu.style.position = 'absolute';
+
+		const isInPermitemArea = (element) => {
+			while (element && element !== permitemMenu) {
+				if (element.classList.contains('permitem')) {
+					return true;
+				}
+				element = element.parentElement;
+			}
+			return false;
+		};
+
+		permitemMenu.addEventListener('mousedown', (e) => {
+			if (isInPermitemArea(e.target)) return;
+			isDragging = true;
+			initialX = e.clientX;
+			initialY = e.clientY;
+			initialOffsetX = parseInt(permitemMenu.style.left) || 0;
+			initialOffsetY = parseInt(permitemMenu.style.top) || 0;
+		});
+
+		document.addEventListener('mousemove', (e) => {
+			if (isDragging) {
+				const deltaX = e.clientX - initialX;
+				const deltaY = e.clientY - initialY;
+				permitemMenu.style.left = (initialOffsetX + deltaX) + 'px';
+				permitemMenu.style.top = (initialOffsetY + deltaY) + 'px';
+			}
+		});
+
+		document.addEventListener('mouseup', () => {
+			isDragging = false;
+		});
+
+		permitemMenu.addEventListener('mouseover', (e) => {
+			e.target.style.cursor = isInPermitemArea(e.target) ? 'default' : 'move';
+		});
+	}
+
 	if (data['data'].length) {
 		for (i in data['data']) {
+			var p = document.createElement('p');
 			var a = document.createElement('a');
 			let id = data['data'][i][0];
 			let name = data['data'][i][1];
 			let addname = data['data'][i][3] ? data['data'][i][3] : data['data'][i][1];
 			let t = data['data'][i][2];
 			a.onclick = function () {
-				perm_add_item('g' + type, id, type, [addname, t + id]);
+				if (!data['addVariable']) {
+					perm_add_item('g' + type, id, type, [addname, t + id]);
+				} else {
+					perm_add_item_component(addname, t, id, data['addVariable'], data['kwid']);
+				}
 			};
 			a.href = 'javascript:;';
+			a.dataid = id;
 			a.innerHTML = name;
-			$(type + '_show').appendChild(a);
+			if (data['multi']) {
+				var input = document.createElement('input');
+				input.type = 'checkbox';
+				input.setAttribute('level', data['data'][i][4]);
+				input.style.marginLeft = (data['data'][i][4] * 15) + 'px';
+				p.appendChild(input);
+			}
+			p.appendChild(a);
+			var span = document.createElement('span');
+			span.innerHTML = '(id: ' + id + ')';
+			p.appendChild(span);
+			$(type + '_show').appendChild(p);
 		}
 	} else {
 		$(type + '_show').innerHTML = '<a>' + $L('admincp_perm_item_no_data') + '</a>';
 	}
+	if (data['multi']) {
+		var btn = document.createElement('button');
+		btn.onclick = function () {
+			perm_add_multi(type, data['addVariable'], data['kwid']);
+		};
+		btn.className = 'btn';
+		btn.innerHTML = $L('admincp_perm_add');
+		$(id + '_footer').appendChild(btn);
+	}
 	setMenuPosition(null, id, '00');
+	document.querySelectorAll('#' + type + '_show input[type=checkbox]').forEach(function (o) {
+		o.onclick = function () {
+			var cItem = o;
+			var cLevel = cItem.getAttribute('level');
+			var cRootDataid = cItem.nextElementSibling.dataid;
+			var removeRoot = false;
+			if (o.checked) {
+				if (!cItem.getAttribute('_byRoot')) {
+					cItem.setAttribute('_root', cRootDataid);
+				} else {
+					cRootDataid = cItem.getAttribute('_byRoot');
+				}
+				cItem.removeAttribute('_disabled', cRootDataid);
+			} else {
+				if (cItem.getAttribute('_root')) {
+					cItem.removeAttribute('_root');
+					removeRoot = true;
+				}
+				if (cItem.getAttribute('_byRoot')) {
+					cItem.setAttribute('_disabled', cRootDataid);
+				}
+			}
+			do {
+				try {
+					cItem = cItem.parentNode.nextElementSibling.childNodes[0];
+				} catch (e) {
+					break;
+				}
+				if (!cItem || cItem.tagName != 'INPUT') {
+					break;
+				}
+				if (cItem.getAttribute('level') <= cLevel) {
+					break;
+				}
+				var cDataid = cItem.nextElementSibling.dataid;
+				cItem.checked = o.checked;
+				if (o.checked) {
+					cItem.removeAttribute('_disabled');
+					cItem.setAttribute('_byRoot', cRootDataid);
+					cItem.removeAttribute('_root');
+				} else if (removeRoot) {
+					cItem.removeAttribute('_byRoot');
+					cItem.removeAttribute('_disabled');
+				} else if (cItem.getAttribute('_byRoot')) {
+					cItem.setAttribute('_disabled', cDataid);
+				}
+			} while (true);
+		};
+	});
 }
 
 function perm_add_item(row, id, t, r) {

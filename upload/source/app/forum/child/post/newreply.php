@@ -471,8 +471,19 @@ if(!submitcheck('replysubmit', 0, $seccodecheck, $secqaacheck)) {
 	if(is_valid_non_empty_json($params['content'], true)) {
 		$blocksData = json_decode($params['content'], true);
 		$withImage = 0;
+
+		$blocks = table_common_editorblock::t()->fetch_all_block_by_type([1, 2, 3, 4, 5]);
+		$identifiers = array_map(function($block) {
+			return $block['identifier'];
+		}, $blocks);
+		$requiredIdentifiers = ['attaches', 'audio', 'image', 'video'];
+		$missingIdentifiers = array_diff($requiredIdentifiers, $identifiers);
+		if (!empty($missingIdentifiers)) {
+			$identifiers = array_merge($identifiers, $missingIdentifiers);
+		}
+
 		foreach($blocksData['blocks'] as $key => $value) {
-			if($value['type'] == 'image') {
+			if(in_array($value['type'], $identifiers)) {
 				$_aid = $value['data']['file']['aid'];
 				if(!empty($_aid)) {
 					convertunusedattach($_aid, $_G['tid'], $pid);

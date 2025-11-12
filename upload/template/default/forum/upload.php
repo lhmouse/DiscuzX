@@ -12,8 +12,9 @@
 			<input type="hidden" name="handlekey" value="upload" />
 			<input type="hidden" name="uid" value="$_G['uid']">
 			<input type="hidden" name="hash" value="{echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}">
+			<input type="hidden" name="thumbBase64" id="thumbBase64" value="">
 			<div class="filebtn">
-				<input type="file" name="Filedata" id="filedata" class="pf cur1" size="1" onchange="$('uploadform').submit()" />
+				<input type="file" name="Filedata" id="filedata" class="pf cur1" size="1" onchange="handleFileUpload(this)" />
 				<button type="button" class="pn pnc"><strong>{lang upload_selectfile}</strong></button>
 			</div>
 		</form>
@@ -23,5 +24,43 @@
 		<iframe name="uploadattachframe" id="uploadattachframe" style="display: none;" onload="uploadWindowload();"></iframe>
 	</div>
 </div>
+<script>
+function handleFileUpload(input) {
+	const file = input.files[0];
+	if (!file) return;
+	if (!file.type.startsWith('video/')) {
+		document.getElementById('uploadform').submit();
+		return;
+	}
+	getFirstFrame(file, function(base64Image) {
+		document.getElementById('thumbBase64').value = base64Image;
+		document.getElementById('uploadform').submit();
+	});
+}
 
+function getFirstFrame(file, callback) {
+	const video = document.createElement('video');
+	video.preload = 'metadata';
+	video.muted = true;
+	video.playsInline = true;
+	video.crossOrigin = 'anonymous';
+
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+
+	video.onloadedmetadata = () => {
+		video.currentTime = 0;
+	};
+
+	video.onseeked = () => {
+		canvas.width = video.videoWidth;
+		canvas.height = video.videoHeight;
+		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+		const dataURL = canvas.toDataURL('image/png');
+		callback(dataURL);
+	};
+
+	video.src = URL.createObjectURL(file);
+}
+</script>
 <!--{template common/footer}-->

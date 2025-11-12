@@ -205,7 +205,7 @@ $digestcheck = empty($addtodigest) ? '' : 'checked="checked"';
 $subject = isset($_GET['subject']) ? dhtmlspecialchars(censor(trim($_GET['subject']), NULL, FALSE, FALSE)) : '';
 $subject = !empty($subject) ? str_replace("\t", ' ', $subject) : $subject;
 $message = isset($_GET['message']) ? censor($_GET['message'], NULL, FALSE, FALSE) : '';
-$content = $_GET['content'] ?? '';
+$content = isset($_GET['content']) ? censor($_GET['content'], NULL, FALSE, FALSE) : '';
 $contentType = daddslashes($_GET['contentType']) ?? 'text';
 $contentEditor = daddslashes($_GET['contentEditor']) ?? 'default';
 $polloptions = isset($polloptions) ? censor(trim($polloptions)) : '';

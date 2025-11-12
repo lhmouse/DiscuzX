@@ -20,7 +20,7 @@ class forum_upload {
 	var $error_sizelimit;
 	var $getaid;
 
-	function __construct($getaid = 0, $ftpcmd = 1) {
+	function __construct($getaid = 0, $ftpcmd = 1, $thumbBase64 = '') {
 		global $_G;
 
 		$_G['uid'] = $this->uid = intval($_GET['uid']);
@@ -120,7 +120,7 @@ class forum_upload {
 
 		updatemembercount($_G['uid'], ['todayattachs' => 1, 'todayattachsize' => $upload->attach['size']]);
 
-		$thumb = $remote = $width = 0;
+		$thumb = $width = 0;
 		if($upload->attach['isimage']) {
 			if($_G['setting']['showexif']) {
 				require_once libfile('function/attachment');
@@ -145,10 +145,29 @@ class forum_upload {
 				list($width, $height) = @getimagesize($upload->attach['target']);
 			}
 		}
+		if($thumbBase64 != '' && preg_match('/^(data:\s*image\/(\w+);base64,)/', $thumbBase64, $_r)) {
+			$content = base64_decode(str_replace($_r[1], '', $thumbBase64));
+			if(strlen($content) > 0) {
+				$thumbFile = getimgthumbname($upload->attach['target']);
+				file_put_contents($thumbFile, $content);
+				$imginfo = @getimagesize($thumbFile);
+				if($imginfo !== FALSE) {
+					$thumb = 1;
+					if($_G['setting']['thumbstatus']) {
+						require_once libfile('class/image');
+						$image = new image;
+						$image->Thumb($thumbFile, 'forum/'.$upload->attach['attachdir'].basename($thumbFile), $_G['setting']['thumbwidth'], $_G['setting']['thumbheight'], $_G['setting']['thumbstatus'], 0);
+					}
+				} else {
+					@unlink($thumbFile);
+				}
+				$upload->attach['isimage'] = 2;
+			}
+		}
 		if($thumb && $upload->ftpcmd && $_G['setting']['ftp']['on'] == 2) {
 			ftpcmd('upload', 'forum/'.getimgthumbname($upload->attach['attachment']));
 		}
-		if($_GET['type'] != 'image' && $upload->attach['isimage']) {
+		if($_GET['type'] != 'image' && $upload->attach['isimage'] == 1) {
 			$upload->attach['isimage'] = -1;
 		}
 		$this->aid = $aid = getattachnewaid($this->uid);
@@ -161,7 +180,7 @@ class forum_upload {
 			'isimage' => $upload->attach['isimage'],
 			'uid' => $this->uid,
 			'thumb' => $thumb,
-			'remote' => $remote,
+			'remote' => $upload->remote,
 			'width' => $width,
 			'height' => $height
 		];

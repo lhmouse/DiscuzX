@@ -14,7 +14,9 @@
 				<!--{if $attach['pid']}-->
 					<input type="hidden" name="attachupdate[{$image[aid]}]" id="attachupdate{$image[aid]}" size="2" />&nbsp;
 					<a href="javascript:;" onclick="uploadWindow(function (aid, url, name){$('attachupdate$image[aid]').value = aid;ajaxget('forum.php?mod=ajax&action=getimage&aid=' + aid, 'imageattach$image[aid]');}, 'image');return false;">{lang update}</a>
-					<span class="pipe">|</span>
+					<!--{if $_G['forum']['picstyle']}-->
+					<a href="forum.php?mod=ajax&action=setthreadcover&aid={$image[aid]}&fid=$_G['fid']" onclick="ajaxmenu(this);doane(event);">{lang set_cover}</a>
+					<!--{/if}-->
 				<!--{/if}-->
 				<a href="javascript:;" onclick="delImgAttach($image[aid],{if !$attach[pid]}1{else}0{/if});return false;">{lang e_attach_del}</a>
 			</p>

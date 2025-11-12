@@ -65,7 +65,7 @@
 				<a id="{$editorid}_image" title="{lang e_image_title}" menupos="00" menuwidth="600">{lang e_image}</a>
 				<!--{if $_G['group']['allowpostattach']}-->
 					<div id="{$editorid}_attachn" style="display:none">!</div>
-					<a id="{$editorid}_attach" title="{lang e_attach_title}" menupos="00" menuwidth="600">{lang e_attach}</a>
+					<a id="{$editorid}_attach" title="{lang e_attach_title}" menupos="00" menuwidth="700">{lang e_attach}</a>
 				<!--{/if}-->
 				<!--{if $_G['forum']['allowmediacode'] && $_G['group']['allowmediacode']}-->
 					<a id="{$editorid}_vid" title="{lang e_video_title}">{lang e_video}</a>

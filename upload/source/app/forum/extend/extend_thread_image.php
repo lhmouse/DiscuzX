@@ -39,6 +39,10 @@ class extend_thread_image extends extend_thread_base {
 				$threadimage = table_forum_attachment_n::t()->fetch_max_image('tid:'.$tid, 'tid', $tid);
 				$threadimageaid = $threadimage['aid'];
 			}
+			if(!$threadimageaid) {
+				$threadimage = table_forum_attachment_n::t()->fetch_thumb('tid:'.$tid, 'tid', $tid);
+				$threadimageaid = $threadimage['aid'];
+			}
 		}
 
 		$values = ['fid' => $fid, 'tid' => $tid, 'pid' => $pid, 'coverimg' => ''];

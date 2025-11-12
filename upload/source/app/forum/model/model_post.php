@@ -110,7 +110,7 @@ class model_post extends discuz_model {
 		$this->param['isanonymous'] = $this->group['allowanonymous'] && !empty($this->param['isanonymous']) ? 1 : 0;
 		$author = empty($this->param['isanonymous']) ? $this->member['username'] : '';
 
-		list(, $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);
+		list(, $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message']."\t".$this->param['content'].$this->param['extramessage']);
 
 		if($this->thread['displayorder'] == -4) {
 			$this->param['modnewreplies'] = 0;
@@ -383,7 +383,7 @@ class model_post extends discuz_model {
 		$isorigauthor = $this->member['uid'] && $this->member['uid'] == $this->post['authorid'];
 		$this->param['audit'] = $this->post['invisible'] == -2 || $this->thread['displayorder'] == -2 ? $this->param['audit'] : 0;
 
-		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message'].$this->param['extramessage']);
+		list($this->param['modnewthreads'], $this->param['modnewreplies']) = threadmodstatus($this->param['subject']."\t".$this->param['message']."\t".$this->param['content'].$this->param['extramessage']);
 
 		if($post_invalid = checkpost($this->param['subject'], $this->param['message'], $isfirstpost && ($this->param['special'] || $this->param['sortid']), $this->param['contentType'] == 'json' && !empty(trim($this->param['content'])))) {
 			showmessage($post_invalid, '', ['minpostsize' => $this->setting['minpostsize'], 'maxpostsize' => $this->setting['maxpostsize']]);
@@ -508,7 +508,7 @@ class model_post extends discuz_model {
 			$tagstr = $class_tag->update_field($this->param['tags'], $this->thread['tid'], 'tid', $this->thread);
 
 		} else {
-			if($this->param['subject'] == '' && $this->param['message'] == '' && $this->thread['special'] != 2) {
+			if($this->param['subject'] == '' && ((in_array($this->param['contentType'], ['text', '']) && empty(trim($this->param['message']))) || (!empty($this->param['contentType']) && $this->param['contentType'] != 'text' && empty(trim($this->param['content'])))) && $this->thread['special'] != 2) {
 				showmessage('post_sm_isnull');
 			}
 		}

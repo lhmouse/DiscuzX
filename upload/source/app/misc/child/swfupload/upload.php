@@ -32,5 +32,5 @@ if($fid) {
 	}
 }
 $ftpcmd = !empty($_GET['simple']) || $_G['setting']['ftp']['on'] == 2 ? 1 : 0;
-$upload = new forum_upload(0, $ftpcmd);
+$upload = new forum_upload(0, $ftpcmd, $_GET['thumbBase64']);
 	

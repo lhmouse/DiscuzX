@@ -269,6 +269,9 @@ EOF;
     transform: rotate(360deg);
   }
 }
+.video-tool__video .media_tips {
+	margin: 1px 0;
+}
 </style>
 EOF;
 
