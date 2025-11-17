@@ -69,10 +69,13 @@ if($attach = table_forum_attachment_n::t()->fetch_attachment('aid:'.$daid, $daid
 		}
 		if(!file_exists($filename)) {
 			$filename = $_G['setting']['attachurl'].'forum/'.$attach['attachment'];
-			dheader('Content-Type: image');
-			@readfile($filename);
-			exit;
+			if(empty($oss)) {
+				dheader('Content-Type: image');
+				@readfile($filename);
+				exit;
+			}
 		}
+
 	}
 	require_once libfile('class/image');
 	$img = new image;

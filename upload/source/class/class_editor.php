@@ -74,13 +74,15 @@ class editor {
 		if($editorblock && $editorblock['parser'] && $editorblock['style']) {
 			$editorblock_parser = $editorblock['parser'];
 			$editorblock_style = $editorblock['style'];
+			$editorblock_static = empty($editorblock['plugin']) ? 'static/js/editorjs/tools/' . $type . '/' : 'source/plugin/' . $editorblock['plugin'] . '/editorblock/tools/' . $type . '/';
 		} else {
 			$editorblock = table_common_editorblock::t()->fetch_by_block_class($type);
 			$editorblock_parser = $editorblock['parser'];
 			$editorblock_style = $editorblock['style'];
+			$editorblock_static = empty($editorblock['plugin']) ? 'static/js/editorjs/tools/' . $type . '/' : 'source/plugin/' . $editorblock['plugin'] . '/editorblock/tools/' . $type . '/';
 			memory('set', 'editorblock_'.$type, $editorblock);
 		}
-		return [$editorblock_parser, $editorblock_style];
+		return [$editorblock_parser, $editorblock_style, $editorblock_static];
 	}
 
 	public static function getBlockParser($tpl, $block) {
@@ -94,7 +96,7 @@ class editor {
 		$parserData = '';
 		$styleData = ['types' => [], 'style' => ''];
 		foreach($blocksData['blocks'] as $key => $value) {
-			list($editorblock_parser, $editorblock_style) = self::getBlockTemplate($value['type']);
+			list($editorblock_parser, $editorblock_style, $editorblock_static) = self::getBlockTemplate($value['type']);
 			// 是否用户回帖可见
 			$allowParser = true;
 			if($value['tunes']['hideTune']['hide']) {
@@ -109,7 +111,7 @@ class editor {
 			if(!$allowParser) {
 				$parser = '<div class="locked">'.($_G['uid'] ? $_G['username'] : lang('forum/template', 'guest')).lang('forum/template', 'post_hide_reply_hidden_text').'<a href="forum.php?mod=post&action=reply&fid='.$_G['fid'].'&tid='.$_G['tid'].'" onclick="showWindow(\'reply\', this.href)">'.lang('forum/template', 'reply').'</a></div>';
 			} else {
-				$parser = (new editorBlock($editorblock_parser, $value))->replace();
+				$parser = (new editorBlock($editorblock_parser, $value, $editorblock_static))->replace();
 			}
 
 			// 锚点解析
@@ -137,6 +139,7 @@ class editor {
 class editorBlock {
 	var $html = '';
 	var $block = [];
+	var $static = '';
 
 	/*
 	 * [loop data.items]
@@ -171,9 +174,9 @@ class editorBlock {
 	 */
 	const rScript = '/\[script (.+?)\]/s';
 	/*
-	* [codeflask id,language,code,jspath]
+	* [codeflask id,language,code]
 	*/
-	const rCodeflask = '/\[codeflask ([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),(.+?)\]/s';
+	const rCodeflask = '/\[codeflask ([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+),([a-zA-Z\.]+)\]/s';
 
 	/*
 	 * [media id,url,width]
@@ -181,13 +184,19 @@ class editorBlock {
 	 */
 	const rMedia = '/\[media ([a-zA-Z\.]+),([^,\]]+),([a-zA-Z0-9%\.]+)\]/s';
 
-	public function __construct($html, $block) {
+	const rJsFile = '/\[jsfile ([a-zA-Z0-9_\.]+\.js)\]/s';
+	const rCssFile = '/\[cssfile ([a-zA-Z0-9_\.]+\.css)\]/s';
+
+	public function __construct($html, $block, $static) {
 		$this->html = $html;
 		$this->block = $block;
+		$this->static = $static;
 	}
 
 	public function replace() {
 		//$this->html = preg_replace_callback(self::rScript, array($this, '_script'), $this->html);
+		$this->html = preg_replace_callback(self::rJsFile, [$this, '_jsfile'], $this->html);
+		$this->html = preg_replace_callback(self::rCssFile, [$this, '_cssfile'], $this->html);
 		$this->html = preg_replace_callback(self::rCodeflask, [$this, '_codeflask'], $this->html);
 		$this->html = preg_replace_callback(self::rLoop, [$this, '_loop'], $this->html);
 		$this->html = preg_replace_callback(self::rLoopObject, [$this, '_object'], $this->html);
@@ -200,12 +209,6 @@ class editorBlock {
 	}
 
 	private function _codeflask($m, $value = null) {
-		$path = $m[5];
-		if(str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'ftp://')) {
-			return '';
-		}
-		$path = str_replace('{STATICURL}', getglobal('staticurl'), $path);
-		$path = str_replace('{VERHASH}', getglobal('style/verhash'), $path);
 		$id = $this->_value($m[1], $value);
 		$language = $this->_value($m[2], $value);
 		$n_count = $this->_value($m[3], $value) ?? 0;
@@ -214,7 +217,6 @@ class editorBlock {
 		$code = dhtmlspecialchars($code);
 		$rand = time().random(5);
 		$script = <<<EOF
-<script type="application/javascript" src="$path"></script>
 <script type="application/javascript">
 			const editorElem$rand = document.getElementById('codeflask-$id');
 			const flask$rand = new CodeFlask(editorElem$rand, {
@@ -355,6 +357,30 @@ EOF;
 		} else {
 			return aidencode($aid, 0, $_G['tid']);
 		}
+	}
+
+	private function _jsfile($m, $value = null) {
+		$filename = $m[1];
+		$blockType = $this->block['type'] ?? '';
+		if(empty($blockType) || empty($this->static) || strpos($this->static, $blockType) === false) {
+			return '';
+		}
+
+		$path = $this->static . $filename . '?' . getglobal('style/verhash');
+
+		return '<script type="text/javascript" src="' . $path . '"></script>';
+	}
+
+	private function _cssfile($m, $value = null) {
+		$filename = $m[1];
+		$blockType = $this->block['type'] ?? '';
+		if(empty($blockType) || empty($this->static) || strpos($this->static, $blockType) === false) {
+			return '';
+		}
+
+		$path = $this->static . $filename . '?' . getglobal('style/verhash');
+
+		return '<link rel="stylesheet" type="text/css" href="' . $path . '" />';
 	}
 
 	private function _script($m, $value = null) {

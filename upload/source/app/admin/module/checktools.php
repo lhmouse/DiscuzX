@@ -61,6 +61,9 @@ function getremotefile($file) {
 		$str = file_get_contents($file);
 	} else {
 		$str = dfsockopen($file);
+		if(empty($str)) {
+			$str = oss_base::check_file($file);
+		}
 	}
 	return $str;
 }

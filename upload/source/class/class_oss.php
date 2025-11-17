@@ -74,7 +74,7 @@ abstract class oss_base {
 		return $expiration.'Z';
 	}
 
-	public function check_file($url, $timeout = 15, $encodetype = 'URLENCODE') {
+	public static function check_file($url, $timeout = 15, $encodetype = 'URLENCODE') {
 		global $_G;
 		$return = '';
 		if(function_exists('curl_init') && function_exists('curl_exec')) {
