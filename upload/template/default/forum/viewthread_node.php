@@ -194,8 +194,7 @@ $postshowavatars = !($_G['setting']['bannedmessages'] & 2 && ($post['memberstatu
 				<!--{if $close_leftinfo && !$post['anonymous'] && $postshowavatars && $showavatars}-->
 					<a href="home.php?mod=space&uid=$post[authorid]" target="_blank" class="xi2 z avt" style="padding-right:10px;">{echo avatar($post['authorid'], 'small')}</a>
 				<!--{/if}-->
-				<!--{eval $_self = $thread['author'] && $post['author'] == $thread['author'] && $post['position'] !== '1';}-->
-				<!--{if $_self }-->
+				<!--{if $post['authorself']}-->
 					<em class="authicn fico-person fic4 fnmr vm" id="authicon$post[pid]" title="{lang thread_author}"></em>
 				<!--{else}-->
 					<!--{if !$post['anonymous'] && $_G['cache']['groupicon'][$post['groupid']]}-->
@@ -206,7 +205,7 @@ $postshowavatars = !($_G['setting']['bannedmessages'] & 2 && ($post['memberstatu
 				<!--{/if}-->
 
 				<!--{if $post['authorid'] && !$post['anonymous']}-->
-					<!--{if $_self}-->
+					<!--{if $post['authorself']}-->
 					&nbsp;{lang thread_author}<span class="pipe">|</span>
 					<!--{/if}-->
 					<!--{if !$_G['setting']['authoronleft']}--><a href="home.php?mod=space&uid=$post[authorid]" target="_blank" class="xi2">$post[author]</a>$authorverifys<!--{/if}-->
