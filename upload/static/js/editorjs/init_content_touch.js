@@ -196,7 +196,8 @@ var editor = new EditorJS({
 		console.log(e)
 		var needsubject = document.getElementById("needsubject");
 		var replysubmit = document.getElementsByName("replysubmit")[0];
-		if(e && (needsubject && needsubject.value || replysubmit)) {
+		var editsubmit = document.getElementsByName("editsubmit")[0];
+		if(e && (needsubject && needsubject.value || replysubmit || editsubmit)) {
 			$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
 			$('.btn_pn').attr('disable', 'false');
 		} else {

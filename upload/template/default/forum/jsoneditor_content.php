@@ -2,13 +2,18 @@
 
 <!--  Load Editor.js's Css -->
 <link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs.css?{VERHASH}" />
-
+<!--{if $_GET['action'] == 'edit' && !empty($postinfo['noticetrimstr_html'])}-->
+$postinfo['noticetrimstr_html']
+<!--{/if}-->
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
 		<input type="hidden" name="inajax" id="inajax" value="1" />
 		<input type="hidden" name="message" id="{$editorid}_textarea" value="" />
 		<input type="hidden" name="contentType" id="contentType" value="json" />
 		<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
 		<input type="hidden" name="content" id="content" value="" />
+		<!--{if $_GET['action'] == 'edit'}-->
+		<input type="hidden" name="noticetrimstr" id="noticetrimstr" value="{$postinfo['noticetrimstr']}" />
+		<!--{/if}-->
 		<input type="hidden" name="handlekey" id="handlekey" value="postform" />
 		<!--{template forum/jsoneditor_toolbar}-->
 		<div class="json-editor__content _json-editor__content--small">
@@ -25,6 +30,8 @@
     const editor_fid = "{$_G['fid']}";
     const editor_uid = "{$_G['uid']}";
     const editor_hash = "{echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}";
+    const editor_remote_attachurl = "{$_G['setting']['ftp']['attachurl']}";
+    const editor_attachurl = "{$_G['setting']['attachurl']}";
     // EDITOR_TOOLS
     let EDITOR_TOOLS = {};
     // first define the tools to be made avaliable in the columns

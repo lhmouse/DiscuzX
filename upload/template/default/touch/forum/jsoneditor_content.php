@@ -2,13 +2,17 @@
 
 <!--  Load Editor.js's Css -->
 <link rel="stylesheet" type="text/css" href="{STATICURL}js/editorjs/editorjs_mobile.css?{VERHASH}" />
-
+<!--{if $_GET['action'] == 'edit' && !empty($postinfo['noticetrimstr_html'])}-->
+$postinfo['noticetrimstr_html']
+<!--{/if}-->
 <div class="json-editor" xmlns="http://www.w3.org/1999/html">
 		<input type="hidden" name="message" id="needmessage" value="" />
 		<input type="hidden" name="content" id="content" value="" />
 		<input type="hidden" name="contentType" id="contentType" value="json" />
 		<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
-		
+		<!--{if $_GET['action'] == 'edit'}-->
+		<input type="hidden" name="noticetrimstr" id="noticetrimstr" value="{$postinfo['noticetrimstr']}" />
+		<!--{/if}-->
 		<div class="json-editor__content _json-editor__content--small">
 			<div id="editorjs"></div>
 		</div>
@@ -30,6 +34,8 @@
     const editor_fid = "{$_G['fid']}";
     const editor_uid = "{$_G['uid']}";
     const editor_hash = "{echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}";
+    const editor_remote_attachurl = "{$_G['setting']['ftp']['attachurl']}";
+    const editor_attachurl = "{$_G['setting']['attachurl']}";
     // EDITOR_TOOLS
     let EDITOR_TOOLS = {};
     // first define the tools to be made avaliable in the columns

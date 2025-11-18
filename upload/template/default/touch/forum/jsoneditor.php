@@ -29,8 +29,11 @@
     <input type="hidden" name="inajax" id="inajax" value="1" />
     <input type="hidden" name="message" id="message" value="" />
     <input type="hidden" name="content" id="content" value="" />
-	<input type="hidden" name="contentType" id="contentType" value="json" />
-	<input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
+    <input type="hidden" name="contentType" id="contentType" value="json" />
+    <input type="hidden" name="contentEditor" id="contentEditor" value="jsonEditor" />
+    <!--{if $_GET['action'] == 'edit'}-->
+    <input type="hidden" name="noticetrimstr" id="noticetrimstr" value="{$postinfo['noticetrimstr']}" />
+    <!--{/if}-->
     <input type="hidden" id="postsave" name="save" value="">
     <input type="hidden" id="mobileeditor" name="mobileeditor" value="1">
     <!--{if !empty($_GET['modthreadkey'])}--><input type="hidden" name="modthreadkey" id="modthreadkey" value="$_GET['modthreadkey']" /><!--{/if}-->
@@ -208,6 +211,8 @@
     const editor_fid = "{$_G['fid']}";
     const editor_uid = "{$_G['uid']}";
     const editor_hash = "{echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}";
+    const editor_remote_attachurl = "{$_G['setting']['ftp']['attachurl']}";
+    const editor_attachurl = "{$_G['setting']['attachurl']}";
     // EDITOR_TOOLS
     let EDITOR_TOOLS = {};
     // first define the tools to be made avaliable in the columns

@@ -217,6 +217,10 @@ if(!submitcheck('editsubmit')) {
 		$content = json_decode($postinfo['content'], true);
 		if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
 			$_content = json_decode($content['content'], true);
+			$postinfo['noticetrimstr'] = $content['extend']['quote_default'] ?? '';
+			if(!empty($postinfo['noticetrimstr'])) {
+				$postinfo['noticetrimstr_html'] = discuzcode($postinfo['noticetrimstr']);
+			}
 			$postinfo['content'] = json_encode($_content['blocks']);
 			$isJsonContent = true;
 		}
@@ -442,6 +446,7 @@ if(!submitcheck('editsubmit')) {
 			'htmlon' => $_GET['htmlon'],
 
 			'extramessage' => $extramessage,
+			'noticetrimstr' => $_GET['noticetrimstr'],
 		];
 
 		if($_G['group']['allowimgcontent']) {

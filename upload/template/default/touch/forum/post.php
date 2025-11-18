@@ -222,11 +222,13 @@
 		if (!post_content) {
 			post_content = _content;
 		}
+		<!--{if $postinfo['first']}-->
 		if(_needsubject.value.trim() === '' || _needsubject.value === null ||
 			post_content.trim() === '') {
 			popup.open('{lang post_sm_isnull}', 'alert');
 			return false;
 		}
+		<!--{/if}-->
 		<!--{/if}-->
 
 		var postlocation = '';

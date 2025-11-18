@@ -553,7 +553,14 @@ class model_post extends discuz_model {
 
 		$contentType = $this->param['contentType'] ?? 'text';
 		$contentEditor = $this->param['contentEditor'] ?? 'default';
-		$content = generate_content_json($contentType, $contentEditor, (!empty($this->param['content']) ? $this->param['content'] : '{}'));
+		$extend = [];
+		if(!empty($this->param['noticetrimstr'])) {
+			$extend = [
+				'quote_default' => $this->param['noticetrimstr']
+			];
+		}
+		$content = generate_content_json($contentType, $contentEditor, (!empty($this->param['content']) ? $this->param['content'] : '{}'), $extend);
+
 
 		$setarr = [
 			'original' => $this->param['original'],
