@@ -92,7 +92,7 @@ if(!$maxposition && empty($postarr)) {
 if(!empty($isdel_post)) {
 	$updatedisablepos = false;
 	foreach($isdel_post as $id => $post) {
-		if(isset($postarr[$id]['invisible']) && ($postarr[$id]['invisible'] == 0 || $postarr[$id]['invisible'] == -3 || $visibleallflag)) {
+		if(isset($postarr[$id]['invisible']) && ($postarr[$id]['invisible'] == 0 || $visibleallflag)) {
 			continue;
 		}
 		$postarr[$id] = $post;
