@@ -335,6 +335,8 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 #newspecial_menu { min-width: 90px; }
 	#newspecial_menu li, #sti .wx { display: block; zoom: 1; }
 	#newspecial_menu li:before, #sti .wx:before { content: "\f134"; font-family: dzicon; display: inline-block; height: 24px; width: 30px; line-height: 24px; text-align: center; font-size: 20px; color: #FF9C00; vertical-align: middle; }
+	#newspecial_menu li.plugin_special_thread {background-repeat: no-repeat; background-position: left 8px center;}
+	#newspecial_menu li.plugin_special_thread:before { content:""; }
 		#newspecial_menu .poll:before, #sti .poll:before { content: "\f13b"; }
 		#newspecial_menu .trade:before, #sti .trade:before { content: "\f13f"; }
 		#newspecial_menu .reward:before, #sti .reward:before { content: "\f13c"; }
