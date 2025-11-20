@@ -7,6 +7,7 @@ const config = {
 };
 
 var undo = undefined;
+var contentChanged = false;
 
 var i18n_default = {
 	messages: {
@@ -145,7 +146,7 @@ var editor = new EditorJS({
 	 */
 	readOnly: false,
 	/** 启用自动对焦 */
-	autofocus: true,
+	autofocus: false,
 
 	/**
 	 * Wrapper of Editor
@@ -166,11 +167,11 @@ var editor = new EditorJS({
 	tools: main_tools,
 	/*
 	toolbar: {
-	    // 这里设置需要显示的按钮
-	    buttons: ['header', 'bold', 'italic', 'underline', 'strike', 'code', 'link', 'image']
+		// 这里设置需要显示的按钮
+		buttons: ['header', 'bold', 'italic', 'underline', 'strike', 'code', 'link', 'image']
 	},
 	 */
-	i18n: i18n_tools !== undefined ? mergeObjects(i18n_default,  i18n_tools) : i18n_default,
+	i18n: i18n_tools !== undefined ? mergeObjects(i18n_default, i18n_tools) : i18n_default,
 
 	/**
 	 * This Tool will be used as default
@@ -180,11 +181,11 @@ var editor = new EditorJS({
 	/**
 	 * Initial Editor data
 	 */
-	data: content,
+	data: loadDraft() || content,
 	onReady: function () {
 		console.log("Delaying Save to launch Column Editors")
 
-		undo = new Undo({editor, config});
+		undo = new Undo({ editor, config });
 		new DragDrop(editor);
 
 		setTimeout(() => {
@@ -194,17 +195,53 @@ var editor = new EditorJS({
 	},
 	onChange: function (e) {
 		console.log(e)
+		contentChanged = true;
+		scheduleAutoSave();
 		var needsubject = document.getElementById("needsubject");
 		var replysubmit = document.getElementsByName("replysubmit")[0];
-		var editsubmit = document.getElementsByName("editsubmit")[0];
-		if(e && (needsubject && needsubject.value || replysubmit || editsubmit)) {
-			$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
-			$('.btn_pn').attr('disable', 'false');
-		} else {
-			$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
-			$('.btn_pn').attr('disable', 'true');
+		var postBtn = $('#postsubmit'); // 使用正确的选择器
+
+		// 检查编辑器内容是否为空
+		// 确保editor.save是一个函数
+		if (editor && typeof editor.save === 'function') {
+			editor.save().then((savedData) => {
+				var hasContent = false;
+				if (savedData && savedData.blocks && savedData.blocks.length > 0) {
+					// 检查是否有实际内容（不仅仅是空块）
+					hasContent = savedData.blocks.some(block => {
+						if (block.data && typeof block.data === 'object') {
+							// 对于文本块，检查文本内容
+							if (block.data.text && block.data.text.trim() !== '') {
+								return true;
+							}
+							// 对于其他类型块，检查是否有数据
+							if (Object.keys(block.data).length > 0) {
+								return Object.values(block.data).some(val => {
+									if (val === null || val === undefined) return false;
+									if (typeof val === 'string' && val.trim() === '') return false;
+									return true;
+								});
+							}
+						}
+						return false;
+					});
+				}
+
+				// 根据条件设置按钮状态
+				if (e && (needsubject && needsubject.value && needsubject.value.trim() !== '' || replysubmit) && hasContent) {
+					postBtn.removeClass('btn_pn_grey').addClass('btn_pn_blue');
+					postBtn.attr('disable', 'false');
+				} else {
+					postBtn.removeClass('btn_pn_blue').addClass('btn_pn_grey');
+					postBtn.attr('disable', 'true');
+				}
+			}).catch((error) => {
+				console.error('检查编辑器内容时出错:', error);
+				// 出错时默认禁用按钮
+				postBtn.removeClass('btn_pn_blue').addClass('btn_pn_grey');
+				postBtn.attr('disable', 'true');
+			});
 		}
-		// console.log('something changed');
 	}
 });
 
@@ -215,31 +252,67 @@ if (needsubject) {
 	});
 }
 
-function saveJsonContent(event) {
-	editor.save()
-	    .then((savedData) => {
-		    //console.log(JSON.stringify(savedData, null, 4));
-		    var postform = document.getElementById("postform");
+/**
+ * 保存编辑器内容为JSON格式
+ * @param {Event} [event] - 可选的事件对象
+ * @param {Object} [options] - 可选配置参数
+ * @param {Boolean} [options.validate=true] - 是否验证内容是否为空
+ * @param {String} [options.targetElementId='content'] - 目标表单元素ID
+ * @returns {Promise<Object|Boolean>} 返回保存的数据或false（当验证失败时）
+ */
+function saveJsonContent(event, options = {}) {
+	// 默认配置
+	const defaultOptions = {
+		validate: true,
+		targetElementId: 'content'
+	};
 
-		    var content = document.getElementById("content");
-		    if (savedData.blocks == '' || savedData.blocks == undefined) {
-			    editor.notifier.show({
-				    message: $L("json_editor_tip_content_null"),
-				    style: 'error',
-				    // time: 30
-			    });
-			    event.stopPropagation();
-			    return false;
-		    }
-		    content.value = JSON.stringify(savedData);
-		    //console.log(content.value);
+	// 合并配置
+	const config = Object.assign(defaultOptions, options);
 
-	    }).then(() => {
+	return editor.save().then((savedData) => {
+		const contentElement = document.getElementById(config.targetElementId);
 
-	})
-	    .catch((error) => {
-		    console.error($L("json_editor_tip_content_null"), error);
-	    });
+		// 验证内容是否为空
+		if (config.validate && (!savedData.blocks || savedData.blocks.length === 0)) {
+			if (event && typeof event.stopPropagation === 'function') {
+				event.stopPropagation();
+			}
+			return false;
+		}
+
+		// 设置内容到目标元素
+		if (contentElement) {
+			contentElement.value = JSON.stringify(savedData);
+		}
+
+		// 触发自定义事件，方便其他页面监听
+		if (typeof CustomEvent !== 'undefined' && typeof document.dispatchEvent !== 'undefined') {
+			const saveEvent = new CustomEvent('editorContentSaved', {
+				detail: {
+					data: savedData,
+					element: contentElement
+				}
+			});
+			document.dispatchEvent(saveEvent);
+		}
+
+		return savedData;
+	}).catch((error) => {
+		console.error('保存编辑器内容时出错:', error);
+
+		// 触发错误事件
+		if (typeof CustomEvent !== 'undefined' && typeof document.dispatchEvent !== 'undefined') {
+			const errorEvent = new CustomEvent('editorContentSaveError', {
+				detail: {
+					error: error
+				}
+			});
+			document.dispatchEvent(errorEvent);
+		}
+
+		throw error;
+	});
 }
 
 function succeedhandle_postform(url, msg, param) {
@@ -247,6 +320,7 @@ function succeedhandle_postform(url, msg, param) {
 		message: $L("json_editor_tip_publish_success"),
 		style: 'success'
 	});
+	clearDraft();
 	window.location.href = url;
 }
 const addBlock = (type, data = undefined, e) => {

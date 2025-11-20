@@ -1,4 +1,10 @@
 <?php exit('Access Denied');?>
+<!--{eval $jsonEditorToolbar = array();}-->
+<!--{eval foreach ($editorblocks as $item) {;}-->
+	<!--{eval if (isset($item['identifier']) && isset($item['available'])) {;}-->
+		<!--{eval $jsonEditorToolbar[$item['identifier']] = $item['available'];}-->
+	<!--{eval };}-->
+<!--{eval };}-->
 <div id="json-editor-toolbar" class="toolbar">
 	<div class="mainArea toolbar-area">
 		<div class="toolbar-section">
@@ -26,6 +32,7 @@
 					</div>
 				</button>
 			</div>
+			<!--{if $jsonEditorToolbar['clearFormatting']}-->
 			<div id="toolbar-clearFormatting">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -38,7 +45,9 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
 			<span class="toolbar-divider"></span>
+			<!--{if $jsonEditorToolbar['paragraph']}-->
 			<div id="toolbar-paragraph">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -51,6 +60,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['header']}-->
 			<div id="toolbar-header">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -63,6 +74,7 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
 			<div id="toolbar-bold">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -99,6 +111,7 @@
 					</div>
 				</button>
 			</div>
+			<!--{if $jsonEditorToolbar['emoji']}-->
 			<div id="toolbar-emoji">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -111,6 +124,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['list']}-->
 			<div id="toolbar-list">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -123,6 +138,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['quote']}-->
 			<div id="toolbar-quote">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -135,6 +152,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['delimiter']}-->
 			<div id="toolbar-delimiter">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -147,7 +166,9 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
 			<span class="toolbar-divider"></span>
+			<!--{if $jsonEditorToolbar['image']}-->
 			<div id="toolbar-image">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -160,6 +181,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['video']}-->
 			<div id="toolbar-video">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -172,6 +195,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['audio']}-->
 			<div id="toolbar-audio">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -184,6 +209,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['attaches']}-->
 			<div id="toolbar-attaches">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -196,6 +223,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['table']}-->
 			<div id="toolbar-table">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -208,6 +237,8 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
+			<!--{if $jsonEditorToolbar['codeflask']}-->
 			<div id="toolbar-codeflask">
 				<button type="button"
 				        class="Button Button--plain Button--style"
@@ -220,6 +251,7 @@
 					</div>
 				</button>
 			</div>
+			<!--{/if}-->
 			<!--{hook/post_jsoneditor_toolbar}-->
 		</div>
 	</div>

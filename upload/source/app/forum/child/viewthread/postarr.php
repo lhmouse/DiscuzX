@@ -10,6 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+
 if($maxposition) {
 	$start = ($page - 1) * $_G['ppp'] + 1;
 	$end = $start + $_G['ppp'];
@@ -46,7 +47,6 @@ if($maxposition) {
 if(getgpc('checkrush') && $rushreply) {
 	$_G['forum_thread']['replies'] = $temp_reply;
 }
-
 
 if(!$maxposition && empty($postarr)) {
 
@@ -104,6 +104,7 @@ if(!empty($isdel_post)) {
 	}
 	$ordertype != 1 ? ksort($postarr) : krsort($postarr);
 }
+
 $summary = '';
 $curpagepids = [];
 foreach($postarr as $post) {
@@ -145,3 +146,4 @@ if($hotpostarr || $sticklist) {
 	array_unshift($postarr, $_newpostarr_first);
 	unset($_newpostarr_first, $sticklist);
 }
+

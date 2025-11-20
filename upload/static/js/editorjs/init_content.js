@@ -7,6 +7,7 @@ const config = {
 };
 
 var undo = undefined;
+var contentChanged = false;
 
 var i18n_default = {
 	messages: {
@@ -180,7 +181,7 @@ var editor = new EditorJS({
 	/**
 	 * Initial Editor data
 	 */
-	data: content,
+	data: loadDraft() || content,
 	onReady: function () {
 		console.log("Delaying Save to launch Column Editors")
 
@@ -193,7 +194,10 @@ var editor = new EditorJS({
 
 	},
 	onChange: function (e) {
-		console.log(e)
+		console.log(e);
+		// 触发自动保存草稿
+		contentChanged = true;
+		scheduleAutoSave();
 		// console.log('something changed');
 	}
 });
@@ -230,6 +234,7 @@ function succeedhandle_postform(url, msg, param) {
 		message: $L("json_editor_tip_publish_success"),
 		style: 'success'
 	});
+	clearDraft();
 	window.location.href = url;
 }
 const addBlock = (type, data = undefined, e) => {

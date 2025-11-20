@@ -186,6 +186,7 @@ class editorBlock {
 
 	const rJsFile = '/\[jsfile ([a-zA-Z0-9_\.]+\.js)\]/s';
 	const rCssFile = '/\[cssfile ([a-zA-Z0-9_\.]+\.css)\]/s';
+	const rRecursive = '/\[recursive ([a-zA-Z\.]+),([^\]]+)\]/s';
 
 	public function __construct($html, $block, $static) {
 		$this->html = $html;
@@ -201,6 +202,7 @@ class editorBlock {
 		$this->html = preg_replace_callback(self::rLoop, [$this, '_loop'], $this->html);
 		$this->html = preg_replace_callback(self::rLoopObject, [$this, '_object'], $this->html);
 		$this->html = preg_replace_callback(self::rVar, [$this, '_var'], $this->html);
+		$this->html = preg_replace_callback(self::rRecursive, [$this, '_recursive'], $this->html);
 		$this->html = preg_replace_callback(self::rUrl, [$this, '_url'], $this->html);
 		$this->html = preg_replace_callback(self::rAttach, [$this, '_attach'], $this->html);
 		$this->html = preg_replace_callback(self::rMedia, [$this, '_media'], $this->html);
@@ -431,6 +433,274 @@ EOF;
 			}, $t);
 		}
 		return $s;
+	}
+
+
+	/**
+	 * 完全参数化的无限级递归渲染方法
+	 * @param array $data 要处理的数据数组
+	 * @param array $config 配置参数数组
+	 * @param array $context 上下文数据，用于递归传递
+	 * @return string 生成的HTML内容
+	 *
+	 */
+	private function _recursiveRender($data, $config, $context = []) {
+		// 验证数据
+		if(!is_array($data) || empty($data)) {
+			return isset($config['emptyTemplate']) ? $config['emptyTemplate'] : '';
+		}
+
+		// 获取配置参数，确保所有必要参数都有默认值
+		$config = $this->_normalizeConfig($config);
+
+		// 转换数字格式的辅助函数
+		$formatNumber = function($number, $type) {
+			switch($type) {
+				case 'lower-roman':
+					return strtolower($this->_intToRoman($number));
+				case 'upper-roman':
+					return $this->_intToRoman($number);
+				case 'lower-alpha':
+					return chr(96 + $number); // 'a' 是 97
+				case 'upper-alpha':
+					return chr(64 + $number); // 'A' 是 65
+				case 'numeric':
+				default:
+					return (string)$number;
+			}
+		};
+
+		// 渲染所有子项目
+		$itemsHtml = '';
+		foreach($data as $index => $item) {
+			// 设置当前项的上下文
+			$itemContext = array_merge($context, [
+				'index' => $index,
+				'depth' => isset($context['depth']) ? $context['depth'] + 1 : 0,
+				'parent' => $context
+			]);
+
+			// 获取起始数字
+			$startNumber = isset($config['startNumber']) && intval($config['startNumber']) > 0 ? intval($config['startNumber']) : 1;
+			$currentNumber = $index + $startNumber;
+
+			// 生成层级编号
+			if(isset($context['levelNumber'])) {
+				// 对于多级编号，只转换最后一部分
+				$parentParts = explode('.', $context['levelNumber']);
+				$currentPart = $formatNumber($currentNumber, $config['counterType']);
+				$levelNumber = implode('.', $parentParts) . '.' . $currentPart;
+			} else {
+				// 对于第一级，直接转换整个编号
+				$levelNumber = $formatNumber($currentNumber, $config['counterType']);
+			}
+			$itemContext['levelNumber'] = $levelNumber;
+
+			// 替换项目模板中的占位符
+			$itemHtml = $this->_replacePlaceholders($config['itemTemplate'], $item, $itemContext, $config);
+
+			// 如果有子项，递归处理
+			if(isset($item[$config['childrenKey']]) && !empty($item[$config['childrenKey']])) {
+				// 递归调用自身处理子项
+				$childrenHtml = $this->_recursiveRender($item[$config['childrenKey']], $config, $itemContext);
+
+				// 如果配置了childrenClass，则为子项容器添加这个类
+				if(isset($config['childrenClass']) && !empty($config['childrenClass'])) {
+					// 查找容器的开始标签并添加class
+					$childrenHtml = preg_replace('/^<([a-z][a-z0-9]*)\s*/i', '<$1 class="' . $config['childrenClass'] . '" ', $childrenHtml);
+				}
+
+				// 替换子项占位符
+				$itemHtml = str_replace('{' . $config['childrenKey'] . '}', $childrenHtml, $itemHtml);
+			} else {
+				// 如果没有子项，清空子项占位符
+				$itemHtml = str_replace('{' . $config['childrenKey'] . '}', '', $itemHtml);
+			}
+
+			$itemsHtml .= $itemHtml;
+		}
+
+		// 组装完整的容器HTML
+		$containerHtml = $this->_replacePlaceholders($config['containerTemplate'], ['items' => $itemsHtml], $context, $config);
+
+		return $containerHtml;
+	}
+
+	/**
+	 * 将整数转换为罗马数字
+	 * @param int $num 要转换的整数
+	 * @return string 罗马数字字符串
+	 */
+	private function _intToRoman($num) {
+		// 确保输入是正整数
+		$num = intval($num);
+		if($num <= 0) return '0';
+
+		// 罗马数字映射
+		$romanMap = [
+			'M' => 1000,
+			'CM' => 900,
+			'D' => 500,
+			'CD' => 400,
+			'C' => 100,
+			'XC' => 90,
+			'L' => 50,
+			'XL' => 40,
+			'X' => 10,
+			'IX' => 9,
+			'V' => 5,
+			'IV' => 4,
+			'I' => 1
+		];
+
+		$result = '';
+		foreach($romanMap as $roman => $value) {
+			while($num >= $value) {
+				$result .= $roman;
+				$num -= $value;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * 替换模板中的占位符
+	 * @param string $template HTML模板
+	 * @param array $data 用于替换的数据
+	 * @param array $context 上下文数据
+	 * @param array $config 配置参数
+	 * @return string 替换后的HTML
+	 */
+	private function _replacePlaceholders($template, $data, $context, $config) {
+		$html = $template;
+
+		// 替换数据占位符
+		foreach($data as $key => $val) {
+			if(!is_array($val) && !is_object($val)) {
+				$html = str_replace('{' . $key . '}', $val, $html);
+			}
+		}
+
+		// 替换上下文占位符
+		foreach($context as $key => $val) {
+			if(!is_array($val) && !is_object($val)) {
+				$html = str_replace('{context.' . $key . '}', $val, $html);
+			}
+		}
+
+		// 替换特殊占位符
+		if(isset($context['depth'])) {
+			$html = str_replace('{depth}', $context['depth'], $html);
+		} else {
+			$html = str_replace('{depth}', '', $html);
+		}
+		if(isset($context['index'])) {
+			$html = str_replace('{index}', $context['index'], $html);
+		} else {
+			$html = str_replace('{index}', '', $html);
+		}
+		// 添加层级编号占位符替换
+		if(isset($context['levelNumber'])) {
+			$html = str_replace('{levelNumber}', $context['levelNumber'], $html);
+		} else {
+			$html = str_replace('{levelNumber}', '', $html);
+		}
+
+		// 添加对任意嵌套数据的支持，利用现有的_value方法
+		// 使用正则表达式查找所有包含点分隔符的占位符（但排除context.开头的）
+		preg_match_all('/\{(?!context\.)([\w]+)\.([\w\.]+)\}/', $html, $matches);
+
+		if (!empty($matches[1])) {
+			// matches[1]包含根键名，matches[2]包含剩余的路径，matches[0]包含完整的占位符
+			foreach (array_keys($matches[1]) as $index) {
+				$rootKey = $matches[1][$index];
+				$nestedPath = $matches[2][$index];
+				$fullPlaceholder = $matches[0][$index];
+
+				// 初始化为空字符串
+				$value = '';
+
+				// 检查根键是否存在于data中
+				if (isset($data[$rootKey])) {
+					// 使用_value方法获取嵌套值
+					$nestedValue = $this->_value($nestedPath, $data[$rootKey]);
+
+					// 如果值存在且不是数组或对象，则使用该值
+					if ($nestedValue !== false && !is_array($nestedValue) && !is_object($nestedValue)) {
+						$value = $nestedValue;
+					}
+				}
+
+				// 无论值是否存在，都进行替换（不存在时替换为空字符串）
+				$html = str_replace($fullPlaceholder, $value, $html);
+			}
+		}
+
+		return $html;
+	}
+
+	/**
+	 * 规范化配置参数
+	 * @param array $config 原始配置
+	 * @return array 规范化后的配置
+	 */
+	private function _normalizeConfig($config) {
+		// 确保所有必要的配置项都存在
+		$defaultConfig = [
+			'childrenKey' => 'items',
+			'itemTemplate' => '{content}',
+			'containerTemplate' => '{items}',
+			'emptyTemplate' => '',
+			'separator' => '',
+			'childrenClass' => 'cdx-list__item-children', // 默认的children类名
+			'counterType' => 'numeric', // 默认的计数器类型
+			'start' => 1 // 默认的起始编号
+		];
+
+		return array_merge($defaultConfig, $config);
+	}
+
+	/**
+	 * 用于在模板中调用完全参数化递归渲染的方法
+	 * 用法: [recursive dataPath,configJson]
+	 * configJson格式: {"childrenKey":"items","itemTemplate":"<li>{content}</li>","containerTemplate":"<ul>{items}</ul>"}
+	 * 基本使用（使用默认配置）：[recursive data.data.items]
+	 * 自定义所有参数（匹配您提供的HTML格式）：[recursive data.data.items,"{\"childrenKey\":\"items\",\"itemTemplate\":\"<li class=\\\"cdx-list__item\\\"><div class=\\\"cdx-list__item-content\\\" contenteditable=\\\"true\\\" data-empty=\\\"false\\\">{content}</div>{items}</li>\",\"containerTemplate\":\"<ol class=\\\"cdx-list cdx-list-ordered\\\" style=\\\"--list-counter-type: numeric;\\\">{items}</ol>\"}"]
+	 * 使用不同的数据结构和键名：[recursive data.categories,"{\"childrenKey\":\"subcategories\",\"itemTemplate\":\"<option value=\\\"{id}\\\">{name}</option>{subcategories}\",\"containerTemplate\":\"<select>{items}</select>\"}"]
+	 * 使用上下文变量（如索引、深度等）：[recursive data.items,"{\"itemTemplate\":\"<div class=\\\"level-{depth}\\\">{index}: {content}</div>{items}\",\"containerTemplate\":\"<div>{items}</div>\"}"]
+	 */
+	private function _recursive($m, $value = null) {
+		// 解析参数 - 使用正则捕获组直接获取数据
+		$dataPath = isset($m[1]) ? trim($m[1]) : '';
+
+		// 获取JSON配置，只使用m[2]捕获组（与正则表达式匹配）
+		$configJson = isset($m[2]) ? trim($m[2]) : '{}';
+
+		// 移除配置字符串两端可能存在的引号
+		if ((strpos($configJson, '"') === 0 && strrpos($configJson, '"') === strlen($configJson) - 1) ||
+			(strpos($configJson, "'") === 0 && strrpos($configJson, "'") === strlen($configJson) - 1)) {
+			$configJson = substr($configJson, 1, -1);
+		}
+
+		// 处理JSON中的转义字符，确保HTML标签正确解析
+		$configJson = stripslashes($configJson);
+
+		// 解析配置JSON，并添加错误处理
+		$config = json_decode($configJson, true);
+		// 检查JSON解析是否成功
+		if(json_last_error() !== JSON_ERROR_NONE || !is_array($config)) {
+			// 如果解析失败，使用默认配置
+			$config = [];
+		}
+
+		// 获取数据
+		$data = [];
+		if($dataPath != 'null' && $dataPath != null) {
+			$data = $this->_value($dataPath, $value);
+		}
+
+		// 调用递归渲染方法
+		return $this->_recursiveRender($data, $config);
 	}
 
 	private function _var($m, $value = null) {
