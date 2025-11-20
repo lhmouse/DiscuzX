@@ -1,6 +1,11 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
 
+调用不可定制的细胞模板: {cells abc/t}
+<hr>
+调用可定制的细胞模板: {cells abc/t2}
+<hr>
+
 <script type="text/javascript" src="template/sample/static/sample.js"></script>
 <a href="javascript:;" onclick="sampleAlert()">{lang nice}</a>
 
