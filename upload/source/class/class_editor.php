@@ -182,7 +182,7 @@ class editorBlock {
 	 * [media id,url,width]
 	 * 支持audio、video解析，用法：[media id,[url data.file.url,data.file.remote,data.file.directory],300]
 	 */
-	const rMedia = '/\[media ([a-zA-Z\.]+),([^,\]]+),([a-zA-Z0-9%\.]+)\]/s';
+	const rMedia = '/\[media ([a-zA-Z\.]+),([^,\]]+),([a-zA-Z0-9%\.]+)(?:,([^,\]]+))?\]/s';
 
 	const rJsFile = '/\[jsfile ([a-zA-Z0-9_\.]+\.js)\]/s';
 	const rCssFile = '/\[cssfile ([a-zA-Z0-9_\.]+\.css)\]/s';
@@ -205,8 +205,8 @@ class editorBlock {
 		$this->html = preg_replace_callback(self::rRecursive, [$this, '_recursive'], $this->html);
 		$this->html = preg_replace_callback(self::rUrl, [$this, '_url'], $this->html);
 		$this->html = preg_replace_callback(self::rAttach, [$this, '_attach'], $this->html);
-		$this->html = preg_replace_callback(self::rMedia, [$this, '_media'], $this->html);
 		$this->html = preg_replace_callback(self::rIf, [$this, '_if'], $this->html);
+		$this->html = preg_replace_callback(self::rMedia, [$this, '_media'], $this->html);
 		return $this->html;
 	}
 
@@ -258,10 +258,14 @@ EOF;
 		return $script;
 	}
 
+	/*
+	 * 调用示例：[media id,[url data.file.url,data.file.remote,data.file.directory],300,[url data.coverImage.url,data.coverImage.remote,data.coverImage.directory]]
+	 */
 	private function _media($m, $value = null) {
 		$id = $this->_value($m[1], $value);
 		$url = $m[2];
 		$width = intval($m[3]) ?? 300;
+		$thumbnail = isset($m[4]) ? $m[4] : null;
 
 		// 验证URL合法性
 		$url = addslashes($url);
@@ -270,8 +274,22 @@ EOF;
 		}
 
 		// 获取文件类型
-		$type = fileext($url);
+		$cleanUrl = parse_url($url, PHP_URL_PATH) ?: $url;
+		$type = fileext($cleanUrl);
 		$randomid = $id;
+
+
+		// 定义常见的图片扩展名
+		$imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'ico', 'svg'];
+		if ($thumbnail) {
+			// 从thumbnail URL中提取扩展名
+			$thumbExt = fileext(parse_url($thumbnail, PHP_URL_PATH) ?: $thumbnail);
+			// 如果不是图片扩展名，则设置为空字符串
+			if (!in_array($thumbExt, $imageExtensions)) {
+				$thumbnail = '';
+			}
+		}
+
 
 		// 定义音频和视频扩展名数组
 		$audio = ['aac', 'flac', 'ogg', 'mp3', 'm4a', 'weba', 'wma', 'mid', 'wav', 'ra', 'ram'];
@@ -280,11 +298,15 @@ EOF;
 		// 根据文件类型生成不同的播放器
 		if(in_array($type, $audio)) {
 			// 音频类型，高度使用固定值66
-			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "66");</script></ignore_js_op>';
+			// 如果有缩略图，将其传递给 detectPlayer 函数
+			$thumbParam = $thumbnail ? addslashes($thumbnail) : '';
+			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "66", "'.$thumbParam.'");</script></ignore_js_op>';
 		} else if(in_array($type, $video)) {
 			// 视频类型，计算适当的高度
 			$height = intval($width * 0.75); // 保持4:3的宽高比
-			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "'.$height.'");</script></ignore_js_op>';
+			// 如果有缩略图，将其传递给 detectPlayer 函数
+			$thumbParam = $thumbnail ? addslashes($thumbnail) : '';
+			return '<ignore_js_op><div id="'.$type.'_'.$randomid.'" class="media" style="margin-left: auto;margin-right: auto;"><div id="'.$type.'_'.$randomid.'_container" class="media_container"></div><div id="'.$type.'_'.$randomid.'_tips" class="media_tips"><a href="'.$url.'" target="_blank">'.lang('template', 'parse_av_tips').'</a></div></div><script type="text/javascript">detectPlayer("'.$type.'_'.$randomid.'", "'.$type.'", "'.$url.'", "'.$width.'", "'.$height.'", "'.$thumbParam.'");</script></ignore_js_op>';
 		} else {
 			// 未知类型，返回链接
 			return '<a href="'.$url.'" target="_blank">'.$url.'</a>';
@@ -336,13 +358,13 @@ EOF;
 		$remoteParam = $this->_value($m[2], $value);
 		$directoryParam = $this->_value($m[3], $value);
 
-		// 兼容旧版url格式
-		$url = isset($remoteParam) && $directoryParam ?
-			(($remoteParam ? getglobal('setting/ftp/attachurl') : getglobal('setting/attachurl')).$directoryParam.'/'.$url)
-			: (str_contains($url, 'http') ? $url : getglobal('siteurl').$url);
 		if(!$url) {
 			return '';
 		} else {
+			// 兼容旧版url格式
+			$url = isset($remoteParam) && $directoryParam ?
+				(($remoteParam ? getglobal('setting/ftp/attachurl') : getglobal('setting/attachurl')).$directoryParam.'/'.$url)
+				: (str_contains($url, 'http') ? $url : getglobal('siteurl').$url);
 			if(str_contains($url, 'http')) {
 				return $url;
 			} else {

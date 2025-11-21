@@ -177,7 +177,14 @@ $postinfo['noticetrimstr_html']
 					return;
 				}
 
-				localStorage.setItem(getDraftKey(), currentContent);
+				// 添加时间戳到草稿数据中
+				const draftWithTimestamp = {
+					...outputData,
+					_draftTimestamp: new Date().getTime()
+				};
+
+				localStorage.setItem(getDraftKey(), JSON.stringify(draftWithTimestamp));
+
 				// console.log('草稿已保存:', new Date().toLocaleString());
 			} catch (e) {
 				// console.error('保存草稿失败:', e);
@@ -210,6 +217,152 @@ $postinfo['noticetrimstr_html']
 		} catch (e) {
 			// console.error('清除草稿失败:', e);
 		}
+	}
+
+	var draft = loadDraft();
+	var useDraft = false;
+
+	// 初始默认使用数据库数据
+	var initialData = content;
+
+	// 检查是否有需要用户选择的情况
+	if (draft && isEditMode && JSON.stringify(draft).replace(/_draftTimestamp":\d+/g, '') !== originalContent) {
+		// 创建非阻塞的自定义提示框
+		createDraftNotification();
+	}
+
+	// 创建非阻塞的草稿通知
+	function createDraftNotification() {
+		// 检查是否已存在提示框，避免重复创建
+		if (document.getElementById('draft-notification') || document.getElementById('draft-overlay')) return;
+
+		// 创建遮罩层
+		const overlay = document.createElement('div');
+		overlay.id = 'draft-overlay';
+		overlay.style.cssText = `
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 9998;
+			/* 防止移动端滚动穿透 */
+			touch-action: none;
+			/* 支持平滑过渡效果 */
+			transition: opacity 0.2s ease;
+		`;
+
+		// 创建提示框元素
+		const notification = document.createElement('div');
+		notification.id = 'draft-notification';
+		notification.style.cssText = `
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: white;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+			z-index: 9999;
+			/* 响应式宽度设置 */
+			width: 90%;
+			max-width: 400px;
+			min-width: 280px;
+			text-align: center;
+			/* 支持平滑过渡效果 */
+			transition: transform 0.2s ease, opacity 0.2s ease;
+		`;
+
+		notification.innerHTML = `
+			<p style="margin-bottom: 20px; font-size: 16px; line-height: 1.5;">{lang json_editor_tip_draft_title}</p>
+			<div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+				<button id="use-draft-btn" style="
+					padding: 10px 20px;
+					background: #007bff;
+					color: white;
+					border: none;
+					border-radius: 4px;
+					cursor: pointer;
+					font-size: 16px;
+					min-width: 120px;
+					/* 移动端适配 */
+					flex: 1;
+					max-width: 150px;
+				">
+					{lang json_editor_tip_draft_yes}
+				</button>
+				<button id="use-newest-btn" style="
+					padding: 10px 20px;
+					background: #6c757d;
+					color: white;
+					border: none;
+					border-radius: 4px;
+					cursor: pointer;
+					font-size: 16px;
+					min-width: 120px;
+					/* 移动端适配 */
+					flex: 1;
+					max-width: 150px;
+				">
+					{lang json_editor_tip_draft_no}
+				</button>
+			</div>
+		`;
+
+		// 添加到页面
+		document.body.appendChild(overlay);
+		document.body.appendChild(notification);
+
+		// 为移动设备添加触摸反馈
+		const buttons = notification.querySelectorAll('button');
+		buttons.forEach(button => {
+			button.style.userSelect = 'none';
+			button.style.touchAction = 'manipulation';
+			button.addEventListener('touchstart', function() {
+				this.style.opacity = '0.8';
+			});
+			button.addEventListener('touchend', function() {
+				this.style.opacity = '1';
+			});
+		});
+
+		// 绑定事件
+		document.getElementById('use-draft-btn').addEventListener('click', function() {
+			// 用户选择使用草稿
+			if (editor) {
+				editor.isReady
+					.then(() => {
+						editor.render(draft);
+					})
+					.catch((err) => {
+						// console.error('切换到草稿内容失败:', err);
+					});
+			}
+			notification.remove();
+			overlay.remove();
+		});
+
+		document.getElementById('use-newest-btn').addEventListener('click', function() {
+			// 用户选择使用最新数据
+			clearDraft();
+
+			// 重新渲染编辑器内容为数据库中的最新数据
+			if (editor) {
+				editor.isReady
+					.then(() => {
+						// 使用原始的content（数据库中的最新数据）重新渲染
+						editor.render(content);
+					})
+					.catch((err) => {
+						// console.error('切换到最新数据失败:', err);
+					});
+			}
+
+			notification.remove();
+			overlay.remove();
+		});
 	}
 </script>
 <!-- Initialization -->

@@ -2259,22 +2259,22 @@ function detectHtml5Support() {
 	return document.createElement("Canvas").getContext;
 }
 
-function detectPlayer(randomid, ext, src, width, height) {
+function detectPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	var h5_support = new Array('aac', 'flac', 'mp3', 'm4a', 'wav', 'flv', 'mp4', 'm4v', '3gp', 'ogv', 'ogg', 'weba', 'webm');
 	var trad_support = new Array('mp3', 'wma', 'mid', 'wav', 'ra', 'ram', 'rm', 'rmvb', 'swf', 'asf', 'asx', 'wmv', 'avi', 'mpg', 'mpeg', 'mov');
 	width = width.indexOf("%") == -1 ? width + 'px' : width;
 	height = height.indexOf("%") == -1 ? height + 'px' : height;
 	if (in_array(ext, h5_support) && detectHtml5Support()) {
-		html5Player(randomid, ext, src, width, height);
+		html5Player(randomid, ext, src, width, height, thumbImg);
 	} else if (in_array(ext, trad_support)) {
-		tradionalPlayer(randomid, ext, src, width, height);
+		tradionalPlayer(randomid, ext, src, width, height, thumbImg);
 	} else {
 		$(randomid).style.width = width;
 		$(randomid).style.height = height;
 	}
 }
 
-function tradionalPlayer(randomid, ext, src, width, height) {
+function tradionalPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	switch (ext) {
 		case 'mp3':
 		case 'wma':
@@ -2314,7 +2314,7 @@ function tradionalPlayer(randomid, ext, src, width, height) {
 	$(randomid + '_container').innerHTML = html;
 }
 
-function html5Player(randomid, ext, src, width, height) {
+function html5Player(randomid, ext, src, width, height, thumbImg = '') {
 	switch (ext) {
 		case 'aac':
 		case 'flac':
@@ -2328,7 +2328,7 @@ function html5Player(randomid, ext, src, width, height) {
 				appendscript(STATICURL + 'js/player/aplayer.min.js');
 				HTML5PLAYER['apload'] = 1;
 			}
-			html5APlayer(randomid, ext, src, width, height);
+			html5APlayer(randomid, ext, src, width, height, thumbImg);
 			break;
 		case 'flv':
 			if (!HTML5PLAYER['flvload']) {
@@ -2345,7 +2345,7 @@ function html5Player(randomid, ext, src, width, height) {
 				appendscript(STATICURL + 'js/player/dplayer.min.js');
 				HTML5PLAYER['dpload'] = 1;
 			}
-			html5DPlayer(randomid, ext, src, width, height);
+			html5DPlayer(randomid, ext, src, width, height, thumbImg);
 			break;
 		default:
 			break;
@@ -2354,7 +2354,7 @@ function html5Player(randomid, ext, src, width, height) {
 	$(randomid).style.height = height;
 }
 
-function html5APlayer(randomid, ext, src, width, height) {
+function html5APlayer(randomid, ext, src, width, height, thumbImg = '') {
 	if (JSLOADED[STATICURL + 'js/player/aplayer.min.js']) {
 		window[randomid] = new APlayer({
 			container: $(randomid + '_container'),
@@ -2368,17 +2368,18 @@ function html5APlayer(randomid, ext, src, width, height) {
 			audio: [{
 				name: ' ',
 				artist: ' ',
-				url: src
+				url: src,
+				cover: thumbImg && typeof thumbImg != 'undefined' && thumbImg !== '' ? thumbImg : src + '.thumb.jpg'
 			}]
 		});
 	} else {
 		setTimeout(function () {
-			html5APlayer(randomid, ext, src, width, height);
+			html5APlayer(randomid, ext, src, width, height, thumbImg);
 		}, 50);
 	}
 }
 
-function html5DPlayer(randomid, ext, src, width, height) {
+function html5DPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	if (JSLOADED[STATICURL + 'js/player/dplayer.min.js'] && (ext != 'flv' || JSLOADED[STATICURL + 'js/player/flv.min.js'])) {
 		window[randomid] = new DPlayer({
 			container: $(randomid + '_container'),
@@ -2392,12 +2393,12 @@ function html5DPlayer(randomid, ext, src, width, height) {
 			listFolded: true,
 			video: {
 				url: src,
-				pic: src + '.thumb.jpg'
+				pic: thumbImg && typeof thumbImg != 'undefined' && thumbImg !== '' ? thumbImg : src + '.thumb.jpg'
 			}
 		});
 	} else {
 		setTimeout(function () {
-			html5DPlayer(randomid, ext, src, width, height);
+			html5DPlayer(randomid, ext, src, width, height, thumbImg);
 		}, 50);
 	}
 }

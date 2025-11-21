@@ -530,6 +530,10 @@ $lang = [
 	'json_editor_toolbar_button' => '按鈕',
 	'json_editor_toolbar_link' => '鏈接',
 
+	'json_editor_tip_draft_title' => '檢測到您有未提交的編輯內容',
+	'json_editor_tip_draft_yes' => '使用草稿',
+	'json_editor_tip_draft_no' => '使用原始數據',
+
 	'crime_action' => '操作行為',
 	'crime_avatar' => '清除頭像',
 	'crime_banpost' => '屏蔽帖子',

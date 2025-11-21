@@ -181,7 +181,7 @@ var editor = new EditorJS({
 	/**
 	 * Initial Editor data
 	 */
-	data: loadDraft() || content,
+	data: window.initialData || loadDraft() || content,
 	onReady: function () {
 		console.log("Delaying Save to launch Column Editors")
 

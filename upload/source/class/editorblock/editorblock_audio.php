@@ -6,7 +6,7 @@ if(!defined('IN_DISCUZ')) {
 
 class editorblock_audio {
 
-	var $version = '1.0.9';
+	var $version = '1.1.0';
 	var $name = '音频';
 	var $available = 1; // 默认启用状态 0:不启用 1:启用
 	var $columns = 1; //  默认是否支持多列 0:不支持 1:支持
@@ -72,15 +72,19 @@ EOF;
                     byUrl: 'misc.php?mod=swfupload&action=swfupload&operation=jsoneditorupload&fid='+editor_fid, // Your endpoint that provides uploading by Url
                 },
                 field: 'Filedata',
+                coverField: 'Filedata',
                 types: 'audio/*',
+                coverTypes: 'image/*',
                 additionalRequestData: {
                     'uid': editor_uid,
                     'hash': editor_hash,
                 },
                 remote_attachurl: editor_remote_attachurl,
                 attachurl: editor_attachurl,
+                showCoverButton: true,
                 captionPlaceholder: '描述信息',
                 buttonContent: '请选择需要上传的音频（MP3）',
+                coverButtonContent: '请选择需要上传的音频封面图（可选）',
             },
          	tunes: ['anchorTune', 'hideTune']
         },
@@ -134,9 +138,13 @@ EOF;
 }
 
   .audio-tool__audio {
-    border-radius: 3px;
     overflow: hidden;
-    margin-bottom: 10px;
+    width: 320px;
+    margin: 50px auto;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   .audio-tool__audio-picture {
@@ -146,34 +154,27 @@ EOF;
       margin-left: auto;
       margin-right: auto;
     }
-
-  .audio-tool__audio-preloader {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-size: cover;
-      margin: auto;
-      position: relative;
-      background-color: #cdd1e0;
-      background-position: center center;
-    }
-
-  .audio-tool__audio-preloader::after {
-        content: "";
-        position: absolute;
-        z-index: 3;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        border: 2px solid #cdd1e0;
-        border-top-color: #388ae5;
-        left: 50%;
-        top: 50%;
-        margin-top: -30px;
-        margin-left: -30px;
-        animation: audio-preloader-spin 2s infinite linear;
-        box-sizing: border-box;
-      }
+    .audio-cover {
+            width: 100%;
+            height: 280px;
+            border-radius: 8px;
+            object-fit: cover; /* 保持封面比例填充 */
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        /* 原生音频控件美化（适配主流浏览器） */
+    .audio-tool__audio audio {
+            width: 100%;
+            outline: none;
+        }
+        /* 标题样式 */
+        .audio-title {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
 
   .audio-tool__caption[contentEditable="true"][data-placeholder]::before {
       position: absolute !important;
@@ -281,10 +282,14 @@ EOF;
     <div class="ce-block__content">
         <div class="cdx-block audio-tool audio-tool--filled [if data.withBorder=1]audio-tool--withBorder[/if] [if data.stretched=1]audio-tool--stretched[/if] [if data.withBackground=1]audio-tool--withBackground[/if]">
             <div class="audio-tool__audio">
-                <div class="audio-tool__audio-preloader" style=""></div>
+                [if data.caption=notnull]
+                <h3 class="audio-title">{data.caption}</h3>
+                [/if]
+                [if data.coverImage.url=notnull]
+                <img src="[url data.coverImage.url,data.coverImage.remote,data.coverImage.directory]" alt="" class="audio-cover">
+                [/if]
                 <audio class="audio-tool__audio-picture" src="[url data.file.url,data.file.remote,data.file.directory]" type="audio/mpeg" [if data.autoplay=1]autoplay[/if] [if data.loop=1]loop[/if] [if data.muted=1]muted[/if] [if data.controls=1]controls[/if] title="{data.caption}" alt="{data.caption}" />
             </div>
-            <div class="cdx-input audio-tool__caption" data-placeholder="{data.caption}">{data.caption}</div>
         </div>
     </div>
 </div>

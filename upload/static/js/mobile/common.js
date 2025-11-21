@@ -610,20 +610,20 @@ function detectHtml5Support() {
 	return document.createElement("Canvas").getContext;
 }
 
-function detectPlayer(randomid, ext, src, width, height) {
+function detectPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	var h5_support = new Array('aac', 'flac', 'mp3', 'm4a', 'wav', 'flv', 'mp4', 'm4v', '3gp', 'ogv', 'ogg', 'weba', 'webm');
 	var trad_support = new Array('mp3', 'wma', 'mid', 'wav', 'ra', 'ram', 'rm', 'rmvb', 'swf', 'asf', 'asx', 'wmv', 'avi', 'mpg', 'mpeg', 'mov');
 	if (in_array(ext, h5_support) && detectHtml5Support()) {
-		html5Player(randomid, ext, src, width, height);
+		html5Player(randomid, ext, src, width, height, thumbImg);
 	} else if (in_array(ext, trad_support)) {
-		tradionalPlayer(randomid, ext, src, width, height);
+		tradionalPlayer(randomid, ext, src, width, height, thumbImg);
 	} else {
 		document.getElementById(randomid).style.width = '100%';
 		document.getElementById(randomid).style.height = height + 'px';
 	}
 }
 
-function tradionalPlayer(randomid, ext, src, width, height) {
+function tradionalPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	switch(ext) {
 		case 'mp3':
 		case 'wma':
@@ -663,7 +663,7 @@ function tradionalPlayer(randomid, ext, src, width, height) {
 	document.getElementById(randomid + '_container').innerHTML = html;
 }
 
-function html5Player(randomid, ext, src, width, height) {
+function html5Player(randomid, ext, src, width, height, thumbImg = '') {
 	switch (ext) {
 		case 'aac':
 		case 'flac':
@@ -677,7 +677,7 @@ function html5Player(randomid, ext, src, width, height) {
 				appendscript(STATICURL + 'js/player/aplayer.min.js');
 				HTML5PLAYER['apload'] = 1;
 			}
-			html5APlayer(randomid, ext, src, width, height);
+			html5APlayer(randomid, ext, src, width, height, thumbImg);
 			break;
 		case 'flv':
 			if(!HTML5PLAYER['flvload']) {
@@ -694,7 +694,7 @@ function html5Player(randomid, ext, src, width, height) {
 				appendscript(STATICURL + 'js/player/dplayer.min.js');
 				HTML5PLAYER['dpload'] = 1;
 			}
-			html5DPlayer(randomid, ext, src, width, height);
+			html5DPlayer(randomid, ext, src, width, height, thumbImg);
 			break;
 		default:
 			break;
@@ -702,7 +702,7 @@ function html5Player(randomid, ext, src, width, height) {
 	document.getElementById(randomid).style.width = '100%';
 }
 
-function html5APlayer(randomid, ext, src, width, height) {
+function html5APlayer(randomid, ext, src, width, height, thumbImg = '') {
 	if (JSLOADED[STATICURL + 'js/player/aplayer.min.js']) {
 		window[randomid] = new APlayer({
 			container: document.getElementById(randomid + '_container'),
@@ -717,16 +717,17 @@ function html5APlayer(randomid, ext, src, width, height) {
 				name: ' ',
 				artist: ' ',
 				url: src,
+				cover: thumbImg && typeof thumbImg != 'undefined' && thumbImg !== '' ? thumbImg : src + '.thumb.jpg'
 			}]
 		});
 	} else {
 		setTimeout(function () {
-			html5APlayer(randomid, ext, src, width, height);
+			html5APlayer(randomid, ext, src, width, height, thumbImg);
 		}, 50);
 	}
 }
 
-function html5DPlayer(randomid, ext, src, width, height) {
+function html5DPlayer(randomid, ext, src, width, height, thumbImg = '') {
 	if (JSLOADED[STATICURL + 'js/player/dplayer.min.js'] && (ext != 'flv' || JSLOADED[STATICURL + 'js/player/flv.min.js'])) {
 		window[randomid] = new DPlayer({
 			container: document.getElementById(randomid + '_container'),
@@ -740,12 +741,12 @@ function html5DPlayer(randomid, ext, src, width, height) {
 			listFolded: true,
 			video: {
 				url: src,
-				pic: src + '.thumb.jpg'
+				pic: thumbImg && typeof thumbImg != 'undefined' && thumbImg !== '' ? thumbImg : src + '.thumb.jpg'
 			}
 		});
 	} else {
 		setTimeout(function () {
-			html5DPlayer(randomid, ext, src, width, height);
+			html5DPlayer(randomid, ext, src, width, height, thumbImg);
 		}, 50);
 	}
 }
