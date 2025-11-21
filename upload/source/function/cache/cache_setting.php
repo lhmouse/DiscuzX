@@ -27,6 +27,7 @@ function build_cache_setting() {
 		'posttable_info', 'threadtable_info', 'profilegroup', 'antitheft', 'makehtml', 'guestviewthumb', 'grid', 'guesttipsinthread', 'accountguard',
 		'security_usergroups_white_list', 'security_forums_white_list', 'account', 'oss', 'chgusername', 'cells', 'forumportal', 'log', 'upgroup_name',
 		'i18n', 'i18ns', 'i18n_custom', 'account_plugin_atypes', 'account_plugin_confs', 'mediasetting',
+		'mobile',
 	];
 	$serialized = array_merge($serialized, account_base::Interfaces);
 

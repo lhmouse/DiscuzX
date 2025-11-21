@@ -26,6 +26,7 @@ if(method_exists('menu', 'platform_add')) {
 	$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
 	<name><![CDATA[Sample面板]]></name>
+	<title><![CDATA[Sample面板]]></title>
 	<desc><![CDATA[Sample面板的说明]]></desc>	
 	<logo><![CDATA[<a class="logo"><img src="https://www.dismall.com/template/discuz_dismall/image/logo.png" style="height: 20px" /></a>]]></logo>
 	<navbar><![CDATA[
