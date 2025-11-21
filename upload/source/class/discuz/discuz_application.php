@@ -784,19 +784,15 @@ class discuz_application extends discuz_base {
 		}
 
 		if($this->session->isnew && $this->var['uid']) {
-			updatecreditbyaction('daylogin', $this->var['uid']);
+			if(empty($this->var['inajax'])) {
+				updatecreditbyaction('daylogin', $this->var['uid']);
+			}
 
 			include_once libfile('function/stat');
 			updatestat('login', 1);
 			if(defined('IN_MOBILE')) {
 				updatestat('mobilelogin', 1);
 			}
-			if($this->var['setting']['connect']['allow'] && $this->var['member']['conisbind']) {
-				updatestat('connectlogin', 1);
-			}
-		}
-		if(isset($this->var['member']['conisbind']) && $this->var['member']['conisbind'] && $this->var['setting'] && $this->var['setting']['connect']['newbiespan'] !== '') {
-			$this->var['setting']['newbiespan'] = $this->var['setting']['connect']['newbiespan'];
 		}
 
 		$lastact = TIMESTAMP."\t".dhtmlspecialchars(basename($this->var['PHP_SELF']))."\t".dhtmlspecialchars($this->var['mod']);
