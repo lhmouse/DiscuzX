@@ -13,8 +13,3 @@
 <!--{if $_G['basescript'] != 'portal' && $_GET['diy'] == 'yes' && check_diy_perm($topic)}-->
 <script type="text/javascript" src="{$_G[setting][jspath]}portal.js?{VERHASH}"></script>
 <!--{/if}-->
-
-<!--{if !empty($_G['setting']['workwx']['allow'])}-->
-	<script src="{$_G['setting']['jspath']}workwx.js" type="text/javascript"></script>
-	<script>var workwxUrl = '{$_G['siteurl']}{echo substr($_SERVER["REQUEST_URI"], 1);}';</script>
-<!--{/if}-->

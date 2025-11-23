@@ -417,7 +417,6 @@ $postshowavatars = !($_G['setting']['bannedmessages'] & 2 && ($post['memberstatu
 					<a class="replyadd" href="forum.php?mod=misc&action=postreview&do=support&tid=$_G[tid]&pid=$post[pid]&hash={FORMHASH}" {if $_G['uid']}onclick="ajaxmenu(this, 3000, 1, 0, '43', '');return false;"{else} onclick="showWindow('login', this.href)"{/if} onmouseover="this.title = ($('review_support_$post[pid]').innerHTML ? $('review_support_$post[pid]').innerHTML : 0) + ' {lang activity_member_unit}$_G['setting']['recommendthread'][addtext]'">$_G['setting']['recommendthread'][addtext] <span id="review_support_$post[pid]">$post[postreview][support]</span></a>
 					<a class="replysubtract" href="forum.php?mod=misc&action=postreview&do=against&tid=$_G[tid]&pid=$post[pid]&hash={FORMHASH}" {if $_G['uid']}onclick="ajaxmenu(this, 3000, 1, 0, '43', '');return false;"{else} onclick="showWindow('login', this.href)"{/if} onmouseover="this.title = ($('review_against_$post[pid]').innerHTML ? $('review_against_$post[pid]').innerHTML : 0) + ' {lang activity_member_unit}$_G['setting']['recommendthread'][subtracttext]'">$_G['setting']['recommendthread'][subtracttext] <span id="review_against_$post[pid]">$post[postreview][against]</span></a>
 					<!--{/if}-->
-					{cells viewthread/postfooter}
 					<!--{hook/viewthread_postfooter $postcount}-->
 				</em>
 

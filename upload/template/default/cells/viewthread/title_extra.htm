@@ -1,5 +1,1 @@
-<!--{if !empty($_G['setting']['workwx']['allow'])}-->
-	<a href="javascript:;" onclick="workWxShare('share=tid&tid={$thread['tid']}')">[{lang share}]</a>
-<!--{else}-->
-	<a href="forum.php?mod=viewthread&tid=$_G[tid]$fromuid" onclick="return copyThreadUrl(this, '$_G[setting][bbname]')" {if $fromuid}title="{lang share_url_copy_comment}"{/if}>[{lang share_url_copy}]</a>
-<!--{/if}-->
+<a href="forum.php?mod=viewthread&tid=$_G[tid]$fromuid" onclick="return copyThreadUrl(this, '$_G[setting][bbname]')" {if $fromuid}title="{lang share_url_copy_comment}"{/if}>[{lang share_url_copy}]</a>

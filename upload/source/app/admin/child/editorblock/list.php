@@ -119,7 +119,7 @@ if(!submitcheck('editorblocksubmit')) {
 			$editorblock['type'] = 0;
 		}
 		$key_class = 'editorblock_'.$editorblock['class'].'.php';
-		showtablerow('', ['class="td25"', 'class="td25"', 'class="td25"', 'class="td25"', 'class="td31"', 'class="td25"', 'class="td25"', 'class="td31"'], [
+		showtablerow('', ['class="td25"', 'class="td25"', 'class="td25"', 'class="td25"', 'class="td31"', 'class="td25"', 'class="td25"', 'class="td31"', 'class="td25"', 'class="td25"', 'class="td25"', 'class="td31"'], [
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$editorblock['blockid']}\">",
 			"<input type=\"text\" class=\"txt\" size=\"2\" name=\"sortnew[{$editorblock['blockid']}]\" value=\"{$editorblock['sort']}\">",
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"availablenew[{$editorblock['blockid']}]\" value=\"1\" ".($editorblock['available'] ? 'checked' : '').'>',
@@ -131,7 +131,11 @@ if(!submitcheck('editorblocksubmit')) {
 			$editorblock['copyright'],
 			dhtmlspecialchars($editorblock['version']).($alleditorblock[$key_class]['version'] > $editorblock['version'] ? ' <strong style="color: red;"> -> <a href=\''.ADMINSCRIPT.'?action=editorblock&operation=update&blockid='.$editorblock['blockid'].'&lpp='.$lpp.'&page='.$page.'\' style="color: red;">'.$alleditorblock[$key_class]['version'].'</a></strong>' : ''),
 			dhtmlspecialchars($editorblock['filename']),
-			"<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}\" class=\"act\">{$lang['parser']}</a>&nbsp;&nbsp;<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}&type=1\" class=\"act\">{$lang['css']}</a>&nbsp;&nbsp;<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}&type=2\" class=\"act\">Config</a><!--&nbsp;&nbsp;<a href=\"".ADMINSCRIPT."?action=editorblock&operation=edit&blockid={$editorblock['blockid']}\" class=\"act\">{$lang['edit']}</a>-->"
+			"<div style=\"display: flex; flex-wrap: wrap; gap: 10px;\">
+			<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}\" class=\"act\">{$lang['parser']}</a>
+			<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}&type=1\" class=\"act\">{$lang['css']}</a>
+			<a href=\"".ADMINSCRIPT."?action=editorblock&operation=parser&blockid={$editorblock['blockid']}&type=2\" class=\"act\">Config</a>
+			</div>"
 		]);
 	}
 
