@@ -46,7 +46,7 @@ foreach($_G['cache']['forums'] as $forum) {
 	if(!$forum['status'] || $forum['status'] == 2) {
 		continue;
 	}
-	if($forum['type'] != 'group' && $special !== null) {
+	if($forum['type'] != 'group') {
 		$allow = false;
 		if(!$forum['postperm'] || $forum['postperm'] && forumperm($forum['postperm'])) {
 			if($special == 1) {
