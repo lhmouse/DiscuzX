@@ -33,6 +33,9 @@ $c = cells::className($cellId);
 if(property_exists($c, 'mobileonly')) {
 	$type = 1;
 }
+if(property_exists($c, 'pconly')) {
+	$type = 0;
+}
 
 $_G['setting']['cells'] = $cellValue = table_common_setting::t()->fetch_setting('cells', true);
 
