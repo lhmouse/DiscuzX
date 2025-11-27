@@ -12,6 +12,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 
 shownav('group', 'nav_group_type');
 showsubmenu('nav_group_type');
+
 if(!submitcheck('editsubmit')) {
 	?>
 	<script type="text/JavaScript">
@@ -75,6 +76,7 @@ if(!submitcheck('editsubmit')) {
 	$name = $_GET['name'];
 	$newforum = $_GET['newforum'];
 	$newcat = $_GET['newcat'];
+	$newcatorder = $_GET['newcatorder'];
 	$neworder = $_GET['neworder'];
 	$newforumcolumns = $_GET['newforumcolumns'];
 	$forumcolumnsnew = $_GET['forumcolumnsnew'];

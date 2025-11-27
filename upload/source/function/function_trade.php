@@ -55,7 +55,7 @@ function trade_create($trade) {
 	$special = 2;
 
 	$expiration = $item_expiration ? strtotime($item_expiration) : 0;
-	$closed = $expiration > 0 && strtotime($item_expiration) < TIMESTAMP ? 1 : $closed;
+	$closed = $expiration > 0 && strtotime($item_expiration) < TIMESTAMP ? 1 : 0;
 	$item_price = floatval($item_price);
 
 	switch($transport) {

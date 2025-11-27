@@ -2395,6 +2395,7 @@ $lang =
 	'setting_sec_secqaa_question' => '問答驗證',
 	'setting_sec_secqaa_answer' => '答案',
 	'setting_sec_secqaa_comment' => '建議您設置 10 個以上驗證問題及答案，驗證問題越多，驗證問答防止惡意註冊或發佈資訊的效果越明顯。問題支持 HTML，答案長度不超過 50 字節',
+	'setting_sec_secqaa_perm' => '權限控制',
 
 	'setting_sec_reginput' => '註冊表單名稱設置',
 	'setting_sec_reginput_username' => '用戶名錶單設置',

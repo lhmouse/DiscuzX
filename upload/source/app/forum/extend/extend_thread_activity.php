@@ -69,15 +69,13 @@ class extend_thread_activity extends extend_thread_base {
 		}
 		$this->activity['ufield'] = ['userfield' => $_GET['userfield'], 'extfield' => $extfield];
 		$this->activity['ufield'] = serialize($this->activity['ufield']);
-		if(intval($_GET['activitycredit']) > 0) {
-			$this->activity['credit'] = intval($_GET['activitycredit']);
-		}
+		$this->activity['credit'] = intval($_GET['activitycredit']) > 0 ? intval($_GET['activitycredit']) : 0;
 		$this->param['extramessage'] = "\t".$_GET['activityplace']."\t".$_GET['activitycity']."\t".$_GET['activityclass'];
 	}
 
 	public function after_newthread() {
 		if($this->group['allowpostactivity']) {
-			$data = ['tid' => $this->tid, 'uid' => $this->member['uid'], 'cost' => $this->activity['cost'], 'starttimefrom' => $this->activity['starttimefrom'], 'starttimeto' => $this->activity['starttimeto'], 'place' => $this->activity['place'], 'class' => $this->activity['class'], 'gender' => $this->activity['gender'], 'number' => $this->activity['number'], 'expiration' => $this->activity['expiration'], 'aid' => $_GET['activityaid'], 'ufield' => $this->activity['ufield'], 'credit' => $this->activity['credit']];
+			$data = ['tid' => $this->tid, 'uid' => $this->member['uid'], 'cost' => $this->activity['cost'], 'starttimefrom' => $this->activity['starttimefrom'], 'starttimeto' => $this->activity['starttimeto'], 'place' => $this->activity['place'], 'class' => $this->activity['class'], 'gender' => $this->activity['gender'], 'number' => $this->activity['number'], 'expiration' => $this->activity['expiration'], 'aid' => $_GET['activityaid'] ?? 0, 'ufield' => $this->activity['ufield'], 'credit' => $this->activity['credit']];
 			table_forum_activity::t()->insert($data);
 		}
 	}

@@ -120,7 +120,7 @@ class forum_upload {
 
 		updatemembercount($_G['uid'], ['todayattachs' => 1, 'todayattachsize' => $upload->attach['size']]);
 
-		$thumb = $width = 0;
+		$thumb = $width = $height = 0;
 		if($upload->attach['isimage']) {
 			if($_G['setting']['showexif']) {
 				require_once libfile('function/attachment');

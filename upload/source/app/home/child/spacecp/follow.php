@@ -169,7 +169,7 @@ if($op == 'add') {
 		showmessage('follow_content_not_exist');
 	}
 
-	if(submitcheck('relaysubmit')) {
+	if(submitcheck('relaysubmit', 0, $seccodecheck, $secqaacheck)) {
 		if(strlen($_GET['note']) > 140) {
 			showmessage('follow_input_word_limit');
 		}
@@ -219,7 +219,7 @@ if($op == 'add') {
 		} else {
 			table_forum_threadpreview::t()->update_relay_by_tid($tid, 1);
 		}
-		showmessage('relay_feed_success', dreferer(), [], ['showdialog' => true, 'closetime' => true]);
+		showmessage('relay_feed_success', dreferer(), ['tid' => $tid, 'pid' => $post['pid'], 'reply_mod' => 0], ['showdialog' => true, 'closetime' => true]);
 	}
 	$fastpost = $_G['setting']['fastpost'];
 } elseif($op == 'checkfeed') {

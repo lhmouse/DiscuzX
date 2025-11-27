@@ -70,7 +70,7 @@ formula: 按照权限公式表达式方式显示
 }
 .component_perm .ppreview {
 	float: left;
-	width: 400px;
+	width: 250px;
 	padding: 6px 10px;
 	font-size: 100%;
 	border: 1px solid;
@@ -79,6 +79,9 @@ formula: 按照权限公式表达式方式显示
 	color: var(--admincp-fa);
 	border-radius: 3px;
 	margin-bottom: 10px;
+}
+.sub .component_perm .ppreview {
+	width: 225px;
 }
 .component_perm .pswitch {
 	float: left;

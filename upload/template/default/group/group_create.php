@@ -52,7 +52,7 @@
 							<div class="tedt">
 								<div class="bar">
 									<div class="y"><a href="javascript:;" onclick="$('descriptionpreview').innerHTML = bbcode2html($('descriptionmessage').value)">{lang group_description_preview}</a></div>
-									<!--{eval $seditor = array('description', array('bold', 'color', 'img', 'link'));}-->
+									<!--{eval $seditor = array('description', array('bold', 'color', 'link'));}-->
 									<!--{subtemplate common/seditor}-->
 								</div>
 								<div class="area">

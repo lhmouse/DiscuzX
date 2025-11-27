@@ -129,6 +129,7 @@ class image {
 		if(empty($source)) {
 			return -2;
 		}
+		$this->imginfo['size'] = @filesize($source);
 		$parse = parse_url($source);
 		if(isset($parse['host'])) {
 			if(empty($target)) {
@@ -176,7 +177,6 @@ class image {
 		$this->imginfo['width'] = $imginfo[0];
 		$this->imginfo['height'] = $imginfo[1];
 		$this->imginfo['mime'] = $imginfo['mime'];
-		$this->imginfo['size'] = @filesize($source);
 		$this->libmethod = $this->param['imagelib'];
 		if(!$this->param['imagelib'] && $this->extension['gd']) {
 			$this->libmethod = 0;

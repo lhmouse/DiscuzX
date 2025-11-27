@@ -42,6 +42,7 @@ if($upload->error()) {
 		}
 	}
 
+	$attach['remote'] = 0;
 	if(ftpperm($attach['ext'], $attach['size'])) {
 		if(ftpcmd('upload', 'forum/'.$attach['attachment']) && (!$attach['thumb'] || ftpcmd('upload', 'forum/'.getimgthumbname($attach['attachment'])))) {
 			@unlink($_G['setting']['attachdir'].'/forum/'.$attach['attachment']);

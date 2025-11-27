@@ -369,8 +369,11 @@ class helper_seccheck {
 			return [];
 		}
 		if(method_exists('helper_seccheck', 'rule_'.$rule)) {
-			$return = call_user_func(['helper_seccheck', 'rule_'.$rule], $param);
-			return $return;
+			list($seccodecheck, $secqaacheck) = call_user_func(['helper_seccheck', 'rule_'.$rule], $param);
+			if($secqaacheck && !empty($_G['setting']['secqaa']['perm']) && !forumperm($_G['setting']['secqaa']['perm'])) {
+				$secqaacheck = false;
+			}
+			return [$seccodecheck, $secqaacheck];
 		} else {
 			return [];
 		}

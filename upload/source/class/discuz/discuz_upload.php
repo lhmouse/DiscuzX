@@ -19,6 +19,7 @@ class discuz_upload {
 	var $errorcode = 0;
 	var $forcename = '';
 	var $ftpcmd = 1;
+	var $remote = 0;
 
 	public function __construct() {
 

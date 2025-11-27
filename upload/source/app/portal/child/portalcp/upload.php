@@ -71,6 +71,7 @@ if($operation == 'downremotefile') {
 				$attach['attachdir'] = $upload->get_target_dir('portal');
 				$attach['attachment'] = $attach['attachdir'].$upload->get_target_filename('portal').'.'.$attach['extension'];
 				$attach['target'] = getglobal('setting/attachdir').'./portal/'.$attach['attachment'];
+				$attach['remote'] = $upload->remote;
 
 				if(!@$fp = fopen($attach['target'], 'wb')) {
 					continue;

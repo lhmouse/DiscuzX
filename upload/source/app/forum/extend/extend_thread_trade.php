@@ -86,7 +86,7 @@ class extend_thread_trade extends extend_thread_base {
 			'smileyoff' => $this->param['smileyoff'],
 			'parseurloff' => $this->param['parseurloff'],
 			'attachment' => 0,
-			'tags' => $this->param['tagstr'],
+			'tags' => $this->param['tagstr'] ?? '',
 			'status' => (defined('IN_MOBILE') ? 8 : 0)
 		]);
 		if(!empty($_GET['tradeaid'])) {
@@ -101,7 +101,7 @@ class extend_thread_trade extends extend_thread_base {
 			'pid' => $pid,
 			'aid' => $_GET['tradeaid'],
 			'item_expiration' => $_GET['item_expiration'],
-			'thread' => $this->thread,
+			'thread' => $this->thread ?? '',
 			'discuz_uid' => $this->member['uid'],
 			'author' => $author,
 			'seller' => empty($_GET['paymethod']) && $_GET['seller'] ? dhtmlspecialchars(trim($_GET['seller'])) : '',
