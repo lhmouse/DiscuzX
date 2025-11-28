@@ -99,7 +99,9 @@ class editor {
 			list($editorblock_parser, $editorblock_style, $editorblock_static) = self::getBlockTemplate($value['type']);
 			// 是否用户回帖可见
 			$allowParser = true;
+			$isHideTuneBlock = false;
 			if($value['tunes']['hideTune']['hide']) {
+				$isHideTuneBlock = true;
 				$authorreplyexist = null;
 				if($_G['uid']) {
 					$authorreplyexist = table_forum_post::t()->fetch_pid_by_tid_authorid($_G['tid'], $_G['uid']);
@@ -107,11 +109,17 @@ class editor {
 				if(!$authorreplyexist) {
 					$allowParser = false;
 				}
+				if($_G['adminid'] > 0) {
+					$allowParser = true;
+				}
 			}
 			if(!$allowParser) {
 				$parser = '<div class="locked">'.($_G['uid'] ? $_G['username'] : lang('forum/template', 'guest')).lang('forum/template', 'post_hide_reply_hidden_text').'<a href="forum.php?mod=post&action=reply&fid='.$_G['fid'].'&tid='.$_G['tid'].'" onclick="showWindow(\'reply\', this.href)">'.lang('forum/template', 'reply').'</a></div>';
 			} else {
 				$parser = (new editorBlock($editorblock_parser, $value, $editorblock_static))->replace();
+				if($isHideTuneBlock) {
+					$parser = '<div class="showhide"><h4>'.lang('forum/template', 'post_hide').'</h4>'.$parser.'</div>';
+				}
 			}
 
 			// 锚点解析
