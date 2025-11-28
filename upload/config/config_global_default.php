@@ -174,7 +174,7 @@ $_config['security']['querysafe']['afullnote']	= 0;
 $_config['security']['creditsafe']['second'] 	= 0;		// 开启用户积分信息安全，可防止并发刷分，满足 times(次数)/second(秒) 的操作无法提交
 $_config['security']['creditsafe']['times'] 	= 10;
 
-$_config['security']['fsockopensafe']['status']	        = 1;                            // 是否开启fsockopen安全检测
+$_config['security']['fsockopensafe']['status']	        = 0;                            // 是否开启fsockopen安全检测
 $_config['security']['fsockopensafe']['port']	        = array(80, 443);	        //fsockopen 有效的端口
 $_config['security']['fsockopensafe']['ipversion']	= array('ipv6', 'ipv4');	//fsockopen 有效的IP协议
 $_config['security']['fsockopensafe']['verifypeer']	= false;	                // fsockopen是否验证证书有效性，开启可提升安全性，但需自行解决证书配置问题

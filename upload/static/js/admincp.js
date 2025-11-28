@@ -402,14 +402,14 @@ function floatbottom(id) {
 function multisubmit(id, msg, url) {
 	var max = $(id).multi.value.split(',').length;
 	if (multiStep >= max) {
-		parent.showDialog('<div class=infotitle2 style="padding:5px 10px">' + msg + '</div>', 'info', $L('admincp_notice'));
+		showDialog('<div class=infotitle2 style="padding:5px 10px">' + msg + '</div>', 'info', $L('admincp_notice'));
 		setTimeout(function () {
 			location.reload();
 			parent.location.reload();
 		}, 3000);
 		return;
 	}
-	parent.showDialog('<div class=infotitle1 style=\"padding:5px 10px\">' + $L('admincp_submit_waiting') + '</div>', 'info', $L('admincp_notice'));
+	showDialog('<div class=infotitle1 style=\"padding:5px 10px\">' + $L('admincp_submit_waiting') + '</div>', 'info', $L('admincp_notice'));
 	var re = /multinew\[(\d+)\]/;
 	var x = '';
 	for (var i = 0; i < $(id).elements.length; i++) {
@@ -592,7 +592,7 @@ function perm_show_item(data) {
 	$(type + '_show').innerHTML = '';
 
 
-	// ´°¿ÚÍÏ×§
+	// çª—å£æ‹–æ‹½
 	const permitemMenu = $(id);
 	let isDragging = false;
 	let initialX, initialY, initialOffsetX, initialOffsetY;
