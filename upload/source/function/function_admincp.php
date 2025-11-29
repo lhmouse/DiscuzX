@@ -1023,13 +1023,13 @@ function showsetting($setname, $varname, $value, $type = 'radio', $disabled = ''
 				echo '<div>'.$s.'</div><div>'.$commenttext.($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
 					($disabled ? '<br /><span class="smalltxt" style="color:#F00">'.cplang($setname.'_disabled', false).'</span>' : NULL).'</div>';
 			} elseif(!$widemode) {
-				showtablerow('class="noborder" onmouseover="setfaq(this, \'faq'.$setid.'\')"', ['class="vtop rowform"', 'class="vtop tips2" s="1"'], [
+				showtablerow('class="noborder"', ['class="vtop rowform"', 'class="vtop tips2" s="1"'], [
 					$s,
 					$commenttext.($type == 'textarea' ? '<br />'.cplang('tips_textarea') : '').
 					($disabled ? '<br /><span class="smalltxt" style="color:#F00">'.cplang($setname.'_disabled', false).'</span>' : NULL)
 				]);
 			} else {
-				showtablerow('class="noborder" onmouseover="setfaq(this, \'faq'.$setid.'\')"', ['class="vtop rowform" colspan="2"'], [$s]);
+				showtablerow('class="noborder"', ['class="vtop rowform" colspan="2"'], [$s]);
 			}
 		} else {
 			if($_G['showsetting_multi'] == 0) {
@@ -1043,7 +1043,7 @@ function showsetting($setname, $varname, $value, $type = 'radio', $disabled = ''
 			$_G['setting_JS'] .= 'ss[\''.$setid.'\'] += \'<div class="multicol">'.$s.'</div>\';';
 		}
 	} else {
-		showtablerow('class="noborder" onmouseover="setfaq(this, \'faq'.$setid.'\')"', ['colspan="2" class="vtop rowform"'], [$s]);
+		showtablerow('class="noborder"', ['colspan="2" class="vtop rowform"'], [$s]);
 	}
 
 	if($hidden) {

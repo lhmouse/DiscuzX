@@ -60,14 +60,14 @@ class db_driver_pdo extends db_driver_mysqli {
 		if(intval($pconnect) === 1) {
 			$option = [PDO::ATTR_PERSISTENT => true];
 		}
-		$link = new PDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset='.$dbcharset, $dbuser, $dbpw, $option);
-
-		if(!$link) {
-			$halt && $this->halt('notconnect', $this->errno());
-		} else {
-			$this->curlink = $link;
-			$link->query('SET sql_mode=\'\',character_set_client=binary');
+		try {
+			$link = new PDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset='.$dbcharset, $dbuser, $dbpw, $option);
+		} catch (PDOException $e) {
+			$halt && $this->halt($e->getMessage(), $e->getCode());
 		}
+
+		$this->curlink = $link;
+		$link->query('SET sql_mode=\'\',character_set_client=binary');
 		return $link;
 	}
 
@@ -202,7 +202,7 @@ class db_driver_pdo extends db_driver_mysqli {
 	}
 
 	function version() {
-		if(empty($this->version)) {
+		if(empty($this->version) && $this->curlink) {
 			$this->version = $this->curlink->getAttribute(PDO::ATTR_SERVER_VERSION);
 		}
 		return $this->version;

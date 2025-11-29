@@ -11,28 +11,6 @@
 				<button type="submit" name="searchsubmit" sc="1" class="search-icon" value="true"></button>
 			</form>
 		</div>
-		<div class="search-panel" style="display: none;">
-			<div class="search-hot">
-				<div class="e-title">{lang hot_search}</div>
-				<ul class="search-hot-list">
-					<!--{loop $_G['setting']['srchhotkeywords'] $val}-->
-					<!--{if $val=trim($val)}-->
-					<!--{eval $valenc=rawurlencode($val);}-->
-					<!--{block srchhotkeywords[]}-->
-					<!--{if !empty($searchparams[url])}-->
-					<li><a href="$searchparams[url]?q=$valenc&source=hotsearch{$srchotquery}" target="_blank"
-							class="item" sc="1">$val</a></li>
-					<!--{else}-->
-					<li><a href="search.php?mod=forum&srchtxt=$valenc&formhash={FORMHASH}&searchsubmit=true&source=hotsearch"
-							target="_blank" class="item" sc="1">$val</a></li>
-					<!--{/if}-->
-					<!--{/block}-->
-					<!--{/if}-->
-					<!--{/loop}-->
-					<!--{echo implode('', $srchhotkeywords);}-->
-				</ul>
-			</div>
-		</div>
 	</div>
 	<!--{/if}-->
 	{cells common/header/i18n_switch}

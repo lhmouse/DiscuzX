@@ -80,7 +80,7 @@ class db_driver_mysqli {
 		if(intval($pconnect) === 1) $dbhost = 'p:'.$dbhost; // 前面加p:，表示persistent connection
 		$link = new mysqli();
 		if(!$link->real_connect($dbhost, $dbuser, $dbpw, $dbname, null, null, MYSQLI_CLIENT_COMPRESS)) {
-			$halt && $this->halt('notconnect', $this->errno());
+			$halt && $this->halt(mysqli_connect_error(), mysqli_connect_errno());
 		} else {
 			$this->curlink = $link;
 			$link->options(MYSQLI_OPT_LOCAL_INFILE, false);
@@ -202,7 +202,7 @@ class db_driver_mysqli {
 	}
 
 	function version() {
-		if(empty($this->version)) {
+		if(empty($this->version) && $this->curlink) {
 			$this->version = $this->curlink->server_info;
 		}
 		return $this->version;

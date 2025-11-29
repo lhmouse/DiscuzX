@@ -26,7 +26,11 @@ class extend_thread_allowat extends extend_thread_base {
 
 		if($this->group['allowat']) {
 			$this->atlist = $atlist_tmp = [];
-			preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			if(is_valid_non_empty_json($parameters['content'], true)) {
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['content'].' ', $atlist_tmp);
+			}else{
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			}
 			$atlist_tmp = array_slice(array_unique($atlist_tmp[1]), 0, $this->group['allowat']);
 			if(!empty($atlist_tmp)) {
 				if(!$this->setting['at_anyone']) {
@@ -46,12 +50,21 @@ class extend_thread_allowat extends extend_thread_base {
 				}
 			}
 			if($this->atlist) {
-				foreach($this->atlist as $atuid => $atusername) {
-					$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-					$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+				if(is_valid_non_empty_json($parameters['content'], true)) {
+					foreach($this->atlist as $atuid => $atusername) {
+						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+						$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+					}
+					$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
+					$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
+				}else{
+					foreach($this->atlist as $atuid => $atusername) {
+						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+						$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+					}
+					$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
+					$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 				}
-				$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
-				$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 			}
 		}
 	}
@@ -68,7 +81,11 @@ class extend_thread_allowat extends extend_thread_base {
 	public function before_newreply($parameters) {
 		if($this->group['allowat']) {
 			$this->atlist = $atlist_tmp = $ateduids = [];
-			preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			if(is_valid_non_empty_json($parameters['content'], true)) {
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['content'].' ', $atlist_tmp);
+			}else{
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			}
 			$atlist_tmp = array_slice(array_unique($atlist_tmp[1]), 0, $this->group['allowat']);
 			$atnum = $maxselect = 0;
 			foreach(table_home_notification::t()->fetch_all_by_authorid_fromid($this->member['uid'], $this->thread['tid'], 'at') as $row) {
@@ -107,12 +124,21 @@ class extend_thread_allowat extends extend_thread_base {
 				}
 			}
 			if($this->atlist) {
-				foreach($this->atlist as $atuid => $atusername) {
-					$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-					$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+				if(is_valid_non_empty_json($parameters['content'], true)) {
+					foreach($this->atlist as $atuid => $atusername) {
+						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+						$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+					}
+					$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
+					$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
+				}else{
+					foreach($this->atlist as $atuid => $atusername) {
+						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+						$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+					}
+					$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
+					$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 				}
-				$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
-				$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 			}
 		}
 	}
@@ -135,7 +161,11 @@ class extend_thread_allowat extends extend_thread_base {
 				$ateduids[$row['uid']] = $row['uid'];
 			}
 			$maxselect = $this->group['allowat'] - $atnum;
-			preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			if(is_valid_non_empty_json($parameters['content'], true)) {
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['content'].' ', $atlist_tmp);
+			}else{
+				preg_match_all("/@([^\r\n]*?)\s/i", $parameters['message'].' ', $atlist_tmp);
+			}
 			$atlist_tmp = array_slice(array_unique($atlist_tmp[1]), 0, $this->group['allowat']);
 			if($maxselect > 0 && !empty($atlist_tmp)) {
 				if(empty($this->setting['at_anyone'])) {
@@ -166,12 +196,21 @@ class extend_thread_allowat extends extend_thread_base {
 					}
 				}
 				if($this->atlist) {
-					foreach($this->atlist as $atuid => $atusername) {
-						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-						$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+					if(is_valid_non_empty_json($parameters['content'], true)) {
+						foreach($this->atlist as $atuid => $atusername) {
+							$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+							$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+						}
+						$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
+						$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
+					}else{
+						foreach($this->atlist as $atuid => $atusername) {
+							$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+							$atreplace[] = "[url=home.php?mod=space&uid=$atuid]@{$atusername}[/url] ";
+						}
+						$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
+						$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 					}
-					$this->param['message'] = preg_replace($atsearch, $atreplace, $parameters['message'].' ', 1);
-					$this->param['message'] = substr($this->param['message'], 0, strlen($this->param['message']) - 1);
 				}
 			}
 		}

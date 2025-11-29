@@ -110,7 +110,7 @@ formula: 按照权限公式表达式方式显示
 
 		$cv = $perms = '';
 		if(empty($conf['formula'])) {
-			$perms .= '<div id="pset_'.$var['variable'].'" class="pbox" style="display: none">';
+			$perms .= '<div class="pbox">';
 			foreach($data as $type => $items) {
 				$perms .= '<div><p><b>'.$type.'</b>';
 				if(isset($items['_'])) {
@@ -125,7 +125,7 @@ formula: 按照权限公式表达式方式显示
 				$perms .= '</div><p></p>';
 			}
 		} else {
-			$perms .= '<div id="pset_'.$var['variable'].'" class="pbox formula threadprofilenode" style="display: none">';
+			$perms .= '<div class="pbox formula threadprofilenode">';
 			foreach($data as $type => $items) {
 				$perms .= '<div><label><b>'.$type.'</b></label>';
 				if(isset($items['_'])) {
@@ -142,9 +142,8 @@ formula: 按照权限公式表达式方式显示
 		}
 		$current = '<div class="ppreview" id="ppreview_'.$var['variable'].'">'.$cv.'&nbsp;</div>'.
 			'<a href="javascript:;" onclick="display(\'pset_'.$var['variable'].'\')" class="pswitch">'.cplang('config').'</a>';
-		$description = $var['description'] ? '<div class="pdesc tips2">'.$var['description'].'</div>' : '';
-		$var['type'] = $css.'<div class="component_perm">'.$current.$description.$perms.'</div>';
-		$var['widemode'] = true;
+		$var['type'] = $css.'<div class="component_perm">'.$current.'</div>';
+		$extra['footer'.$var['variable']] = '<tr class="noborder" id="pset_'.$var['variable'].'" style="display:none"><td class="vtop rowform component_perm" colspan="2">'.$perms.'</td></tr>';
 	}
 
 	function serialize(&$value) {
