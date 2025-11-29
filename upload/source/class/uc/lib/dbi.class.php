@@ -57,7 +57,12 @@ class ucclient_db {
 	}
 
 	function fetch_array($query, $result_type = MYSQLI_ASSOC) {
-		return $this->link->fetch_array($query, $result_type);
+		if(method_exists($this, 'fetch_array')) {
+			return $query ? $query->fetch_array($result_type) : null;
+		} elseif(method_exists($this->link, 'fetch_array')) {
+			return $this->link->fetch_array($query, $result_type);
+		}
+		return null;
 	}
 
 	function result_first($sql) {

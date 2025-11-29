@@ -53,7 +53,7 @@ class extend_thread_allowat extends extend_thread_base {
 				if(is_valid_non_empty_json($parameters['content'], true)) {
 					foreach($this->atlist as $atuid => $atusername) {
 						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-						$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+						$atreplace[] = "<a href=\\\"home.php?mod=space&uid=$atuid\\\" target=\\\"_blank\\\">@{$atusername}</a> ";
 					}
 					$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
 					$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
@@ -127,7 +127,7 @@ class extend_thread_allowat extends extend_thread_base {
 				if(is_valid_non_empty_json($parameters['content'], true)) {
 					foreach($this->atlist as $atuid => $atusername) {
 						$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-						$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+						$atreplace[] = "<a href=\\\"home.php?mod=space&uid=$atuid\\\" target=\\\"_blank\\\">@{$atusername}</a> ";
 					}
 					$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
 					$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
@@ -199,7 +199,7 @@ class extend_thread_allowat extends extend_thread_base {
 					if(is_valid_non_empty_json($parameters['content'], true)) {
 						foreach($this->atlist as $atuid => $atusername) {
 							$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
-							$atreplace[] = "<a href=\"home.php?mod=space&uid=$atuid\" target=\"_blank\">@{$atusername}</a> ";
+							$atreplace[] = "<a href=\\\"home.php?mod=space&uid=$atuid\\\" target=\\\"_blank\\\">@{$atusername}</a> ";
 						}
 						$this->param['content'] = preg_replace($atsearch, $atreplace, $parameters['content'].' ', 1);
 						$this->param['content'] = substr($this->param['content'], 0, strlen($this->param['content']) - 1);
