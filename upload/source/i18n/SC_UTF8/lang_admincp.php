@@ -2218,7 +2218,7 @@ $lang =
 	'setting_seccheck' => '验证设置',
 	'setting_accountguard' => '账号保镖',
 	'setting_sec_code_tips' => '<li>使用图片作为验证码文字，图片必须包含字符“2346789BCEFGHJKMPQRTVWXY”24 个字符，且必须为 GIF 透明图片、背景透明、前景黑色，黑色为图片的第一个索引色。图片大小不限制，但建议宽度不大于验证码宽度的 1/4，高度不大于验证码高度。制作完毕后在 source/data/seccode/gif/ 下创建一个新的子目录，目录名任意，把制作完毕的 24 个 GIF 图片上传到新子目录下</li><li>使用图片作为验证码的背景，把制作好的 JPG 图片上传到 source/data/seccode/background/ 目录下，站点将随机使用里面的图片作为验证码的背景</li><li>使用 TTF 字体作为验证码文字，把下载的 TTF 英文字体文件上传到 source/data/seccode/font/en/ 目录下，站点将随机使用里面的字体文件作为验证码的文字</li><li>使用中文图片验证码前，需要把包含完整中文汉字的 TTF 中文字体文件上传到 source/data/seccode/font/ch/ 目录下，站点将随机使用里面的字体文件作为验证码的文字</li><li>系统验证码位于 source/class/seccode/ 目录中，插件验证码位于 source/plugin/插件目录/seccode/ 目录中。</li>',
-	'setting_sec_qaa_tips' => '<li>问答验证应该言简意赅，没有歧义，正常人都能够正确作答。请经常更新验证问答的问题及答案以防止被猜测！</li><li>系统安全验证组件位于 source/class/secqaa/ 目录中，插件安全验证组件位于 source/plugin/插件目录/secqaa/ 目录中，插件安全验证类型位于 source/plugin/插件目录/seccheck/ 目录中。</li><li>新安全验证组件需要开启内存缓存（如 Redis），请配置。</li><li>插件开发人员在设计新的验证问答脚本前请务必仔细阅读《<a href="https://open.dismall.com/?!devdoc" target="_blank">Discuz! 技术文档</a>》中的内容。</li>',
+	'setting_sec_qaa_tips' => '<li>问答验证应该言简意赅，没有歧义，正常人都能够正确作答。请经常更新验证问答的问题及答案以防止被猜测！</li><li>系统安全验证组件位于 source/class/secqaa/ 目录中，插件安全验证组件位于 source/plugin/插件目录/secqaa/ 目录中，插件安全验证场景位于 source/plugin/插件目录/seccheck/ 目录中。</li><li>新安全验证组件需要开启内存缓存（如 Redis），请配置。</li><li>插件开发人员在设计新的验证问答脚本前请务必仔细阅读《<a href="https://open.dismall.com/?!devdoc" target="_blank">Discuz! 技术文档</a>》中的内容。</li>',
 
 	'setting_sec_seclevel' => '安全验证模式',
 	'setting_sec_seclevel_comment' => '通常情况下，我们推荐您使用高级验证模式。当您站点有较多用户遇到验证码无法通过的时候，您可以使用一般验证模式',
