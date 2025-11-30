@@ -78,15 +78,10 @@ if(submitcheck('settingsubmit')) {
 	showformheader('setting&edit=yes', 'enctype');
 	showhiddenfields(['operation' => $operation]);
 
-	$start_limit = ($page - 1) * 10;
-	$secqaanums = table_common_secquestion::t()->count();
-	$multipage = multi($secqaanums, 10, $page, ADMINSCRIPT.'?action=setting&operation=seccheck');
-
-
 	echo <<<EOT
 	<script type="text/JavaScript">
 		var rowtypedata = [
-			[[1,''], [1,'<input name="newquestion[]" type="text" class="txt">','td26'], [1, '<input name="newanswer[]" type="text" class="txt">']],
+			[[1,'<input class="checkbox" type="checkbox" disabled /> <input name="newquestion[]" type="text" class="txt">','td26'], [1, '<input name="newanswer[]" type="text" class="txt">','td24']],
 		];
 		</script>
 	EOT;
@@ -118,19 +113,18 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_sec_secqaa_minposts', 'settingnew[secqaa][minposts]', $setting['secqaa']['minposts'], 'text');
 	showtablefooter();
 
-	showtableheader('setting_sec_secqaa_qaa', '');
-	showsubtitle(['', 'name', '']);
+	showtableheader('setting_sec_secqaa_qaa', 'nobottom', 'style="margin-bottom: 0; width: 60%"');
+	showsubtitle(['name', '']);
 
 	$allowcode = !empty($setting['secqaa']['allowcode']) ? 'checked' : '';
-	echo showtablerow('class="hover"', ['', 'class="td26"'], [
-		'',
+	echo showtablerow('class="hover"', [], [
 		'<a style="float:right" href="'.ADMINSCRIPT.'?action=setting&operation=seccheck_code" target="_blank">'.cplang('edit').'</a>'.
 		'<label><input class="checkbox" type="checkbox" value="1" name="settingnew[secqaa][allowcode]" '.$allowcode.' /> '.cplang('setting_sec_seccode').'</label>',
 		'',
 	], true);
 
 	$qaaext = [];
-	$items = table_common_secquestion::t()->fetch_all_secquestion($start_limit);
+	$items = table_common_secquestion::t()->fetch_all_secquestion();
 	foreach($items as $item) {
 		if($item['type']) {
 			$qaaext[] = $item['question'];
@@ -138,24 +132,30 @@ if(submitcheck('settingsubmit')) {
 	}
 	echo getsecqaas($qaaext);
 	$allowqa = !empty($setting['secqaa']['allowqa']) ? 'checked' : '';
-	echo showtablerow('class="hover"', ['', 'class="td26"'], [
+
+	echo showtablerow('class="hover"', ['class="td26"'], [
+		'<label><input class="checkbox" type="checkbox" value="1" onclick="$(\'qalist\').style.display = this.checked ? \'\' : \'none\'" name="settingnew[secqaa][allowqa]" '.$allowqa.' /><b>'.cplang('setting_sec_secqaa_question').'</b></label>',
 		'',
-		'<label><input class="checkbox" type="checkbox" value="1" name="settingnew[secqaa][allowqa]" '.$allowqa.' /><b>'.cplang('setting_sec_secqaa_question').'</b></label>',
-		'<b>'.cplang('setting_sec_secqaa_answer').'</b>',
 	], true);
+	showtablefooter();
+
+	showtableheader('', 'nobottom', 'id="qalist" style="width: 55%; margin-bottom: 0; margin-left: 20px; display: '.($allowqa ? '' : 'none').'"');
+	showsubtitle(['<input type="checkbox" name="chkall" class="checkbox" onclick="checkAll(\'prefix\', this.form, \'delete\')" title="'.cplang('del').'"> 问题', 'setting_sec_secqaa_answer']);
 	foreach($items as $item) {
 		if(!$item['type']) {
-			showtablerow('class="hover"', ['"', 'class="td26"'], [
-				'<input class="checkbox" type="checkbox" name="delete[]" value="'.$item['id'].'">',
+			showtablerow('class="hover"', ['class="td26"', 'class="td24"'], [
+				'<input class="checkbox" type="checkbox" name="delete[]" value="'.$item['id'].'"> '.
 				'<input type="text" class="txt" name="question['.$item['id'].']" value="'.dhtmlspecialchars($item['question']).'" class="txtnobd" onblur="this.className=\'txtnobd\'" onfocus="this.className=\'txt\'">',
 				'<input type="text" class="txt" name="answer['.$item['id'].']" value="'.$item['answer'].'" class="txtnobd" onblur="this.className=\'txtnobd\'" onfocus="this.className=\'txt\'">'
 			]);
 		}
 	}
-	echo '<tr><td></td><td class="td26"><div><a href="###" onclick="addrow(this, 0)" class="addtr">'.$lang['setting_sec_secqaa_add'].'</a></div></td><td></td></tr>';
+	echo '<tr><td><div><a href="###" onclick="addrow(this, 0)" class="addtr">'.$lang['setting_sec_secqaa_add'].'</a></div></td><td></td></tr>';
 	/*search*/
+	showtablefooter();
 
-	showsubmit('settingsubmit', 'submit', 'del', '', $multipage);
+	showtableheader();
+	showsubmit('settingsubmit', 'submit');
 	showtablefooter();
 	showformfooter();
 }

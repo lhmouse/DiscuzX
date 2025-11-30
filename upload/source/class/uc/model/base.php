@@ -91,8 +91,12 @@ class base {
 
 	function init_db() {
 		require_once UC_ROOT.'lib/dbi.class.php';
-		$this->db = new ucclient_db();
-		$this->db->connect(UC_DBHOST, UC_DBUSER, UC_DBPW, '', UC_DBCHARSET, UC_DBCONNECT, UC_DBTABLEPRE);
+		if(defined('UC_STANDALONE') && UC_STANDALONE) {
+			$this->db = DB::object();
+		} else {
+			$this->db = new ucclient_db();
+			$this->db->connect(UC_DBHOST, UC_DBUSER, UC_DBPW, '', UC_DBCHARSET, UC_DBCONNECT, UC_DBTABLEPRE);
+		}
 	}
 
 	function load($model, $base = NULL, $release = '') {

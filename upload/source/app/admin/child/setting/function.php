@@ -159,9 +159,9 @@ function getsecchecks() {
 					$new = @filemtime($dir.'/'.$entry) > TIMESTAMP - 86400 ? ' <font color="red">New!</font>' : '';
 					$sechecks[$key.':'.$script] = [
 						property_exists($check, 'settingurl'),
-						(property_exists($check, 'name') ? lang('plugin/'.$key, $check->name) : $key.':'.$script).$new,
+						(property_exists($check, 'name') ? lang('plugin/'.$key, $check->name, default: $check->name) : $key.':'.$script).$new,
 						property_exists($check, 'settingurl') ? $check->settingurl : '',
-						property_exists($check, 'copyright') ? $check->copyright : '',
+						property_exists($check, 'copyright') ? lang('plugin/'.$key, $check->copyright, default: $check->copyright) : '',
 					];
 				}
 			}
@@ -196,10 +196,12 @@ function getsecqaas($qaaext) {
 					if(property_exists($qaa, 'settingurl')) {
 						$setting = '<a style="float:right;margin: 8px 10px" href="'.ADMINSCRIPT.'?'.$qaa->settingurl.'" target="_blank">'.cplang('edit').'</a>';
 					}
-					$secqaaext .= showtablerow('class="hover"', ['', 'class="td26"'], [
-						'',
-						$setting.'<label><input class="checkbox" class="checkbox" type="checkbox" name="secqaaext[]" value="'.$script.'"'.(in_array($script, $qaaext) ? ' checked="checked"' : '').'> '.lang('secqaa/'.$script, $qaa->name).(@filemtime($dir.'/'.$entry) > TIMESTAMP - 86400 ? ' <font color="red">New!</font>' : '').($qaa->description ? '<div class="lightfont" style="margin-left:30px">'.lang('secqaa/'.$script, $qaa->description).'</div>' : '').'</label>',
-						$qaa->copyright ? lang('secqaa/'.$script, $qaa->copyright) : ''
+					$name = $qaa->name ? ($key ? lang('plugin/'.$key, $qaa->name, default: $qaa->name) : lang('secqaa/'.$script, $qaa->name)) : '';
+					$desc = $qaa->description ? ($key ? lang('plugin/'.$key, $qaa->description, default: $qaa->description) : lang('secqaa/'.$script, $qaa->description)) : '';
+					$copyright = $qaa->copyright ? ($key ? lang('plugin/'.$key, $qaa->copyright, default: $qaa->copyright) : lang('secqaa/'.$script, $qaa->copyright)) : '';
+					$secqaaext .= showtablerow('class="hover"', [], [
+						$setting.'<label><input class="checkbox" class="checkbox" type="checkbox" name="secqaaext[]" value="'.$script.'"'.(in_array($script, $qaaext) ? ' checked="checked"' : '').'> '.$name.(@filemtime($dir.'/'.$entry) > TIMESTAMP - 86400 ? ' <font color="red">New!</font>' : '').($qaa->description ? '<div class="lightfont" style="margin-left:30px">&nbsp;'.$desc.'</div>' : '').'</label>',
+						$copyright
 					], true);
 				}
 			}

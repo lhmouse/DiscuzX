@@ -121,6 +121,15 @@ class db_driver_mysqli {
 		return $this->result($this->query($sql), 0);
 	}
 
+	function fetch_all($sql, $id = '') {
+		$arr = [];
+		$query = $this->query($sql);
+		while($data = $this->fetch_array($query)) {
+			$id ? $arr[$data[$id]] = $data : $arr[] = $data;
+		}
+		return $arr;
+	}
+
 	public function query($sql, $silent = false, $unbuffered = false) {
 		if(defined('DISCUZ_DEBUG') && DISCUZ_DEBUG) {
 			$starttime = microtime(true);

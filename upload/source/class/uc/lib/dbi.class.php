@@ -24,10 +24,6 @@ class ucclient_db {
 	var $goneaway = 5;
 
 	function connect($dbhost, $dbuser, $dbpw, $dbname = '', $dbcharset = '', $pconnect = 0, $tablepre = '', $time = 0) {
-		if(defined('UC_STANDALONE') && UC_STANDALONE) {
-			$this->link = DB::object();
-			return;
-		}
 		if(intval($pconnect) === 1) $dbhost = 'p:'.$dbhost; // 前面加p:，表示persistent connection
 		$this->dbhost = $dbhost;
 		$this->dbuser = $dbuser;
@@ -57,12 +53,7 @@ class ucclient_db {
 	}
 
 	function fetch_array($query, $result_type = MYSQLI_ASSOC) {
-		if(method_exists($this, 'fetch_array')) {
-			return $query ? $query->fetch_array($result_type) : null;
-		} elseif(method_exists($this->link, 'fetch_array')) {
-			return $this->link->fetch_array($query, $result_type);
-		}
-		return null;
+		return $query ? $query->fetch_array($result_type) : null;
 	}
 
 	function result_first($sql) {

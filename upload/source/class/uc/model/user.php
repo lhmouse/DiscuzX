@@ -38,7 +38,7 @@ class usermodel {
 	}
 
 	function get_user_by_secmobile($secmobicc, $secmobile) {
-		return $this->db->fetch_first_stmt('SELECT * FROM '.UC_DBTABLEPRE.'members WHERE secmobicc=? AND secmobile=?', ['d', 'd'], [$secmobicc, $secmobile]);
+		return $this->db->fetch_first('SELECT * FROM '.UC_DBTABLEPRE."members WHERE secmobicc='$secmobicc' AND secmobile='$secmobile'");
 	}
 
 	function check_username($username) {
@@ -242,7 +242,7 @@ class usermodel {
 	}
 
 	function chgusername($uid, $newusername) {
-		return $this->db->query_stmt('UPDATE '.UC_DBTABLEPRE.'members SET username=? WHERE uid=?', ['s', 'i'], [$newusername, $uid]);
+		return $this->db->query('UPDATE '.UC_DBTABLEPRE."members SET username='$newusername' WHERE uid='$uid'");
 	}
 
 	function get_total_num($sqladd = '') {
@@ -339,7 +339,7 @@ class usermodel {
 		$uid = intval($uid);
 		$action = addslashes($action);
 		$extra = addslashes($extra);
-		$this->db->query_stmt('INSERT INTO '.UC_DBTABLEPRE.'memberlogs SET uid=?, action=?, extra=?', ['i', 's', 's'], [$uid, $action, $extra]);
+		$this->db->query('INSERT INTO '.UC_DBTABLEPRE."memberlogs SET uid='$uid', action='$action', extra='$extra'");
 	}
 
 	function get_passwordalgo() {
