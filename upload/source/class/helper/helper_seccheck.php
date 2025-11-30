@@ -242,125 +242,105 @@ class helper_seccheck {
 
 	public static function rule_register() {
 		global $_G;
+		$status = self::checkStatus('register');
 		$seccheckrule = &$_G['setting']['seccodedata']['rule']['register'];
-		if($seccheckrule['allow'] == 1) {
-			$seccode = true;
-		} elseif($seccheckrule['allow'] == 2) {
+		$rule = false;
+		if($seccheckrule['allow'] == 2) {
 			if($seccheckrule['numlimit'] > 0) {
 				loadcache('seccodedata', true);
 				if($_G['cache']['seccodedata']['register']['show']) {
-					$seccode = true;
+					$rule = true;
 				} else {
 					$regnumber = table_common_member::t()->count_by_regdate(TIMESTAMP - $seccheckrule['timelimit']);
 					if($regnumber >= $seccheckrule['numlimit']) {
-						$seccode = true;
+						$rule = true;
 						$_G['cache']['seccodedata']['register']['show'] = 1;
 						savecache('seccodedata', $_G['cache']['seccodedata']);
 					}
 				}
 			}
 		} else {
-			$seccode = false;
+			$rule = $status;
 		}
-		return [
-			$seccode,
-			$_G['setting']['secqaa']['status'] & 1
-		];
+		return $status && $rule;
 	}
 
 	public static function rule_login() {
 		global $_G;
+		$status = self::checkStatus('login');
 		$seccheckrule = &$_G['setting']['seccodedata']['rule']['login'];
-		if($seccheckrule['allow'] == 1) {
-			$seccode = true;
-		} elseif($seccheckrule['allow'] == 2) {
-			$seccode = false;
+		$rule = false;
+		if($seccheckrule['allow'] == 2) {
+			$rule = false;
 		} else {
-			$seccode = false;
+			$rule = $status;
 		}
-		return [$seccode, $_G['setting']['secqaa']['status'] & 8];
+		return $status && $rule;
 	}
 
 	public static function rule_post($action) {
 		global $_G;
+		$status = self::checkStatus('post');
 		$seccheckrule = &$_G['setting']['seccodedata']['rule']['post'];
-		if($seccheckrule['allow'] == 1) {
-			$seccode = !$_G['setting']['seccodedata']['minposts'] || getuserprofile('posts') < $_G['setting']['seccodedata']['minposts'];
-		} elseif($seccheckrule['allow'] == 2) {
+		$rule = false;
+		if($seccheckrule['allow'] == 2) {
 			if(table_common_member_secwhite::t()->check($_G['uid'])) {
-				$seccode = false;
+				$rule = false;
 			} else {
-				$seccode = getuserprofile('posts') < $_G['setting']['seccodedata']['minposts'];
-				if(!$seccode && $seccheckrule['numlimit']) {
+				$rule = getuserprofile('posts') < $_G['setting']['seccodedata']['minposts'];
+				if(!$rule && $seccheckrule['numlimit']) {
 					$count = table_forum_post::t()->count_by_search('pid:0', null, null, null, null, $_G['uid'], null, TIMESTAMP - $seccheckrule['timelimit']);
-					$seccode = $seccheckrule['numlimit'] <= $count;
+					$rule = $seccheckrule['numlimit'] <= $count;
 				}
-				if($action == 'newthread' && !$seccode && !empty($_POST) && $seccheckrule['nplimit']) {
+				if($action == 'newthread' && !$rule && !empty($_POST) && $seccheckrule['nplimit']) {
 					if(!$_G['cookie']['st_t']) {
-						$seccode = true;
+						$rule = true;
 					} else {
 						list($uid, $t, $hash) = explode('|', $_G['cookie']['st_t']);
 						list($t, $m) = explode(',', $t);
 						if(md5($uid.'|'.$t.$_G['config']['security']['authkey']) == $hash && !$m) {
 							if(TIMESTAMP - $t <= $seccheckrule['nplimit']) {
-								$seccode = true;
+								$rule = true;
 							} else {
-								$seccode = false;
+								$rule = false;
 							}
 						} else {
-							$seccode = true;
+							$rule = true;
 						}
 					}
 				}
-				if($action == 'reply' && !$seccode && !empty($_POST) && $seccheckrule['vplimit']) {
+				if($action == 'reply' && !$rule && !empty($_POST) && $seccheckrule['vplimit']) {
 					if(!$_G['cookie']['st_p']) {
-						$seccode = true;
+						$rule = true;
 					} else {
 						list($uid, $t, $hash) = explode('|', $_G['cookie']['st_p']);
 						list($t, $m) = explode(',', $t);
 						if(md5($uid.'|'.$t.$_G['config']['security']['authkey']) == $hash && !$m) {
 							if(TIMESTAMP - $t <= $seccheckrule['vplimit']) {
-								$seccode = true;
+								$rule = true;
 							} else {
-								$seccode = false;
+								$rule = false;
 							}
 						} else {
-							$seccode = true;
+							$rule = true;
 						}
 					}
 				}
 			}
 		} else {
-			$seccode = false;
+			$rule = $status;
 		}
-		return [
-			$seccode,
-			$_G['setting']['secqaa']['status'] & 2 && (!$_G['setting']['secqaa']['minposts'] || getuserprofile('posts') < $_G['setting']['secqaa']['minposts'])
-		];
+		return $status && $rule;
 	}
 
 	public static function rule_publish($rule) {
 		global $_G;
-		$seccheckrule = &$_G['setting']['seccodedata']['rule']['post'];
-		return [
-			$seccheckrule['allow'] && (!$_G['setting']['seccodedata']['minposts'] || getuserprofile('posts') < $_G['setting']['seccodedata']['minposts']),
-			$_G['setting']['secqaa']['status'] & 2 && (!$_G['setting']['secqaa']['minposts'] || getuserprofile('posts') < $_G['setting']['secqaa']['minposts'])
-		];
-	}
-
-	public static function rule_password($rule) {
-		global $_G;
-		$seccheckrule = &$_G['setting']['seccodedata']['rule']['password'];
-		return [
-			$seccheckrule['allow'] && (!$_G['setting']['seccodedata']['minposts'] || getuserprofile('posts') < $_G['setting']['seccodedata']['minposts']),
-			$_G['setting']['secqaa']['status'] & 4 && (!$_G['setting']['secqaa']['minposts'] || getuserprofile('posts') < $_G['setting']['secqaa']['minposts'])
-		];
+		return self::checkStatus('post');
 	}
 
 	public static function rule_card() {
 		global $_G;
-		$seccheckrule = &$_G['setting']['seccodedata']['rule']['card'];
-		return [$seccheckrule['allow'], $_G['setting']['secqaa']['status'] & 16];
+		return self::checkStatus('card');
 	}
 
 	public static function seccheck($rule, $param = []) {
@@ -368,15 +348,52 @@ class helper_seccheck {
 		if($_G['uid'] && !checkperm('seccode')) {
 			return [];
 		}
-		if(method_exists('helper_seccheck', 'rule_'.$rule)) {
-			list($seccodecheck, $secqaacheck) = call_user_func(['helper_seccheck', 'rule_'.$rule], $param);
-			if($secqaacheck && !empty($_G['setting']['secqaa']['perm']) && !forumperm($_G['setting']['secqaa']['perm'])) {
-				$secqaacheck = false;
-			}
-			return [$seccodecheck, $secqaacheck];
-		} else {
+		loadcache('secqaa');
+		if(!self::_checkMinPosts()) {
 			return [];
 		}
+		if(str_contains($rule, ':')) {
+			if(!self::checkStatus($rule)) {
+				return [];
+			}
+			list($pluginid, $name) = explode(':', $rule);
+			if(preg_match('/^\w+$/i', $name)) {
+				$f = DISCUZ_PLUGIN($pluginid).'/seccheck/seccheck_'.$name.'.php';
+				if(file_exists($f)) {
+					require_once $f;
+					if(class_exists($c = 'seccheck_'.$name)) {
+						$seccheck = new $c();
+						if(method_exists($seccheck, 'rule')) {
+							return self::_return($seccheck->rule($param));
+						}
+					}
+				}
+			}
+		} elseif(method_exists('helper_seccheck', 'rule_'.$rule)) {
+			return self::_return(call_user_func(['helper_seccheck', 'rule_'.$rule], $param));
+		}
+		return [];
+	}
+
+	public static function checkStatus($rule) {
+		global $_G;
+		return !empty($_G['setting']['secqaa']['statuses']) && in_array($rule, $_G['setting']['secqaa']['statuses']);
+	}
+
+	private static function _checkMinPosts() {
+		global $_G;
+		return !$_G['setting']['secqaa']['minposts'] || getuserprofile('posts') < $_G['setting']['secqaa']['minposts'];
+	}
+
+	private static function _return($v) {
+		if(!$v) {
+			return [];
+		}
+		global $_G;
+		return [
+			$v && !empty($_G['setting']['secqaa']['allowcode']),
+			$v && !empty($_G['cache']['secqaa'])
+		];
 	}
 
 }

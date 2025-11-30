@@ -6,12 +6,12 @@ if(!defined('IN_DISCUZ')) {
 
 class secqaa_name {
 	var $version = '1.0';//脚本版本号
-	var $name = 'name';//验证问答名称 (可填写语言包项目)
-	var $description = 'desc';//验证问答说明 (可填写语言包项目)
-	var $copyright = 'Discuz! Team';//版权 (可填写语言包项目)
+	var $name = 'secqaa_name';//安全验证组件名称 (可填写语言包项目)
+	var $description = 'secqaa_name_desc';//安全验证组件说明 (可填写语言包项目)
+	var $copyright = 'copyright';//版权 (可填写语言包项目)
 	var $settingurl = 'action=plugins&operation=config&identifier=sample&pmod=op1';//安全验证设置页URL
 
-	function create(&$question) {//返回安全问答的答案和问题 ($question 为问题，函数返回值为答案)
+	function create(&$question) {//返回安全验证的答案和问题 ($question 为问题，函数返回值为答案)
 		$question = '<div>&#x8F93;&#x5165;&#x20;&#x61;&#x6E;&#x73;&#x77;&#x65;&#x72;</div>';
 		return 'answer';//可返回答案也可以返回校验ID
 	}

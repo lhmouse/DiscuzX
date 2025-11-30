@@ -1,0 +1,12 @@
+{template common/header}
+
+<form action="" method="post">
+	<input type="hidden" name="formhash" value="{$_G['formhash']}">
+	<!--{if $seccodecheck || $secqaacheck}-->
+		<!--{block sectpl}--><div class="rfm"><table><tr><th><sec>: </th><td><sec><sec></td></tr></table></div><!--{/block}-->
+		<!--{subtemplate common/seccheck}-->
+	<!--{/if}-->
+	<input type="submit" name="testsubmit" class="pn pnc" value="提交">
+</form>
+
+{template common/footer}

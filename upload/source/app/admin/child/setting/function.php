@@ -140,10 +140,39 @@ function getseccodes() {
 	return $seccodetypearray;
 }
 
+function getsecchecks() {
+	global $_G;
+	$sechecks = [];
+	foreach($_G['setting']['plugins']['available'] as $key) {
+		$dir = DISCUZ_PLUGIN($key).'/seccheck';
+		if(!file_exists($dir)) {
+			continue;
+		}
+		$qaadir = dir($dir);
+		while($entry = $qaadir->read()) {
+			if(!in_array($entry, ['.', '..']) && preg_match('/^seccheck\_[\w\.]+$/', $entry) && str_ends_with($entry, '.php') && strlen($entry) < 30 && is_file($dir.'/'.$entry)) {
+				@include_once $dir.'/'.$entry;
+				$checkclass = substr($entry, 0, -4);
+				if(class_exists($checkclass)) {
+					$check = new $checkclass();
+					$script = substr($checkclass, 9);
+					$new = @filemtime($dir.'/'.$entry) > TIMESTAMP - 86400 ? ' <font color="red">New!</font>' : '';
+					$sechecks[$key.':'.$script] = [
+						property_exists($check, 'settingurl'),
+						(property_exists($check, 'name') ? lang('plugin/'.$key, $check->name) : $key.':'.$script).$new,
+						property_exists($check, 'settingurl') ? $check->settingurl : '',
+						property_exists($check, 'copyright') ? $check->copyright : '',
+					];
+				}
+			}
+		}
+	}
+	return $sechecks;
+}
+
 function getsecqaas($qaaext) {
 	global $_G;
 	$checkdirs = array_merge([''], $_G['setting']['plugins']['available']);
-	$advs = [];
 	$secqaaext = '';
 	foreach($checkdirs as $key) {
 		if($key) {

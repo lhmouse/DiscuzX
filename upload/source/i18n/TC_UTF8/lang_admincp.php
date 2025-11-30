@@ -2218,7 +2218,7 @@ $lang =
 	'setting_seccheck' => '驗證設置',
 	'setting_accountguard' => '賬號保鏢',
 	'setting_sec_code_tips' => '<li>使用圖片作為驗證碼文字，圖片必須包含字符“2346789BCEFGHJKMPQRTVWXY”24 個字符，且必須為 GIF 透明圖片、背景透明、前景黑色，黑色為圖片的第一個索引色。圖片大小不限制，但建議寬度不大於驗證碼寬度的 1/4，高度不大於驗證碼高度。製作完畢後在 source/data/seccode/gif/ 下創建一個新的子目錄，目錄名任意，把製作完畢的 24 個 GIF 圖片上傳到新子目錄下</li><li>使用圖片作為驗證碼的背景，把製作好的 JPG 圖片上傳到 source/data/seccode/background/ 目錄下，站點將隨機使用裏面的圖片作為驗證碼的背景</li><li>使用 TTF 字體作為驗證碼文字，把下載的 TTF 英文字體文件上傳到 source/data/seccode/font/en/ 目錄下，站點將隨機使用裏面的字體文件作為驗證碼的文字</li><li>使用中文圖片驗證碼前，需要把包含完整中文漢字的 TTF 中文字體文件上傳到 source/data/seccode/font/ch/ 目錄下，站點將隨機使用裏面的字體文件作為驗證碼的文字</li><li>系統驗證碼位於 source/class/seccode/ 目錄中，插件驗證碼位於 source/plugin/插件目錄/seccode/ 目錄中。</li>',
-	'setting_sec_qaa_tips' => '<li>問答驗證應該言簡意賅，沒有歧義，正常人都能夠正確作答。請經常更新驗證問答的問題及答案以防止被猜測！</li><li>系統安全驗證位於 source/class/secqaa/ 目錄中，插件安全驗證位於 source/plugin/插件目錄/secqaa/ 目錄中。</li><li>新安全驗證組件需要開啓內存緩存（如 Redis），請配置。</li><li>插件開發人員在設計新的驗證問答腳本前請務必仔細閲讀《<a href="https://open.dismall.com/?!devdoc" target="_blank">Discuz! 技術文檔</a>》中的內容。</li>',
+	'setting_sec_qaa_tips' => '<li>問答驗證應該言簡意賅，沒有歧義，正常人都能夠正確作答。請經常更新驗證問答的問題及答案以防止被猜測！</li><li>系統安全驗證組件位於 source/class/secqaa/ 目錄中，插件安全驗證組件位於 source/plugin/插件目錄/secqaa/ 目錄中，插件安全驗證類型位于 source/plugin/插件目錄/seccheck/ 目錄中。</li><li>新安全驗證組件需要開啓內存緩存（如 Redis），請配置。</li><li>插件開發人員在設計新的驗證問答腳本前請務必仔細閲讀《<a href="https://open.dismall.com/?!devdoc" target="_blank">Discuz! 技術文檔</a>》中的內容。</li>',
 
 	'setting_sec_seclevel' => '安全驗證模式',
 	'setting_sec_seclevel_comment' => '通常情況下，我們推薦您使用高級驗證模式。當您站點有較多用戶遇到驗證碼無法通過的時候，您可以使用一般驗證模式',
@@ -2287,7 +2287,7 @@ $lang =
 	'setting_sec_base_security_logoff_clear_days' => '註銷賬號多少天后進行清理',
 	'setting_sec_base_security_logoff_clear_days_comment' => '默認不清理，填寫天數後，配合計劃任務“每日數據清理(cron_cleanup_daily.php)”可徹底刪除設置天數之前註銷的賬號。',
 
-	'setting_sec_seccode' => '驗證碼設置',
+	'setting_sec_seccode' => '驗證碼',
 	'setting_sec_seccode_rule_setting' => '規則設置',
 	'setting_sec_seccode_type_setting' => '顯示設置',
 	'setting_sec_seccode_status' => '啓用驗證碼',

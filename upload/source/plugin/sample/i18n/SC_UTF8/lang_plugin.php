@@ -14,6 +14,11 @@ $scriptlang['sample'] = array (
   'perm_b' => '权限2',
   'perm_type1' => '权限类型1',
   'perm_type2' => '权限类型2',
+  'test_queue' => '测试队列',
+  'seccheck_name' => 'sample安全验证类型',
+  'secqaa_name' => 'sample安全验证组件',
+  'secqaa_name_desc' => 'sample安全验证组件说明',
+  'copyright' => 'Discuz! Team',
 );
 
 $templatelang['sample'] = array (
