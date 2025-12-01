@@ -2393,10 +2393,12 @@ $lang =
 	'setting_sec_secqaa_minposts_comment' => '发帖数超过此设置的会员将不受安全验证功能限制，0 表示所有会员均受限制。仅针对发表信息及修改密码时有效',
 	'setting_sec_secqaa_qaa' => '组件列表',
 	'setting_sec_secqaa_question' => '问答验证',
+	'setting_sec_secqaa_q' => '问题',
 	'setting_sec_secqaa_answer' => '答案',
 	'setting_sec_secqaa_comment' => '建议您设置 10 个以上验证问题及答案，验证问题越多，验证问答防止恶意注册或发布信息的效果越明显。问题支持 HTML，答案长度不超过 50 字节',
 	'setting_sec_secqaa_perm' => '权限控制',
 	'setting_sec_secqaa_perm_comment' => '设置针对哪些会员启用安全验证',
+	'setting_sec_scene_name' => '场景',
 
 	'setting_sec_reginput' => '注册表单名称设置',
 	'setting_sec_reginput_username' => '用户名表单设置',

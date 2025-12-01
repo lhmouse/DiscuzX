@@ -89,7 +89,7 @@ if(submitcheck('settingsubmit')) {
 	showtips('setting_sec_qaa_tips', 'secqaa_tips');
 	showtableheader('', 'nobottom', 'style="width: 500px"');
 
-	showsubtitle(['name', 'setting_sec_seccode_rule_setting', '']);
+	showsubtitle(['setting_sec_scene_name', 'setting_sec_seccode_rule_setting', '']);
 	$sectypes = [
 		'register' => [true, cplang('setting_sec_seccode_status_register')],
 		'post' => [true, cplang('setting_sec_seccode_status_post')],
@@ -140,7 +140,7 @@ if(submitcheck('settingsubmit')) {
 	showtablefooter();
 
 	showtableheader('', 'nobottom', 'id="qalist" style="width: 55%; margin-bottom: 0; margin-left: 20px; display: '.($allowqa ? '' : 'none').'"');
-	showsubtitle(['<input type="checkbox" name="chkall" class="checkbox" onclick="checkAll(\'prefix\', this.form, \'delete\')" title="'.cplang('del').'"> 问题', 'setting_sec_secqaa_answer']);
+	showsubtitle(['<input type="checkbox" name="chkall" class="checkbox" onclick="checkAll(\'prefix\', this.form, \'delete\')" title="'.cplang('del').'"> '.cplang('setting_sec_secqaa_q'), 'setting_sec_secqaa_answer']);
 	foreach($items as $item) {
 		if(!$item['type']) {
 			showtablerow('class="hover"', ['class="td26"', 'class="td24"'], [
