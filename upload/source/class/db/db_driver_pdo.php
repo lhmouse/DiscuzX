@@ -134,13 +134,14 @@ class db_driver_pdo extends db_driver_mysqli {
 		try {
 			$query->execute($arg);
 		} catch (Exception $e) {
-			if(in_array($this->errno(), ['01002', '08003', '08S01', '08007']) && !str_starts_with($silent, 'RETRY')) {
+			list($stateCode, $errCode, $errMsg) = $query->errorInfo();
+			if(in_array($errCode, [2006, 2013]) && !str_starts_with($silent, 'RETRY')) {
 				$this->connect();
 				return $this->query([$sql, $arg], 'RETRY'.$silent);
 			}
 
 			if(!$silent) {
-				$this->halt($this->error(), $this->errno(), $sql);
+				$this->halt($errMsg, $errCode, $sql);
 			}
 		}
 
@@ -217,7 +218,7 @@ class db_driver_pdo extends db_driver_mysqli {
 	}
 
 	function halt($message = '', $code = 0, $sql = '') {
-		throw new DbException(var_export($message, true), $code, $sql);
+		throw new DbException($message, $code, $sql);
 	}
 
 	function begin_transaction() {
