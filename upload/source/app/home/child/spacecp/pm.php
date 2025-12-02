@@ -34,6 +34,7 @@ if($_GET['op'] == 'checknewpm') {
 		if($_G['member']['newpm'] != $newpm) {
 			table_common_member::t()->update($_G['uid'], ['newpm' => $newpm]);
 		}
+		updatecreditbyaction('daylogin', $_G['uid']);
 	}
 	dsetcookie('checkpm', 1, 30);
 	exit();

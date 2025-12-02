@@ -784,10 +784,6 @@ class discuz_application extends discuz_base {
 		}
 
 		if($this->session->isnew && $this->var['uid']) {
-			if(empty($this->var['inajax'])) {
-				updatecreditbyaction('daylogin', $this->var['uid']);
-			}
-
 			include_once libfile('function/stat');
 			updatestat('login', 1);
 			if(defined('IN_MOBILE')) {
