@@ -237,6 +237,9 @@ if(!submitcheck('editsubmit')) {
 	foreach($_POST as $field_key => $field_val) {
 		if(isset($fields[$field_key]) && (profile_check($field_key, $field_val) || $_G['adminid'] == 1)) {
 			$fieldarr[$field_key] = $field_val;
+			if(!empty($_G['cache']['profilesetting'][$field_key]['encrypt'])) {
+				$fieldarr[$field_key] = authcode_field($_G['cache']['profilesetting'][$field_key]['encrypt'], $fieldarr[$field_key], 'ENCODE');
+			}
 		}
 	}
 	// 判断更多自定义字段是否符合预设结构
