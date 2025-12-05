@@ -18,7 +18,7 @@ class restfulplugin {
 				$s = '<audio controls ><source src="'.$url.'"></audio>';
 				break;
 			case 'video':
-				$s = '<video controls '.($p[2] ? 'width="'.$p[2].'" ' : '').($p[3] ? 'height="'.$p[3].'" ' : '').'"><source src="'.$url.'"></video>';
+				$s = '<video controls width="100%" height="auto"><source src="'.$url.'"></video>';
 				break;
 			case 'flv':
 				$s = '<a href="'.$url.'" target="_blank">'.$url.'</a>';
@@ -69,13 +69,13 @@ class restfulplugin {
 		}
 		foreach($keys as $fk => $nk) {
 			if(isset($data[$param[0]][$fk])) {
-				$data[$param[0]][$nk] = avatar($data[$param[0]][$fk], 'middle', 1);
+				$data[$param[0]][$nk] = self::_f_siteurl(avatar($data[$param[0]][$fk], 'middle', 1));
 			}
 		}
 		foreach($data[$param[0]] as $k => $v) {
 			foreach($keys as $fk => $nk) {
 				if(isset($v[$fk])) {
-					$data[$param[0]][$k][$nk] = avatar($v[$fk], 'middle', 1);
+					$data[$param[0]][$k][$nk] = self::_f_siteurl(avatar($v[$fk], 'middle', 1));
 				}
 			}
 		}
@@ -120,7 +120,7 @@ class restfulplugin {
 		foreach($data[$param[0]] as $k => $v) {
 			foreach($keys as $key) {
 				if($key == 'avatar') {
-					$return[$k][$key] = avatar($v['uid'], 'middle', 1);
+					$return[$k][$key] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
 					continue;
 				}
 				$return[$k][$key] = $v[$key];
@@ -144,7 +144,7 @@ class restfulplugin {
 		$data['user']['freeze'] = $_G['member']['freeze'];
 		$data['user']['regdate'] = $_G['member']['regdate'];
 		$data['user']['lastvisit'] = $_G['member']['lastvisit'];
-		$data['user']['avatar'] = avatar($_G['uid'], 'middle', 1);
+		$data['user']['avatar'] = self::_f_siteurl(avatar($_G['uid'], 'middle', 1));
 	}
 
 	public static function addDomain(&$data, $param) {
@@ -183,7 +183,7 @@ class restfulplugin {
 				$data[$key][$k]['author'] = $_G['setting']['anonymoustext'];
 				$data[$key][$k]['authorid'] = $thread['authorid'] = 0;
 			}
-			$data[$key][$k]['authoravatar'] = avatar($thread['authorid'], 'middle', 1);
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
 			$data[$key][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
 			$data[$key][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
 			if(!empty($thread['images'])) {
@@ -205,8 +205,18 @@ class restfulplugin {
 				$data[$key][$k]['username'] = $data[$key][$k]['usernameenc'] = $data[$key][$k]['author'] = $_G['setting']['anonymoustext'];
 				$data[$key][$k]['authorid'] = $post['authorid'] = 0;
 			}
-			$data[$key][$k]['authoravatar'] = avatar($post['authorid'], 'middle', 1);
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($post['authorid'], 'middle', 1));
 			$data[$key][$k]['dateline'] = self::_f_gmdate($post['dateline']);
+			if(!empty($post['message'])) {
+				$data[$key][$k]['message'] = preg_replace_callback(
+					'/<a href="(data\/attachment\/forum\/[^"]+\.mp4)"[^>]*>[^<]+<\/a>/i',
+					function($matches) {
+						return self::discuzcode('video', $matches[1]);
+					},
+					$data[$key][$k]['message']
+				);
+			}
+
 			if(empty($post['attachments'])) {
 				continue;
 			}
@@ -294,13 +304,29 @@ class restfulplugin {
 	}
 
 	public static function foruminfo(&$data, $param) {
+		global $_G;
 		$key = $param[0];
 		if(empty($data[$key])) {
 			return;
 		}
 
-		unset($data[$key]['password']);
+		// unset($data[$key]['password']);
+		$forum_favorite = C::t('home_favorite')->fetch_by_id_idtype($_G['forum']['fid'], 'fid', $_G['uid']);
+		if($forum_favorite['favid'] > 0) {
+			$data[$key]['isfavorite'] = 1;
+		}
 		$data[$key]['icon'] = self::_f_forumimg($data[$key]['icon']);
+		$data[$key]['banner'] = self::_f_siteurl($data[$key]['banner']);
+	}
+
+	public static function groupforumInfo(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		// unset($data[$key]['password']);
+		$data[$key]['icon'] = self::_f_siteurl($data[$key]['icon']);
 		$data[$key]['banner'] = self::_f_siteurl($data[$key]['banner']);
 	}
 
@@ -318,7 +344,15 @@ class restfulplugin {
 		}
 		$data[$key]['dateline'] = self::_f_gmdate($data[$key]['dateline']);
 		$data[$key]['lastpost'] = self::_f_gmdate($data[$key]['lastpost']);
-
+		$data[$key]['isfavorite'] = $data[$key]['isrecommendav'] = 0;
+		$recommendav_add = C::t('forum_memberrecommend')->fetch_by_recommenduid_tid($_G['uid'], $_G['tid']);
+		$thread_favorite = C::t('home_favorite')->fetch_by_id_idtype($_G['tid'], 'tid', $_G['uid']);
+		if($thread_favorite['favid'] > 0) {
+			$data[$key]['isfavorite'] = 1;
+		}
+		if($recommendav_add['recommenduid'] > 0) {
+			$data[$key]['isrecommendav'] = 1;
+		}
 		//投票帖
 		if($data[$key]['special'] == 1 && !empty($data['polloptions'])) {
 			$options = $data['polloptions'];
@@ -345,6 +379,8 @@ class restfulplugin {
 
 		//悬赏帖
 		if($data[$key]['special'] == 3) {
+			$data['bestpost']['authoravatar'] = self::_f_siteurl(avatar($data['bestpost']['authorid'], 'middle', 1));
+			$data['bestpost']['dateline'] = self::_f_gmdate($data['bestpost']['dateline']);
 			$data['rewardoptions'] = [
 				'rewardprice' => $data['rewardprice'],
 				'credits' => $_G['setting']['extcredits'][$_G['setting']['creditstransextra'][2]],
@@ -496,6 +532,17 @@ class restfulplugin {
 		$data['itemlist'] = $itemlist;
 	}
 
+	public static function siteSetting(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		if (!empty($data[$key]['myrepeats']['usergroups'])) {
+			$data[$key]['myrepeats']['usergroups'] = (array)dunserialize($data[$key]['myrepeats']['usergroups']);
+		}
+
+	}
+
 	public static function portalList(&$data, $param) {
 		$wheresql = category_get_wheresql($GLOBALS['cat']);
 		$tmp = category_get_list($GLOBALS['cat'], $wheresql, $GLOBALS['page']);
@@ -512,6 +559,17 @@ class restfulplugin {
 		}, $data['content']['content']);
 	}
 
+	public static function applylist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
+		}
+	}
+
 	public static function tasklist(&$data, $param) {
 		$key = $param[0];
 		if(empty($data[$key])) {
@@ -523,22 +581,18 @@ class restfulplugin {
 		}
 	}
 
-	public static function medallist(&$data, $param) {
+	public static function taskView(&$data, $param) {
+
 		$key = $param[0];
 		if(empty($data[$key])) {
 			return;
 		}
-
-		foreach($data[$key] as $k => $v) {
-			$data[$key][$k]['image'] = self::_f_siteurl($v['image']);
-		}
-		global $medalcredits;
-		foreach($medalcredits as $id) {
-			$data['mycredits'][$id] = getuserprofile('extcredits'.$id);
+		if(!empty($data[$key]['icon'])) {
+			$data[$key]['icon'] = self::_f_siteurl($data[$key]['icon']);
 		}
 	}
 
-	public static function magiclist(&$data, $param) {
+	public static function bloglist(&$data, $param) {
 		$key = $param[0];
 		if(empty($data[$key])) {
 			return;
@@ -547,6 +601,430 @@ class restfulplugin {
 		foreach($data[$key] as $k => $v) {
 			$data[$key][$k]['pic'] = self::_f_siteurl($v['pic']);
 		}
+	}
+
+	public static function blogView(&$data, $param) {
+		global $_G;
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		$blog_favorite = C::t('home_favorite')->fetch_by_id_idtype($data[$key]['blogid'], 'blogid', $_G['uid']);
+		if($blog_favorite['favid'] > 0) {
+			$data[$key]['isfavorite'] = 1;
+		}
+		if($data[$key]['uid']) {
+			$data[$key]['authoravatar'] = self::_f_siteurl(avatar($data[$key]['uid'], 'middle', 1));
+		}
+		if($data[$key]['pic']) {
+			$data[$key]['pic'] = self::_f_siteurl($data[$key]['pic']);
+		}
+	}
+
+	public static function blogCommentlist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['authorid'], 'middle', 1));
+		}
+	}
+
+	public static function albumlist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['pic'] = self::_f_siteurl($v['pic']);
+		}
+	}
+
+	public static function albumView(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		if($data[$key]['uid']) {
+			$data[$key]['authoravatar'] = self::_f_siteurl(avatar($data[$key]['uid'], 'middle', 1));
+		}
+	}
+
+	public static function albumViewlist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['pic'] = self::_f_siteurl($v['pic']);
+		}
+	}
+
+	public static function medallist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		global $medalcredits, $mymedals;
+		foreach($data[$key] as $k => $v) {
+			if(is_array($mymedals) && in_array($v['medalid'], $mymedals)) {
+				if($v['price'] > 0) {
+					$data[$key][$k]['havemedal'] = 1;
+				} else {
+					if($v['type'] == 2) {
+						$data[$key][$k]['havemedal'] = 2;
+					} else {
+						$data[$key][$k]['havemedal'] = 3;
+					}
+				}
+			}
+			$data[$key][$k]['image'] = self::_f_siteurl($v['image']);
+		}
+
+		foreach($medalcredits as $id) {
+			$data['mycredits'][$id] = getuserprofile('extcredits'.$id);
+		}
+	}
+
+	public static function lastmedals(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		global $medallist, $lastmedalusers;
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['image'] = self::_f_siteurl(avatar($v['image'], 'middle', 1));
+			$data[$key][$k]['medalname'] = $medallist[$v['medalid']]['name'];
+			$data[$key][$k]['username'] = $lastmedalusers[$v['uid']]['username'];
+		}
+	}
+
+	public static function medallogs(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		global $medallist, $lastmedalusers;
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['image'] = self::_f_siteurl(avatar($v['image'], 'middle', 1));
+			$data[$key][$k]['medalname'] = $medallist[$v['medalid']]['name'];
+			$data[$key][$k]['username'] = $lastmedalusers[$v['uid']]['username'];
+		}
+	}
+
+	public static function magiclist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		// 按照模板逻辑处理 magiccredits
+		if(!empty($data['magiccredits']) && is_array($data['magiccredits'])) {
+			$magiccredits = [];
+			foreach($data['magiccredits'] as $id => $value) {
+				// 获取用户对应积分的余额
+				$magiccredits[$id] = getuserprofile('extcredits'.$id);
+			}
+			$data['magiccredits'] = $magiccredits;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['pic'] = self::_f_siteurl($v['pic']);
+		}
+	}
+
+	public static function rankmemberlist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
+		}
+	}
+
+	public static function rankactivitylist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['attachurl'] = self::_f_siteurl(($v['attachurl']));
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['authorid'], 'middle', 1));
+			$data[$key][$k]['dateline'] = self::_f_gmdate($k['dateline']);
+		}
+	}
+
+	public static function rankpolllist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['authorid'], 'middle', 1));
+		}
+	}
+
+	public static function lastupdategroup(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['iconurl'] = self::_f_siteurl(($v['icon']));
+		}
+	}
+
+	public static function group_recommend(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		$data[$key] = dunserialize($data[$key]);
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['iconurl'] = self::_f_siteurl(($v['icon']));
+		}
+	}
+
+	public static function groupmemberlist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
+		}
+		if(!empty($data[$key])) {
+			$data[$key] = array_values($data[$key]);
+		}
+	}
+	public static function collection(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		if($data[$key]['cover']) {
+			$data[$key]['cover'] = self::_f_siteurl($data[$key]['cover']);
+		}
+		if($data[$key]['icon']) {
+			$data[$key]['icon'] = self::_f_siteurl($data[$key]['icon']);
+		}
+		$data[$key]['dateline'] = self::_f_gmdate($data[$key]['dateline']);
+	}
+	public static function collectiontids(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['authorid'], 'middle', 1));
+		}
+	}
+	public static function dolist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			if(!empty($v['message'])) {
+				$data[$key][$k]['message'] = preg_replace_callback('/<img[^>]*src=["\']([^"\']+)["\'][^>]*>/i', function($matches) {
+					$src = $matches[1];
+					// 如果不是完整的 URL，则添加站点 URL 前缀
+					if (!preg_match('/^(http|https):\/\//', $src)) {
+						$src = self::_f_siteurl($src);
+					}
+					return str_replace($matches[1], $src, $matches[0]);
+				}, $v['message']);
+			}
+			
+			if (!empty($v['uid'])) {
+				$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
+			}
+		}
+	}
+	public static function clist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $parentKey => $comments) {
+			if (!is_array($comments)) continue;
+			
+			foreach($comments as $k => $v) {
+				// 处理消息中的图片 URL
+				if(!empty($v['message'])) {
+					$data[$key][$parentKey][$k]['message'] = preg_replace_callback('/<img[^>]*src=["\']([^"\']+)["\'][^>]*>/i', function($matches) {
+						$src = $matches[1];
+						// 如果不是完整的 URL，则添加站点 URL 前缀
+						if (!preg_match('/^(http|https):\/\//', $src)) {
+							$src = self::_f_siteurl($src);
+						}
+						return str_replace($matches[1], $src, $matches[0]);
+					}, $v['message']);
+				}
+				
+				// 如果有作者头像，也处理一下
+				if (!empty($v['uid'])) {
+					$data[$key][$parentKey][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
+				}
+			}
+		}
+	}
+	public static function walllist(&$data, $param) {
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		foreach($data[$key] as $k => $v) {
+			if(!empty($v['message'])) {
+				$data[$key][$k]['message'] = preg_replace_callback('/<img[^>]*src=["\']([^"\']+)["\'][^>]*>/i', function($matches) {
+					$src = $matches[1];
+					// 如果不是完整的 URL，则添加站点 URL 前缀
+					if (!preg_match('/^(http|https):\/\//', $src)) {
+						$src = self::_f_siteurl($src);
+					}
+					return str_replace($matches[1], $src, $matches[0]);
+				}, $v['message']);
+			}
+			
+			if (!empty($v['authorid'])) {
+				$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['authorid'], 'middle', 1));
+			}
+		}
+	}
+	public static function guideThreadList(&$data, $param) {
+		global $_G;
+
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+
+		// 处理 new.threadlist 数据
+		if(!empty($data[$key]['new']['threadlist']) && is_array($data[$key]['new']['threadlist'])) {
+			foreach($data[$key]['new']['threadlist'] as $k => $thread) {
+				// 处理匿名用户
+				if($thread['authorid'] > 0 && $thread['author'] === '') {
+					$data[$key]['new']['threadlist'][$k]['author'] = $_G['setting']['anonymoustext'];
+					$data[$key]['new']['threadlist'][$k]['authorid'] = $thread['authorid'] = 0;
+				}
+
+				// 添加用户头像
+				$data[$key]['new']['threadlist'][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
+
+				// 格式化时间
+				$data[$key]['new']['threadlist'][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
+				$data[$key]['new']['threadlist'][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
+
+				// 处理图片附件
+				if(!empty($thread['images'])) {
+					foreach($thread['images'] as $_k => $_v) {
+						$data[$key]['new']['threadlist'][$k]['images'][$_k] = $_G['siteurl'].$_v;
+					}
+				}
+			}
+		}
+
+		// 处理 hot.threadlist 数据
+		if(!empty($data[$key]['hot']['threadlist']) && is_array($data[$key]['hot']['threadlist'])) {
+			foreach($data[$key]['hot']['threadlist'] as $k => $thread) {
+				// 处理匿名用户
+				if($thread['authorid'] > 0 && $thread['author'] === '') {
+					$data[$key]['hot']['threadlist'][$k]['author'] = $_G['setting']['anonymoustext'];
+					$data[$key]['hot']['threadlist'][$k]['authorid'] = $thread['authorid'] = 0;
+				}
+
+				// 添加用户头像
+				$data[$key]['hot']['threadlist'][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
+
+				// 格式化时间
+				$data[$key]['hot']['threadlist'][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
+				$data[$key]['hot']['threadlist'][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
+
+				// 处理图片附件
+				if(!empty($thread['images'])) {
+					foreach($thread['images'] as $_k => $_v) {
+						$data[$key]['hot']['threadlist'][$k]['images'][$_k] = $_G['siteurl'].$_v;
+					}
+				}
+			}
+		}
+
+		// 处理 digest.threadlist 数据（如果存在）
+		if(!empty($data[$key]['digest']['threadlist']) && is_array($data[$key]['digest']['threadlist'])) {
+			foreach($data[$key]['digest']['threadlist'] as $k => $thread) {
+				// 处理匿名用户
+				if($thread['authorid'] > 0 && $thread['author'] === '') {
+					$data[$key]['digest']['threadlist'][$k]['author'] = $_G['setting']['anonymoustext'];
+					$data[$key]['digest']['threadlist'][$k]['authorid'] = $thread['authorid'] = 0;
+				}
+
+				// 添加用户头像
+				$data[$key]['digest']['threadlist'][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
+
+				// 格式化时间
+				$data[$key]['digest']['threadlist'][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
+				$data[$key]['digest']['threadlist'][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
+
+				// 处理图片附件
+				if(!empty($thread['images'])) {
+					foreach($thread['images'] as $_k => $_v) {
+						$data[$key]['digest']['threadlist'][$k]['images'][$_k] = $_G['siteurl'].$_v;
+					}
+				}
+			}
+		}
+		// 处理 sofa.threadlist 数据（如果存在）
+		if(!empty($data[$key]['sofa']['threadlist']) && is_array($data[$key]['sofa']['threadlist'])) {
+			foreach($data[$key]['sofa']['threadlist'] as $k => $thread) {
+				// 处理匿名用户
+				if($thread['authorid'] > 0 && $thread['author'] === '') {
+					$data[$key]['sofa']['threadlist'][$k]['author'] = $_G['setting']['anonymoustext'];
+					$data[$key]['sofa']['threadlist'][$k]['authorid'] = $thread['authorid'] = 0;
+				}
+
+				// 添加用户头像
+				$data[$key]['sofa']['threadlist'][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
+
+				// 格式化时间
+				$data[$key]['sofa']['threadlist'][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
+				$data[$key]['sofa']['threadlist'][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
+
+				// 处理图片附件
+				if(!empty($thread['images'])) {
+					foreach($thread['images'] as $_k => $_v) {
+						$data[$key]['sofa']['threadlist'][$k]['images'][$_k] = $_G['siteurl'].$_v;
+					}
+				}
+			}
+		}
+		// 处理 newthread.threadlist 数据（如果存在）
+		if(!empty($data[$key]['newthread']['threadlist']) && is_array($data[$key]['newthread']['threadlist'])) {
+			foreach($data[$key]['newthread']['threadlist'] as $k => $thread) {
+				// 处理匿名用户
+				if($thread['authorid'] > 0 && $thread['author'] === '') {
+					$data[$key]['newthread']['threadlist'][$k]['author'] = $_G['setting']['anonymoustext'];
+					$data[$key]['newthread']['threadlist'][$k]['authorid'] = $thread['authorid'] = 0;
+				}
+
+				// 添加用户头像
+				$data[$key]['newthread']['threadlist'][$k]['authoravatar'] = self::_f_siteurl(avatar($thread['authorid'], 'middle', 1));
+
+				// 格式化时间
+				$data[$key]['newthread']['threadlist'][$k]['dateline'] = self::_f_gmdate($thread['dateline']);
+				$data[$key]['newthread']['threadlist'][$k]['lastpost'] = self::_f_gmdate($thread['lastpost']);
+
+				// 处理图片附件
+				if(!empty($thread['images'])) {
+					foreach($thread['images'] as $_k => $_v) {
+						$data[$key]['newthread']['threadlist'][$k]['images'][$_k] = $_G['siteurl'].$_v;
+					}
+				}
+			}
+		}
+
 	}
 
 	public static function attachNew(&$data, $param) {

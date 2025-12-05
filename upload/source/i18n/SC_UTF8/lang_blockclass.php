@@ -175,6 +175,7 @@ $lang = [
 	'blockclass_member' => '会员类',
 
 	'blockclass_member_member' => '会员模块',
+	'blockclass_member_field_uid' => '用户UID',
 	'blockclass_member_field_url' => '空间链接',
 	'blockclass_member_field_title' => '用户名',
 	'blockclass_member_field_avatar' => '用户头像',

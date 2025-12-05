@@ -150,6 +150,7 @@ class block_member extends discuz_block {
 		$fields = [
 			'id' => ['name' => lang('blockclass', 'blockclass_field_id'), 'formtype' => 'text', 'datatype' => 'int'],
 			'url' => ['name' => lang('blockclass', 'blockclass_member_field_url'), 'formtype' => 'text', 'datatype' => 'string'],
+			'uid' => array('name' => lang('blockclass', 'blockclass_member_field_uid'), 'formtype' => 'text', 'datatype' => 'int'),
 			'title' => ['name' => lang('blockclass', 'blockclass_member_field_title'), 'formtype' => 'title', 'datatype' => 'title'],
 			'avatar' => ['name' => lang('blockclass', 'blockclass_member_field_avatar'), 'formtype' => 'text', 'datatype' => 'string'],
 			'avatar_middle' => ['name' => lang('blockclass', 'blockclass_member_field_avatar_middle'), 'formtype' => 'text', 'datatype' => 'string'],
@@ -351,6 +352,7 @@ class block_member extends discuz_block {
 				'picflag' => 0,
 				'summary' => '',
 				'fields' => [
+					'uid' => $data['uid'],
 					'avatar' => avatar($data['uid'], 'small', true, false, false, $_G['setting']['ucenterurl'], avatarapi: true),
 					'avatar_middle' => avatar($data['uid'], 'middle', true, false, false, $_G['setting']['ucenterurl'], avatarapi: true),
 					'avatar_big' => avatar($data['uid'], 'big', true, false, false, $_G['setting']['ucenterurl'], avatarapi: true),

@@ -175,6 +175,7 @@ $lang = [
 	'blockclass_member' => '會員類',
 
 	'blockclass_member_member' => '會員模塊',
+	'blockclass_member_field_uid' => '用戶UID',
 	'blockclass_member_field_url' => '空間鏈接',
 	'blockclass_member_field_title' => '用戶名',
 	'blockclass_member_field_avatar' => '用戶頭像',
