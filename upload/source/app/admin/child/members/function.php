@@ -647,3 +647,8 @@ function get_newsletter($cachename) {
 	}
 	return $data;
 }
+
+function is_protect_member(&$member) {
+	global $_G;
+	return $member['adminid'] == 1 || $member['groupid'] == 1 || $member['uid'] == $_G['uid'];
+}

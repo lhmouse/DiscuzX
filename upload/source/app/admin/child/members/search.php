@@ -83,7 +83,7 @@ EOF;
 				$lockshow = $member['status'] == '-1' ? '<em class="lightnum">['.cplang('lock').']</em>' : '';
 				$freezeshow = $member['freeze'] ? '<em class="lightnum">['.cplang('freeze').']</em>' : '';
 				$members .= showtablerow('', ['class="td25"'], [
-					"<input type=\"checkbox\" name=\"uidarray[]\" value=\"{$member['uid']}\"".($member['adminid'] == 1 ? 'disabled' : '')." class=\"checkbox\">".
+					"<input type=\"checkbox\" name=\"uidarray[]\" value=\"{$member['uid']}\"".(is_protect_member($member) ? 'disabled' : '')." class=\"checkbox\">".
 					avatar($member['uid'], 'small', class: 'vmiddle', extra: 'width="30"'),
 					"<a href=\"home.php?mod=space&uid={$member['uid']}\" target=\"_blank\">{$member['uid']}</a>",
 					"<a href=\"home.php?mod=space&uid={$member['uid']}\" target=\"_blank\">{$member['loginname']}</a>",

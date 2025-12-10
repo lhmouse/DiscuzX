@@ -42,7 +42,7 @@ if(!submitcheck('submit', 1) && !submitcheck('deletesubmit', 1)) {
 
 		$membernum = 0;
 		foreach($allmember as $uid => $member) {
-			if($member['adminid'] !== 1 && $member['groupid'] !== 1) {
+			if(!is_protect_member($member)) {
 				if($membernum < 2000) {
 					$extra .= '<input type="hidden" name="uidarray[]" value="'.$member['uid'].'" />';
 				}
@@ -53,9 +53,14 @@ if(!submitcheck('submit', 1) && !submitcheck('deletesubmit', 1)) {
 	} elseif($tmpsearch_condition) {
 		$membernum = countmembers($search_condition, $urladd);
 		$uids = searchmembers($search_condition, $delmemberlimit, 0);
+
+		if($uids) {
+			$protect_uids = table_common_member::t()->fetch_all_protect_member();
+			$uids = array_diff($uids, $protect_uids);
+			$membernum = count($uids);
+		}
 	}
 	$allnum = intval($_GET['allnum']);
-
 
 	if((empty($membernum) || empty($uids))) {
 		if($deletestart) {

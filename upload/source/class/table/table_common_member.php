@@ -616,5 +616,18 @@ class table_common_member extends discuz_table_archive {
 		$logoffs = DB::fetch_all('SELECT uid FROM '.DB::table($this->_table).' WHERE freeze=-2', [], 'uid');
 		return DB::fetch_all('SELECT uid FROM '.DB::table('common_member_status').' WHERE uid IN ('.dimplode(array_keys($logoffs)).") AND lastactivity<'$timestamp'", [], 'uid');
 	}
+
+	public function fetch_all_protect_member() {
+		global $_G;
+
+		$uids = DB::fetch_all('SELECT uid FROM %t WHERE adminid=1 OR groupid=1', [$this->_table]);
+		$return = array_column($uids, 'uid');
+		if($_G['uid']) {
+			$return[] = $_G['uid'];
+		}
+
+		return $return;
+	}
+
 }
 

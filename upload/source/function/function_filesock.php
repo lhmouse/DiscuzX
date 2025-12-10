@@ -21,7 +21,8 @@ function _dfsockopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FAL
 		'encodetype' => $encodetype,
 		'allowcurl' => $allowcurl,
 		'position' => $position,
-		'files' => $files
+		'files' => $files,
+		'timeout' => $timeout,
 	];
 	$fs = filesock::open($param);
 	return $fs->request();
