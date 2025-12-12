@@ -47,8 +47,13 @@ $isfounder = $admincp->isfounder;
 if(empty($action) || $frames != null) {
 	$admincp->show_admincp_main();
 } elseif($action == 'logout') {
-	$admincp->do_admin_logout();
-	dheader('Location: ./index.php');
+	$method = $_G['config']['admincp']['logout']['method'] ?? 'default';
+	if($method != 'default' && ($f = childfile('adminlogout/'.$method, 'global'))) {
+		require_once $f;
+	} else {
+		$admincp->do_admin_logout();
+		dheader('Location: ./index.php');
+	}
 } elseif(($admincp->allow($action, $operation, $do) || $action == 'index') && ($f = $admincp->admincpfile($action))) {
 	require_once $f;
 } else {

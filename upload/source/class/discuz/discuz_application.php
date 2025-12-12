@@ -648,16 +648,7 @@ class discuz_application extends discuz_base {
 	}
 
 	private function _init_guest() {
-		$username = '';
-		$groupid = 7;
-		if(!empty($this->var['cookie']['con_auth_hash']) && ($openid = authcode($this->var['cookie']['con_auth_hash']))) {
-			$this->var['connectguest'] = 1;
-			$username = 'QQ_'.substr($openid, -6);
-			$this->var['setting']['cacheindexlife'] = 0;
-			$this->var['setting']['cachethreadlife'] = 0;
-			$groupid = $this->var['setting']['connect']['guest_groupid'] ? $this->var['setting']['connect']['guest_groupid'] : $this->var['setting']['newusergroupid'];
-		}
-		setglobal('member', ['uid' => 0, 'username' => $username, 'adminid' => 0, 'groupid' => $groupid, 'credits' => 0, 'timeoffset' => 9999]);
+		setglobal('member', ['uid' => 0, 'username' => '', 'adminid' => 0, 'groupid' => 7, 'credits' => 0, 'timeoffset' => 9999]);
 	}
 
 	private function _init_cron() {

@@ -46,13 +46,19 @@ $postinfo['noticetrimstr_html']
     // Warning - Dont just use main_tools - you will probably generate a circular reference
     let main_tools = {};
     let i18n_tools = {};
-    let content = "";
-    let originalContent = "";
+    let content = {blocks: []};
+    let originalContent = {};
     <!--{if $_GET[action] == 'edit'}-->
-    content = {
-        blocks: {$postinfo['content']}
-    };
-    originalContent = JSON.stringify(content);
+    try {
+	    const blocks = {$postinfo['content']};
+	    content = {
+		    blocks: Array.isArray(blocks) ? blocks : []
+	    };
+	    originalContent = JSON.stringify(content);
+    } catch (e) {
+	    content = {blocks: []};
+	    originalContent = JSON.stringify(content);
+    }
     <!--{/if}-->
 </script>
 

@@ -411,7 +411,7 @@ EOT;
 					$data = [
 						'type' => 'special',
 						'grouptitle' => $_GET['grouptitlenewadd'][$k],
-						'color' => $_GET['colornewadd'][$k],
+						'color' => $_GET['colornewadd'][$k] ?? '',
 						'stars' => $_GET['starsnewadd'][$k],
 						'system' => !empty($_GET['systemnewadd'][$k]) ? "0\t0" : '',
 					];

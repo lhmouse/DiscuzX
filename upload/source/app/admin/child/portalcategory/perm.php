@@ -26,11 +26,11 @@ if(!submitcheck('permsubmit')) {
 	showtableheader('', 'fixpadding');
 
 	$inherited_checked = !$category['notinheritedarticle'] ? 'checked' : '';
-	if($portalcategory[$catid]['level']) showsubtitle(['', '<input class="checkbox" type="checkbox" name="inherited" value="1" '.$inherited_checked.'/>'.cplang('portalcategory_inheritance'), '', '']);
+	if($portalcategory[$catid]['level']) showsubtitle(['', '<input class="checkbox" type="checkbox" name="inherited" value="1" '.$inherited_checked.'/>'.cplang('portalcategory_inheritance'), '', '', '']);
 	showsubtitle(['', 'username',
 		'<input class="checkbox" type="checkbox" name="chkallpublish" onclick="checkAll(\'prefix\', this.form, \'publish\', \'chkallpublish\')" id="chkallpublish" /><label for="chkallpublish">'.cplang('portalcategory_perm_publish').'</label>',
 		'<input class="checkbox" type="checkbox" name="chkallmanage" onclick="checkAll(\'prefix\', this.form, \'manage\', \'chkallmanage\')" id="chkallmanage" /><label for="chkallmanage">'.cplang('portalcategory_perm_manage').'</label>',
-		'block_perm_inherited'
+		'block_perm_inherited',
 	]);
 
 	$line = '&minus;';

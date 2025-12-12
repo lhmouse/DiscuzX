@@ -19,7 +19,12 @@ if(empty($diydata)) {
 }
 if(!submitcheck('permsubmit')) {
 	shownav('portal', 'diytemplate', 'diytemplate_perm');
-	showchildmenu([['diytemplate', 'diytemplate'], [$diydata['name'] ?: $_G['cache']['diytemplatename'][$diydata['targettplname']].' ', '']], cplang('diytemplate_perm_edit'));
+	if(!empty($_GET['from']) && $_GET['from'] == 'portalcategory') {
+		$menuroot = ['portalcategory', 'portalcategory'];
+	} else {
+		$menuroot = ['diytemplate', 'diytemplate'];
+	}
+	showchildmenu([$menuroot, [$diydata['name'] ?: $_G['cache']['diytemplatename'][$diydata['targettplname']].' ', '']], cplang('diytemplate_perm_edit'));
 	showtips('diytemplate_perm_tips');
 	showformheader("diytemplate&operation=perm&targettplname=$targettplname&tpldirectory=$tpldirectory");
 	showtableheader('', 'fixpadding');

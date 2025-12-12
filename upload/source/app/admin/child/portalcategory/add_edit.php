@@ -40,7 +40,7 @@ if(!submitcheck('detailsubmit')) {
 
 	$parents = [['portalcategory', 'portalcategory']];
 	if($operation !== 'add') {
-		$parents[] = [($cate['catname'] ? $cate['catname'].' ' : ' '), ' '];
+		$parents[] = [($cate['catname'] ? $cate['catname'].' ' : ' ')];
 	}
 	showchildmenu($parents, cplang('portalcategory_detail'));
 
