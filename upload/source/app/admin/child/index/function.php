@@ -296,7 +296,33 @@ function show_sysinfo() {
 		cplang('home_attach_size'),
 		$attachsize
 	]);
-	$advice = '';
+	$advice = $msg = '';
+	if(function_exists('opcache_get_status')) {
+		$msg = 'OPcache: On';
+		$value = opcache_get_status();
+		if(!empty($value['jit']['enabled'])) {
+			$msg .= ' , JIT: On';
+		} else {
+			$msg .= ' , JIT: Off';
+		}
+		if(!empty($value['preload_statistics'])) {
+			$count = [];
+			if(!empty($value['preload_statistics']['functions'])) {
+				$count[] = count($value['preload_statistics']['functions']).' functions';
+			}
+			if(!empty($value['preload_statistics']['classes'])) {
+				$count[] = count($value['preload_statistics']['classes']).' classes';
+			}
+			if(!empty($value['preload_statistics']['scripts'])) {
+				$count[] = count($value['preload_statistics']['scripts']).' scripts';
+			}
+			$msg .= ' , Preload: On ['.implode('/', $count).']';
+		} else {
+			$msg .= ' , Preload: Off';
+		}
+	} else {
+		$msg = 'OPcache: Off';
+	}
 	if(isset($_GET['benchmark']) && FORMHASH == $_GET['formhash']) {
 		$times = 3;
 		$r = 0;
@@ -315,7 +341,7 @@ function show_sysinfo() {
 	$meminfo = memory('check');
 	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
 		cplang('home_benchmark'),
-		$benchmark.$advice
+		$benchmark.$advice.' <span class="xg1">('.$msg.')</span>'
 	]);
 	showboxfooter();
 }

@@ -3054,3 +3054,14 @@ function is_valid_non_empty_json($content, $check_null_empty = true, $return_dec
 		return true;
 	}
 }
+
+function jsonExit($err = 0, $key = 'errcode') {
+	if($err == 0) {
+		exit('{}');
+	}
+	exit('{"'.$key.'":'.dintval($err).'}');
+}
+
+function jsonMsg($return) {
+	exit(json_encode($return));
+}

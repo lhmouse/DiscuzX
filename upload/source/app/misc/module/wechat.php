@@ -108,14 +108,3 @@ switch($ac) {
 		}
 		break;
 }
-
-function jsonExit($err = 0) {
-	if($err == 0) {
-		exit('{}');
-	}
-	exit('{"errcode":'.$err.'}');
-}
-
-function jsonMsg($return) {
-	exit(json_encode($return));
-}
