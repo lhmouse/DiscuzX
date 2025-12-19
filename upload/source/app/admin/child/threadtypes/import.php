@@ -17,6 +17,20 @@ if($newthreadtype) {
 	$idcmp = $searcharr = $replacearr = $indexoption = [];
 	$create_tableoption_sql = $separator = '';
 	$i = 0;
+
+	$typeoption = [
+		'classid' => 0,
+		'expiration' => 0,
+		'protect' => '',
+		'title' => $newthreadtype[0]['name'] ?? cplang('import').'_'.dgmdate(TIMESTAMP,'Ymd'),
+		'description' => '',
+		'type' => '',
+		'unit' => '',
+		'rules' => '',
+		'permprompt' => '',
+	];
+	$newclassid = table_forum_typeoption::t()->insert($typeoption, true);
+
 	foreach($newthreadtype as $key => $value) {
 		if(!$i) {
 			if($newname1 = trim(strip_tags($value['name']))) {
@@ -47,7 +61,7 @@ if($newthreadtype) {
 		}
 
 		$typeoption = [
-			'classid' => $value['classid'],
+			'classid' => $newclassid,
 			'expiration' => $value['tpexpiration'],
 			'protect' => $value['protect'],
 			'title' => $value['title'],

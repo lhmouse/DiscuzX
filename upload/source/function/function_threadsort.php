@@ -355,7 +355,6 @@ function showsortmodetemplate($sortid, $fid, $sortoptionarray, $templatearray, $
 		$replaces['{lastposter_url}'] = $rewritespace ? rewriteoutput('home_space', 1, '', '', $thread['lastposter']) : 'home.php?mod=space&amp;username='.$thread['lastposterenc'];
 		$replaces['{subject_url}'] = $rewriteviewthread ? rewriteoutput('forum_viewthread', 1, '', $thread['tid']) : 'forum.php?mod=viewthread&amp;tid='.$thread['tid'];
 		$replaces['{lastpost_url}'] = 'forum.php?mod=redirect&tid='.$thread['tid'].'&goto=lastpost#lastpost';
-		$replaces['{lastpost_url}'] = 'forum.php?mod=redirect&tid='.$thread['tid'].'&goto=lastpost#lastpost';
 		$replaces['{avatar_small}'] = avatar($thread['authorid'], 'small', true);
 		$replaces['{typename_url}'] = 'forum.php?mod=forumdisplay&fid='.$fid.'&filter=typeid&typeid='.$thread['tid'];
 		$replaces['{attachment}'] = ($thread['attachment'] == 2 ? '<img src="'.STATICURL.'image/filetype/image_s.gif" align="absmiddle" />' :

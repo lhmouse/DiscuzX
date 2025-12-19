@@ -148,11 +148,7 @@ $lang = [
 	'comprehensive_overview' => '综合概况',
 	'comprehensive_overview_message' => '这里看到的是站点的综合概况发展统计(需要至少统计 2 天后才有效)',
 	'info_interactive' => '信息互动',
-	'interactive_help_message' => '<li>登录用户：指的是每天登录本站的唯一用户数。一个用户登录多次，也只算一次</li>
-  									<li>{$_G[\'setting\'][\'navs\'][2][\'navname\']}：指的是每天发布主题、投票、活动、悬赏、辩论、商品和主题回帖的总数量 </li>
-									<li>圈子：指的是每天创建圈子、圈子主题、圈子回帖的总数量 </li>
-									<li>家园：指的是每天发布记录、日志、图片、话题、投票、活动、分享和互相评论的总数量 </li>
-									<li>互动：指的是每天用户之间互相留言、打招呼和的{$_G[\'setting\'][\'navs\'][4][\'navname\']}相应的表态互动总数量 </li>',
+	'interactive_help_message' => '',
 	'member_interactive' => '互动',
 	'show' => '查看',
 	'home' => '家园',

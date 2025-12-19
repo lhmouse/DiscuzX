@@ -16,7 +16,8 @@ cpheader();
 
 $classoptionmenu = $classids = [];
 $curclassname = '';
-foreach(table_forum_typeoption::t()->fetch_all_by_classid(0) as $option) {
+$classlists = table_forum_typeoption::t()->fetch_all_by_classid(0);
+foreach($classlists as $option) {
 	if($_GET['classid'] == $option['optionid']) {
 		$curclassname = $option['title'];
 	}

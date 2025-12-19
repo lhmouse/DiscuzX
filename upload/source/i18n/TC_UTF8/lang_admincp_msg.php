@@ -603,6 +603,7 @@ $lang = [
 	'threadsplit_manage_forum_processing' => '已處理完 {table}，請稍候...',
 	'threadsplit_manage_forum_complete' => '已更新所有版塊存檔區',
 
+	'forums_threadtypes_delete_error' => '字段分類中存在字段無法刪除',
 	'forums_threadtypes_succeed' => '主題分類更新成功 ',
 	'threadtype_infotypes_noexist' => '主題選項分類不存在',
 	'typeoption_not_found' => '選項未找到',

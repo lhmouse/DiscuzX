@@ -80,12 +80,8 @@ if($step == 1) {
 			}
 		}
 	}
-	$servers = !empty($_G['cache']['servers']) ? $_G['cache']['servers'] : [];
 	if((in_array('tpl', $type) && $_G['config']['output']['tplrefresh']) || in_array('csscache', $type)) {
 		cleartemplatecache();
-		if(getglobal('config/servers/count') > 1) {
-			$servers['clear_cache']['tpl'] = true;
-		}
 	}
 	if(in_array('blockclass', $type)) {
 		include_once libfile('function/block');
@@ -101,9 +97,6 @@ if($step == 1) {
 		if(!in_array('data', $type)) {
 			updatecache('updatediytemplate');
 		}
-		if(getglobal('config/servers/count') > 1) {
-			$servers['clear_cache']['css'] = true;
-		}
 	}
 	if(in_array('searchindex', $type)) {
 		require_once libfile('function/searchindex');
@@ -111,10 +104,6 @@ if($step == 1) {
 	}
 	if(in_array('commonsearchindex', $type)) {
 		table_common_searchindex::t()->truncate();
-	}
-	if(!empty($servers)) {
-		unset($servers['clear_cache']['done']);
-		savecache('servers', $servers);
 	}
 	cpmsg('update_cache_succeed', '', 'succeed', '', FALSE);
 }

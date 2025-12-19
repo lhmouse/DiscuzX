@@ -148,11 +148,7 @@ $lang = [
 	'comprehensive_overview' => '綜合概況',
 	'comprehensive_overview_message' => '這裏看到的是站點的綜合概況發展統計(需要至少統計 2 天后才有效)',
 	'info_interactive' => '資訊互動',
-	'interactive_help_message' => '<li>登錄用戶：指的是每天登錄本站的唯一用戶數。一個用戶登錄多次，也只算一次</li>
-  									<li>{$_G[\'setting\'][\'navs\'][2][\'navname\']}：指的是每天發佈主題、投票、活動、懸賞、辯論、商品和主題回帖的總數量 </li>
-									<li>圈子：指的是每天創建圈子、圈子主題、圈子回帖的總數量 </li>
-									<li>家園：指的是每天發佈記錄、日誌、圖片、話題、投票、活動、分享和互相評論的總數量 </li>
-									<li>互動：指的是每天用戶之間互相留言、打招呼和的{$_G[\'setting\'][\'navs\'][4][\'navname\']}相應的表態互動總數量 </li>',
+	'interactive_help_message' => '',
 	'member_interactive' => '互動',
 	'show' => '查看',
 	'home' => '家園',

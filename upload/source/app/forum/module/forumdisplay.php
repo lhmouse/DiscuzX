@@ -806,6 +806,7 @@ if(!empty($_G['forum']['threadsorts']['types']) && $sortoptionarray && $template
 	$sortid = intval($_GET['sortid']);
 	if(!strexists($templatearray[$sortid], '{subject_url}') && !strexists($templatearray[$sortid], '{tid}')) {
 		$sortlistarray = showsorttemplate($sortid, $_G['fid'], $sortoptionarray, $templatearray, $_G['forum_threadlist'], $threadids);
+		$sortthreadlist = &$_G['optionvaluelist'][$sortid];
 		$stemplate = $sortlistarray['template'];
 	} else {
 		$sorttemplate = showsortmodetemplate($sortid, $_G['fid'], $sortoptionarray, $templatearray, $_G['forum_threadlist'], $threadids, $verify);

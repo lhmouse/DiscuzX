@@ -312,9 +312,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 						], TRUE) : '';
 					}
 
-					if(!empty($type['stemplate'])) {
-						$supsort[] = [$type['typeid'], $type['name']];
-					}
+					$supsort[] = [$type['typeid'], $type['name']];
 				}
 				$forum['creditspolicy'] = $forum['creditspolicy'] ? dunserialize($forum['creditspolicy']) : [];
 			}
@@ -428,8 +426,10 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			$multi_styleselect = str_replace("selected=\"selected\"", '', $multi_styleselect);
 			$multi_styleselect = str_replace("value=\"$styleid\"", "value=\"$styleid\" selected=\"selected\"", $multi_styleselect);
 			showsetting('forums_edit_extend_style', '', '', $multi_styleselect);
-			if($forum['type'] != 'sub') {
+			if(!$multiset) {
 				showsetting('forums_edit_threadsorts_suptypeid', ['threadsortsnew[suptypeid]', $supsort], $forum['threadsorts']['suptypeid'], 'select');
+			}
+			if($forum['type'] != 'sub') {
 				showsetting('forums_edit_extend_sub_horizontal', 'forumcolumnsnew', $forum['forumcolumns'], 'text');
 				showsetting('forums_edit_extend_subforumsindex', ['subforumsindexnew', [
 					[-1, cplang('default')],

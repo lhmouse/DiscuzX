@@ -59,7 +59,7 @@ INSERT INTO pre_common_cron VALUES ('18','0','system','每日用戶分表','cron
 INSERT INTO pre_common_cron VALUES ('19','1','system','統計今日熱帖','cron_todayheats_daily.php','1269746623','1269792000','-1','-1','0','0');
 INSERT INTO pre_common_cron VALUES ('20','1','system','更新版塊最後發表(防水牆相關)','cron_security_cleanup_lastpost.php','1269746623','1269792000','-1','-1','7','0');
 INSERT INTO pre_common_cron VALUES ('21','1','system','每日短信日誌歸檔','cron_smslog_daily.php','1269746639','1269792000','-1','-1','03','0');
-INSERT INTO pre_common_cron VALUES ('22','1','system','每日清理操作日誌','cron_clearlog_daily.php', '1693924538', '1694286000', '0', '-1', '03', '0');
+INSERT INTO pre_common_cron VALUES ('22','1','system','每日清理操作日誌','cron_clearlog_daily.php', '1693924538', '1694286000', '-1', '-1', '03', '0');
 
 INSERT INTO pre_common_friendlink VALUES ('1','0','Discuz! 官方論壇','https://www.discuz.vip/','提供最新 Discuz! 產品新聞、軟件下載與技術交流','static/image/common/logo_88_31.gif','2');
 INSERT INTO pre_common_friendlink VALUES ('2','4','Discuz! 應用中心','https://addon.dismall.com/','','','2');
