@@ -584,3 +584,9 @@ UPDATE pre_common_credit_log_field f
 	SET f.uid = l.uid;
 
 INSERT INTO pre_restful_source (sourceid, name, url) VALUES (1, 'Discuz! Team', 'https://api.witframe.com/discuzrestful');
+
+ALTER TABLE `pre_common_usergroup_field`
+	ADD COLUMN `fields` json;
+
+ALTER TABLE `pre_forum_forumfield`
+	ADD COLUMN `fields` json;

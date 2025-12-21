@@ -68,6 +68,7 @@ if(empty($query)) {
 		if(isset($stylevalue[$forum['fid']])) {
 			$forum['style'] = $stylevalue[$forum['fid']];
 		}
+		$forum['fields'] = !empty($forum['fields']) ? json_decode($forum['fields'], true) : [];
 		$mforum[] = $forum;
 	}
 }
@@ -745,13 +746,21 @@ EOT;
 				showtagfooter('div');
 				showtagheader('div', 'plugin', $anchor == 'plugin');
 				showtableheader('', 'noborder fixpadding');
-				foreach($pluginsetting as $setting) {
+				foreach($pluginsetting as $plugind => $setting) {
 					showtitle($setting['name']);
 					foreach($setting['setting'] as $varid => $var) {
-						if($var['type'] != 'select') {
-							showsetting($var['title'], 'pluginnew['.$varid.']', $forum['plugin'][$varid], $var['type'], '', 0, $var['description']);
+						if(!empty($var['variable']) && str_starts_with($var['variable'], 'fields_')) {
+							$variable = str_replace('fields_', '', $var['variable']);
+							$varname = 'fieldsnew[plugin]['.$plugind.']['.$variable.']';
+							$value = $forum['fields']['plugin'][$plugind][$variable] ?? '';
 						} else {
-							showsetting($var['title'], ['pluginnew['.$varid.']', $var['select']], $forum['plugin'][$varid], $var['type'], '', 0, $var['description']);
+							$varname = 'pluginnew['.$varid.']';
+							$value = $forum['plugin'][$varid];
+						}
+						if($var['type'] != 'select') {
+							showsetting($var['title'], $varname, $value, $var['type'], '', 0, $var['description']);
+						} else {
+							showsetting($var['title'], [$varname, $var['select']], $value, $var['type'], '', 0, $var['description']);
 						}
 					}
 				}
@@ -1286,6 +1295,7 @@ EOT;
 				'noforumrecommend' => intval($_GET['noforumrecommendnew']),
 				'price' => intval($_GET['pricenew']),
 				'jointype' => !empty($_GET['viewtypenew']) ? 2 : 0,
+				'fields' => !empty($_GET['fieldsnew']) ? json_encode($_GET['fieldsnew']) : '{}',
 			]);
 			if(!$multiset) {
 

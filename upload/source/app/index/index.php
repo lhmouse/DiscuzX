@@ -6,14 +6,14 @@
  * https://license.discuz.vip
  */
 
+$jump = false;
+
 if(!empty($_SERVER['QUERY_STRING']) && is_numeric($_SERVER['QUERY_STRING'])) {
 	$_ENV['curapp'] = 'home';
 	$_GET = ['mod' => 'space', 'uid' => $_SERVER['QUERY_STRING']];
 } else {
-
 	$url = '';
 	$domain = $_ENV = [];
-	$jump = false;
 	$domaincache = './data/sysdata/cache_domain.php';
 	if(!file_exists($domaincache) || filemtime($domaincache) < time() - 86400) {
 		save_domain_cache();

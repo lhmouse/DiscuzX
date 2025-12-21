@@ -606,6 +606,9 @@ function loadforum($fid = null, $tid = null) {
 					}
 				}
 			}
+			if(!empty($forum['fields'])) {
+				$forum['fields'] = json_decode($forum['fields'], true);
+			}
 		} else {
 			$fid = 0;
 		}

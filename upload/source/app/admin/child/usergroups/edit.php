@@ -62,6 +62,7 @@ if(!$group_data) {
 		if(isset($stylevalue[$group['groupid']])) {
 			$group['style'] = $stylevalue[$group['groupid']];
 		}
+		$group['fields'] = !empty($group['fields']) ? json_decode($group['fields'], true) : [];
 		$mgroup[] = $group;
 	}
 }
@@ -165,7 +166,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 				$extcreditsbtn .= '<a href="###" onclick="creditinsertunit(\'extcredits'.$i.'\')">'.$extcredittitle.'</a> &nbsp;';
 			}
 			$formulareplace = '\'<u>'.cplang('setting_credits_formula_digestposts').'</u>\',\'<u>'.cplang('setting_credits_formula_posts').'</u>\'';
-?>
+			?>
 			<script type="text/JavaScript">
 				function isUndefined(variable) {
 					return typeof variable == 'undefined' ? true : false;
@@ -622,13 +623,21 @@ EOF;
 		if($pluginsetting) {
 			showtagheader('div', 'plugin', $anchor == 'plugin');
 			showtableheader('', 'nobottom');
-			foreach($pluginsetting as $setting) {
+			foreach($pluginsetting as $plugind => $setting) {
 				showtitle($setting['name']);
 				foreach($setting['setting'] as $varid => $var) {
-					if($var['type'] != 'select') {
-						showsetting($var['title'], 'pluginnew['.$varid.']', $group['plugin'][$varid], $var['type'], '', 0, $var['description']);
+					if(!empty($var['variable']) && str_starts_with($var['variable'], 'fields_')) {
+						$variable = str_replace('fields_', '', $var['variable']);
+						$varname = 'fieldsnew[plugin]['.$plugind.']['.$variable.']';
+						$value = $group['fields']['plugin'][$plugind][$variable] ?? '';
 					} else {
-						showsetting($var['title'], ['pluginnew['.$varid.']', $var['select']], $group['plugin'][$varid], $var['type'], '', 0, $var['description']);
+						$varname = 'pluginnew['.$varid.']';
+						$value = $group['plugin'][$varid];
+					}
+					if($var['type'] != 'select') {
+						showsetting($var['title'], $varname, $value, $var['type'], '', 0, $var['description']);
+					} else {
+						showsetting($var['title'], [$varname, $var['select']], $value, $var['type'], '', 0, $var['description']);
 					}
 				}
 			}
@@ -951,6 +960,7 @@ EOF;
 			'allowsendallpm' => intval($_GET['allowsendallpmnew']),
 			'allowsendpmmaxnum' => intval($_GET['allowsendpmmaxnumnew']),
 			'closead' => intval($_GET['closeadnew']),
+			'fields' => !empty($_GET['fieldsnew']) ? json_encode($_GET['fieldsnew']) : '{}',
 		];
 		table_common_usergroup_field::t()->update($_GET['id'], $dataarr);
 

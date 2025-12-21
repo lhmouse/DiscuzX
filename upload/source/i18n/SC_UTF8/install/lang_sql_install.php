@@ -1828,6 +1828,7 @@ CREATE TABLE pre_common_usergroup_field
 	allowimgcontent        tinyint(1)            NOT NULL DEFAULT '0',
 	allowavatarupload      tinyint(1)            NOT NULL DEFAULT '0',
 	allowviewprofile       tinyint(1)            NOT NULL DEFAULT '0',
+	fields                 json,
 	PRIMARY KEY (groupid)
 ) ENGINE = InnoDB;
 
@@ -2666,6 +2667,7 @@ CREATE TABLE pre_forum_forumfield
 	noforumrecommend tinyint(1)            NOT NULL DEFAULT '0',
 	livetid          int(10) unsigned      NOT NULL DEFAULT '0',
 	price            mediumint(8) unsigned NOT NULL DEFAULT '0',
+	fields           json,
 	PRIMARY KEY (fid),
 	KEY membernum (membernum),
 	KEY dateline (dateline),

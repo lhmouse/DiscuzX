@@ -97,6 +97,9 @@ function build_cache_usergroups_single() {
 			}
 		}
 		unset($data['type'], $data['system'], $data['creditshigher'], $data['creditslower'], $data['groupavatar'], $data['admingid']);
+		if(!empty($data['fields'])) {
+			$data['fields'] = json_decode($data['fields'], true);
+		}
 		savecache('usergroup_'.$data['groupid'], $data);
 	}
 }

@@ -65,3 +65,9 @@ ALTER TABLE pre_common_credit_log_field
 UPDATE pre_common_credit_log_field f
 	JOIN pre_common_credit_log l ON f.logid = l.logid
 	SET f.uid = l.uid;
+
+ALTER TABLE `pre_common_usergroup_field`
+	ADD COLUMN `fields` json;
+
+ALTER TABLE `pre_forum_forumfield`
+	ADD COLUMN `fields` json;
