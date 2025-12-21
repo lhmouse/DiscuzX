@@ -71,14 +71,53 @@
     },
     "version": "X5.0",
     "var": [
-      {
-        "displayorder": "0",
-        "title": "var_title",
-        "description": "var_desc",
-        "variable": "usergroups",
-        "type": "groups",
-        "extra": ""
-      }
+            {
+                "displayorder": 0,
+                "title": "变量1",
+                "description": "变量1说明",
+                "variable": "usergroups",
+                "type": "groups",
+                "value": "",
+                "extra": ""
+            },
+            {
+                "displayorder": 0,
+                "title": "u_1测试",
+                "description": "",
+                "variable": "u_1",
+                "type": "group_text",
+                "extra": "",
+                "__value": {
+                }
+            },
+            {
+                "displayorder": 0,
+                "title": "f_1测试",
+                "description": "",
+                "variable": "f_1",
+                "type": "forum_text",
+                "extra": "",
+                "__value": {
+                }
+            },
+            {
+                "displayorder": 0,
+                "title": "u_2测试",
+                "description": "",
+                "variable": "fields_u_2",
+                "type": "group_text",
+                "value": "",
+                "extra": ""
+            },
+            {
+                "displayorder": 0,
+                "title": "f_2测试",
+                "description": "",
+                "variable": "fields_f_2",
+                "type": "forum_textarea",
+                "value": "",
+                "extra": ""
+            }
     ],
     "license": "license",
     "intro": "intro",
