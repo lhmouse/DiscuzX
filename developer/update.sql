@@ -92,3 +92,22 @@ CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
 	KEY doid (doid),
 	KEY uid (uid)
 	) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `pre_home_doing_attachment`
+(
+	`aid`           int UNSIGNED            NOT NULL AUTO_INCREMENT,
+	`doid`          int UNSIGNED            NOT NULL DEFAULT '0',
+	`uid`           mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`dateline`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`filename`      varchar(255)            NOT NULL DEFAULT '',
+	`filesize`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`attachment`    varchar(255)            NOT NULL DEFAULT '',
+	`remote`        tinyint(1)              NOT NULL DEFAULT '0',
+	`isimage`       tinyint(1)              NOT NULL DEFAULT '0',
+	`width`         mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`height`        mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`displayorder`  int NOT NULL,
+	PRIMARY KEY (`aid`),
+	KEY `uid` (`uid`),
+	KEY `doid` (`doid`)
+	) ENGINE=InnoDB;
