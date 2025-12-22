@@ -226,8 +226,8 @@
 								<!--{if $post['invisible'] == 0}-->
 									<div id="p_btn" class="mtw mbm cl xs1" style="display:none;">
 										<!--{hook/viewthread_useraction_prefix}-->
-										<!--{if helper_access::check_module('share')}-->
-											<a href="home.php?mod=spacecp&ac=share&type=thread&id=$_G[tid]" id="k_share" onclick="showWindow(this.id, this.href, 'get', 0);" onmouseover="this.title = $('sharenumber').innerHTML + ' {lang activity_member_unit}{lang thread_share}'"><i><em class="fico-share fc-p" title="{lang thread_share}"></em>{lang thread_share}<span id="sharenumber">{$_G['forum_thread']['sharetimes']}</span></i></a>
+										<!--{if helper_access::check_module('doing')}-->
+											<a href="home.php?mod=spacecp&ac=doing&type=thread&id=$_G[tid]" id="k_share" onclick="showWindow(this.id, this.href, 'get', 0);" onmouseover="this.title = $('sharenumber').innerHTML + ' {lang activity_member_unit}{lang thread_share}'"><i><em class="fico-share fc-p" title="{lang thread_share}"></em>{lang thread_share}<span id="sharenumber">{$_G['forum_thread']['sharetimes']}</span></i></a>
 										<!--{/if}-->
 										<!--{if helper_access::check_module('favorite')}--><a href="home.php?mod=spacecp&ac=favorite&type=thread&id=$_G[tid]" id="k_favorite" onclick="showWindow(this.id, this.href, 'get', 0);" onmouseover="this.title = $('favoritenumber').innerHTML + ' {lang activity_member_unit}{lang thread_favorite}'"><i><em class="fico-star fc-l" title="{lang thread_favorite}"></em>{lang thread_favorite}<span id="favoritenumber">{$_G['forum_thread']['favtimes']}</span></i></a><!--{/if}-->
 										<!--{if ($_G['group']['allowrecommend'] || !$_G['uid']) && $_G['setting']['recommendthread']['status']}-->

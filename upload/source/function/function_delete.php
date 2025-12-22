@@ -90,11 +90,32 @@ function deletemember($uids, $delpost = true) {
 		pic_delete($value['pic'], 'album', 0, ($value['picflag'] == 2 ? 1 : 0));
 	}
 
+	$query = table_home_doing_attachment::t()->fetch_all_by_id(0, 'uid', $arruids);
+	foreach ($query as $value) {
+		pic_delete($value['pic'], 'doing', 0, $value['remote']);
+	}
+
 	table_common_mailcron::t()->delete_by_touid($arruids);
 
-	foreach(['home_doing', 'home_share', 'home_album', 'common_credit_rule_log', 'common_credit_rule_log_field',
-		        'home_pic', 'home_blog', 'home_blogfield', 'home_class', 'home_clickuser',
-		        'home_show', 'forum_collectioncomment', 'forum_collectionfollow', 'forum_collectionteamworker'] as $table) {
+	foreach (
+		[
+			'home_doing',
+			'home_doing_attachment',
+			'home_share',
+			'home_album',
+			'common_credit_rule_log',
+			'common_credit_rule_log_field',
+			'home_pic',
+			'home_blog',
+			'home_blogfield',
+			'home_class',
+			'home_clickuser',
+			'home_show',
+			'forum_collectioncomment',
+			'forum_collectionfollow',
+			'forum_collectionteamworker'
+		] as $table
+	) {
 		C::t($table)->delete_by_uid($arruids);
 	}
 	table_common_member::t()->delete($arruids, 1, 1);
@@ -447,9 +468,23 @@ function deletethread($tids, $membercount = false, $credit = false, $ponly = fal
 		}
 	}
 
-	foreach(['forum_forumrecommend', 'forum_polloption', 'forum_poll', 'forum_polloption_image', 'forum_activity', 'forum_activityapply', 'forum_debate',
-		        'forum_debatepost', 'forum_threadmod', 'forum_relatedthread',
-		        'forum_pollvoter', 'forum_threadimage', 'forum_threadpreview'] as $table) {
+	foreach (
+		[
+			'forum_forumrecommend',
+			'forum_polloption',
+			'forum_poll',
+			'forum_polloption_image',
+			'forum_activity',
+			'forum_activityapply',
+			'forum_debate',
+			'forum_debatepost',
+			'forum_threadmod',
+			'forum_relatedthread',
+			'forum_pollvoter',
+			'forum_threadimage',
+			'forum_threadpreview'
+		] as $table
+	) {
 		C::t($table)->delete_by_tid($arrtids);
 	}
 	table_forum_typeoptionvar::t()->delete_by_tid($arrtids);
@@ -662,7 +697,7 @@ function deletedoings($ids) {
 
 	$allowmanage = checkperm('managedoing');
 
-	$doings = $newdoids = $counts = [];
+	$doings = $newdoids = $counts = $attachments = [];
 	$query = table_home_doing::t()->fetch_all($ids);
 	foreach($query as $value) {
 		if($allowmanage || $value['uid'] == $_G['uid']) {
@@ -677,6 +712,27 @@ function deletedoings($ids) {
 	}
 
 	if(empty($doings)) return [];
+
+	// 获取并处理附件
+	include_once libfile('function/home');
+	$all_attachments = table_home_doing_attachment::t()->fetch_all_by_id(0, 'doid', $newdoids);
+
+	// 分组附件并计算大小
+	$attach_by_doid = [];
+	foreach ($all_attachments as $attach) {
+		$attach_by_doid[$attach['doid']][] = $attach;
+		$attachments[] = $attach;
+	}
+
+	// 删除物理文件
+	foreach ($attachments as $attach) {
+		if ($attach['isimage']) {
+			pic_delete($attach['attachment'], 'doing', 0, $attach['remote']);
+		}
+	}
+
+	// 删除附件记录
+	table_home_doing_attachment::t()->delete_by_id('doid', $newdoids);
 
 	table_home_doing::t()->delete($newdoids);
 	table_home_docomment::t()->delete_by_doid_uid($newdoids);

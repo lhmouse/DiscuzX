@@ -9,7 +9,7 @@
 		<a href="javascript:;" onclick="docomment_form($value[doid], $value[id], '$_GET[key]');">{lang reply}</a>
 		<!--{/if}-->
 		<!--{if $value[uid]==$_G[uid] || $dv['uid']==$_G[uid] || checkperm('managedoing')}-->
-			 <a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$value[doid]&id=$value[id]&handlekey=doinghk_{$value[doid]}_$value[id]" id="{$_GET[key]}_doing_delete_{$value[doid]}_{$value[id]}" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a>
+			 <a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$value[doid]&docid=$value[id]&handlekey=doinghk_{$value[doid]}_$value[id]" id="{$_GET[key]}_doing_delete_{$value[doid]}_{$value[id]}" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a>
 		<!--{/if}-->
 		<!--{if checkperm('managedoing')}-->
 		<span class="xg1 xw0">IP: $value[ip]:$value[port]</span>

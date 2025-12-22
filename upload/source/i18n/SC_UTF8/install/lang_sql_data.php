@@ -676,7 +676,6 @@ INSERT INTO pre_common_setting VALUES ('security_password', '1');
 INSERT INTO pre_common_setting VALUES ('security_question', '1');
 INSERT INTO pre_common_setting VALUES ('security_rename', '1');
 INSERT INTO pre_common_setting VALUES ('security_verify', 'a:0:{}');
-INSERT INTO pre_common_setting VALUES ('iconfont','static/js/iconfont.js');
 INSERT INTO pre_common_setting VALUES ('log', 'a:14:{s:13:"clearlogstime";s:1:"0";s:14:"clearlogstypes";a:2:{i:0;s:2:"cp";i:1;s:5:"error";}s:7:"illegal";s:1:"1";s:3:"ban";s:1:"1";s:4:"mods";s:1:"1";s:3:"sms";s:1:"1";s:5:"login";s:1:"1";s:2:"cp";s:1:"1";s:5:"modcp";s:1:"1";s:5:"error";s:1:"1";s:8:"sendmail";s:1:"1";s:4:"SMTP";s:1:"1";s:4:"rate";s:1:"1";s:3:"pmt";s:1:"1";}');
 
 INSERT INTO pre_common_smiley VALUES ('1','1','1','smiley',':)','smile.gif');

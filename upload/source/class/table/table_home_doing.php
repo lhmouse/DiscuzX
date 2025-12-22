@@ -28,7 +28,25 @@ class table_home_doing extends discuz_table {
 	}
 
 	public function update_replynum_by_doid($inc_replynum, $doid) {
-		return DB::query('UPDATE %t SET replynum=replynum+\'%d\' WHERE doid=%d', [$this->_table, $inc_replynum, $doid]);
+		return DB::query('UPDATE %t SET replynum=replynum+%d WHERE doid=%d', array($this->_table, $inc_replynum, $doid));
+	}
+
+	public function update_recommendnum_by_doid($inc_recommendnum, $doid) {
+		return DB::query('UPDATE %t SET recomends=recomends+%d WHERE doid=%d', array($this->_table, $inc_recommendnum, $doid));
+	}
+
+	public function fetch_recommend_status($doid, $uid) {
+		if(!$uid) {
+			return array('status' => 0, 'count' => 0);
+		}
+		$count = DB::result_first('SELECT recomends FROM %t WHERE doid=%d', array($this->_table, $doid));
+		$status = DB::result_first('SELECT COUNT(*) FROM %t WHERE doid=%d AND uid=%d', array('home_doing_recomend_log', $doid, $uid));
+		return array('status' => $status, 'count' => $count);
+	}
+
+	public function update_recommendnum($doid) {
+		$count = DB::result_first('SELECT COUNT(*) FROM %t WHERE doid=%d', array('home_doing_recomend_log', $doid));
+		return DB::query('UPDATE %t SET recomends=%d WHERE doid=%d', array($this->_table, $count, $doid));
 	}
 
 	public function delete_by_uid($uid) {
@@ -144,5 +162,23 @@ class table_home_doing extends discuz_table {
 		}
 	}
 
-}
+	public function count_by_uid_itemid_type($uid = null, $itemid = null, $type = null) {
+		$parameter = [$this->_table];
+		$wherearr = [];
+		if($uid !== null) {
+			$parameter[] = $uid;
+			$wherearr[] = 'uid=%d';
+		}
+		if($itemid !== null) {
+			$parameter[] = $itemid;
+			$wherearr[] = 'itemid=%d';
+		}
+		if($type !== null) {
+			$parameter[] = $type;
+			$wherearr[] = 'type=%s';
+		}
+		$wheresql = !empty($wherearr) && is_array($wherearr) ? ' WHERE '.implode(' AND ', $wherearr) : '';
+		return DB::result_first('SELECT COUNT(*) FROM %t '.$wheresql, $parameter);
+	}
 
+}

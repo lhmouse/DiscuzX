@@ -138,8 +138,8 @@
 					<dt class="xs2">
 						<!--{eval $stickflag = isset($value['stickflag']) ? 0 : 1;}-->
 						<!--{if !$stickflag}--><span class="xi1">{lang stick}</span> &middot;<!--{/if}-->
-						<!--{if helper_access::check_module('share')}-->
-						<a href="home.php?mod=spacecp&ac=share&type=blog&id=$value[blogid]&handlekey=lsbloghk_{$value[blogid]}" id="a_share_$value[blogid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr xs1 xw0">{lang share}</a>
+						<!--{if helper_access::check_module('doing')}-->
+						<a href="home.php?mod=spacecp&ac=doing&type=blog&id=$value[blogid]&handlekey=lsbloghk_{$value[blogid]}" id="a_share_$value[blogid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr xs1 xw0">{lang share}</a>
 						<!--{/if}-->
 						<a href="home.php?mod=space&uid=$value[uid]&do=blog&id=$value[blogid]"{if $value[magiccolor]} style="color: {$_G[colorarray][$value[magiccolor]]}"{/if} target="_blank">$value[subject]</a>
 						<!--{if $value[status] == 1}--> <span class="xi1">({lang pending})</span><!--{/if}-->

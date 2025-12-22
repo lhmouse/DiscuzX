@@ -206,7 +206,6 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_styles_global_creditnotice', 'settingnew[creditnotice]', $setting['creditnotice'], 'radio');
 	showsetting('setting_styles_global_showusercard', 'settingnew[showusercard]', $setting['showusercard'], 'radio');
 	showsetting('setting_styles_global_anonymoustext', 'settingnew[anonymoustext]', $setting['anonymoustext'], 'text');
-	showsetting('setting_styles_global_iconfont', 'settingnew[iconfont]', $setting['iconfont'] ? $setting['iconfont'] : 'static/js/iconfont.js', 'text');
 	showtablefooter();
 	/*search*/
 

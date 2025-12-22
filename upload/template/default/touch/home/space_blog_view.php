@@ -54,7 +54,7 @@
 			<!--{if helper_access::check_module('favorite')}-->
 				<li><a href="home.php?mod=spacecp&ac=favorite&type=blog&id=$blog['blogid']&spaceuid=$blog[uid]&handlekey=favoritebloghk_{$blog['blogid']}" id="a_favorite" class="dialog">{lang favorite}</a></li>
 			<!--{/if}-->
-			<!--{if helper_access::check_module('share')}--><li><a href="home.php?mod=spacecp&ac=share&type=blog&id=$blog['blogid']&handlekey=sharebloghk_{$blog['blogid']}" id="a_share" class="dialog">{lang share}</a></li><!--{/if}-->
+			<!--{if helper_access::check_module('doing')}--><li><a href="home.php?mod=spacecp&ac=doing&type=blog&id=$blog['blogid']&handlekey=sharebloghk_{$blog['blogid']}" id="a_share" class="dialog">{lang share}</a></li><!--{/if}-->
 			<!--{if helper_access::check_module('friend')}--><li><a href="misc.php?mod=invite&action=blog&id=$blog['blogid']" id="a_invite" class="dialog">{lang invite}</a></li><!--{/if}-->
 			<!--{if $_G[uid] == $blog[uid] || checkperm('manageblog')}-->
 				<li><a href="home.php?mod=spacecp&ac=blog&blogid=$blog['blogid']&op=edit">{lang edit}</a></li>

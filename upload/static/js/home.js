@@ -676,7 +676,7 @@ function docomment_colse(doid, key) {
 function docomment_form(doid, id, key) {
 	var showid = key + '_form_'+doid+'_'+id;
 	var divid = key +'_'+ doid;
-	var url = 'home.php?mod=spacecp&ac=doing&op=docomment&handlekey=msg_'+id+'&doid='+doid+'&id='+id+'&key='+key;
+	var url = 'home.php?mod=spacecp&ac=doing&op=docomment&handlekey=msg_'+id+'&doid='+doid+'&docid='+id+'&key='+key;
 	if(parseInt(discuz_uid)) {
 		ajaxget(url, showid);
 		if($(divid)) {

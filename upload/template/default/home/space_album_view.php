@@ -37,7 +37,7 @@
 		<div class="tbmu cl">
 			<!--{if $album[albumid]>0}-->
 			<!--{if helper_access::check_module('favorite')}--><a href="home.php?mod=spacecp&ac=favorite&type=album&id=$album[albumid]&spaceuid=$space[uid]&handlekey=sharealbumhk_{$album[albumid]}" id="a_favorite" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr ofav">{lang favorite}</a><!--{/if}-->
-			<!--{if helper_access::check_module('share')}--><a href="home.php?mod=spacecp&ac=share&type=album&id=$album[albumid]&handlekey=sharealbumhk_{$album[albumid]}" id="a_share" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">{lang share}</a><!--{/if}-->
+			<!--{if helper_access::check_module('doing')}--><a href="home.php?mod=spacecp&ac=doing&type=album&id=$album[albumid]&handlekey=sharealbumhk_{$album[albumid]}" id="a_share" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">{lang share}</a><!--{/if}-->
 			<!--{/if}-->
 			<div class="y">
 				<!--{hook/space_album_op_extra}-->

@@ -46,8 +46,8 @@
 							</div>
 						</dd>
 						<dt class="xs2">
-							<!--{if helper_access::check_module('share')}-->
-							<a href="home.php?mod=spacecp&ac=share&type=blog&id=$blog[blogid]&handlekey=lsbloghk_{$blog[blogid]}" id="a_share_$blog[blogid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr xs1 xw0">{lang share}</a>
+							<!--{if helper_access::check_module('doing')}-->
+							<a href="home.php?mod=spacecp&ac=doing&type=blog&id=$blog[blogid]&handlekey=lsbloghk_{$blog[blogid]}" id="a_share_$blog[blogid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr xs1 xw0">{lang share}</a>
 							<!--{/if}-->
 							<a href="home.php?mod=space&uid=$blog[uid]&do=blog&id=$blog[blogid]" target="_blank">$blog[subject]</a>
 						</dt>

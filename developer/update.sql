@@ -71,3 +71,24 @@ ALTER TABLE `pre_common_usergroup_field`
 
 ALTER TABLE `pre_forum_forumfield`
 	ADD COLUMN `fields` json;
+
+ALTER TABLE `pre_home_doing`
+	ADD COLUMN `itemid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' AFTER `doid`,
+	ADD COLUMN `type` varchar(30) NOT NULL DEFAULT '' AFTER `itemid`,
+	ADD COLUMN `body_template` text NOT NULL AFTER `dateline`,
+	ADD COLUMN `body_data` text NOT NULL AFTER `body_template`,
+	ADD COLUMN `recomends` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `replynum`,
+	ADD INDEX `type`(`type`),
+	ADD INDEX `itemid`(`itemid`);
+
+CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
+(
+	id              int(10) unsigned NOT NULL AUTO_INCREMENT,
+	doid            int(10) unsigned NOT NULL DEFAULT '0',
+	uid             int(10) unsigned NOT NULL DEFAULT '0',
+	dateline        int(10) unsigned NOT NULL DEFAULT '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY doid_uid (doid,uid),
+	KEY doid (doid),
+	KEY uid (uid)
+	) ENGINE=InnoDB;

@@ -152,8 +152,8 @@
 											<!--{/if}-->
 										<!--{/if}-->
 										<div class="o cl bw0 xs1 pbn">
-											<!--{if helper_access::check_module('share')}-->
-											<a href="home.php?mod=spacecp&ac=share&type=pic&id=$pic[picid]&handlekey=sharealbumhk_{$pic[picid]}" id="a_share_$pic[picid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">{lang share}</a>
+											<!--{if helper_access::check_module('doing')}-->
+											<a href="home.php?mod=spacecp&ac=doing&type=pic&id=$pic[picid]&handlekey=sharealbumhk_{$pic[picid]}" id="a_share_$pic[picid]" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">{lang share}</a>
 											<!--{/if}-->
 											<!--{hook/space_album_pic_op_extra}-->
 											<!--{if $pic[uid] == $_G[uid]}-->

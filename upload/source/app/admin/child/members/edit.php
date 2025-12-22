@@ -32,7 +32,7 @@ if($do == 'account') {
 		}
 	}
 
-	echo '<script type="text/javascript" src="'.$_G['setting']['iconfont'].'"></script>';
+	echo '<script type="text/javascript" src="static/js/iconfont.js"></script>';
 	echo '<style>.iconfont { width: 1.5em; height: 1.5em; vertical-align: middle; fill: currentColor; overflow: hidden; margin-right: 5px;}</style>';
 	showtableheader();
 	showsubtitle(['account_type', 'account_createtime', 'account_bindname', 'account_detail']);

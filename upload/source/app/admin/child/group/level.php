@@ -198,6 +198,13 @@ EOT;
 			cplang('thread_activity'),
 			cplang('thread_debate')
 		]], $group_postpolicy['allowpostspecial'], 'binmcheckbox');
+		$threadpluginarray = [];
+		if(is_array($_G['setting']['threadplugins'])) foreach($_G['setting']['threadplugins'] as $tpid => $data) {
+			$threadpluginarray[] = [$tpid, $data['name']];
+		}
+		if($threadpluginarray) {
+			showsetting('forums_edit_posts_threadplugin', ['levelnew[postpolicy][threadplugin]', $threadpluginarray], $group_postpolicy['threadplugin'], 'mcheckbox');
+		}
 		showsetting('forums_edit_posts_attach_ext', 'levelnew[postpolicy][attachextensions]', $group_postpolicy['attachextensions'], 'text');
 
 		showtitle('group_level_special');

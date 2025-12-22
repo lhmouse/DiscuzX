@@ -486,7 +486,6 @@ CREATE TABLE pre_common_session
 
 INSERT INTO pre_common_setting VALUES ('editorfids','a:1:{i:0;s:0:"";}');
 INSERT INTO pre_common_setting VALUES ('editorgroupid','a:1:{i:0;s:0:"";}');
-INSERT INTO pre_common_setting VALUES ('iconfont','static/js/iconfont.js');
 INSERT INTO pre_common_setting VALUES ('regemail','1');
 INSERT INTO pre_common_setting VALUES ('security_email', '1');
 INSERT INTO pre_common_setting VALUES ('security_logoff', '0');
@@ -585,8 +584,48 @@ UPDATE pre_common_credit_log_field f
 
 INSERT INTO pre_restful_source (sourceid, name, url) VALUES (1, 'Discuz! Team', 'https://api.witframe.com/discuzrestful');
 
+CREATE TABLE IF NOT EXISTS `pre_home_doing_attachment`
+(
+	`aid`           int UNSIGNED            NOT NULL AUTO_INCREMENT,
+	`doid`          int UNSIGNED            NOT NULL DEFAULT '0',
+	`uid`           mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`dateline`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`filename`      varchar(255)            NOT NULL DEFAULT '',
+	`filesize`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`attachment`    varchar(255)            NOT NULL DEFAULT '',
+	`remote`        tinyint(1)              NOT NULL DEFAULT '0',
+	`isimage`       tinyint(1)              NOT NULL DEFAULT '0',
+	`width`         mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`height`        mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`displayorder`  int NOT NULL,
+	PRIMARY KEY (`aid`),
+	KEY `uid` (`uid`),
+	KEY `doid` (`doid`)
+) ENGINE=InnoDB;
+
+ALTER TABLE `pre_home_doing` 
+	ADD COLUMN `itemid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' AFTER `doid`,
+	ADD COLUMN `type` varchar(30) NOT NULL DEFAULT '' AFTER `itemid`,
+	ADD COLUMN `body_template` text NOT NULL AFTER `dateline`,
+	ADD COLUMN `body_data` text NOT NULL AFTER `body_template`,
+	ADD COLUMN `recomends` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `replynum`,
+	ADD INDEX `type`(`type`),
+	ADD INDEX `itemid`(`itemid`);
+
 ALTER TABLE `pre_common_usergroup_field`
 	ADD COLUMN `fields` json;
 
 ALTER TABLE `pre_forum_forumfield`
 	ADD COLUMN `fields` json;
+
+CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
+(
+id              int(10) unsigned NOT NULL AUTO_INCREMENT,
+doid            int(10) unsigned NOT NULL DEFAULT '0',
+uid             int(10) unsigned NOT NULL DEFAULT '0',
+dateline        int(10) unsigned NOT NULL DEFAULT '0',
+PRIMARY KEY (id),
+UNIQUE KEY doid_uid (doid,uid),
+KEY doid (doid),
+KEY uid (uid)
+) ENGINE=InnoDB;	

@@ -65,12 +65,58 @@ $actives = [$_GET['view'] => ' class="a"'];
 $doid = empty($_GET['doid']) ? 0 : intval($_GET['doid']);
 $doids = $clist = $newdoids = [];
 $pricount = 0;
-
-if($doid) {
-	$count = 1;
-	$f_index = '';
-	$theurl .= "&doid=$doid";
-}
+	
+	// 处理点赞请求
+	if($_GET['op'] == 'recommend') {
+		$doid = intval($_GET['doid']);
+		$uid = $_G['uid'];
+		
+		if(!$doid || !$uid) {
+			showmessage('to_login', '', array(), array('login' => 1));
+		}
+		
+		$doing = table_home_doing::t()->fetch($doid);
+		if(!$doing) {
+			showmessage('doing_not_exists');
+		}
+		
+		$exists = table_home_doing_recomend_log::t()->fetch_by_doid_uid($doid, $uid);
+		
+		if($exists) {
+			// 取消点赞
+			table_home_doing::t()->update_recommendnum_by_doid(-1, $doid);
+			table_home_doing_recomend_log::t()->delete_by_doid_uid($doid, $uid);
+			$status = 0;
+		} else {
+			// 添加点赞
+			table_home_doing::t()->update_recommendnum_by_doid(1, $doid);
+			table_home_doing_recomend_log::t()->insert(array(
+				'doid' => $doid,
+				'uid' => $uid,
+				'dateline' => TIMESTAMP
+			));
+			$status = 1;
+		}
+		
+		// 重新获取点赞数
+		$doing = table_home_doing::t()->fetch($doid);
+		$recomends = $doing['recomends'];
+		
+		// 直接返回JSON格式数据
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'message' => 'doing_recommend_success',
+			'status' => $status,
+			'count' => $recomends
+		));
+		exit;
+	}
+	
+	if($doid) {
+		$count = 1;
+		$f_index = '';
+		$theurl .= "&doid=$doid";
+	}
 
 if($searchkey = stripsearchkey($_GET['searchkey'])) {
 	$searchkey = dhtmlspecialchars($searchkey);
@@ -85,6 +131,44 @@ if($count) {
 		if(!empty($value['ip'])) {
 			$value['ip'] = ip::to_display($value['ip']);
 		}
+
+		// 处理记录内容，确保链接和媒体正确显示
+		require_once libfile('function/discuzcode');
+		$value['message'] = preg_replace_callback('/http[s]?:\/\/[a-zA-Z0-9\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+/', function($matches) {
+			$url = $matches[0];
+			// 尝试解析媒体链接
+			if($media = parsemedia('x,500,373', $url)) {
+				// 媒体内容单独一行显示
+				return '<br />'.$media.'<br />';
+			} elseif($audio = parseaudio($url)) {
+				// 音频内容单独一行显示
+				return '<br />'.$audio.'<br />';
+			} elseif($flv = parseflv($url, 500, 373)) {
+				// 视频内容单独一行显示
+				return '<br />'.$flv.'<br />';
+			} else {
+				// 普通链接，转换为可点击链接
+				return '<a href="'.dhtmlspecialchars($url).'" target="_blank" rel="nofollow">'.dhtmlspecialchars($url).'</a>';
+			}
+		}, $value['message']);
+		$value['body_data'] = dunserialize($value['body_data']);
+		$searchs = $replaces = [];
+		if($value['body_data']) {
+			foreach(array_keys($value['body_data']) as $key) {
+				$searchs[] = '{'.$key.'}';
+				$replaces[] = $value['body_data'][$key];
+			}
+		}
+		$value['body_template'] = str_replace($searchs, $replaces, $value['body_template']);
+
+		// 查询点赞状态和点赞数
+		$value['recomends'] = $value['recomends'] ? $value['recomends'] : 0;
+		if($_G['uid']) {
+			$value['recommendstatus'] = table_home_doing_recomend_log::t()->fetch_by_doid_uid($value['doid'], $_G['uid']) ? 1 : 0;
+		} else {
+			$value['recommendstatus'] = 0;
+		}
+
 		if($value['status'] == 0 || $value['uid'] == $_G['uid'] || $_G['adminid'] == 1) {
 			$doids[] = $value['doid'];
 			$dolist[] = $value;
@@ -93,7 +177,6 @@ if($count) {
 		}
 	}
 }
-
 if($doid) {
 	$dovalue = empty($dolist) ? [] : $dolist[0];
 	if($dovalue) {
@@ -121,6 +204,21 @@ if($doids) {
 		}
 		$tree->setNode($value['id'], $value['upid'], $value);
 	}
+
+	// 查询记录对应的附件信息
+	$attachments = [];
+	if (!empty($doids)) {
+		$attach_list = table_home_doing_attachment::t()->fetch_all_by_id(0, 'doid', $doids);
+		foreach ($attach_list as $attach) {
+			$attachments[$attach['doid']][] = $attach;
+		}
+	}
+
+	// 将附件信息添加到记录数据中
+	foreach ($dolist as &$dv) {
+		$dv['attachments'] = isset($attachments[$dv['doid']]) ? $attachments[$dv['doid']] : [];
+	}
+	unset($dv);
 }
 
 $showdoinglist = [];
@@ -171,4 +269,3 @@ if($space['username']) {
 $metakeywords = $navtitle;
 $metadescription = $navtitle;
 include_once template('diy:home/space_doing');
-

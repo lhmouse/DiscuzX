@@ -328,8 +328,8 @@ $postshowavatars = !($_G['setting']['bannedmessages'] & 2 && ($post['memberstatu
 					<!--{if !$post['anonymous'] && $post['first'] && helper_access::check_module('follow')}-->
 						<a class="followp" href="home.php?mod=spacecp&ac=follow&op=relay&tid=$_G[tid]&from=forum" onclick="showWindow('relaythread', this.href, 'get', 0);" title="{lang follow_spread}"><i><em class="fico-launch fc-p" title="{lang thread_realy}"></em>{lang thread_realy}<!--{if $_G['forum_thread']['relay']}--><span id="relaynumber" style="display:none">{$_G['forum_thread']['relay']}</span><!--{/if}--></i></a>
 					<!--{/if}-->
-					<!--{if $post['first'] && helper_access::check_module('share')}-->
-						<a class="sharep" href="home.php?mod=spacecp&ac=share&type=thread&id=$_G[tid]" onclick="showWindow('sharethread', this.href, 'get', 0);" title="{lang share_digest}"><i><em class="fico-share fc-p" title="{lang thread_share}"></em>{lang thread_share}<!--{if $_G['forum_thread']['sharetimes']}--><span id="sharenumber">{$_G['forum_thread']['sharetimes']}</span><!--{/if}--></i></a>
+					<!--{if $post['first'] && helper_access::check_module('doing')}-->
+						<a class="sharep" href="home.php?mod=spacecp&ac=doing&type=thread&id=$_G[tid]" onclick="showWindow('sharethread', this.href, 'get', 0);" title="{lang share_digest}"><i><em class="fico-share fc-p" title="{lang thread_share}"></em>{lang thread_share}<!--{if $_G['forum_thread']['sharetimes']}--><span id="sharenumber">{$_G['forum_thread']['sharetimes']}</span><!--{/if}--></i></a>
 					<!--{/if}-->
 
 					<!--{if !$_G['forum']['disablecollect'] && helper_access::check_module('collection')}-->

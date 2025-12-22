@@ -14,7 +14,7 @@
 		<em id="return_$_GET[handlekey]">{lang delete_log}</em>
 		<!--{if $_G[inajax]}--><span><a href="javascript:;" onclick="hideWindow('$_GET[handlekey]');" class="flbc" title="{lang close}">{lang close}</a></span><!--{/if}-->
 	</h3>
-	<form method="post" autocomplete="off" id="doingform_{$doid}_{$id}" name="doingform" action="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$id">
+	<form method="post" autocomplete="off" id="doingform_{$doid}_{$docid}" name="doingform" action="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&docid=$docid">
 		<!--{if $_G[inajax]}--><input type="hidden" name="handlekey" value="$_GET[handlekey]" /><!--{/if}-->
 		<input type="hidden" name="referer" value="{echo dreferer()}" />
 		<input type="hidden" name="formhash" value="{FORMHASH}" />
@@ -33,16 +33,16 @@
 	<!--{if $space[spacenote]}-->$space[spacenote]<!--{/if}-->
 <!--{elseif $_GET['op'] == 'docomment' || $_GET['op'] == 'getcomment'}-->
 	<!--{if helper_access::check_module('doing')}-->
-	<div id="{$_GET[key]}_form_{$doid}_{$id}">
-		<form id="{$_GET[key]}_docommform_{$doid}_{$id}" method="post" autocomplete="off" action="home.php?mod=spacecp&ac=doing&op=comment&doid=$doid&id=$id" {if $_G[inajax]}onsubmit="ajaxpost(this.id, 'return_$_GET[handlekey]');"{/if} class="pns" style="margin: 5px 0 0;">
-			<span id="{$_GET[key]}_form_{$doid}_{$id}_face" onclick="showFace(this.id, '{$_GET[key]}_form_{$doid}_{$id}_t');return false;" class="cur1"><img src="{IMGDIR}/facelist.gif" alt="facelist" class="vm" /></span>
-			<textarea name="message" id="{$_GET[key]}_form_{$doid}_{$id}_t" cols="40" class="px pts" oninput="resizeTx(this);" onpropertychange="resizeTx(this);" onkeyup="strLenCalc(this, '{$_GET[key]}_form_{$doid}_{$id}_limit')" onkeydown="ctrlEnter(event, '{$_GET[key]}_replybtn_{$doid}_{$id}');"></textarea>&nbsp;
+	<div id="{$_GET[key]}_form_{$doid}_{$docid}">
+		<form id="{$_GET[key]}_docommform_{$doid}_{$docid}" method="post" autocomplete="off" action="home.php?mod=spacecp&ac=doing&op=comment&doid=$doid&docid=$docid" {if $_G[inajax]}onsubmit="ajaxpost(this.id, 'return_$_GET[handlekey]');"{/if} class="pns" style="margin: 5px 0 0;">
+			<span id="{$_GET[key]}_form_{$doid}_{$docid}_face" onclick="showFace(this.id, '{$_GET[key]}_form_{$doid}_{$docid}_t');return false;" class="cur1"><img src="{IMGDIR}/facelist.gif" alt="facelist" class="vm" /></span>
+			<textarea name="message" id="{$_GET[key]}_form_{$doid}_{$docid}_t" cols="40" class="px pts" oninput="resizeTx(this);" onpropertychange="resizeTx(this);" onkeyup="strLenCalc(this, '{$_GET[key]}_form_{$doid}_{$docid}_limit')" onkeydown="ctrlEnter(event, '{$_GET[key]}_replybtn_{$doid}_{$docid}');"></textarea>&nbsp;
 			<input type="hidden" name="commentsubmit" value="true" />
-			<button type="submit" name="do_button" id="{$_GET[key]}_replybtn_{$doid}_{$id}" class="pn" value="true"><em>{lang reply}</em></button>
+			<button type="submit" name="do_button" id="{$_GET[key]}_replybtn_{$doid}_{$docid}" class="pn" value="true"><em>{lang reply}</em></button>
 			<!--{if $_G[inajax]}--><input type="hidden" name="handlekey" value="$_GET[handlekey]" /><!--{/if}-->
-			<a name="btncancel" href="javascript:;" onclick="docomment_form_close($doid, $id, '$_GET[key]');">{lang cancel}</a>
+			<a name="btncancel" href="javascript:;" onclick="docomment_form_close($doid, $docid, '$_GET[key]');">{lang cancel}</a>
 			<input type="hidden" name="formhash" value="{FORMHASH}" />
-			<div id="{$_GET[key]}_form_{$doid}_{$id}_t_limit" class="mtn" style="display: none;">{lang spacecp_doing_message1} <span id="{$_GET[key]}_form_{$doid}_{$id}_limit">200</span> {lang spacecp_doing_message2}</div>
+			<div id="{$_GET[key]}_form_{$doid}_{$docid}_t_limit" class="mtn" style="display: none;">{lang spacecp_doing_message1} <span id="{$_GET[key]}_form_{$doid}_{$docid}_limit">200</span> {lang spacecp_doing_message2}</div>
 		</form>
 		<span id="return_$_GET[handlekey]"></span>
 	</div>

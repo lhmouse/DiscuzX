@@ -69,8 +69,8 @@
 				<a href="javascript:;" onclick="addFavorite(location.href, document.title)">[{lang favorite}]</a>
 				<a id="domainurl" href="$space[domainurl]" onclick="setCopy('$space[domainurl]', '{lang copy_space_address}');return false;">[{lang copy}]</a>
 				<!--{if !$space['self']}-->
-					<!--{if helper_access::check_module('share')}-->
-					<a id="share_space" href="home.php?mod=spacecp&ac=share&type=space&id=$space[uid]" onclick="showWindow(this.id, this.href, 'get', 0);">[{lang share}]</a>
+					<!--{if helper_access::check_module('doing')}-->
+					<a id="share_space" href="home.php?mod=spacecp&ac=doing&type=space&id=$space[uid]" onclick="showWindow(this.id, this.href, 'get', 0);">[{lang share}]</a>
 					<!--{/if}-->
 					<a href="home.php?mod=rss&uid=$space[uid]">[RSS]</a>
 				<!--{/if}-->

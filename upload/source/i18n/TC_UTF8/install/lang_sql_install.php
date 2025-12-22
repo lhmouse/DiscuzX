@@ -3822,19 +3822,59 @@ DROP TABLE IF EXISTS pre_home_doing;
 CREATE TABLE pre_home_doing
 (
 	doid     mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+	`itemid` mediumint(8) unsigned    NOT NULL DEFAULT '0',
+	`type` 	 varchar(30) 		   NOT NULL DEFAULT '',
 	uid      mediumint(8) unsigned NOT NULL DEFAULT '0',
 	username varchar(50)           NOT NULL DEFAULT '',
 	`from`   varchar(20)           NOT NULL DEFAULT '',
 	dateline int(10) unsigned      NOT NULL DEFAULT '0',
+	`body_template` text		   NOT NULL,
+	`body_data` text 			   NOT NULL,
 	message  text                  NOT NULL,
 	ip       varchar(45)           NOT NULL DEFAULT '',
 	`port`   smallint(6) unsigned  NOT NULL DEFAULT '0',
 	replynum int(10) unsigned      NOT NULL DEFAULT '0',
+	`recomends` int(10) unsigned   NOT NULL DEFAULT '0',
 	`status` tinyint(3) unsigned   NOT NULL DEFAULT '0',
 	PRIMARY KEY (doid),
 	KEY uid (uid, dateline),
-	KEY dateline (dateline)
+	KEY dateline (dateline),
+	KEY `type` (`type`),
+	KEY `itemid` (`itemid`)
 ) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS pre_home_doing_attachment;
+CREATE TABLE pre_home_doing_attachment
+(
+	`aid`           int UNSIGNED            NOT NULL AUTO_INCREMENT,
+	`doid`          int UNSIGNED            NOT NULL DEFAULT '0',
+	`uid`           mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`dateline`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`filename`      varchar(255)            NOT NULL DEFAULT '',
+	`filesize`      int UNSIGNED            NOT NULL DEFAULT '0',
+	`attachment`    varchar(255)            NOT NULL DEFAULT '',
+	`remote`        tinyint(1)              NOT NULL DEFAULT '0',
+	`isimage`       tinyint(1)              NOT NULL DEFAULT '0',
+	`width`         mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`height`        mediumint UNSIGNED      NOT NULL DEFAULT '0',
+	`displayorder`  int NOT NULL,
+	PRIMARY KEY (`aid`),
+	KEY `uid` (`uid`),
+	KEY `doid` (`doid`)
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `pre_home_doing_recomend_log`;
+CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
+(
+	id              int(10) unsigned NOT NULL AUTO_INCREMENT,
+	doid            int(10) unsigned NOT NULL DEFAULT '0',
+	uid             int(10) unsigned NOT NULL DEFAULT '0',
+	dateline        int(10) unsigned NOT NULL DEFAULT '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY doid_uid (doid,uid),
+	KEY doid (doid),
+	KEY uid (uid)
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS pre_home_doing_moderate;
 CREATE TABLE pre_home_doing_moderate

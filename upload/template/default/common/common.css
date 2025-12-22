@@ -1902,3 +1902,123 @@ DIY图片幻灯片未加载时隐藏,模块标识隐藏
 .fico-dropdown:before{content:'\f148';}
 .fico-ban:before{content:'\f149';}
 .fico-tag:before{content:'\f14a';}
+
+/** 记录全局样式 **/
+/* 记录表单样式 */
+#moodfm {
+    max-width: 100%;
+    background: #fff;
+    padding: 10px;
+}
+#moodfm textarea { height: 56px; border:0; background: #f6f6f6; overflow-y: auto; }
+.mi .moodfm_input { width: 350px; height: 58px; }
+.mi #moodfm textarea { float: left; margin: 0; padding: 3px; width: 552px; height: 50px; outline: none; border: 1px solid {COMMONBORDER}; background: #FFF; border-radius: 4px; }
+.mi #moodfm.hover textarea { border-color: {SPECIALBORDER}; }
+.moodfm_btn { padding-left: 5px; }
+.moodfm_btn button { cursor: pointer; }
+.moodfm_f { padding: 5px 0 0 3px; }
+#mood_addform {
+    margin: 0;
+}
+
+.moodfm_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.moodfm_container .moodfm_row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.moodfm_container .moodfm_div {
+    margin-top: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 文本输入区域 */
+.moodfm_container #mood_statusinput {
+    width: 100%;
+    position: relative;
+}
+
+.moodfm_container #mood_statusinput #message {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #e5e9ef;
+    border-radius: 6px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.moodfm_container #mood_statusinput #message:focus {
+    outline: none;
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 字符限制和签名选项 */
+.moodfm_container .moodfm_f {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 12px;
+    color: #86909c;
+    flex-wrap: wrap;
+    gap: 10px;
+    position: absolute;
+    bottom: 10px;
+    right: 0px;
+}
+
+.moodfm_f #return_doing {
+    flex: 1;
+}
+
+.moodfm_f .y {
+    margin-right: 15px;
+}
+
+.moodfm_f .z {
+    display: flex;
+    align-items: center;
+}
+
+.moodfm_f input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 发布按钮 */
+.moodfm_container .moodfm_btn {
+    display: flex;
+    justify-content: flex-end;
+	align-items: center;
+	gap: 10px;
+}
+.moodfm_container .moodfm_btn label{
+	display: flex;
+	align-items: center;
+}
+.moodfm_container .pgsbtn {
+    padding: 8px 24px;
+    background:  {MENUBGCOLOR};
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.moodfm_container .pgsbtn:hover {
+    background: {MENUCURBGCOLOR};
+}

@@ -24,7 +24,7 @@ if(!submitcheck('submit')) {
 
 	showtips('account_basesetting_tips');
 
-	echo '<script type="text/javascript" src="'.$_G['setting']['iconfont'].'"></script>';
+	echo '<script type="text/javascript" src="static/js/iconfont.js"></script>';
 	echo '<style>.atable {border-collapse: separate} .atable .header td{ padding: 2px 10px} .atable .header td {border:0}'.
 		'.atable .t {width:80px;text-align:center} .atable .c {text-align:center} .atable .l { border-left:1px dotted #DEEFFB !important} .atable .r {border-right:1px dotted #DEEFFB !important;}'.
 		'.iconfont { width: 1.5em; height: 1.5em; vertical-align: middle; fill: currentColor; overflow: hidden; margin-right: 5px;}</style>';
@@ -33,7 +33,6 @@ if(!submitcheck('submit')) {
 	showtableheader('', 'atable');
 	$header = showtablerow('class="header"', [
 		'rowspan="2" style="width:230px"',
-		'rowspan="2" style="width:110px"',
 		'colspan="2" class="l c r"',
 		'class="t"',
 		'colspan="3" class="l c"',
@@ -42,7 +41,6 @@ if(!submitcheck('submit')) {
 	], explode(',', cplang('account_basesetting_cols1')), true);
 	$header .= showtablerow('class="header"', [
 		'class="l t"',
-		'class="t r"',
 		'class="t"',
 		'class="l t"',
 		'class="t"',
@@ -81,7 +79,6 @@ if(!submitcheck('submit')) {
 		];
 		showtablerow('', [
 			'',
-			'',
 			'class="l t"',
 			'class="t r"',
 			'class="t"',
@@ -96,7 +93,6 @@ if(!submitcheck('submit')) {
 		], [
 			$icon[0].
 			account_base::getName($interface).$notice.' <a href="'.ADMINSCRIPT.'?action=account&method='.$interface.'" style="float: right" class="act">'.cplang('edit').'</a>',
-			$icon[1] ? '<input '.$disabled.'name="account[iconId]['.$interface.']" value="'.$value['iconId'].'" type="text" class="txt" />' : '',
 			'<input '.$disabled.'name="account[loginAutoDefault]" value="'.$interface.'" type="radio" class="radio" '.$value['loginAutoDefault'].'/>',
 			!empty($interfaceEnvs[$interface]['loginAuto']) ? '<input '.$disabled.'name="account[loginAuto][]" value="'.$interface.'" type="checkbox" class="checkbox" '.$value['loginAuto'].' />' : '<input disabled type="checkbox" class="checkbox" />',
 			'<input '.$disabled.'name="account[loginLink][]" value="'.$interface.'" type="checkbox" class="checkbox" '.$value['loginLink'].'/>',
@@ -113,7 +109,6 @@ if(!submitcheck('submit')) {
 	}
 	showtablerow('', [
 		'',
-		'',
 		'class="l t"',
 		'class="t r"',
 		'class="t"',
@@ -127,7 +122,6 @@ if(!submitcheck('submit')) {
 		'class="t"',
 	], [
 		'<svg class="iconfont" aria-hidden="true"><use xlink:href="#icon-wushuju"></use></svg>'.cplang('none'),
-		'',
 		'<input name="account[loginAutoDefault]" value="" type="radio" class="radio" '.(empty($account['loginAutoDefault']) ? 'checked ' : '').'/>',
 		'',
 		'',

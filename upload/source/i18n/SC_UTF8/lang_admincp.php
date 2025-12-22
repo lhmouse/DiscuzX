@@ -5288,7 +5288,6 @@ $lang =
 	'moderate_export_getall' => '全部导出',
 	'moderate_nodata' => '暂无相关数据',
 
-
 	'moderate_threads' => '审核新主题',
 	'moderate_threads_none' => '没有等待审核新主题，您可以点击这里进入新回复的审核页面',
 
@@ -7808,7 +7807,7 @@ url.rewrite-once = (
 	'account_createtime' => '绑定时间',
 	'account_bindname' => '账号名称',
 	'account_detail' => '绑定账号信息',
-	'account_basesetting_tips' => '<li>图标：请填写设置 "<a href="'.ADMINSCRIPT.'?action=setting&operation=styles&highlight=iconfont" target="_blank">iconfont URL</a>" 中对应的图标 ID；</li>
+	'account_basesetting_tips' => '
 		<li>开启自动登录、登录/注册接管的时候请先提前绑定第三方账号，避免管理员账号无法登录后台；</li>
 		<li>自动登录(默认)：开启后，所有游客状态的登录都将跳转到指定的第三方登录中，普通登录将关闭；</li>
 		<li>自动登录(相应环境)：开启后，在相应第三方登录环境中时将自动登录；</li>
@@ -7817,7 +7816,7 @@ url.rewrite-once = (
 		<li>登录/注册接管(相应环境)：开启后，点击“登录/注册”按钮时将依照当前的第三方登录环境自动跳转并登录；</li>
 		<li>允许新用户登录：默认开启，关闭后此第三方登录环境将不会有新用户注册；</li>
 	',
-	'account_basesetting_cols1' => '登录方式,图标,自动登录,手工登录,登录接管,注册接管,同步头像',
+	'account_basesetting_cols1' => '登录方式,自动登录,手工登录,登录接管,注册接管,同步头像',
 	'account_basesetting_cols2' => '默认,相应环境,登录链接,默认,相应环境,新用户登录,默认,相应环境,新注册同步,登录同步,绑定同步',
 	'account_msg_urlerr' => '请正确填写以http或https开头的站点回调地址URL',
 
