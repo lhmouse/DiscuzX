@@ -95,9 +95,8 @@
 	var mpimgmax = 12;
 	var mpimgmax_low = mpimgmax - 1;
 	function listenup() {
-		// 检查是否支持FileReader API
 		if (typeof FileReader === 'undefined') {
-			console.error('当前浏览器不支持FileReader API，无法实现图片预览功能。');
+
 		} else {
 			var moodPicBtn = document.getElementById('moodfm_pic');
 			var fileInput = document.getElementById('multipic_sel');
@@ -106,73 +105,41 @@
 			if (moodPicBtn && fileInput) {
 				moodPicBtn.addEventListener('click', function(e) {
 					e.preventDefault();
-					fileInput.click(); // 触发文件选择对话框
+					fileInput.click(); 
 				});
 			}
-			// 为id为'multipic_sel'的元素添加change事件监听器
 			document.getElementById('multipic_sel').addEventListener('change', function(event) {
-				// 获取用户选择的所有文件
 				const files = event.target.files;
-				// 获取图片显示容器
 				const imgContainer = document.getElementById('multipic_img');
 				if (files.length > 0 && multiPicList.style.display === 'none') {
 					multiPicList.style.display = '';
 				}
-				// 遍历所有文件
 				for (let i = 0; i < files.length; i++) {
 					const file = files[i];
 					if (file) {
-						// 创建一个FileReader对象
 						(function(currentFile, index) {
 							const reader = new FileReader();
-							// 当文件读取完成时触发的回调函数
 							reader.onload = function(e) {
-								// 创建一个新的Image对象
 								const img = new Image();
-								// 将读取到的文件内容（DataURL）赋值给img元素的src属性
 								img.src = e.target.result;
-								// 创建一个div元素用于包裹图片
 								const imgWrapper = document.createElement('div');
-								// 设置div的样式，这里假设固定宽度为200px，高度为200px
 								imgWrapper.className = 'previewbigpic z';
-								// 添加数据属性，标识原始文件索引
 								imgWrapper.setAttribute('data-file-index', index);
-								// 添加删除按钮
 								const removeDiv = document.createElement('div');
 								removeDiv.className = 'flbc';
 								removeDiv.onclick = function() {
 									MultiPicDel(this);
 								};
-
-								//imgContainer.append("<div class=\"previewbigpic z\" ><img src=\"" + img.src + "\" width=\"100\" /><div class=\"remove\" onclick=\"MultiPicDel(this)\"></div><span class=\"preview\" onclick=\"preview_pic(this)\"> <img src=\"template/discuz_newdim/static/svg/preview.svg\"/>预览</span></div>");
-								// 创建一个隐藏的 input 元素用于存储文件
-								//const fileInput = document.createElement('input');
-								//fileInput.type = 'file';
-								//fileInput.name = 'image[]';
-								//fileInput.id = 'image_'+i;
-								//fileInput.style.display = 'none';
-								//document.getElementById('image_'+i).files = [currentFile];
-								//fileInput.files = [currentFile];
-								console.log(currentFile);
-								// 将图片添加到div中
 								imgWrapper.append(img);
 								imgWrapper.append(removeDiv);
-								// 调整图片大小以适应容器
 								img.style.width = '100%';
-								img.style.objectFit = 'cover'; // 保持图片比例并覆盖容器
-
-								// 将包裹图片的div添加到显示容器中
+								img.style.objectFit = 'cover';
 								imgContainer.append(imgWrapper);
-								// 将文件 input 元素添加到表单中
 								MultiPicUploaded++;
-								//imgContainer.append(fileInput);
 								console.log(i);
 							};
-							// 当文件读取出错时触发的回调函数
 							reader.onerror = function() {
-								console.error('文件读取出错，请检查文件格式或权限。');
 							};
-							// 以DataURL格式读取文件
 							reader.readAsDataURL(currentFile);
 						})(file);
 					}
@@ -199,7 +166,6 @@
 	function MultiPicDel(obj) {
 		var oldAid = obj.getAttribute('dataid');
 		console.log(oldAid);
-		//cappendAttachDel(oldAid);
 		MultiPicUploaded--;
 		obj.parentNode.remove();
 		
@@ -208,13 +174,12 @@
 		}
 		if (MultiPicUploaded <= 0) {
 			document.getElementById('MultiPicList').style.display = 'none';
-			MultiPicUploaded = 0; // 重置计数器
+			MultiPicUploaded = 0; 
 		}
 	}
 
 	function preview_pic(obj) {
 		var hlthumb = obj.parentNode.childNodes[0];
-		// console.log(hlthumb);
 		zoom(hlthumb, hlthumb.src);
 	}
 </script>

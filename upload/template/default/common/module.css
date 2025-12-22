@@ -1566,14 +1566,6 @@ i.pstatus { display: block; margin-bottom: -30px; font-size: 12px; text-align: c
 		.mipm li { float: left; padding: 5px 15px; white-space: nowrap; }
 		.mi a.o { margin-right: 5px; }
 		.mi a.o:before { display: inline-block; font-family: dzicon; width: 14px; height: 14px; line-height: 14px; margin-right: 4px; content: "\f103"; color: #CCC; font-size: 16px; }
-	#moodfm {}
-		#moodfm textarea { width: 600px; height: 56px; border: 1px solid; border-color: {INPUTBORDERDARKCOLOR} {INPUTBORDER} {INPUTBORDER} {INPUTBORDERDARKCOLOR}; overflow-y: auto; }
-		.mi .moodfm_input { width: 350px; height: 58px; }
-			.mi #moodfm textarea { float: left; margin: 0; padding: 3px; width: 552px; height: 50px; outline: none; border: 1px solid {COMMONBORDER}; background: #FFF; border-radius: 4px; }
-			.mi #moodfm.hover textarea { border-color: {SPECIALBORDER}; }
-		.moodfm_btn { padding-left: 5px; }
-			.moodfm_btn button { cursor: pointer; padding: 22px 11px; }
-		.moodfm_f { padding: 5px 0 0 3px; }
 
 /*
 	Name:			mod_share_form
@@ -1920,6 +1912,7 @@ i.pstatus { display: block; margin-bottom: -30px; font-size: 12px; text-align: c
 				.pmfrndl a.a { background: {SPECIALBG}; }
 	#showSelectBox_menu { padding: 10px; width: 300px; white-space: nowrap; }
 	#selBox { margin: 0 -10px 10px; padding-left: 10px; height: 110px; border: solid {COMMONBORDER}; border-width: 1px 0; overflow-y: auto; }
+	.doing_bottom a{margin-right: 10px;}
 /** end **/
 
 
@@ -2272,159 +2265,27 @@ body { background: none !important; }
 .dzphone .homebar { width: 152px; height: 6px; border-radius: 3px; background: #000; margin-left: 138px; margin-top: 20px; }
 /** end **/
 /** home::space,home::spacecp **/
-/* 图片上传区域 */
-.moodfm_container .specialpost {
-	margin: 0;
-	padding: 0;
-}
+.moodfm_container .specialpost {margin:0;padding:0;}
+.moodfm_container .upload-main {padding:10px 0;display:flex;align-items:flex-start;flex-wrap:wrap;}
+.moodfm_container .image-main {display:flex;flex-wrap:wrap;}
+.moodfm_container #multipic_img {display:flex;flex-wrap:wrap;margin-bottom:10px;}
+.moodfm_container .image-list {position:relative;float:left;width:80px;height:80px;}
+.moodfm_container .image-upload {width:100%;height:100%;position:relative;border:1px dashed #d9d9d9;border-radius:6px;background:#fafafa;cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;}
+.moodfm_container .image-upload:hover {border-color:#1890ff;background:#e6f7ff;}
+.moodfm_container .image-upload:hover:before,.moodfm_container .image-upload:hover:after {background:#1890ff;}
+.moodfm_container .image-upload:before {top:50%;left:50%;height:2px;content:"";width:20px;position:absolute;background:#8c8c8c;transform:translateX(-50%);z-index:1;}
+.moodfm_container .image-upload:after {top:50%;left:50%;width:2px;content:"";height:20px;position:absolute;background:#8c8c8c;transform:translateY(-50%);z-index:1;}
+.moodfm_container .image-upload input[type="file"],.moodfm_container .image-upload input.file {position:absolute !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;opacity:0 !important;cursor:pointer !important;z-index:2 !important;font-size:100px !important;padding:0 !important;margin:0 !important;border:none !important;outline:none !important;background:transparent !important;filter:alpha(opacity=0) !important;}
+.moodfm_container .image-upload-mp {width:80px !important;height:80px !important;position:relative !important;border:1px dashed #d9d9d9 !important;border-radius:6px !important;background:#fafafa !important;cursor:pointer !important;transition:all 0.2s ease !important;display:flex !important;align-items:center !important;justify-content:center !important;float:left !important;margin-right:10px !important;margin-top:10px !important;}
+.moodfm_container .image-upload .file_pic {width:100%;height:100%;position:absolute;top:0;left:0;z-index:0;}
+.moodfm_container .previewbigpic {position:relative;overflow:hidden;margin-right:10px;margin-top:10px;width:80px;height:80px;border:1px solid #e5e9ef;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#f5f7fa;transition:all 0.2s ease;}
+.moodfm_container .previewbigpic:hover {border-color:#1890ff;box-shadow:0 2px 8px rgba(24,144,255,0.15);}
+.moodfm_container .previewbigpic img {width:100%;height:100%;object-fit:cover;}
+.moodfm_container .previewbigpic .flbc {position:absolute;top:5px;right:5px;}
+.doing_images {display:flex;flex-wrap:wrap;margin:5px 0;gap:5px;}
+.doing_image_item {flex:0 0 auto;width:80px;height:80px;overflow:hidden;border-radius:4px;background-color:#f5f5f5;}
+.doing_image {width:100%;height:100%;object-fit:cover;transition:transform 0.2s ease;}
+.doing_image:hover {transform:scale(1.05);}
+.doing_image_link {display:block;width:100%;height:100%;}
 
-.moodfm_container .upload-main {
-	padding: 10px 0;
-	display: flex;
-	align-items: flex-start;
-	flex-wrap: wrap;
-}
-
-.moodfm_container .image-main {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.moodfm_container #multipic_img {
-	display: flex;
-	flex-wrap: wrap;
-	margin-bottom: 10px;
-}
-
-.moodfm_container .image-list {
-	position: relative;
-	float: left;
-	width: 80px;
-	height: 80px;
-}
-
-.moodfm_container .image-upload {
-	width: 100%;
-	height: 100%;
-	position: relative;
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	background: #fafafa;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.moodfm_container .image-upload:hover {
-	border-color: #1890ff;
-	background: #e6f7ff;
-}
-
-.moodfm_container .image-upload:hover:before,
-.moodfm_container .image-upload:hover:after {
-	background: #1890ff;
-}
-
-.moodfm_container .image-upload:before {
-	top: 50%;
-	left: 50%;
-	height: 2px;
-	content: "";
-	width: 20px;
-	position: absolute;
-	background: #8c8c8c;
-	transform: translateX(-50%);
-	z-index: 1;
-}
-
-.moodfm_container .image-upload:after {
-	top: 50%;
-	left: 50%;
-	width: 2px;
-	content: "";
-	height: 20px;
-	position: absolute;
-	background: #8c8c8c;
-	transform: translateY(-50%);
-	z-index: 1;
-}
-
-/* 确保文件输入框完全隐藏 */
-.moodfm_container .image-upload input[type="file"],
-.moodfm_container .image-upload input.file {
-	position: absolute !important;
-	top: 0 !important;
-	left: 0 !important;
-	width: 100% !important;
-	height: 100% !important;
-	opacity: 0 !important;
-	cursor: pointer !important;
-	z-index: 2 !important;
-	font-size: 100px !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	border: none !important;
-	outline: none !important;
-	background: transparent !important;
-	filter: alpha(opacity=0) !important;
-}
-
-/* 上传按钮样式 - 确保为正方形 */
-.moodfm_container .image-upload-mp {
-	width: 80px !important;
-	height: 80px !important;
-	position: relative !important;
-	border: 1px dashed #d9d9d9 !important;
-	border-radius: 6px !important;
-	background: #fafafa !important;
-	cursor: pointer !important;
-	transition: all 0.2s ease !important;
-	display: flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	float: left !important;
-	margin-right: 10px !important;
-	margin-top: 10px !important;
-}
-
-/* 文件上传占位符 */
-.moodfm_container .image-upload .file_pic {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 0;
-}
-
-/* 图片预览样式 */
-.moodfm_container .previewbigpic {
-	position: relative;
-	overflow: hidden;
-	margin-right: 10px;
-	margin-top: 10px;
-	width: 80px;
-	height: 80px;
-	border: 1px solid #e5e9ef;
-	border-radius: 6px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: #f5f7fa;
-	transition: all 0.2s ease;
-}
-
-.moodfm_container .previewbigpic:hover {
-	border-color: #1890ff;
-	box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
-}
-
-.moodfm_container .previewbigpic img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-.moodfm_container .previewbigpic .flbc{position: absolute;top: 5px;right: 5px;}
 /** end **/
