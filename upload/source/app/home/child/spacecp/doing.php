@@ -37,8 +37,13 @@ if($_GET['op'] == 'delete') {
 			deletedoings([$doid]);
 		}
 
-		dheader('location: '.dreferer());
-		exit();
+		if(defined('IN_RESTFUL')) {
+			showmessage('doing_delete_success');
+			exit();
+		}else{
+			dheader('location: '.dreferer());
+			exit();
+		}
 	}
 
 } elseif($_GET['op'] == 'getcomment') {
@@ -79,6 +84,56 @@ if($_GET['op'] == 'delete') {
 			$list[] = $one;
 		}
 	}
+} elseif($_GET['op'] == 'recommend') {
+	// 处理点赞请求
+	$doid = intval($_GET['doid']);
+	$uid = $_G['uid'];
+
+	if(!$doid || !$uid) {
+		showmessage('to_login', '', array(), array('login' => 1));
+	}
+
+	$doing = table_home_doing::t()->fetch($doid);
+	if(!$doing) {
+		showmessage('doing_not_exists');
+	}
+
+	$exists = table_home_doing_recomend_log::t()->fetch_by_doid_uid($doid, $uid);
+
+	if($exists) {
+		// 取消点赞
+		table_home_doing::t()->update_recommendnum_by_doid(-1, $doid);
+		table_home_doing_recomend_log::t()->delete_by_doid_uid($doid, $uid);
+		$status = 0;
+	} else {
+		// 添加点赞
+		table_home_doing::t()->update_recommendnum_by_doid(1, $doid);
+		table_home_doing_recomend_log::t()->insert(array(
+			'doid' => $doid,
+			'uid' => $uid,
+			'dateline' => TIMESTAMP
+		));
+		$status = 1;
+	}
+
+	// 重新获取点赞数
+	$doing = table_home_doing::t()->fetch($doid);
+	$recomends = $doing['recomends'];
+
+	if(defined('IN_RESTFUL')) {
+		showmessage('doing_recommend_success', '', array(), array('status' => $status,'count' => $recomends));
+		exit();
+	}else{
+		// 直接返回JSON格式数据
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'message' => 'doing_recommend_success',
+			'status' => $status,
+			'count' => $recomends
+		));
+		exit;
+	}
+	exit;
 } elseif($_GET['op'] == 'spacenote') {
 	space_merge($space, 'field_home');
 }else{
@@ -105,9 +160,10 @@ if($_GET['op'] == 'delete') {
 			}
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b>{username}</b><br>{reside}<br>{spacenote}';
+			$arr['body_template'] = '<b><a href="home.php?mod=space&uid={uid}">{username}</a></b><br>{reside}<br>{spacenote}';
 			$arr['body_data'] = [
-				'username' => "<a href=\"home.php?mod=space&uid=$id\">".$tospace['username'].'</a>',
+				'uid' => $id,
+				'username' => $tospace['username'],
 				'reside' => $tospace['residecountry'].$tospace['resideprovince'].$tospace['residecity'],
 				'spacenote' => $tospace['spacenote']
 			];
@@ -142,10 +198,12 @@ if($_GET['op'] == 'delete') {
 				showmessage('is_blacklist');
 			}
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b>{subject}</b><br>{username}<br>{message}';
+			$arr['body_template'] = '<b><a href="{url}">{subject}</a></b><br><a href="home.php?mod=space&uid={uid}">{username}</a><br>{message}';
 			$arr['body_data'] = [
-				'subject' => "<a href=\"home.php?mod=space&uid={$blog['uid']}&do=blog&id={$blog['blogid']}\">{$blog['subject']}</a>",
-				'username' => "<a href=\"home.php?mod=space&uid={$blog['uid']}\">".$blog['username'].'</a>',
+				'url' => "home.php?mod=space&uid=".$blog['uid']."&do=blog&id=".$blog['blogid'],
+				'subject' => $blog['subject'],
+				'uid' => $blog['uid'],
+				'username' => $blog['username'],
 				'message' => getstr($blog['message'], 150, 0, 0, 0, -1)
 			];
 			if($blog['pic']) {
@@ -174,10 +232,12 @@ if($_GET['op'] == 'delete') {
 			}
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b>{albumname}</b><br>{username}';
+			$arr['body_template'] = '<b><a href="{url}">{albumname}</a></b><br><a href="home.php?mod=space&uid={uid}">{username}</a>';
 			$arr['body_data'] = [
-				'albumname' => "<a href=\"home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}\">{$album['albumname']}</a>",
-				'username' => "<a href=\"home.php?mod=space&uid={$album['uid']}\">".$album['username'].'</a>'
+				'url' => "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}",
+				'albumname' => $album['albumname'],
+				'uid' => $album['uid'],
+				'username' => $album['username']
 			];
 			$arr['body_data']['image'] = pic_cover_get($album['pic'], $album['picflag']);
 			$arr['body_data']['image_link'] = "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}";
@@ -209,10 +269,12 @@ if($_GET['op'] == 'delete') {
 			if(empty($pic['albumname'])) $pic['albumname'] = lang('spacecp', 'default_albumname');
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = lang('spacecp', 'album').': <b>{albumname}</b><br>{username}<br>{title}';
+			$arr['body_template'] = lang('spacecp', 'album').': <b><a href="{url}">{albumname}</b><br><a href="home.php?mod=space&uid={uid}">{username}</a><br>{title}';
 			$arr['body_data'] = [
-				'albumname' => "<a href=\"home.php?mod=space&uid={$pic['uid']}&do=album&id={$pic['albumid']}\">{$pic['albumname']}</a>",
-				'username' => "<a href=\"home.php?mod=space&uid={$pic['uid']}\">".$pic['username'].'</a>',
+				'url' => "home.php?mod=space&uid={$pic['uid']}&do=album&picid={$pic['picid']}",
+				'albumname' => $pic['albumname'],
+				'uid' => $pic['uid'],
+				'username' => $pic['username'],
 				'title' => getstr($pic['title'], 100, 0, 0, 0, -1)
 			];
 			$arr['body_data']['image'] = pic_get($pic['filepath'], 'album', $pic['thumb'], $pic['remote']);
@@ -235,12 +297,14 @@ if($_GET['op'] == 'delete') {
 			}
 			require_once libfile('function/post');
 			$post = table_forum_post::t()->fetch_threadpost_by_tid_invisible($id);
-			$arr['body_template'] = '<b>{subject}</b><br>{author}<br>{message}';
+			$arr['body_template'] = '<b><a href="{url}">{subject}</a></b><br><a href="home.php?mod=space&uid={authorid}">{author}</a><br>{message}';
 			$attachment = !preg_match('/\[hide=?\d*\](.*?)\[\/hide\]/is', $post['message'], $a) && preg_match('/\[attach\]\d+\[\/attach\]/i', $a[1]);
 			$post['message'] = threadmessagecutstr($thread, $post['message']);
 			$arr['body_data'] = [
-				'subject' => "<a href=\"forum.php?mod=viewthread&tid=$id\">{$thread['subject']}</a>",
-				'author' => "<a href=\"home.php?mod=space&uid={$thread['authorid']}\">{$thread['author']}</a>",
+				'url' => "forum.php?mod=viewthread&tid=$id",
+				'subject' => $thread['subject'],
+				'authorid' => $thread['authorid'],
+				'author' => $thread['author'],
 				'message' => getstr($post['message'], 150, 0, 0, 0, -1)
 			];
 			$arr['itemid'] = $id;
@@ -270,10 +334,12 @@ if($_GET['op'] == 'delete') {
 			require_once libfile('function/portal');
 			$article_url = fetch_article_url($article);
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b>{title}</b><br>{username}<br>{summary}';
+			$arr['body_template'] = '<b><a href="{url}">{title}</a></b><br><a href="home.php?mod=space&uid={uid}\">{username}</a><br>{summary}';
 			$arr['body_data'] = [
-				'title' => "<a href=\"$article_url\">{$article['title']}</a>",
-				'username' => "<a href=\"home.php?mod=space&uid={$article['uid']}\">".$article['username'].'</a>',
+				'url' => $article_url,
+				'title' => $article['title'],
+				'uid' => $article['uid'],
+				'username' => $article['username'],
 				'summary' => getstr($article['summary'], 150, 0, 0, 0, -1)
 			];
 			if($article['pic']) {
@@ -491,7 +557,7 @@ if($_GET['op'] == 'delete') {
 			}
 			$magvalues['type'] = $commentcable[$type];
 		}
-		
+
 		if(helper_access::check_module('feed') && ckprivacy('doing', 'feed') && $doing_status == '0') {
 			$feedarr = [
 				'icon' => 'doing',

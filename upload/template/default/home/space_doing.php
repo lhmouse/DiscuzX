@@ -77,13 +77,13 @@
 			<!--[diy=diycontenttop]--><div id="diycontenttop" class="area"></div><!--[/diy]-->
 			<!--{if $space[self] && helper_access::check_module('doing')}--><!--{template home/space_doing_form}--><!--{/if}-->
 		<!--{/if}-->
-		
+
 <!--{/if}-->
-		
+
 		<!--{if $searchkey}-->
 			<p class="tbmu">{lang doing_search_record} <span style="color: red; font-weight: 700;">$searchkey</span> {lang doing_record_list}</p>
 		<!--{/if}-->
-		
+
 		<!--{if $dolist}-->
 			<div class="xld {if empty($diymode)}xlda{/if}">
 			<!--{loop $dolist $dv}-->
@@ -105,7 +105,7 @@
 										zoomfile="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
 										file="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
 										onclick="zoom(this, this.getAttribute('zoomfile'), 0, 0, 0)"
-										alt="" 
+										alt=""
 										class="doing_image zoom"
 										id="aimg_$attach[aid]"
 										aid="$attach[aid]" />
@@ -119,7 +119,7 @@
 					<!--{if $dv['body_template']}-->
 					<div class="ec cl">
 						<div class="d quote">
-							<blockquote id="quote_{$dv['id']}">$dv[body_template]</blockquote>
+							<blockquote id="quote_{$doid}">$dv[body_template]</blockquote>
 						</div>
 					</div>
 					<!--{/if}-->
@@ -130,18 +130,18 @@
 					</dd>
 					<dd class="ptn xg1 doing_bottom">
 						<span class="y"><!--{date($dv['dateline'], 'u')}--></span>
-						
+
 						<!--{if helper_access::check_module('doing')}-->
 						<a href="javascript:;" onclick="docomment_form($doid, 0, '$key')"><i class="fico-comment"></i>{lang reply}</a>
 						<!--{/if}-->
 						<!-- 点赞功能 -->
-						
+
 						<a href="javascript:;" class="doing_recommend_btn" data-doid="$doid" data-status="<!--{if $dv['recommendstatus']}-->1<!--{else}-->0<!--{/if}-->">
-							<i class="<!--{if $dv['recommendstatus']}-->fico-thumbup fc-i<!--{else}-->fico-thumbup fc-s<!--{/if}-->"></i> 
+							<i class="<!--{if $dv['recommendstatus']}-->fico-thumbup fc-i<!--{else}-->fico-thumbup fc-s<!--{/if}-->"></i>
 							<span class="recommend_count">$dv[recomends]</span>
 						</a>
-						<!--{if $dv[uid]==$_G[uid]}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv[id]&handlekey=doinghk_{$doid}_$dv[id]" id="{$key}_doing_delete_{$doid}_{$dv[id]}" onclick="showWindow(this.id, this.href, 'get', 0);"><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
-						
+						<!--{if $dv[uid]==$_G[uid] || checkperm('managedoing')}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv[id]&handlekey=doinghk_{$doid}_$dv[id]" id="{$key}_doing_delete_{$doid}_{$dv[id]}" onclick="showWindow(this.id, this.href, 'get', 0);"><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
+
 						<!--{if checkperm('managedoing')}-->
 						<span class="pipe">IP: $dv[ip]:$dv[port]</span>
 						<!--{/if}-->
@@ -160,7 +160,7 @@
 		<!--{else}-->
 			<p class="emp">{lang doing_no_replay}<!--{if $space[self]}-->{lang doing_now}<!--{/if}--></p>
 		<!--{/if}-->
-		
+
 		<!--{if !$_G[setting][homepagestyle]}--><!--[diy=diycontentbottom]--><div id="diycontentbottom" class="area"></div><!--[/diy]--><!--{/if}-->
 
 		<!--{if $diymode}-->
@@ -203,25 +203,25 @@
                 }
             }
         }
-        
+
         var recommendBtns = document.querySelectorAll('.doing_recommend_btn');
         for (let k = 0; k < recommendBtns.length; k++) {
             recommendBtns[k].addEventListener('click', function() {
                 if (this.classList.contains('disabled')) {
                     return;
                 }
-                
+
                 var doid = this.getAttribute('data-doid');
                 var btn = this;
                 var countElem = this.querySelector('.recommend_count');
                 var iconElem = this.querySelector('i');
                 btn.classList.add('disabled');
-                
-                fetch('home.php?mod=space&do=doing&op=recommend&doid=' + doid)
+
+                fetch('home.php?mod=spacecp&ac=doing&op=recommend&doid=' + doid)
                     .then(response => response.json())
                     .then(data => {
                         btn.classList.remove('disabled');
-                        
+
                         if (data && data.message === 'doing_recommend_success') {
                             btn.setAttribute('data-status', data.status);
                             countElem.innerHTML = data.count;

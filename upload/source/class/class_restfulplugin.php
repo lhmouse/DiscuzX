@@ -842,6 +842,14 @@ class restfulplugin {
 			if (!empty($v['uid'])) {
 				$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
 			}
+			if (!empty($v['attachments'])) {
+				foreach ($v['attachments'] as $kk => $attachment) {
+					if (!empty($attachment['thumb'])) {
+						$data[$key][$k]['attachments'][$kk]['thumb'] = self::_f_siteurl($attachment['thumb']);
+						$data[$key][$k]['attachments'][$kk]['attachment'] = self::_f_siteurl($attachment['attachment']);
+					}
+				}
+			}
 		}
 	}
 	public static function clist(&$data, $param) {

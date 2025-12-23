@@ -65,58 +65,11 @@ $actives = [$_GET['view'] => ' class="a"'];
 $doid = empty($_GET['doid']) ? 0 : intval($_GET['doid']);
 $doids = $clist = $newdoids = [];
 $pricount = 0;
-	
-	// 处理点赞请求
-	if($_GET['op'] == 'recommend') {
-		$doid = intval($_GET['doid']);
-		$uid = $_G['uid'];
-		
-		if(!$doid || !$uid) {
-			showmessage('to_login', '', array(), array('login' => 1));
-		}
-		
-		$doing = table_home_doing::t()->fetch($doid);
-		if(!$doing) {
-			showmessage('doing_not_exists');
-		}
-		
-		$exists = table_home_doing_recomend_log::t()->fetch_by_doid_uid($doid, $uid);
-		
-		if($exists) {
-			// 取消点赞
-			table_home_doing::t()->update_recommendnum_by_doid(-1, $doid);
-			table_home_doing_recomend_log::t()->delete_by_doid_uid($doid, $uid);
-			$status = 0;
-		} else {
-			// 添加点赞
-			table_home_doing::t()->update_recommendnum_by_doid(1, $doid);
-			table_home_doing_recomend_log::t()->insert(array(
-				'doid' => $doid,
-				'uid' => $uid,
-				'dateline' => TIMESTAMP
-			));
-			$status = 1;
-		}
-		
-		// 重新获取点赞数
-		$doing = table_home_doing::t()->fetch($doid);
-		$recomends = $doing['recomends'];
-		
-		// 直接返回JSON格式数据
-		header('Content-Type: application/json');
-		echo json_encode(array(
-			'message' => 'doing_recommend_success',
-			'status' => $status,
-			'count' => $recomends
-		));
-		exit;
-	}
-	
-	if($doid) {
-		$count = 1;
-		$f_index = '';
-		$theurl .= "&doid=$doid";
-	}
+if($doid) {
+	$count = 1;
+	$f_index = '';
+	$theurl .= "&doid=$doid";
+}
 
 if($searchkey = stripsearchkey($_GET['searchkey'])) {
 	$searchkey = dhtmlspecialchars($searchkey);

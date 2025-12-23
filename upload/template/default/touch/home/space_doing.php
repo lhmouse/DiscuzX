@@ -1,47 +1,47 @@
 <?php exit('Access Denied'); ?>
 <!--{template common/header}-->
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        var recommendBtns = document.querySelectorAll('.doing_recommend_btn');
-        for (let i = 0; i < recommendBtns.length; i++) {
-            recommendBtns[i].addEventListener('click', function() {
-                if (this.classList.contains('disabled')) {
-                    return;
-                }
-                
-                var doid = this.getAttribute('data-doid');
-                var btn = this;
-                var countElem = this.querySelector('.recommend_count');
-                var iconElem = this.querySelector('i');
+	document.addEventListener('DOMContentLoaded', function() {
+		var recommendBtns = document.querySelectorAll('.doing_recommend_btn');
+		for (let i = 0; i < recommendBtns.length; i++) {
+			recommendBtns[i].addEventListener('click', function() {
+				if (this.classList.contains('disabled')) {
+					return;
+				}
 
-                btn.classList.add('disabled');
-                fetch('home.php?mod=space&do=doing&op=recommend&doid=' + doid)
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        btn.classList.remove('disabled');
-                        
-                        if (data && data.message === 'doing_recommend_success') {
-                            btn.setAttribute('data-status', data.status);
-                            countElem.innerHTML = data.count;
-                        
-                            if (parseInt(data.status) === 1) {
-                                iconElem.className = 'fico-thumbup fc-i';
-                            } else {
-                                iconElem.className = 'fico-thumbup fc-s';
-                            }
-                        } else {
-                            console.error('error:', data);
-                        }
-                    })
-                    .catch(function(error) {
-                        btn.classList.remove('disabled');
-                        console.error('error:', error);
-                    });
-            });
-        }
-    });
+				var doid = this.getAttribute('data-doid');
+				var btn = this;
+				var countElem = this.querySelector('.recommend_count');
+				var iconElem = this.querySelector('i');
+
+				btn.classList.add('disabled');
+				fetch('home.php?mod=spacecp&ac=doing&op=recommend&doid=' + doid)
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(data) {
+						btn.classList.remove('disabled');
+
+						if (data && data.message === 'doing_recommend_success') {
+							btn.setAttribute('data-status', data.status);
+							countElem.innerHTML = data.count;
+
+							if (parseInt(data.status) === 1) {
+								iconElem.className = 'fico-thumbup fc-i';
+							} else {
+								iconElem.className = 'fico-thumbup fc-s';
+							}
+						} else {
+							console.error('error:', data);
+						}
+					})
+					.catch(function(error) {
+						btn.classList.remove('disabled');
+						console.error('error:', error);
+					});
+			});
+		}
+	});
 </script>
 
 <div class="header cl">
@@ -83,7 +83,7 @@
 				</div>
 				<div class="doing_card_text">
 					<div class="doing_card_text_textcontent">
-						<div id="comment_$value['cid']" class="newmessage{if $value['magicflicker']} magicflicker{/if}">$dv[message]<!--{if $dv['status'] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}--></div>
+						<div id="comment_$doid" class="newmessage{if $value['magicflicker']} magicflicker{/if}">$dv[message]<!--{if $dv['status'] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}--></div>
 						<!--{if $dv['attachments']}-->
 						<div class="doing_card_piclistbox">
 							<div class="doing_card_piclist">
@@ -100,7 +100,7 @@
 				<!--{if $dv['body_template']}-->
 				<div class="doing_card_more cl">
 					<div class="d quote">
-						<blockquote id="quote_{$dv['id']}">$dv[body_template]</blockquote>
+						<blockquote id="quote_{$doid}">$dv[body_template]</blockquote>
 					</div>
 				</div>
 				<!--{/if}-->
@@ -114,15 +114,13 @@
 							<span class="bottom_num recommend_count">$dv[recomends]</span>
 						</a>
 						<!--{if helper_access::check_module('doing')}-->
-						<a href="home.php?mod=spacecp&ac=doing&op=docomment&handlekey=msg_0&doid=$doid&id=0&key=$key" class="recommend{if $_G['uid']} dialog{/if}">
+						<a href="home.php?mod=spacecp&ac=doing&op=docomment&handlekey=msg_0&doid=$doid&docid=0&key=$key" class="recommend{if $_G['uid']} dialog{/if}">
 							<i class="dm-chat-s"></i>
 							<span class="bottom_num">{lang reply}</span>
 						</a>
 						<!--{/if}-->
-						
-						
-						<!--{if $dv['uid']==$_G['uid']}-->
-						<a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv['id']&handlekey=doinghk_{$doid}_$dv['id']" id="{$key}_doing_delete_{$doid}_{$dv['id']}" class="recommend{if $_G['uid']} dialog{/if}">
+						<!--{if $dv['uid']==$_G['uid'] || checkperm('managedoing')}-->
+						<a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&docid=$dv['id']&handlekey=doinghk_{$doid}_$dv['id']" id="{$key}_doing_delete_{$doid}_{$dv['id']}" class="recommend{if $_G['uid']} dialog{/if}">
 							<i class="dm-delete"></i>
 							<span class="bottom_num">{lang delete}</span>
 						</a>
@@ -131,27 +129,24 @@
 				</div>
 			</div>
 			<div id="{$key}dl{$doid}" class="doing_card_comment">
-					<!--{eval $list = $clist[$doid];}-->
-					<div class="doing_card_quote" id="{$key}_$doid" {if empty($list) || !$showdoinglist[$doid]} style="display:none;" {/if}>
-						<span id="{$key}_form_{$doid}_0"></span>
-						<!--{template home/space_doing_li}-->
-					</div>
-				</div>
+				<!--{eval $list = $clist[$doid];}-->
+				<div class="doing_card_quote" id="{$key}_$doid" {if empty($list) || !$showdoinglist[$doid]} style="display:none;" {/if}>
+				<span id="{$key}_form_{$doid}_0"></span>
+				<!--{template home/space_doing_li}-->
+			</div>
 		</div>
-		<!--{/loop}-->
-		
-	
-			
-			<!--{if $multi}-->
-			<div class="pgs cl mtm">$multi</div>
-			<!--{/if}-->
-		
-		<!--{else}-->
-		<div class="threadlist_box mt10 cl">
-			<h4>{lang doing_no_replay}</h4>
-		</div>
-		<!--{/if}-->
 	</div>
-</div>
+	<!--{/loop}-->
 
+	<!--{if $multi}-->
+	<div class="pgs cl mtm">$multi</div>
+	<!--{/if}-->
+
+	<!--{else}-->
+	<div class="threadlist_box mt10 cl">
+		<h4>{lang doing_no_replay}</h4>
+	</div>
+	<!--{/if}-->
+</div>
+</div>
 <!--{template common/footer}-->
