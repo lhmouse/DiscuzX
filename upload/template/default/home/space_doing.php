@@ -101,10 +101,10 @@
 							<!--{if $attach['isimage']}-->
 							<div class="doing_image_item">
 								<a href="javascript:;" class="doing_image_link ">
-									<img src="{if $attach['remote']}remote{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}" 
-										zoomfile="{if $attach['remote']}remote{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}" 
-										file="{if $attach['remote']}remote{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"  
-										onclick="zoom(this, this.src, 0, 0, 0)" 
+									<img src="{$attach['thumb']}"
+										zoomfile="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
+										file="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
+										onclick="zoom(this, this.getAttribute('zoomfile'), 0, 0, 0)"
 										alt="" 
 										class="doing_image zoom"
 										id="aimg_$attach[aid]"

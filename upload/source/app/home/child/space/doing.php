@@ -26,7 +26,7 @@ ckstart($start, $perpage);
 $dolist = [];
 $count = 0;
 
-$_GET['view'] = in_array($_GET['view'], ['we', 'me', 'all']) ? $_GET['view'] : 'we';
+$_GET['view'] = in_array($_GET['view'], ['we', 'me', 'all']) ? $_GET['view'] : 'all';
 
 $gets = [
 	'mod' => 'space',
@@ -210,6 +210,7 @@ if($doids) {
 	if (!empty($doids)) {
 		$attach_list = table_home_doing_attachment::t()->fetch_all_by_id(0, 'doid', $doids);
 		foreach ($attach_list as $attach) {
+			$attach['thumb'] = getdiscuzimg('doing', $attach['aid'], 0, 140, 140);
 			$attachments[$attach['doid']][] = $attach;
 		}
 	}

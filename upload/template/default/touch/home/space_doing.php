@@ -92,7 +92,7 @@
 							<div class="doing_card_piclist">
 								<!--{loop $dv['attachments'] $attach}-->
 								<!--{if $attach['isimage']}-->
-								<div class="doing_card_piclist_item "><img lass="hl_noloadimage lazy lazy-fade-in" width="300" height="300" src="{if $attach['remote']}remote{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}" data-src="{if $attach['remote']}remote{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"></div>
+								<div class="doing_card_piclist_item "><img lass="hl_noloadimage lazy lazy-fade-in" width="300" height="300" src="{$attach['thumb']}" data-src="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"></div>
 								<!--{/if}-->
 								<!--{/loop}-->
 							</div>

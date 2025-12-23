@@ -1344,6 +1344,12 @@ function getforumimg($aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
 	return 'forum.php?mod=image&aid='.$aid.'&size='.$w.'x'.$h.'&key='.rawurlencode($key).($nocache ? '&nocache=yes' : '').($type ? '&type='.$type : '');
 }
 
+function getdiscuzimg($module = 'forum', $aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
+	global $_G;
+	$key = dsign($module.'|'.$aid.'|'.$w.'|'.$h);
+	return 'misc.php?mod=image&module='.$module.'&aid='.$aid.'&size='.$w.'x'.$h.'&key='.rawurlencode($key).($nocache ? '&nocache=yes' : '').($type ? '&type='.$type : '');
+}
+
 function rewriterulecheck($type = '') {
 	global $_G;
 
