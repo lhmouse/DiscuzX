@@ -35,13 +35,20 @@
 		<!--{template home/space_doing_li}-->
 	<!--{/if}-->
 <!--{else}-->
-
-<div id="content">
-	<!--{if helper_access::check_module('doing')}-->
-	<!--{template home/space_doing_form}-->
-	<!--{/if}-->
+<!--{if $_G[inajax]}-->
+<!--{else}-->
+<div class="header cl">
+	<div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
+	<h2>{lang doing}</h2>
 </div>
-
 <!--{/if}-->
-
+<!--{if $_G[inajax]}--><div class="tip loginbox loginpop p5"><!--{/if}-->
+	<div id="content">
+		<!--{if helper_access::check_module('doing')}-->
+		<!--{template home/space_doing_form}-->
+		<!--{/if}-->
+	</div>
+<!--{if $_G[inajax]}--></div><!--{/if}-->
+<!--{/if}-->
+<!--{eval $nofooter = true;}-->
 <!--{template common/footer}-->

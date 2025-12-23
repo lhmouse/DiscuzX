@@ -47,6 +47,7 @@
 <div class="header cl">
 	<div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
 	<h2>{lang doing}</h2>
+	<div class="my"><a href="home.php?mod=spacecp&ac=doing"><i class="dm-edit"></i></a></div>
 </div>
 
 <div class="dhnv flex-box cl">
@@ -56,9 +57,6 @@
 </div>
 
 <div class="doing_list threadlist_box cl">
-	<!--{if helper_access::check_module('doing')}-->
-	<!--{template home/space_doing_form}-->
-	<!--{/if}-->
 	<div class="doing_list_box threadlist cl">
 		<!--{if $dolist}-->
 		<!--{loop $dolist $dv}-->

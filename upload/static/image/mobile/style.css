@@ -1337,7 +1337,7 @@ body.pg_logging, body.pg_register, body.pg_lostpasswd_mobile, body.pg_lostpasswd
 .moodfm_text textarea:focus {outline:none;border-color:var(--dz-BG-color);box-shadow:0 0 0 2px rgba(0,122,255,0.2);}
 .specialpost {margin:0;padding:0;list-style:none;}
 .upload-main {display:flex;align-items:flex-start;flex-wrap:wrap;}
-.image-main {width:100%;display:flex;}
+.image-main {width:100%;}
 #multipic_img {display:flex;flex-wrap:wrap;}
 .image-list {position:relative;float:left;width:70px;height:70px;}
 .image-upload {width:100%;height:100%;position:relative;border:1px dashed var(--dz-BOR-ed);border-radius:6px;background:var(--dz-BG-0);cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;}
@@ -1396,8 +1396,8 @@ body.pg_logging, body.pg_register, body.pg_lostpasswd_mobile, body.pg_lostpasswd
 .doing_card_text_textcontent .newtit {font-size:16px;font-weight:700;}
 .doing_card_text_textcontent .newmessage {font-size:14px;margin-top:15px;display:block;}
 .doing_card_piclistbox {max-width:335px;position:relative;margin-top:15px;}
-.doing_card_piclist {align-items:center;display:flex;}
-.doing_card_piclist_item {align-items:center;display:flex;height:115px;justify-content:center;margin-right:4px;overflow:hidden;position:relative;width:115px;border-radius:5px;}
+.doing_card_piclist {align-items:center;display:flex;flex-wrap: wrap;gap: 5px;}
+.doing_card_piclist_item {align-items:center;display:flex;height:105px;justify-content:center;overflow:hidden;position:relative;width:105px;border-radius:5px;}
 .doing_card_piclist_item1 {width:100%;height:195px;}
 .doing_card_video {position:relative;}
 .doing_card_video:after {position:absolute;width:100%;height:100%;background:rgba(0,0,0,.5);content:" ";}
