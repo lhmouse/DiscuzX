@@ -84,7 +84,6 @@
 					</div>
 				</div>
 				<div class="doing_card_text">
-					
 					<div class="doing_card_text_textcontent">
 						<div id="comment_$value['cid']" class="newmessage{if $value['magicflicker']} magicflicker{/if}">$dv[message]<!--{if $dv['status'] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}--></div>
 						<!--{if $dv['attachments']}-->
@@ -100,6 +99,13 @@
 						<!--{/if}-->
 					</div>
 				</div>
+				<!--{if $dv['body_template']}-->
+				<div class="doing_card_more cl">
+					<div class="d quote">
+						<blockquote id="quote_{$dv['id']}">$dv[body_template]</blockquote>
+					</div>
+				</div>
+				<!--{/if}-->
 				<div class="doing_card_bottom">
 					<div class="doing_card_bottom_left">
 						<span class="doing_card_info-bottom-info"><!--{date($dv['dateline'], 'u')}--></span>
