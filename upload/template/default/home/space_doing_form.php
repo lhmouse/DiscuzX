@@ -71,6 +71,7 @@
 					<!--{if !$type}-->
 					<a href="javascript:;" id="moodfm_pic"><i class="fico-image fic8 fc-s fnmr vm" ></i></a>
 					<!--{/if}-->
+					{hook/space_doing_toolbar}
 				</div>
 				<div class="moodfm_btn">
 					<!--{if $commentcable[$type]}-->
