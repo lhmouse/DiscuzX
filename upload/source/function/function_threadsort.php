@@ -717,18 +717,18 @@ function threadsort_validator($sortoption, $pid) {
 	$_G['forum_optiondata'] = [];
 	foreach($_G['forum_checkoption'] as $var => $option) {
 		if($_G['forum_checkoption'][$var]['required'] && ($sortoption[$var] === '' && $_G['forum_checkoption'][$var]['type'] != 'number')) {
-			showmessage('threadtype_required_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+			showmessage('threadtype_required_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 		} elseif($sortoption[$var] && ($_G['forum_checkoption'][$var]['type'] == 'number' && !is_numeric($sortoption[$var]) || $_G['forum_checkoption'][$var]['type'] == 'email' && !isemail($sortoption[$var]))) {
-			showmessage('threadtype_format_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+			showmessage('threadtype_format_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 		} elseif($sortoption[$var] && $_G['forum_checkoption'][$var]['maxlength'] && strlen($sortoption[$var]) > $_G['forum_checkoption'][$var]['maxlength']) {
-			showmessage('threadtype_toolong_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+			showmessage('threadtype_toolong_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 		} elseif($sortoption[$var] && (($_G['forum_checkoption'][$var]['maxnum'] && $sortoption[$var] > $_G['forum_checkoption'][$var]['maxnum']) || ($_G['forum_checkoption'][$var]['minnum'] && $sortoption[$var] < $_G['forum_checkoption'][$var]['minnum']))) {
-			showmessage('threadtype_num_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+			showmessage('threadtype_num_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 		} elseif($sortoption[$var] && $_G['forum_checkoption'][$var]['unchangeable'] && ($_G['tid'] && $pid)) {
-			showmessage('threadtype_unchangeable_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+			showmessage('threadtype_unchangeable_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 		} elseif($sortoption[$var] && ($_G['forum_checkoption'][$var]['type'] == 'select')) {
 			if($_G['forum_optionlist'][$_G['forum_checkoption'][$var]['optionid']]['choices'][$sortoption[$var]]['level'] != 1) {
-				showmessage('threadtype_select_invalid', "forum.php?mod=post&action=$postaction&fid={$_G['fid']}&sortid=".$_G['forum_selectsortid'], ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
+				showmessage('threadtype_select_invalid', '', ['typetitle' => $_G['forum_checkoption'][$var]['title']]);
 			}
 		}
 		if($_G['forum_checkoption'][$var]['type'] == 'checkbox') {
