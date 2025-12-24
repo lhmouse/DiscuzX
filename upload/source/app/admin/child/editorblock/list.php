@@ -63,7 +63,7 @@ if(!submitcheck('editorblocksubmit')) {
 			table_common_editorblock::t()->delete($editorblock['blockid']);
 			continue;
 		}
-		if(!isset($classnames[$editorblock['class']])) {
+		if(!empty($classnames[$editorblock['class']])) {
 			require_once $editorblockfile;
 			if(class_exists($editorblockclass)) {
 				$editorblockclassv = new $editorblockclass();

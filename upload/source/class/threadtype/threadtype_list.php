@@ -68,6 +68,15 @@ template: 模板中用 {字段名} 引用相应的列表字段
 .enhcomp label {
 	margin-right: 10px;
 }
+.enhcomp .albumBtn {
+	display: inline-block;
+	min-width: 26px;
+	height: 26px;
+	background-image: url('.STATICURL.'image/common/uploadbutton_small_pic.png);
+	background-repeat: no-repeat;
+	background-position: center top;
+	vertical-align: middle;
+}
 </style>';
 			$string = $header;
 		} else {
@@ -166,6 +175,10 @@ template: 模板中用 {字段名} 引用相应的列表字段
 					$str .= '<option value="'.$opt['value'].'"'.$selected.'>'.$opt['name'].'</option>';
 				}
 				return $str.'</select>';
+			case 'album':
+				$paramstr = $value !== null ? ' value="'.dhtmlspecialchars($value).'"' : '';
+				$str = '<input name="'.$var['variable'].'['.$i.']['.$col['field'].']" type="text"'.$paramstr.$widthstr.' />';
+				return $str.'<a href="javascript:;" onclick="openAlbumWindow(this.previousElementSibling)" class="albumBtn"></a>';
 		}
 	}
 

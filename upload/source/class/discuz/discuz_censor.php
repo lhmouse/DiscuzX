@@ -68,7 +68,7 @@ class discuz_censor {
 				$message = preg_replace($this->censor_words['mod'], $modword, $message);
 			}
 			foreach($this->censor_words['mod'] as $mod_words) {
-				if(preg_match_all($mod_words, @preg_replace(["/\[($bbcodes)=?(.*)\]/iU", "/\[\/($bbcodes)\]/i"], ['${2}', ''], $message), $matches)) {
+				if(is_string($message) && preg_match_all($mod_words, @preg_replace(["/\[($bbcodes)=?(.*)\]/iU", "/\[\/($bbcodes)\]/i"], ['${2}', ''], $message), $matches)) {
 					$this->words_found = $matches[0];
 					$this->result = DISCUZ_CENSOR_MODERATED;
 					$message = $this->highlight($message, $mod_words);

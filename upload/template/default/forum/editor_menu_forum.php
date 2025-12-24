@@ -212,7 +212,10 @@
 				</select>
 				<div id="albumphoto"></div>
 			</div>
-			<p class="notice">{lang e_img_insertphoto}</p>
+			<p class="notice">
+				<span class="y"><button onclick="window.open('home.php?mod=spacecp&ac=upload')" class="pn"><strong>{lang e_img_attach}</strong></button></span>
+				{lang e_img_insertphoto}
+			</p>
 			</div>
 			<div class="o">
 				<button onclick="hideAttachMenu('image')" class="pn pnc">

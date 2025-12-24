@@ -30,7 +30,7 @@ foreach($query as $value) {
 	$value['thumburl'] = (preg_match('/^https?:\/\//is', $value['pic']) ? '' : $_G['siteurl']).$value['pic'];
 	$photolist[] = $value;
 }
-$_GET['ajaxtarget'] = 'albumphoto';
-$multi = multi($count, $perpage, $page, "forum.php?mod=post&action=albumphoto&aid=$aid");
+$_GET['ajaxtarget'] = $_GET['ajaxtarget'] ?? 'albumphoto';
+$multi = multi($count, $perpage, $page, "forum.php?mod=post&action=albumphoto&aid=$aid".($_GET['from'] ? '&from=albumWin' : ''));
 include template('forum/ajax_albumlist');
 exit;

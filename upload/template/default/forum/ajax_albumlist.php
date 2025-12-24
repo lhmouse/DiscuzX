@@ -6,7 +6,11 @@
 <!--{loop $photolist $photo}-->
 	<!--{eval $i++;}-->
 	<td valign="bottom" width="25%">
+	<!--{if empty($_GET['from'])}-->
 		<a href="javascript:;"><img src="$photo[thumburl]" title="$photo[filename]" onclick="wysiwyg ? insertText('<img src=\'$photo[url]\' border=0 style=\'max-width:400px\'/>', false) : insertText('[img]$photo[url][/img]', <!--{echo strlen($photo[url]) + 11}-->, 0);doane(event);" onload="thumbImg(this, 1)" width="110" style="height:auto" _width="110" _height="110"></a>
+	<!--{else}-->
+		<a href="javascript:;"><img src="$photo[thumburl]" title="$photo[filename]" onclick="albumWinCallback(currentAlbumObj, '$photo[url]', '{echo dhtmlspecialchars($photo['filename'])}')" onload="thumbImg(this, 1)" width="110" style="height:auto" _width="110" _height="110"></a>
+	<!--{/if}-->
 	</td>
 	<!--{if $i % 4 == 0 && isset($photolist[$i])}--></tr><tr><!--{/if}-->
 <!--{/loop}-->

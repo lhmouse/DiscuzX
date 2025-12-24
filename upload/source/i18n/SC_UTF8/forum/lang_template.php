@@ -1357,5 +1357,7 @@ $lang = [
 	'collection_cover_resize' => '自动缩略成 1000×250 像素大小的图片',
 	'collection_icon' => '淘帖图标',
 	'collection_icon_resize' => '自动缩略成 200×200 像素大小的图片',
+
+	'album_click_select' => '请点击选中的图片',
 ];
 

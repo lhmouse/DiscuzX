@@ -362,7 +362,7 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 /* 发特殊主题帖 by dfox */
 	.sinf p, .sadd p { padding: 2px 0; height: 30px; line-height: 30px; }
 	.sinf .px, .sadd .px { width: 120px; }
-	.sinf { float: left; padding-right: 14px; width: 380px; border-right: 1px dashed {WRAPBORDERCOLOR}; }
+	.sinf { float: left; padding-right: 14px; width: 400px; border-right: 1px dashed {WRAPBORDERCOLOR}; }
 		.sinf h4 { padding: 6px 0; }
 		.sinf textarea { width: 368px; height: 80px; }
 		.sinf a.d { margin-top: 8px; }

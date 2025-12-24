@@ -2450,6 +2450,25 @@ function initZoom() {
 	});
 }
 
+var currentAlbumObj = null;
+function openAlbumWindow(obj) {
+	currentAlbumObj = obj;
+	if(typeof currentAlbumObj == 'object') {
+		currentAlbumObj.focus();
+	}
+	if(!$('fwin_albumWin')) {
+		showWindow('albumWin', 'forum.php?mod=misc&action=albumlist&handlekey=albumlist');
+	}
+}
+
+function albumWinCallback(obj, value, name) {
+	if(typeof(obj) == 'function') {
+		obj(value, name);
+	} else if(typeof(obj) == 'object') {
+		obj.value = value;
+	}
+}
+
 var BROWSER = {};
 var USERAGENT = navigator.userAgent.toLowerCase();
 browserVersion({
