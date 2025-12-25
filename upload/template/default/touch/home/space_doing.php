@@ -51,9 +51,9 @@
 </div>
 
 <div class="dhnv flex-box cl">
-	<a href="home.php?mod=space&do=$do&view=we" class="flex{if $_GET['view'] == 'we'} mon{/if}">{lang me_friend_doing}</a>
-	<a href="home.php?mod=space&do=$do&view=me" class="flex{if $_GET['view'] == 'me'} mon{/if}">{lang doing_view_me}</a>
 	<a href="home.php?mod=space&do=$do&view=all" class="flex{if $_GET['view'] == 'all'} mon{/if}">{lang view_all}</a>
+	<a href="home.php?mod=space&do=$do&view=me" class="flex{if $_GET['view'] == 'me'} mon{/if}">{lang doing_view_me}</a>
+	<a href="home.php?mod=space&do=$do&view=we" class="flex{if $_GET['view'] == 'we'} mon{/if}">{lang me_friend_doing}</a>
 </div>
 
 <div class="doing_list threadlist_box cl">
@@ -89,7 +89,7 @@
 							<div class="doing_card_piclist">
 								<!--{loop $dv['attachments'] $attach}-->
 								<!--{if $attach['isimage']}-->
-								<div class="doing_card_piclist_item "><img lass="hl_noloadimage lazy lazy-fade-in" width="300" height="300" src="{$attach['thumb']}" data-src="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"></div>
+								<div class="doing_card_piclist_item "><img lass="hl_noloadimage lazy lazy-fade-in" width="300" height="300" src="{$attach['thumb']}" data-src="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}" zoomfile="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"></div>
 								<!--{/if}-->
 								<!--{/loop}-->
 							</div>

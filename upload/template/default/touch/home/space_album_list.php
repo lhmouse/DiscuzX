@@ -8,9 +8,9 @@
 </div>
 <!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
 <div class="dhnv flex-box cl">
+	<a href="home.php?mod=space&do=album&view=all" class="flex{if $_GET['view'] == 'all'} mon{/if}">{lang view_all}</a>
 	<a href="home.php?mod=space&do=album&view=me" class="flex{if $_GET['view'] == 'me'} mon{/if}">{lang my_album}</a>
 	<a href="home.php?mod=space&do=album&view=we" class="flex{if $_GET['view'] == 'we'} mon{/if}">{lang friend_album}</a>
-	<a href="home.php?mod=space&do=album&view=all" class="flex{if $_GET['view'] == 'all'} mon{/if}">{lang view_all}</a>
 </div>
 <!--[diy=diy2]--><div id="diy2" class="area"></div><!--[/diy]-->
 <div class="album_list">

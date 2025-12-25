@@ -6,9 +6,9 @@
 </div>
 <!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
 <div class="dhnv flex-box cl">
-	<a href="home.php?mod=space&do=home&view=me" class="flex<!--{if $actives['me']}--> mon<!--{/if}-->">{lang my_feed}</a>
-	<a href="home.php?mod=space&do=home&view=we" class="flex<!--{if $actives['we']}--> mon<!--{/if}-->">{lang friend_feed}</a>
 	<a href="home.php?mod=space&do=home&view=all" class="flex<!--{if $actives['all']}--> mon<!--{/if}-->">{lang view_all}</a>
+	<a href="home.php?mod=space&do=home&view=we" class="flex<!--{if $actives['we']}--> mon<!--{/if}-->">{lang friend_feed}</a>
+	<a href="home.php?mod=space&do=home&view=me" class="flex<!--{if $actives['me']}--> mon<!--{/if}-->">{lang my_feed}</a>
 </div>
 <!--[diy=diy2]--><div id="diy2" class="area"></div><!--[/diy]-->
 <!--{if $list}-->

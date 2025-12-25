@@ -10,13 +10,13 @@
 </div>
 <!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
 <div class="dhnv flex-box cl">
-	<a href="home.php?mod=space&do=$do&view=we" class="flex{if $_GET['view'] == 'we'} mon{/if}">{lang friend_blog}</a>
+	<a href="home.php?mod=space&do=$do&view=all" class="flex{if $_GET['view'] == 'all'} mon{/if}">{lang view_all}</a>
 	<!--{if $space['self']}-->
 	<a href="home.php?mod=space&do=$do&view=me" class="flex{if $_GET['view'] == 'me'} mon{/if}">{lang my_blog}</a>
 	<!--{else}-->
 	<a href="home.php?mod=space&do=$do&view=me&uid={$uid}" class="flex{if $_GET['view'] == 'me' && !$space['self']} mon{/if}">{$navtitle}</a>
 	<!--{/if}-->
-	<a href="home.php?mod=space&do=$do&view=all" class="flex{if $_GET['view'] == 'all'} mon{/if}">{lang view_all}</a>
+	<a href="home.php?mod=space&do=$do&view=we" class="flex{if $_GET['view'] == 'we'} mon{/if}">{lang friend_blog}</a>
 </div>
 <!--[diy=diy2]--><div id="diy2" class="area"></div><!--[/diy]-->
 <!--{if $_GET['view'] == 'all'}-->
