@@ -186,7 +186,7 @@ if($id) {
 	loadcache('blogcategory');
 	$category = $_G['cache']['blogcategory'];
 
-	$_GET['view'] = in_array($_GET['view'], ['we', 'me', 'all']) ? $_GET['view'] : 'we';
+	$_GET['view'] = in_array($_GET['view'], ['we', 'me', 'all']) ? $_GET['view'] : 'all';
 	$_GET['order'] = in_array($_GET['order'], ['hot', 'dateline']) ? $_GET['order'] : 'dateline';
 
 	$perpage = 10;

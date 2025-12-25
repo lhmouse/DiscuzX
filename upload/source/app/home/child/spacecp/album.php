@@ -87,7 +87,7 @@ if($_GET['op'] == 'edit') {
 		$selectgroupstyle = '';
 		if($album['target_ids']) {
 			$names = [];
-			foreach(table_common_member::t()->fetch_all($album['target_ids']) as $uid => $value) {
+			foreach(table_common_member::t()->fetch_all(explode(',', $album['target_ids'])) as $uid => $value) {
 				$names[$uid] = $value['username'];
 			}
 			$album['target_names'] = implode(' ', $names);

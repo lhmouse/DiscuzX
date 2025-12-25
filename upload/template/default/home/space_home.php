@@ -24,9 +24,9 @@
 				<div class="tbn">
 					<h2 class="mt bbda">{lang feed}</h2>
 					<ul>
-						<li$actives[we]><a href="home.php?mod=space&do=home&view=we">{lang friend_feed}</a></li>
-						<li$actives[me]><a href="home.php?mod=space&do=home&view=me">{lang my_feed}</a></li>
 						<li$actives[all]><a href="home.php?mod=space&do=home&view=all">{lang view_all}</a></li>
+						<li$actives[me]><a href="home.php?mod=space&do=home&view=me">{lang my_feed}</a></li>
+						<li$actives[we]><a href="home.php?mod=space&do=home&view=we">{lang friend_feed}</a></li>
 						<!--{hook/space_home_navlink}-->
 					</ul>
 				</div>
@@ -339,9 +339,9 @@
 
 				<div class="bm bw0">
 					<ul class="tb cl">
-						<li$actives[we]><a href="home.php?mod=space&do=home&view=we">{lang friend_feed}</a></li>
+						<li$actives[all]><a href="home.php?mod=space&do=home&view=all">{lang view_all}</a></li>
 						<li$actives[me]><a href="home.php?mod=space&do=home&view=me">{lang my_feed}</a></li>
-						<li$actives[all]><a href="home.php?mod=space&do=home&view=all">{lang view_all}</a></li>						
+						<li$actives[we]><a href="home.php?mod=space&do=home&view=we">{lang friend_feed}</a></li>
 						<!--{hook/space_home_navlink}-->
 						<!--{if $_G['setting']['magicstatus'] && $_G['setting']['magics']['thunder']}-->
 						<li class="y"><a id="a_magic_thunder" href="home.php?mod=magic&mid=thunder" onclick="showWindow('magics', this.href, 'get', 0)" style="padding-left: 18px; background: url({STATICURL}image/magic/thunder.small.gif) no-repeat 0 50%;">{$_G[setting][magics][thunder]}</a></li>

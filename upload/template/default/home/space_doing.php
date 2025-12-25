@@ -57,9 +57,9 @@
 					<!--{/if}-->
 					<!--{hook/space_doing_bottom}-->
 					<ul class="tb cl">
-						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
-						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
 						<li$actives[all]><a href="home.php?mod=space&do=$do&view=all">{lang view_all}</a></li>
+						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
+						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
 					</ul>
 				</div>
 		<!--{else}-->
@@ -67,9 +67,9 @@
 				<div class="tbn">
 					<h2 class="mt bbda">{lang doing}</h2>
 					<ul>
-						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
-						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
 						<li$actives[all]><a href="home.php?mod=space&do=$do&view=all">{lang view_all}</a></li>
+						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
+						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
 					</ul>
 				</div>
 			</div>

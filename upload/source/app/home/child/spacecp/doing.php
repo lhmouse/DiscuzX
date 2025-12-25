@@ -557,7 +557,7 @@ if($_GET['op'] == 'delete') {
 			}
 			$magvalues['type'] = $commentcable[$type];
 		}
-
+		
 		if(helper_access::check_module('feed') && ckprivacy('doing', 'feed') && $doing_status == '0') {
 			$feedarr = [
 				'icon' => 'doing',
