@@ -2022,3 +2022,11 @@ DIY图片幻灯片未加载时隐藏,模块标识隐藏
 .moodfm_container .pgsbtn:hover {
     background: {MENUCURBGCOLOR};
 }
+
+/* albumWin */
+.imgl { margin-bottom: 5px; width: 100%; }
+    .imgl td { padding: 8px 0; text-align: center; vertical-align: bottom; }
+    .imgl tr:last-child td { border-bottom: none; }
+    .imgl img { border: 1px solid {LIGHTTEXT}; max-width: 110px; }
+
+    .imgf .px { width: 106px; padding: 2px; height: 14px; line-height: 14px; }

@@ -128,6 +128,8 @@
 					<!--{/if}-->
 				<!--{elseif in_array($option['type'], array('textarea'))}-->
 					<textarea name="typeoption[{$option['identifier']}]" id="typeoption_$option['identifier']" rows="$option['rowsize']" cols="$option['colsize']" onBlur="checkoption('$option['identifier']', '$option['required']', '$option['type']', 0, 0{if $option[maxlength]}, '$option['maxlength']'{/if})" $option['unchangeable'] class="pt flw_replybox p0 pl5 pt10" placeholder="{$option['title']}">$option['value']</textarea>
+				<!--{elseif in_array($option['type'], array('plugin'))}-->
+					{echo pluginthreadtype_show($option);}
 				<!--{/if}-->
 			</div>
 			<!--{if $option['unit']}--><div class="flex xg1"><span class="y">$option['unit']</span></div><!--{/if}-->

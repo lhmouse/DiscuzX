@@ -296,13 +296,7 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 .upfl { margin-top: -1px; height: auto !important; height: 165px; max-height: 300px; overflow: auto; overflow-x: hidden; }
 	.upfl a, #imgattachlist a { color: {HIGHLIGHTLINK}; }
 	.upfl table td { border-bottom: 1px solid {COMMONBORDER}; height: 30px; line-height: 24px; }
-.imgl { margin-bottom: 5px; width: 100%; }
-	.imgl td { padding: 8px 0; text-align: center; vertical-align: bottom; }
-		.imgl tr:last-child td { border-bottom: none; }
-	.imgl img { border: 1px solid {LIGHTTEXT}; max-width: 110px; }
-
-	.imgf .px { width: 106px; padding: 2px; height: 14px; line-height: 14px; }
-	.imgdeleted { opacity: 0.3; }
+.imgdeleted { opacity: 0.3; }
 
 /*
 	Name:			mod_opattach

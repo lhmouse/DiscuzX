@@ -676,6 +676,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .fwin .dt th { font-weight: 700; }
 .fwin .ss em { background: var(--admincp-bge); width: 16px; line-height: 18px; display: block; float: left; margin: 2px; cursor: pointer; padding-left: 7px;}
 .fwin .ss em.a { background: #09f; color:  var(--admincp-ff);}
+.fwin .notice { position: relative !important; margin-top: 5px; }
 #seocodes { word-break: break-word;}
 
 /* .cl --> Clear 自动闭合 */
@@ -911,3 +912,36 @@ div.todo>em { width: 25%; }
     .blank a { color: #999; }
     .blank .gear { width: 100%;height: 100%; position: absolute; background: url('loginbg.svg') no-repeat left bottom;transform: rotateY(180deg); filter: hue-rotate(90deg) saturate(150%) brightness(50%); }
     .blank .text { top: -20px; position: relative; }
+
+h3.flb { font-weight: bold; }
+.p_opt {
+    padding: 10px;
+}
+
+.imgl { margin-bottom: 5px; width: 100%; }
+    .imgl td { padding: 8px 0; text-align: center; vertical-align: bottom; }
+    .imgl tr:last-child td { border-bottom: none; }
+    .imgl img { border: 1px solid var(--admincp-borderb); max-width: 110px; }
+
+    .imgf .px { width: 106px; padding: 2px; height: 14px; line-height: 14px; }
+
+/* pgs --> pages & postbutton 分页、发帖按钮, pgb -->返回首页, nxt -->下一页 */
+.pgs {}
+    .pgs #newspecial, .pgs #newspecialtmp, .pgs #post_reply, .pgs #post_replytmp { float: left; margin-right: 5px; }
+    .pgsbtn { color: #FFF; padding: 10px 16px; font-size: 14px; line-height: 14px; border-radius: 4px;  letter-spacing: 2px; transition: .2s background ease; border: 0 }
+    .pgsbtn:hover { text-decoration: none; }
+    .pgsbtn:active { box-shadow: 0 0 0 3px rgba(36,88,167,0.25); }
+    .pgsbtn:focus { outline: 0; }
+    .pg { float: right; }
+        .pg, .pgb { line-height: 26px; }
+        .pg a, .pg strong, .pgb a, .pg label { border: 1px solid var(--admincp-borderb) !important; float: left; display: inline; margin-left: 4px; padding: 0 8px; height: 26px; border: 1px solid; background-repeat: no-repeat; overflow: hidden; text-decoration: none; }
+        .pg a.nxt, .pgb a { padding: 0 10px; }
+        .pg a.nxt { padding-right: 11px; }
+        .pg a.nxt::after { display: inline-block; margin-left: 9px; content: ""; border-left: 0.4em solid #666; border-top: 0.4em solid transparent; border-right: 0; border-bottom: 0.4em solid transparent; }
+        .pg a.prev { padding-left: 2px; }
+        .pg a.prev::after { display: inline-block; margin-right: 1px; content: ""; border-left: 0; border-top: 0.4em solid transparent; border-right: 0.4em solid #666; border-bottom: 0.4em solid transparent; }
+    .pgb a { padding-left: 15px; }
+        .pgb a::before { display: inline-block; margin-right: 5px; content: ""; border-left: 0; border-top: 0.4em solid transparent; border-right: 0.4em solid #666; border-bottom: 0.4em solid transparent; }
+    .pg label { cursor: text; }
+        .pg label .px { padding: 0; width: 25px; height: 16px; line-height: 16px; }
+    #pgt .pg, #pgt .pgb { margin-top: 5px; }

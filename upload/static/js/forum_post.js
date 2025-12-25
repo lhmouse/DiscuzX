@@ -871,13 +871,4 @@ function hideAttachMenu(id) {
 	}
 }
 
-function threadTypeAddRow(id) {
-	var i = $(id).rows.length - 1;
-	var row = $(id).insertRow();
-	var tpl = $('row_' + id).innerHTML;
-	tpl.replace(/\{_col_(\d+)_\}(.+?)\{\/_col_(\d+)_\}/g, function($1, $2, $3) {
-		$3 = $3.replace('{_i_}', i);
-		col = row.insertCell($2);
-		col.innerHTML = $3;
-	});
 }
