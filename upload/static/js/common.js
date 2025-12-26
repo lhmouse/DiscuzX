@@ -1337,7 +1337,6 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 	};
 	var show = function () {
 		hideMenu('fwin_dialog', 'dialog');
-		//增加遮罩显示cover=1
 		v = {
 			'mtype': 'win',
 			'menuid': menuid,
@@ -1373,7 +1372,7 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 		} else {
 			fetchContent();
 			if (cover) {
-				show();//增加遮罩显示
+				show();
 			}
 		}
 	} else if ((mode == 'get' && (url != menuObj.url || cache != 1)) || (mode == 'post' && $(url).action != menuObj.act)) {

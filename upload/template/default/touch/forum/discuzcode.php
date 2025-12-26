@@ -104,7 +104,7 @@ $mobileguestviewthumburl = $guestviewthumb ? ($attach['attachimg'] && $_G['setti
 <!--{block return}-->
 	<!--{if $attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
 		<!--{if $_G['setting']['mobile']['mobilesimpletype'] == 0}-->
-			<li><a href="forum.php?mod=viewthread&tid=$attach['tid']&aid=$attach['aid']&from=album&page=$_G['page']" class="orange"><img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" alt="$attach['imgalt']" /></a>
+			<li><img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" zoomfile="{$attach['url']}{$attach['attachment']}" alt="$attach['imgalt']" />
 			$pluginhook
 			</li>
 		<!--{/if}-->
@@ -126,7 +126,7 @@ $mobileguestviewthumburl = $guestviewthumb ? ($attach['attachimg'] && $_G['setti
 <!--{block return}-->
 	<!--{if $attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
 		<!--{if $_G['setting']['mobile']['mobilesimpletype'] == 0}-->
-		<a href="forum.php?mod=viewthread&tid=$attach['tid']&aid=$attach['aid']&from=album&page=$_G['page']" class="orange"><img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" alt="$attach['imgalt']" /></a>
+		<img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" zoomfile="{$attach['url']}{$attach['attachment']}" alt="$attach['imgalt']" />
 		<!--{/if}-->
 	<!--{else}-->
 	<ul id="attach_$attach['aid']" class="quote post_attlist cl" >

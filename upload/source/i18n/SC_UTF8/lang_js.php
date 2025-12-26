@@ -69,6 +69,7 @@ $lang = [
 	'select_14days' => '14 天',
 	'open_newwindow' => '在新窗口打开',
 	'actual_size' => '实际大小',
+	'img_roate' => '旋转图片',
 	'mouse_wheel_resize' => '鼠标滚轮缩放图片',
 	'prev_img' => '上一张',
 	'next_img' => '下一张',

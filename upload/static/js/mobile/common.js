@@ -774,6 +774,213 @@ function getFirstFrame(file, callback) {
 
 	video.src = URL.createObjectURL(file);
 }
+
+function addImageZoomStyles() {
+	if(document.getElementById('imgzoom_styles')) return;
+	
+	var style = document.createElement('style');
+	style.id = 'imgzoom_styles';
+	style.textContent = `
+	.imgzoom_pop {
+		display: none;
+	}
+	.imgzoom_dialog {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.98);
+		z-index: 999999;
+		/* 防止页面缩放 */
+		touch-action: none;
+	}
+	/* 确保自动创建的弹窗容器也有足够高的z-index */
+	#imgzoom_pop_popmenu {
+		z-index: 999999 !important;
+	}
+	.imgzoom_content {
+		position: absolute;
+		top: 0;
+		bottom: 104px;
+		left: 0;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: auto;
+		padding: 20px;
+		box-sizing: border-box;
+	}
+	.imgzoom_footer {
+		position: absolute;
+		bottom: 60px;
+		left: 0;
+		width: 100%;
+		height: 44px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
+	}
+	.imgzoom_rotate, .imgzoom_opennew, .imgzoom_closebtn {
+		color: #fff;
+		font-size: 14px;
+		cursor: pointer;
+		padding: 8px 16px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 4px;
+		text-decoration: none;
+	}
+	.imgzoom_rotate:active, .imgzoom_opennew:active, .imgzoom_closebtn:active {
+		background: rgba(255, 255, 255, 0.3);
+	}
+	#imgzoom_img {
+		max-width: 100%;
+		max-height: 100%;
+		transition: transform 0.1s ease;
+	}
+	#mask {
+		cursor: pointer;
+		z-index: 999998;
+		background: rgba(0, 0, 0, 0.98);
+	}
+	`;
+	document.head.appendChild(style);
+}
+
+var currentZoomImgUrl = '';
+
+function openImageInNewWindow() {
+	window.open(currentZoomImgUrl, '_blank');
+	popup.close();
+}
+
+function zoom(imgObj, zoomfile, nocover, pn, showexif) {
+	addImageZoomStyles();
+	
+	var imgUrl = zoomfile || imgObj.getAttribute('zoomfile') || imgObj.src;
+	if(!imgUrl) return;
+
+	currentZoomImgUrl = imgUrl;
+
+	var zoomHtml = '<div id="imgzoom_pop" class="imgzoom_pop" popup="true" style="display:none;">' 
+		+ '<div class="imgzoom_dialog">' 
+		+ '<div class="imgzoom_content">' 
+		+ '<img id="imgzoom_img" src="' + imgUrl + '" style="transform-origin: center center; max-width: 100%; max-height: 100%; transform: scale(1) rotate(0deg);" />' 
+		+ '</div>' 
+		+ '<div class="imgzoom_footer f_f">' 
+		+ '<span class="imgzoom_rotate" ontouchend="rotateImage(); return false;">'+$L('img_roate')+'</span>'
+		+ '<span class="imgzoom_opennew" ontouchend="openImageInNewWindow(); return false;">'+$L('open_newwindow')+'</span>'
+		+ '<span class="imgzoom_closebtn" ontouchend="closeImageZoom();">'+$L('close')+'</span>'
+		+ '</div>' 
+		+ '</div>' 
+		+ '</div>';
+
+	var zoomContainer = document.getElementById('imgzoom_pop');
+	if(zoomContainer) {
+		zoomContainer.parentNode.removeChild(zoomContainer);
+	}
+	document.body.insertAdjacentHTML('beforeend', zoomHtml);
+	popup.open($('#imgzoom_pop'));
+
+	setTimeout(function() {
+		var actualImg = document.querySelector('#imgzoom_pop_popmenu #imgzoom_img');
+		if(actualImg) {
+			if(!actualImg.style.transform) {
+				actualImg.style.transform = 'scale(1) rotate(0deg)';
+			}
+
+			initImageZoomRotate();
+		}
+	}, 0);
+}
+
+function closeImageZoom() {
+	var e = window.event || arguments.callee.caller.arguments[0];
+	if(e) {
+		e.stopPropagation();
+		e.preventDefault();
+	}
+
+	popup.close();
+
+	setTimeout(function() {
+	}, 100);
+	
+	return false;
+}
+
+function initImageZoomRotate() {
+	var img = document.querySelector('#imgzoom_pop_popmenu #imgzoom_img') || document.getElementById('imgzoom_img');
+	if(!img) return;
+
+	if(!img.style.transform) {
+		img.style.transform = 'scale(1) rotate(0deg)';
+	}
+	
+	var scale = 1;
+	var rotate = 0;
+	var startScale = 1;
+	var startRotate = 0;
+
+	var newImg = img.cloneNode(true);
+	img.parentNode.replaceChild(newImg, img);
+	img = newImg;
+
+	img.addEventListener('touchstart', function(e) {
+		if(e.touches.length === 2) {
+			startScale = scale;
+			startRotate = rotate;
+		}
+	}, { passive: true });
+	
+	img.addEventListener('touchmove', function(e) {
+		if(e.touches.length === 2) {
+			var dist1 = Math.hypot(
+				e.touches[0].clientX - e.touches[1].clientX,
+				e.touches[0].clientY - e.touches[1].clientY
+			);
+			var dist2 = Math.hypot(
+				e.touches[0].pageX - e.touches[1].pageX,
+				e.touches[0].pageY - e.touches[1].pageY
+			);
+			scale = startScale * (dist2 / dist1);
+
+			var angle1 = Math.atan2(
+				e.touches[0].clientY - e.touches[1].clientY,
+				e.touches[0].clientX - e.touches[1].clientX
+			);
+			var angle2 = Math.atan2(
+				e.touches[0].pageY - e.touches[1].pageY,
+				e.touches[0].pageX - e.touches[1].pageX
+			);
+			rotate = startRotate + (angle2 - angle1) * (180 / Math.PI);
+
+			img.style.transform = 'scale(' + scale + ') rotate(' + rotate + 'deg)';
+		}
+	}, { passive: false });
+}
+
+function rotateImage() {
+	var img = document.querySelector('#imgzoom_pop_popmenu #imgzoom_img') || document.getElementById('imgzoom_img');
+	if(!img) return;
+
+	var currentTransform = img.style.transform || 'scale(1) rotate(0deg)';
+
+	var scaleMatch = currentTransform.match(/scale\(([\d.]+)\)/);
+	var rotateMatch = currentTransform.match(/rotate\(([\d.]+)deg\)/);
+	
+	var scale = scaleMatch ? parseFloat(scaleMatch[1]) : 1;
+	var currentRotate = rotateMatch ? parseFloat(rotateMatch[1]) : 0;
+
+	var newRotate = currentRotate + 90;
+
+	img.style.transform = 'scale(' + scale + ') rotate(' + newRotate + 'deg)';
+}
+
 $(document).ready(function() {
 
 	if(qSel('div.pg')) {
@@ -793,6 +1000,11 @@ $(document).ready(function() {
 	}
 	dialog.init();
 	formdialog.init();
+
+	$(document).on('click', 'img[zoomfile]', function() {
+		zoom(this);
+		return false;
+	});
 });
 
 function ajaxget(url, showid, waitid, loading, display, recall) {
@@ -972,8 +1184,6 @@ function portal_flowlazyload() {
 	this.showNextPage = function() {
 		var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
 		var offsetTop = this.getOffset(document.getElementsByClassName('page')[0]);
-		// 没有在进行的 Ajax 翻页或者 Ajax 翻页少于 10 次才翻页, 为了避免重复请求以及无限下拉导致的 DOM 问题
-		// Todo: 大数据量站点测试下拉刷新合理范围, 适度放宽限制
 		if (!processing && times <= 9 && offsetTop > document.documentElement.clientHeight && (offsetTop - scrollTop < document.documentElement.clientHeight)) {
 			processing = true;
 			times++;
@@ -1421,22 +1631,13 @@ function footlink() {
 	}
 }
 
-/**
- * 初始化导航Swiper组件
- * @param {string} [containerSelector='#dhnavs_li'] - 容器选择器
- * @param {string} [activeClass='mon'] - 活动元素类名
- * @param {Object} [customOptions={}] - 自定义Swiper配置选项
- * @returns {Swiper|null} - 返回Swiper实例或null（当容器不存在时）
- */
 function initdhnav(containerSelector = '#dhnavs_li', activeClass = 'mon', customOptions = {}) {
-    // 获取容器元素
     const container = document.querySelector(containerSelector);
     if (!container) {
         console.warn('Swiper容器不存在:', containerSelector);
         return null;
     }
 
-    // 查找活动元素并计算初始位置
     const activeElement = container.querySelector('.' + activeClass);
     let initialSlide = 0;
 
@@ -1446,33 +1647,24 @@ function initdhnav(containerSelector = '#dhnavs_li', activeClass = 'mon', custom
         const elementWidth = activeElement.offsetWidth;
         const windowWidth = window.innerWidth;
 
-        // 计算元素索引
         const siblings = Array.from(container.getElementsByClassName(activeClass));
         const elementIndex = siblings.indexOf(activeElement);
 
-        // 确定初始滑动位置
         initialSlide = (elementLeft + elementWidth >= windowWidth) ? elementIndex : 0;
     }
 
-    // 合并默认配置和自定义配置
     const swiperOptions = {
         freeMode: true,
         slidesPerView: 'auto',
         initialSlide: initialSlide,
         onTouchMove: () => { Discuz_Touch_on = 0; },
         onTouchEnd: () => { Discuz_Touch_on = 1; },
-        ...customOptions // 自定义配置可以覆盖默认值
+        ...customOptions
     };
 
-    // 初始化并返回Swiper实例
     return new Swiper(containerSelector, swiperOptions);
 }
-
-/**
- * 家园模块下设置密码的共用函数
- */
 function home_passwordShow(value) {
-    // 获取元素引用
     const spanPassword = document.getElementById('span_password');
     const tbSelectgroup = document.getElementById('tb_selectgroup');
     if(value == 4) {
@@ -1489,30 +1681,24 @@ function home_passwordShow(value) {
 
 function home_getgroup(gid) {
     if (gid) {
-        // 构建请求URL
         const url = `home.php?mod=spacecp&ac=privacy&inajax=1&op=getgroup&gid=${encodeURIComponent(gid)}`;
 
-        // 使用原生fetch发送GET请求
         fetch(url)
             .then(response => {
-                // 检查响应是否成功
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                return response.text(); // 解析响应为文本
+                return response.text();
             })
             .then(s => {
-                // 获取目标元素并检查是否存在
                 const targetNames = document.getElementById('target_names');
                 if (targetNames) {
-                    // 处理响应并更新innerHTML
                     targetNames.innerHTML += s + ',';
                 } else {
                     console.warn('未找到ID为target_names的元素');
                 }
             })
             .catch(error => {
-                // 捕获并处理请求错误
                 console.error('请求失败:', error);
             });
     }

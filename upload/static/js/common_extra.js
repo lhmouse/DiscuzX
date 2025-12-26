@@ -338,24 +338,43 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		h = h < 90 ? 90 : h;
 		if($('zimg_prev')) {
 			$('zimg_prev').style.height= parseInt(h) + 'px';
+			$('zimg_prev').style.zIndex = '99999';
 		}
 		if($('zimg_next')) {
 			$('zimg_next').style.height= parseInt(h) + 'px';
+			$('zimg_next').style.zIndex = '99999';
 		}
 	};
 	var showimage = function (zimg, w, h, imgw, imgh) {
 		$(menuid + '_waiting').style.display = 'none';
 		$(menuid + '_zoomlayer').style.display = '';
-		$(menuid + '_img').style.width = 'auto';
-		$(menuid + '_img').style.height = 'auto';
 		$(menuid).style.width = (w < 300 ? 320 : w + 20) + 'px';
 		mheight = h + 63;
 		menu.style.height = mheight + 'px';
 		$(menuid + '_zoomlayer').style.height = (mheight < 120 ? 120 : mheight) + 'px';
-		$(menuid + '_img').innerHTML = '<img id="' + zoomid + '" w="' + imgw + '" h="' + imgh + '">' + imgtitle;
+
+		var imgContainer = $(menuid + '_img');
+
+		imgContainer.style.width = w + 'px';
+		imgContainer.style.height = h + 'px';
+		imgContainer.style.position = 'relative';
+
+		$(menuid + '_img').innerHTML = '<img id="' + zoomid + '" w="' + imgw + '" h="' + imgh + '" style="transform-origin: center center; -webkit-transform-origin: center center; -moz-transform-origin: center center; -o-transform-origin: center center; -ms-transform-origin: center center;">' + imgtitle;
 		$(zoomid).src = zimg;
 		$(zoomid).width = w;
 		$(zoomid).height = h;
+
+		$(zoomid).style.transform = '';
+		$(zoomid).style.webkitTransform = '';
+		$(zoomid).style.mozTransform = '';
+		$(zoomid).style.oTransform = '';
+		$(zoomid).style.msTransform = '';
+		$(zoomid).style.position = 'relative';
+		$(zoomid).style.top = '0';
+		$(zoomid).style.left = '0';
+		$(zoomid).style.margin = '0';
+		$(zoomid).style.display = 'block';
+		
 		if($(menuid + '_imglink')) {
 			$(menuid + '_imglink').href = zimg;
 		}
@@ -456,18 +475,149 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 			ele.width = imgw;
 			ele.height = imgh;
 		}
-		menu.style.width = (parseInt(ele.width < 300 ? 300 : parseInt(ele.width)) + 20) + 'px';
-		var mheight = (parseInt(ele.height) + 50);
+		var currentRotate = parseInt(ele.getAttribute('rotate') || 0);
+		var containerWidth, containerHeight;
+		if(currentRotate % 180 === 0) {
+			containerWidth = ele.width;
+			containerHeight = ele.height;
+		} else {
+			containerWidth = ele.height;
+			containerHeight = ele.width;
+		}
+
+		menu.style.width = (containerWidth < 300 ? 320 : containerWidth + 20) + 'px';
+		var mheight = containerHeight + 50;
 		menu.style.height = mheight + 'px';
 		$(menuid + '_zoomlayer').style.height = (mheight < 120 ? 120 : mheight) + 'px';
-		adjustpn(ele.height);
+
+		ele.style.position = 'relative';
+		ele.style.margin = '0';
+		ele.style.display = 'block';
+
+		if(currentRotate % 180 !== 0) {
+			var offsetX = (containerWidth - ele.width) / 2;
+			var offsetY = (containerHeight - ele.height) / 2;
+			ele.style.left = offsetX + 'px';
+			ele.style.top = offsetY + 'px';
+		} else {
+			ele.style.left = '0';
+			ele.style.top = '0';
+		}
+		
+		adjustpn(containerHeight);
 		doane(e);
+	};
+	var roate = function(e, a) {
+		var ele = $(zoomid);
+		if(!ele) {
+			return;
+		}
+		var imgw = ele.getAttribute('w');
+		var imgh = ele.getAttribute('h');
+
+		var currentRotate = ele.getAttribute('rotate') || 0;
+		currentRotate = parseInt(currentRotate);
+
+		var newRotate = a === 1 ? currentRotate + 90 : currentRotate - 90;
+		if(newRotate >= 360) newRotate = 0;
+		if(newRotate < 0) newRotate = 270;
+
+		ele.setAttribute('rotate', newRotate);
+
+		var displayWidth = ele.width;
+		var displayHeight = ele.height;
+
+		var transformOrigin = 'center center';
+		if(BROWSER.ie && BROWSER.ie < 9) {
+			var rotationMatrix = getRotationMatrix(newRotate);
+			ele.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(' +
+			    'M11=' + rotationMatrix.m11 + ', M12=' + rotationMatrix.m12 +
+			    ', M21=' + rotationMatrix.m21 + ', M22=' + rotationMatrix.m22 +
+			    ', SizingMethod="auto expand")';
+			repositionElementForIE(ele, newRotate, imgw, imgh, displayWidth, displayHeight);
+		} else {
+			ele.style.transformOrigin = transformOrigin;
+			ele.style.webkitTransformOrigin = transformOrigin;
+			ele.style.mozTransformOrigin = transformOrigin;
+			ele.style.oTransformOrigin = transformOrigin;
+			ele.style.msTransformOrigin = transformOrigin;
+
+			ele.style.transform = 'rotate(' + newRotate + 'deg)';
+			ele.style.webkitTransform = 'rotate(' + newRotate + 'deg)';
+			ele.style.mozTransform = 'rotate(' + newRotate + 'deg)';
+			ele.style.oTransform = 'rotate(' + newRotate + 'deg)';
+			ele.style.msTransform = 'rotate(' + newRotate + 'deg)';
+		}
+
+		adjustMenuSize(ele, newRotate, displayWidth, displayHeight);
+		doane(e);
+	};
+	var getRotationMatrix = function(degrees) {
+		var rad = degrees * Math.PI / 180;
+		return {
+			m11: Math.cos(rad),
+			m12: -Math.sin(rad),
+			m21: Math.sin(rad),
+			m22: Math.cos(rad)
+		};
+	};
+	var repositionElementForIE = function(ele, rotate, originalWidth, originalHeight, displayWidth, displayHeight) {
+		ele.style.width = displayWidth + 'px';
+		ele.style.height = displayHeight + 'px';
+
+		setMenuPosition('', menuid, '00');
+	};
+
+
+	var adjustMenuSize = function(ele, rotate, displayWidth, displayHeight) {
+		var containerWidth, containerHeight;
+
+		if(rotate % 180 === 0) {
+			containerWidth = displayWidth;
+			containerHeight = displayHeight;
+		} else {
+			containerWidth = displayHeight;
+			containerHeight = displayWidth;
+		}
+
+		menu.style.width = (containerWidth < 300 ? 320 : containerWidth + 20) + 'px';
+		var mheight = containerHeight + 63;
+		menu.style.height = mheight + 'px';
+		$(menuid + '_zoomlayer').style.height = (mheight < 120 ? 120 : mheight) + 'px';
+
+		var imgContainer = $(menuid + '_img');
+
+		imgContainer.style.width = containerWidth + 'px';
+		imgContainer.style.height = containerHeight + 'px';
+		imgContainer.style.position = 'relative';
+		imgContainer.style.textAlign = '';
+		imgContainer.style.lineHeight = '';
+
+		ele.style.position = 'relative';
+		ele.style.margin = '0';
+		ele.style.display = 'block';
+		ele.style.left = '0';
+		ele.style.top = '0';
+
+		if(rotate % 180 !== 0) {
+			var offsetX = (containerWidth - displayWidth) / 2;
+			var offsetY = (containerHeight - displayHeight) / 2;
+			ele.style.left = offsetX + 'px';
+			ele.style.top = offsetY + 'px';
+		} else {
+			ele.style.left = '0';
+			ele.style.top = '0';
+		}
+
+		setMenuPosition('', menuid, '00');
+
+		adjustpn(containerHeight);
 	};
 	if(!menu && !pn) {
 		menu = document.createElement('div');
 		menu.id = menuid;
 		if(cover) {
-			menu.innerHTML = '<div class="zoominner" id="' + menuid + '_zoomlayer" style="display:none"><p><span class="y"><a id="' + menuid + '_imglink" class="imglink" target="_blank" title="' + $L('open_newwindow') + '">' + $L('open_newwindow') + '</a><a id="' + menuid + '_adjust" href="javascipt:;" class="imgadjust" title="' + $L('actual_size') + '">' + $L('actual_size') + '</a>' +
+			menu.innerHTML = '<div class="zoominner" id="' + menuid + '_zoomlayer" style="display:none"><p><span class="y"><a id="' + menuid + '_imglink" class="imglink" target="_blank" title="' + $L('open_newwindow') + '">' + $L('open_newwindow') + '</a><a id="' + menuid + '_roate" href="javascipt:;" class="imgroate" title="' + $L('img_roate') + '">' + $L('img_roate') + '</a><a id="' + menuid + '_adjust" href="javascipt:;" class="imgadjust" title="' + $L('actual_size') + '">' + $L('actual_size') + '</a>' +
 				'<a href="javascript:;" onclick="hideMenu()" class="imgclose" title="' + $L('close') + '">' + $L('close') + '</a></span>' + $L('mouse_wheel_resize') + '</p>' +
 				'<div class="zimg_p" id="' + menuid + '_picpage"></div><div class="hm" id="' + menuid + '_img"></div></div>';
 		} else {
@@ -481,6 +631,9 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		$('append_parent').appendChild(menu);
 		if($(menuid + '_adjust')) {
 			$(menuid + '_adjust').onclick = function(e) {adjust(e, 1)};
+		}
+		if($(menuid + '_roate')) {
+			$(menuid + '_roate').onclick = function(e) {roate(e, 1)};
 		}
 	}
 	showloading(zimg, pn);
