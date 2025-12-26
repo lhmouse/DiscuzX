@@ -33,7 +33,15 @@ function build_cache_smilies_js() {
 				$i = 0;
 				$pre = '';
 			}
-			if($size = @getimagesize(DISCUZ_ROOT.'./static/image/smiley/'.$type['directory'].'/'.$smiley['url'])) {
+			if($type['directory'] == ':emoji') {
+				$smileyid = $smiley['id'];
+				$return_data[$j] .= $pre.'[\''.$smileyid.'\', \''.$smiley['code'].'\']';
+				if(is_array($fastsmiley[$type['typeid']]) && in_array($smileyid, $fastsmiley[$type['typeid']])) {
+					$return_fast .= $fpre.'[\''.$type['typeid'].'\',\''.$j.'\',\''.$i.'\']';
+					$fpre = ',';
+				}
+				$pre = ',';
+			} elseif($size = @getimagesize(DISCUZ_ROOT.'./static/image/smiley/'.$type['directory'].'/'.$smiley['url'])) {
 				$smiley['code'] = str_replace('\'', '\\\'', $smiley['code']);
 				$smileyid = $smiley['id'];
 				$s = smthumb($size, $_G['setting']['smthumb']);

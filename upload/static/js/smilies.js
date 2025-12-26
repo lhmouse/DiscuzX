@@ -66,11 +66,16 @@ function smilies_onload(id, smcols, seditorkey) {
 				}
 				j = ++j > 3 ? 0 : j;
 				s = smilies_array[smilies_fast[i][0]][smilies_fast[i][1]][smilies_fast[i][2]];
-				smilieimg = STATICURL + 'image/smiley/' + smilies_type['_' + smilies_fast[i][0]][1] + '/' + s[2];
-				img[k] = new Image();
-				img[k].src = smilieimg;
-				smilies_fastdata += s ? '<td onmouseover="smilies_preview(\'' + seditorkey + '\', \'fastsmiliesdiv\', this, ' + s[5] + ')" onmouseout="$(\'smilies_preview\').style.display = \'none\'" onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')': 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1].replace(/'/, '\\\'') + '\')') +
-					'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><img id="smilie_' + s[0] + '" width="' + s[3] +'" height="' + s[4] +'" src="' + smilieimg + '" alt="' + s[1] + '" />' : '<td>';
+				if(smilies_type['_' + smilies_fast[i][0]][1] == ':emoji') {
+					smilies_fastdata += s ? '<td onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')' : 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1] + '\')') +
+					'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><span id="smilie_' + s[0] + '">' + s[1] + '</span>' : '<td>';
+				} else {
+					smilieimg = STATICURL + 'image/smiley/' + smilies_type['_' + smilies_fast[i][0]][1] + '/' + s[2];
+					img[k] = new Image();
+					img[k].src = smilieimg;
+					smilies_fastdata += s ? '<td onmouseover="smilies_preview(\'' + seditorkey + '\', \'fastsmiliesdiv\', this, ' + s[5] + ')" onmouseout="$(\'smilies_preview\').style.display = \'none\'" onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')' : 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1].replace(/'/, '\\\'') + '\')') +
+						'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><img id="smilie_' + s[0] + '" width="' + s[3] + '" height="' + s[4] + '" src="' + smilieimg + '" alt="' + s[1] + '" />' : '<td>';
+				}
 			}
 			$('fastsmilies').innerHTML = '<table cellspacing="0" cellpadding="0"><tr>' + smilies_fastdata + '</tr></table>';
 		}
@@ -91,10 +96,15 @@ function smilies_switch(id, smcols, type, page, seditorkey) {
 		}
 		s = smilies_array[type][page][i];
 		smilieimg = STATICURL + 'image/smiley/' + smilies_type['_' + type][1] + '/' + s[2];
-		img[k] = new Image();
-		img[k].src = smilieimg;
-		smiliesdata += s && s[0] ? '<td onmouseover="smilies_preview(\'' + seditorkey + '\', \'' + id + '\', this, ' + s[5] + ')" onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')': 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1].replace(/'/, '\\\'') + '\')') +
-			'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><img id="smilie_' + s[0] + '" width="' + s[3] +'" height="' + s[4] +'" src="' + smilieimg + '" alt="' + s[1] + '" />' : '<td>';
+		if(smilies_type['_' + type][1] == ':emoji') {
+			smiliesdata += s && s[0] ? '<td onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')' : 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1] + '\')') +
+			'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><span id="smilie_' + s[0] + '">' + s[1] + '</span>' : '<td>';
+		} else {
+			img[k] = new Image();
+			img[k].src = smilieimg;
+			smiliesdata += s && s[0] ? '<td onmouseover="smilies_preview(\'' + seditorkey + '\', \'' + id + '\', this, ' + s[5] + ')" onclick="' + (typeof wysiwyg != 'undefined' ? 'insertSmiley(' + s[0] + ')' : 'seditor_insertunit(\'' + seditorkey + '\', \'' + s[1].replace(/'/, '\\\'') + '\')') +
+				'" id="' + seditorkey + 'smilie_' + s[0] + '_td"><img id="smilie_' + s[0] + '" width="' + s[3] + '" height="' + s[4] + '" src="' + smilieimg + '" alt="' + s[1] + '" />' : '<td>';
+		}
 		j++;k++;
 	}
 	smiliesdata += '</table>';

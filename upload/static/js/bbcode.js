@@ -65,6 +65,9 @@ function bbcode2html(str) {
 			for(var typeid in smilies_array) {
 				for(var page in smilies_array[typeid]) {
 					for(var i in smilies_array[typeid][page]) {
+							if(smilies_type['_' + typeid][1] == ':emoji') {
+								continue;
+							}
 						re = new RegExp(preg_quote(smilies_array[typeid][page][i][1]), "g");
 						str = str.replace(re, '<img src="' + STATICURL + 'image/smiley/' + smilies_type['_' + typeid][1] + '/' + smilies_array[typeid][page][i][2] + '" border="0" smilieid="' + smilies_array[typeid][page][i][0] + '" alt="' + smilies_array[typeid][page][i][1] + '" />');
 					}
@@ -243,7 +246,7 @@ function ptag(options, text, tagname) {
 	if(lineHeight === null && textIndent === null) {
 		return '[align=' + align + ']' + (style ? '<span style="' + style + '">' : '') + text + (style ? '</span>' : '') + '[/align]';
 	} else {
-		return '[p=' + lineHeight + ', ' + textIndent + ', ' + align + ']' + (style ? '<span style="' + style + '">' : '') + text + (style ? '</span>' : '') + '[/p]';
+		return '[align=' + lineHeight + ', ' + textIndent + ', ' + align + ']' + (style ? '<span style="' + style + '">' : '') + text + (style ? '</span>' : '') + '[/align]';
 	}
 }
 

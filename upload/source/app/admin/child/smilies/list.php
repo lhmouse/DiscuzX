@@ -27,17 +27,43 @@ if(!submitcheck('smiliessubmit')) {
 
 	$smtypes = 0;
 	$dirfilter = [];
-	foreach(table_forum_imagetype::t()->fetch_all_by_type('smiley') as $type) {
+	$emojiExists = false;
+	$smilies = table_forum_imagetype::t()->fetch_all_by_type('smiley');
+	foreach($smilies as $smiley) {
+		if($smiley['directory'] == ':emoji') {
+			$emojiExists = true;
+		}
+	}
+	if(!$emojiExists) {
+		require_once DISCUZ_ROOT.'./source/data/admincp/emoji.php';
+		if(!empty($defaultEmoji)) {
+			$id = table_forum_imagetype::t()->insert($row = [
+				'available' => 0,
+				'name' => 'Emoji',
+				'type' => 'smiley',
+				'directory' => ':emoji',
+				'displayorder' => -1,
+			], true);
+			$row['typeid'] = $id;
+			$i = $_GET['lastDisplayorder'] ?? 0;
+			foreach(mb_str_split($defaultEmoji) as $code) {
+				table_common_smiley::t()->insert(['type' => 'smiley', 'typeid' => $id, 'displayorder' => ++$i, 'code' => $code, 'url' => '']);
+			}
+			array_unshift($smilies, $row);
+		}
+	}
+
+	foreach($smilies as $type) {
 		$smiliesnum = table_common_smiley::t()->count_by_type_typeid('smiley', $type['typeid']);
 		showtablerow('', ['class="td25"', 'class="td28"'], [
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$type['typeid']}\" ".($smiliesnum ? 'disabled' : '').'>',
 			"<input type=\"text\" class=\"txt\" name=\"displayordernew[{$type['typeid']}]\" value=\"{$type['displayorder']}\" size=\"2\">",
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"availablenew[{$type['typeid']}]\" value=\"1\" ".($type['available'] ? 'checked' : '').'>',
 			"<input type=\"text\" class=\"txt\" name=\"namenew[{$type['typeid']}]\" value=\"{$type['name']}\" size=\"15\">",
-			"./static/image/smiley/{$type['directory']}",
+			$type['directory'] != ':emoji' ? "./static/image/smiley/{$type['directory']}" : '',
 			"$smiliesnum<input type=\"hidden\" name=\"smiliesnum[{$type['typeid']}]\" value=\"$smiliesnum\" />",
-			"<a href=\"".ADMINSCRIPT."?action=smilies&operation=update&id={$type['typeid']}\" class=\"act\" onclick=\"return confirm('{$lang['smilies_update_confirm1']}{$type['directory']}{$lang['smilies_update_confirm2']}{$type['name']}{$lang['smilies_update_confirm3']}')\">{$lang['smilies_update']}</a>&nbsp;".
-			"<a href=\"".ADMINSCRIPT."?action=smilies&operation=export&id={$type['typeid']}\" class=\"act\">{$lang['export']}</a>&nbsp;".
+			($type['directory'] != ':emoji' ? "<a href=\"".ADMINSCRIPT."?action=smilies&operation=update&id={$type['typeid']}\" class=\"act\" onclick=\"return confirm('{$lang['smilies_update_confirm1']}{$type['directory']}{$lang['smilies_update_confirm2']}{$type['name']}{$lang['smilies_update_confirm3']}')\">{$lang['smilies_update']}</a>&nbsp;".
+			"<a href=\"".ADMINSCRIPT."?action=smilies&operation=export&id={$type['typeid']}\" class=\"act\">{$lang['export']}</a>&nbsp;" : '').
 			"<a href=\"".ADMINSCRIPT."?action=smilies&operation=edit&id={$type['typeid']}\" class=\"act\">{$lang['detail']}</a>"
 		]);
 		$dirfilter[] = $type['directory'];

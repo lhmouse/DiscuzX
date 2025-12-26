@@ -15,6 +15,9 @@ function build_cache_smilies() {
 
 	$data = ['searcharray' => [], 'replacearray' => [], 'typearray' => []];
 	foreach(table_common_smiley::t()->fetch_all_cache() as $smiley) {
+		if(empty($smiley['url'])) {
+			continue;
+		}
 		$data['searcharray'][$smiley['id']] = '/'.preg_quote(dhtmlspecialchars($smiley['code']), '/').'/';
 		$data['replacearray'][$smiley['id']] = $smiley['url'];
 		$data['typearray'][$smiley['id']] = $smiley['typeid'];
