@@ -89,16 +89,20 @@ if($count) {
 		require_once libfile('function/discuzcode');
 		$value['message'] = preg_replace_callback('/http[s]?:\/\/[a-zA-Z0-9\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+/', function($matches) {
 			$url = $matches[0];
-			// 尝试解析媒体链接
-			if($media = parsemedia('x,500,373', $url)) {
+			// 移除URL末尾的HTML实体（如&nbsp;）
+			$url = preg_replace('/(&nbsp;)+$/', '', $url);
+			// 也处理可能存在的空格后跟HTML实体的情况
+			$url = trim($url);
+			//var_dump(parseflv($url));
+			// 检查是否为支持的媒体域名，只对支持的域名进行解析
+			if(isVideoUrl($url) || parseflv($url)) {
 				// 媒体内容单独一行显示
+				$media = parsemedia('x,500,373', $url);
 				return '<br />'.$media.'<br />';
-			} elseif($audio = parseaudio($url)) {
+			} elseif(isAudioUrl($url)) {
 				// 音频内容单独一行显示
+				$audio = parseaudio($url);
 				return '<br />'.$audio.'<br />';
-			} elseif($flv = parseflv($url, 500, 373)) {
-				// 视频内容单独一行显示
-				return '<br />'.$flv.'<br />';
 			} else {
 				// 普通链接，转换为可点击链接
 				return '<a href="'.dhtmlspecialchars($url).'" target="_blank" rel="nofollow">'.dhtmlspecialchars($url).'</a>';

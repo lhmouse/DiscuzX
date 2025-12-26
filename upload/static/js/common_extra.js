@@ -494,15 +494,10 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		ele.style.margin = '0';
 		ele.style.display = 'block';
 
-		if(currentRotate % 180 !== 0) {
-			var offsetX = (containerWidth - ele.width) / 2;
-			var offsetY = (containerHeight - ele.height) / 2;
-			ele.style.left = offsetX + 'px';
-			ele.style.top = offsetY + 'px';
-		} else {
-			ele.style.left = '0';
-			ele.style.top = '0';
-		}
+		var offsetX = (containerWidth - ele.width) / 2;
+		var offsetY = (containerHeight - ele.height) / 2;
+		ele.style.left = offsetX + 'px';
+		ele.style.top = offsetY + 'px';
 		
 		adjustpn(containerHeight);
 		doane(e);
@@ -599,15 +594,10 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		ele.style.left = '0';
 		ele.style.top = '0';
 
-		if(rotate % 180 !== 0) {
-			var offsetX = (containerWidth - displayWidth) / 2;
-			var offsetY = (containerHeight - displayHeight) / 2;
-			ele.style.left = offsetX + 'px';
-			ele.style.top = offsetY + 'px';
-		} else {
-			ele.style.left = '0';
-			ele.style.top = '0';
-		}
+		var offsetX = (containerWidth - displayWidth) / 2;
+		var offsetY = (containerHeight - displayHeight) / 2;
+		ele.style.left = offsetX + 'px';
+		ele.style.top = offsetY + 'px';
 
 		setMenuPosition('', menuid, '00');
 

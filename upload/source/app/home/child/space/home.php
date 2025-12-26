@@ -13,6 +13,7 @@ if(!defined('IN_DISCUZ')) {
 if(!$_G['uid'] && $_G['setting']['privacy']['view']['home']) {
 	showmessage('home_no_privilege', '', [], ['login' => true]);
 }
+
 require_once libfile('function/feed');
 
 if(empty($_G['setting']['feedhotday'])) {

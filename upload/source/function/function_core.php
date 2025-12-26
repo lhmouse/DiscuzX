@@ -3071,3 +3071,25 @@ function jsonExit($err = 0, $key = 'errcode') {
 function jsonMsg($return) {
 	exit(json_encode($return));
 }
+
+// 检查 URL 是否为视频文件
+function isVideoUrl($url) {
+	$video_extensions = ['rm', 'rmvb', 'flv', 'swf', 'asf', 'asx', 'wmv', 'avi', 'mpg', 'mpeg', 'mp4', 'm4v', '3gp', 'ogv', 'webm', 'mov', 'mkv'];
+	$url_parts = parse_url($url);
+	if (isset($url_parts['path'])) {
+		$extension = strtolower(pathinfo($url_parts['path'], PATHINFO_EXTENSION));
+		return in_array($extension, $video_extensions);
+	}
+	return false;
+}
+
+// 检查 URL 是否为音频文件
+function isAudioUrl($url) {
+	$audio_extensions = ['aac', 'flac', 'ogg', 'mp3', 'm4a', 'weba', 'wma', 'mid', 'wav', 'ra', 'ram'];
+	$url_parts = parse_url($url);
+	if (isset($url_parts['path'])) {
+		$extension = strtolower(pathinfo($url_parts['path'], PATHINFO_EXTENSION));
+		return in_array($extension, $audio_extensions);
+	}
+	return false;
+}

@@ -60,7 +60,7 @@ class bbcode {
 		}
 
 		@$message = str_replace($this->search_str, $this->replace_str, $message);
-		return nl2br(str_replace(["\t", '   ', '  '], ['&nbsp; &nbsp; &nbsp; &nbsp; ', '&nbsp; &nbsp;', '&nbsp;&nbsp;'], $message));
+		return nl2br(str_replace(["\t", '   ', '  '], [' &nbsp; &nbsp; &nbsp; &nbsp; ', ' &nbsp;&nbsp;', ' &nbsp;'], $message));
 	}
 
 	function bbcode2html_callback_bb_img_1($matches) {
