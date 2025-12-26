@@ -1361,6 +1361,7 @@ i.pstatus { display: block; margin-bottom: -30px; font-size: 12px; text-align: c
 				.zoominner p a:hover { color: #4497CC; text-decoration: none; }
 				.zoominner p a:before { font-family: dzicon; content: "\f139"; font-size: 18px; }
 				.zoominner p a.imgadjust:before { content: "\f13a"; }
+				.zoominner p a.imgroate:before { content: "\f10b"; }
 				.zoominner p a.imgclose:before { content: "\f116"; }
 
 .zimg_c { position: relative; }
