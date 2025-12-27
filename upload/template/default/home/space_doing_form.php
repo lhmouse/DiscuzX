@@ -69,6 +69,7 @@
 			<div class="moodfm_div">
 				<div class="specialpost s_clear">
 					<!--{if !$type}-->
+					<a href="javascript:;" id="moodfm_emoji" onclick="showFace('moodfm_emoji', 'message', msgstr); return false;"><i class="fico-emojifill fic8 fc-s fnmr vm" ></i></a>
 					<a href="javascript:;" id="moodfm_pic"><i class="fico-image fic8 fc-s fnmr vm" ></i></a>
 					<!--{/if}-->
 					{hook/space_doing_toolbar}
@@ -97,16 +98,14 @@
 	var mpimgmax_low = mpimgmax - 1;
 	function listenup() {
 		if (typeof FileReader === 'undefined') {
-
 		} else {
 			var moodPicBtn = document.getElementById('moodfm_pic');
 			var fileInput = document.getElementById('multipic_sel');
 			var multiPicList = document.getElementById('MultiPicList');
-			
 			if (moodPicBtn && fileInput) {
 				moodPicBtn.addEventListener('click', function(e) {
 					e.preventDefault();
-					fileInput.click(); 
+					fileInput.click();
 				});
 			}
 			document.getElementById('multipic_sel').addEventListener('change', function(event) {
@@ -169,13 +168,13 @@
 		console.log(oldAid);
 		MultiPicUploaded--;
 		obj.parentNode.remove();
-		
+
 		if (MultiPicUploaded < mpimgmax) {
 			document.querySelector('.image-upload-mp').style.display = '';
 		}
 		if (MultiPicUploaded <= 0) {
 			document.getElementById('MultiPicList').style.display = 'none';
-			MultiPicUploaded = 0; 
+			MultiPicUploaded = 0;
 		}
 	}
 

@@ -56,8 +56,8 @@ function altStyle(obj, disabled) {
 	lis = obj.getElementsByTagName('li');
 	for (i = 0; i < lis.length; i++) {
 		lis[i].onclick = function (e) {
-			o = BROWSER.ie ? event.srcElement.tagName : e.target.tagName;
-			altKey = BROWSER.ie ? window.event.altKey : e.altKey;
+			o = e.target.tagName;
+			altKey = e.altKey;
 			if (cc) {
 				return;
 			}
@@ -68,7 +68,7 @@ function altStyle(obj, disabled) {
 					altStyleClear(this);
 				}
 
-				if (BROWSER.ie || o != 'INPUT' && input.onclick) {
+				if (o != 'INPUT' && input.onclick) {
 					input.click();
 				}
 				if (this.className != 'checked') {
@@ -137,9 +137,7 @@ function deleterow(obj) {
 function dropmenu(obj) {
 	showMenu({'ctrlid': obj.id, 'menuid': obj.id + 'child', 'evt': 'mouseover'});
 	$(obj.id + 'child').style.top = (parseInt($(obj.id + 'child').style.top) - Math.max(document.body.scrollTop, document.documentElement.scrollTop)) + 'px';
-	if (BROWSER.ie > 6 || !BROWSER.ie) {
-		$(obj.id + 'child').style.left = (parseInt($(obj.id + 'child').style.left) - Math.max(document.body.scrollLeft, document.documentElement.scrollLeft)) + 'px';
-	}
+	$(obj.id + 'child').style.left = (parseInt($(obj.id + 'child').style.left) - Math.max(document.body.scrollLeft, document.documentElement.scrollLeft)) + 'px';
 }
 
 function insertunit(obj, text, textend) {
@@ -186,7 +184,7 @@ function textareasize(obj, op) {
 			obj.style.resize = 'none';
 		} else {
 			obj.parentNode.style.height = obj.parentNode.offsetHeight + 'px';
-			obj.style.width = BROWSER.ie > 6 || !BROWSER.ie ? '90%' : '600px';
+			obj.style.width = '90%';
 			obj.style.position = 'absolute';
 			obj.style.resize = 'vertical';
 		}
@@ -227,7 +225,7 @@ function entersubmit(e, name) {
 	if (e.keyCode != 13) {
 		return;
 	}
-	var tag = BROWSER.ie ? e.srcElement.tagName : e.target.tagName;
+	var tag = e.target.tagName;
 	if (tag != 'TEXTAREA') {
 		doane(e);
 		if ($('submit_' + name).offsetWidth) {
@@ -390,13 +388,11 @@ function floatbottom(id) {
 	$(id).style.position = 'fixed';
 	$(id).style.bottom = '0';
 	$(id).parentNode.style.paddingBottom = '15px';
-	if (!BROWSER.ie || BROWSER.ie && BROWSER.ie > 6) {
-		window.onscroll = function () {
-			var scrollLeft = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
-			$(id).style.marginLeft = '-' + scrollLeft + 'px';
-		};
-		$(id).style.display = '';
-	}
+	window.onscroll = function () {
+		var scrollLeft = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+		$(id).style.marginLeft = '-' + scrollLeft + 'px';
+	};
+	$(id).style.display = '';
 }
 
 function multisubmit(id, msg, url) {

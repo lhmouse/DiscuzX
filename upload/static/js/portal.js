@@ -116,7 +116,7 @@ function insertContent(target, text) {
 function searchblock(from) {
 	var value = $('searchkey').value;
 	var targettplname = $('targettplname').value;
-	value = BROWSER.ie && document.charset == 'utf-8' ? encodeURIComponent(value) : (value ? value.replace(/#/g,'%23') : '');
+	value = value ? value.replace(/#/g,'%23') : '';
 	var url = 'portal.php?mod=portalcp&ac=portalblock&searchkey='+value+'&from='+from;
 	url += targettplname != '' ? '&targettplname='+targettplname+'&type=page' : '&type=block';
 	reloadselection(url);

@@ -135,7 +135,7 @@ function trim(str) {
 }
 
 function strlen(str) {
-	return (BROWSER.ie && str.indexOf('\n') != -1) ? str.replace(/\r?\n/g, '_').length : str.length;
+	return str.length;
 }
 
 function mb_strlen(str) {
@@ -841,10 +841,7 @@ function showMenu(v) {
 	if (pos != '*') {
 		setMenuPosition(showid, menuid, pos);
 	}
-	if (BROWSER.ie && BROWSER.ie < 7 && winhandlekey && $('fwin_' + winhandlekey)) {
-		$(menuid).style.left = (parseInt($(menuid).style.left) - parseInt($('fwin_' + winhandlekey).style.left)) + 'px';
-		$(menuid).style.top = (parseInt($(menuid).style.top) - parseInt($('fwin_' + winhandlekey).style.top)) + 'px';
-	}
+
 	if (maxh && menuObj.scrollHeight > maxh) {
 		menuObj.style.height = maxh + 'px';
 		if (BROWSER.opera) {
@@ -1060,19 +1057,12 @@ function setMenuPosition(showid, menuid, pos) {
 		}
 	}
 	if (direction == 0 || menuObj.scrolly) {
-		if (BROWSER.ie && BROWSER.ie < 7) {
-			if (direction == 0) mt += scrollTop;
-		} else {
-			if (menuObj.scrolly) mt -= scrollTop;
-			menuObj.style.position = 'fixed';
-		}
+		if (menuObj.scrolly) mt -= scrollTop;
+		menuObj.style.position = 'fixed';
 	}
 	if (ml) menuObj.style.left = ml + 'px';
 	if (mt) menuObj.style.top = mt + 'px';
-	if (direction == 0 && BROWSER.ie && !document.documentElement.clientHeight) {
-		menuObj.style.position = 'absolute';
-		menuObj.style.top = (document.body.clientHeight - menuObj.clientHeight) / 2 + 'px';
-	}
+
 	if (menuObj.style.clip && !BROWSER.opera) {
 		menuObj.style.clip = 'rect(auto, auto, auto, auto)';
 	}
@@ -1234,9 +1224,6 @@ function showDialog(msg, mode, t, func, cover, funccancel, leftmsg, confirmtxt, 
 	menuObj.id = menuid;
 	$('append_parent').appendChild(menuObj);
 	var hidedom = '';
-	if (!BROWSER.ie) {
-		hidedom = '<style type="text/css">object{visibility:hidden;}</style>';
-	}
 	var s = hidedom + '<table cellpadding="0" cellspacing="0" class="fwin"><tr><td class="t_l"></td><td class="t_c"></td><td class="t_r"></td></tr><tr><td class="m_l">&nbsp;&nbsp;</td><td class="m_c"><h3 class="flb"><em>';
 	s += t ? t : $L('notice');
 	s += '</em><span><a href="javascript:;" id="fwin_dialog_close" class="flbc" onclick="hideMenu(\'' + menuid + '\', \'dialog\')" title="' + $L('close') + '">' + $L('close') + '</a></span></h3>';
@@ -1289,7 +1276,7 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 	var hidedom = '';
 
 	if (disallowfloat && disallowfloat.indexOf(k) != -1) {
-		if (BROWSER.ie) url += (url.indexOf('?') != -1 ? '&' : '?') + 'referer=' + escape(location.href);
+
 		location.href = url;
 		doane();
 		return;
@@ -1300,9 +1287,7 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 			menuObj.url = url;
 			url += (url.search(/\?/) > 0 ? '&' : '?') + 'infloat=yes&handlekey=' + k;
 			url += cache == -1 ? '&t=' + (+new Date()) : '';
-			if (BROWSER.ie && url.indexOf('referer=') < 0) {
-				url = url + '&referer=' + encodeURIComponent(location);
-			}
+
 			ajaxget(url, 'fwin_content_' + k, null, '', '', function () {
 				initMenu();
 				show();
@@ -1314,11 +1299,9 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 				show();
 			});
 		}
-		if (parseInt(BROWSER.ie) != 6) {
-			loadingst = setTimeout(function () {
-				showDialog('', 'info', '<div class="loadicon"></div> ' + $L('waiting'))
-			}, 500);
-		}
+		loadingst = setTimeout(function () {
+			showDialog('', 'info', '<div class="loadicon"></div> ' + $L('waiting'))
+		}, 500);
 	};
 	var initMenu = function () {
 		clearTimeout(loadingst);
@@ -1360,9 +1343,6 @@ function showWindow(k, url, mode, cache, menuv, cover) {
 		menuObj.style.display = 'none';
 		$('append_parent').appendChild(menuObj);
 		evt = ' style="cursor:move" onmousedown="dragMenu($(\'' + menuid + '\'), event, 1)" ondblclick="hideWindow(\'' + k + '\')"';
-		if (!BROWSER.ie) {
-			hidedom = '<style type="text/css">object{visibility:hidden;}</style>';
-		}
 		menuObj.innerHTML = hidedom + '<table cellpadding="0" cellspacing="0" class="fwin"><tr><td class="t_l"></td><td class="t_c"' + evt + '></td><td class="t_r"></td></tr><tr><td class="m_l"' + evt + ')">&nbsp;&nbsp;</td><td class="m_c" id="fwin_content_' + k + '">'
 		    + '</td><td class="m_r"' + evt + '"></td></tr><tr><td class="b_l"></td><td class="b_c"' + evt + '></td><td class="b_r"></td></tr></table>';
 		if (mode == 'html') {
@@ -1406,23 +1386,11 @@ function hideWindow(k, all, clear) {
 function AC_FL_RunContent() {
 	var str = '';
 	var ret = AC_GetArgs(arguments, "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000", "application/x-shockwave-flash");
-	if (BROWSER.ie && !BROWSER.opera) {
-		str += '<object ';
-		for (var i in ret.objAttrs) {
-			str += i + '="' + ret.objAttrs[i] + '" ';
-		}
-		str += '>';
-		for (var i in ret.params) {
-			str += '<param name="' + i + '" value="' + ret.params[i] + '" /> ';
-		}
-		str += '</object>';
-	} else {
 		str += '<embed ';
 		for (var i in ret.embedAttrs) {
 			str += i + '="' + ret.embedAttrs[i] + '" ';
 		}
 		str += '></embed>';
-	}
 	return str;
 }
 
@@ -1527,7 +1495,6 @@ function simulateSelect(selectId, widthvalue) {
 	var menuObj = document.createElement('div');
 	var ul = document.createElement('ul');
 	var handleKeyDown = function (e) {
-		e = BROWSER.ie ? event : e;
 		if (e.keyCode == 40 || e.keyCode == 38) doane(e);
 	};
 	var selectwidth = (selectObj.getAttribute('width', i) ? selectObj.getAttribute('width', i) : widthvalue) + 'px';
@@ -1732,14 +1699,6 @@ function saveUserdata(name, data) {
 			sessionStorage.setItem('Discuz_' + name, data);
 		}
 	} catch (e) {
-		if (BROWSER.ie) {
-			if (data.length < 54889) {
-				with (document.documentElement) {
-					setAttribute("value", data);
-					save('Discuz_' + name);
-				}
-			}
-		}
 	}
 	setcookie('clearUserdata', '', -1);
 }
@@ -1749,11 +1708,6 @@ function loadUserdata(name) {
 		return localStorage.getItem('Discuz_' + name);
 	} else if (window.sessionStorage) {
 		return sessionStorage.getItem('Discuz_' + name);
-	} else if (BROWSER.ie) {
-		with (document.documentElement) {
-			load('Discuz_' + name);
-			return getAttribute("value");
-		}
 	}
 }
 
@@ -1828,15 +1782,6 @@ function setCopy(text, msg) {
 	if (success) {
 		if (msg) {
 			showPrompt(null, null, '<span>' + msg + '</span>', 1500);
-		}
-	} else if (BROWSER.ie) {
-		var r = clipboardData.setData('Text', text);
-		if (r) {
-			if (msg) {
-				showPrompt(null, null, '<span>' + msg + '</span>', 1500);
-			}
-		} else {
-			showDialog('<div class="c"><div style="width: 200px; text-align: center;">' + $L('copy_failed') + '</div></div>', 'alert');
 		}
 	} else {
 		var msg = '<div class="c"><div style="width: 200px; text-align: center; text-decoration:underline;">' + $L('copy_to_clipboard') + '</div>' +
@@ -1975,9 +1920,7 @@ function showForummenu(fid) {
 
 function cardInit() {
 	var cardShow = function (obj) {
-		if (BROWSER.ie && BROWSER.ie < 7 && obj.href.indexOf('username') != -1) {
-			return;
-		}
+
 		pos = obj.getAttribute('c') == '1' ? '43' : obj.getAttribute('c');
 		USERCARDST = setTimeout(function () {
 			ajaxmenu(obj, 500, 1, 2, pos, null, 'p_pop card');
@@ -2109,9 +2052,7 @@ function showTopLink() {
 			scrolltop.style.right = 0;
 		}
 
-		if (BROWSER.ie && BROWSER.ie < 7) {
-			scrolltop.style.top = viewPortHeight - scrollHeight - 150 + 'px';
-		}
+
 		if (scrollHeight < -100) {
 			scrolltop.style.visibility = 'visible';
 		} else {
@@ -2141,13 +2082,8 @@ function addFavorite(url, title) {
 }
 
 function setHomepage(sURL) {
-	if (BROWSER.ie) {
-		document.body.style.behavior = 'url(#default#homepage)';
-		document.body.setHomePage(sURL);
-	} else {
-		showDialog($L('noie_notice_sethome'), 'notice');
-		doane();
-	}
+	showDialog($L('noie_notice_sethome'), 'notice');
+	doane();
 }
 
 function setShortcut() {
@@ -2489,10 +2425,7 @@ if (BROWSER.safari || BROWSER.rv) {
 BROWSER.opera = BROWSER.opera ? opera.version() : 0;
 
 HTMLNODE = document.getElementsByTagName('head')[0].parentNode;
-if (BROWSER.ie || BROWSER.trident) {
-	BROWSER.iemode = parseInt(typeof document.documentMode != 'undefined' ? document.documentMode : BROWSER.ie);
-	HTMLNODE.className = (BROWSER.iemode < 9 ? 'ie_all ' : '') + 'ie' + BROWSER.iemode;
-}
+
 
 var CSSLOADED = [];
 var JSLOADED = [];
@@ -2596,9 +2529,7 @@ if (typeof IN_ADMINCP == 'undefined') {
 	}
 }
 
-if (BROWSER.ie) {
-	document.documentElement.addBehavior("#default#userdata");
-}
+
 
 document.addEventListener('DOMContentLoaded', loadAvatar);
 document.addEventListener('DOMContentLoaded', initZoom);

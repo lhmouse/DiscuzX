@@ -1,13 +1,6 @@
 function drawstatchart(url, height, titleOption, obj) {
 	obj = obj || $('statchart');
-	if (BROWSER.ie && BROWSER.ie < 9) {
-		obj.innerHTML = AC_FL_RunContent(
-			'width', '100%', 'height', '300',
-			'src', STATICURL + 'image/common/stat.swf?path=&settings_file=data/stat_setting.xml&data_file=' + encodeURIComponent(url),
-			'quality', 'high', 'wmode', 'transparent'
-		);
-		return;
-	}
+
 
 	height = height || 400;
 

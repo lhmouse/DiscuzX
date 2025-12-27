@@ -72,7 +72,7 @@ function checkAll(form, name) {
 function cnCode(str) {
 	str = str.replace(/<\/?[^>]+>|\[\/?.+?\]|"/ig, "");
 	str = str.replace(/\s{2,}/ig, ' ');
-	return BROWSER.ie && document.charset == 'utf-8' ? encodeURIComponent(str) : str;
+	return str;
 }
 
 function getExt(path) {
@@ -406,36 +406,100 @@ function showBlock(cid, oid) {
 
 function resizeTx(obj){
 	var oid = obj.id + '_limit';
-	if(!BROWSER.ie) obj.style.height = 0;
+	obj.style.height = '0px';
 	obj.style.height = obj.scrollHeight + 'px';
 	if($(oid)) $(oid).style.display = obj.scrollHeight > 30 ? '':'none';
 }
 
+var commonSmiliesLoaded = false;
+var commonSmiliesCallbacks = [];
 function showFace(showid, target, dropstr) {
-	if($(showid + '_menu') != null) {
-		$(showid+'_menu').style.display = '';
-	} else {
-		var faceDiv = document.createElement("div");
-		faceDiv.id = showid+'_menu';
-		faceDiv.className = 'p_pop facel';
-		faceDiv.style.position = 'absolute';
-		faceDiv.style.zIndex = 1001;
-		var faceul = document.createElement("ul");
-		for(i=1; i<31; i++) {
-			var faceli = document.createElement("li");
-			faceli.innerHTML = '<img src="' + STATICURL + 'image/smiley/comcom/'+i+'.gif" onclick="insertFace(\''+showid+'\','+i+', \''+ target +'\', \''+dropstr+'\')" style="cursor:pointer; position:relative;" />';
-			faceul.appendChild(faceli);
+	// 定义创建表情菜单的函数
+	function createFaceMenu() {
+		if($(showid + '_menu') != null) {
+			$(showid+'_menu').style.display = '';
+		} else {
+			var faceDiv = document.createElement("div");
+			faceDiv.id = showid+'_menu';
+			faceDiv.className = 'p_pop facel';
+			faceDiv.style.position = 'absolute';
+			faceDiv.style.zIndex = 1001;
+			var faceul = document.createElement("ul");
+
+			var emojiTypeKey = null;
+			for (var key in smilies_type) {
+				if (smilies_type[key] && smilies_type[key][1] === ':emoji') {
+					emojiTypeKey = key.replace('_', '');
+					break;
+				}
+			}
+
+			if (emojiTypeKey && smilies_array[emojiTypeKey]) {
+				for (var page in smilies_array[emojiTypeKey]) {
+					var emoticons = smilies_array[emojiTypeKey][page];
+					for (var i = 0; i < emoticons.length; i++) {
+						var faceli = document.createElement("li");
+						var emoticon = emoticons[i];
+						var emoticonId = emoticon[0];
+						var emoticonChar = emoticon[1];
+
+						faceli.innerHTML = '<span style="font-size: 24px; cursor:pointer; position:relative;" onclick="insertFace(\''+showid+'\',\''+emoticonChar+'\', \''+ target +'\', \''+dropstr+'\', true)">' + emoticonChar + '</span>';
+						faceul.appendChild(faceli);
+					}
+				}
+			} else {
+				for(i=1; i<31; i++) {
+					var faceli = document.createElement("li");
+					faceli.innerHTML = '<img src="' + STATICURL + 'image/smiley/comcom/'+i+'.gif" onclick="insertFace(\''+showid+'\','+i+', \''+ target +'\', \''+dropstr+'\')" style="cursor:pointer; position:relative;" />';
+					faceul.appendChild(faceli);
+				}
+			}
+
+			faceDiv.appendChild(faceul);
+			$('append_parent').appendChild(faceDiv)
 		}
-		faceDiv.appendChild(faceul);
-		$('append_parent').appendChild(faceDiv)
+		setMenuPosition(showid, 0);
+		doane();
+		_attachEvent(document.body, 'click', function(){if($(showid+'_menu')) $(showid+'_menu').style.display = 'none';});
 	}
-	setMenuPosition(showid, 0);
-	doane();
-	_attachEvent(document.body, 'click', function(){if($(showid+'_menu')) $(showid+'_menu').style.display = 'none';});
+
+	if (commonSmiliesLoaded && typeof smilies_type !== 'undefined' && typeof smilies_array !== 'undefined') {
+		createFaceMenu();
+	} else {
+		commonSmiliesCallbacks.push(createFaceMenu);
+
+		if (!commonSmiliesLoaded) {
+			commonSmiliesLoaded = true;
+
+			var scriptNode = document.createElement("script");
+			scriptNode.type = "text/javascript";
+			scriptNode.charset = charset ? charset : (BROWSER.firefox ? document.characterSet : document.charset);
+			scriptNode.src = JSPATH + 'common_smilies_var.js?' + VERHASH;
+
+			scriptNode.onload = function() {
+				for (var i = 0; i < commonSmiliesCallbacks.length; i++) {
+					commonSmiliesCallbacks[i]();
+				}
+				commonSmiliesCallbacks = [];
+			};
+
+			scriptNode.onerror = function() {
+				commonSmiliesLoaded = false;
+				alert('error:loadfield');
+			};
+
+			$('append_parent').appendChild(scriptNode);
+		}
+	}
 }
 
-function insertFace(showid, id, target, dropstr) {
-	var faceText = '[em:'+id+':]';
+function insertFace(showid, id, target, dropstr, isEmoji) {
+	var faceText;
+	if (isEmoji) {
+		faceText = id;
+	} else {
+		faceText = '[em:'+id+':]';
+	}
 	if($(target) != null) {
 		insertContent(target, faceText);
 		if(dropstr) {

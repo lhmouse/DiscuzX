@@ -48,11 +48,7 @@ function loadcalendar() {
 		s += '<a href="javascript:;" onclick="refreshcalendar(yy, ' + (k - 1) + ');$(\'calendar_month\').style.display=\'none\'"><span' + (today.getMonth()+1 == k ? ' class="calendar_today"' : '') + ' id="calendar_month_' + k + '">' + k + ( k < 10 ? '&nbsp;' : '') + ' ' + $L('month') + '</span></a><br />';
 	}
 	s += '</div>';
-	if(BROWSER.ie && BROWSER.ie < 7) {
-		s += '<iframe id="calendariframe" frameborder="0" style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)"></iframe>';
-		s += '<iframe id="calendariframe_year" frameborder="0" style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)"></iframe>';
-		s += '<iframe id="calendariframe_month" frameborder="0" style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)"></iframe>';
-	}
+
 
 	var div = document.createElement('div');
 	div.innerHTML = s;
@@ -64,21 +60,12 @@ function loadcalendar() {
 		doane(event);
 		$('calendar_year').style.display = 'none';
 		$('calendar_month').style.display = 'none';
-		if(BROWSER.ie && BROWSER.ie < 7) {
-			$('calendariframe_year').style.display = 'none';
-			$('calendariframe_month').style.display = 'none';
-		}
 	};
 }
 function closecalendar(event) {
 	$('calendar').style.display = 'none';
 	$('calendar_year').style.display = 'none';
 	$('calendar_month').style.display = 'none';
-	if(BROWSER.ie && BROWSER.ie < 7) {
-		$('calendariframe').style.display = 'none';
-		$('calendariframe_year').style.display = 'none';
-		$('calendariframe_month').style.display = 'none';
-	}
 }
 
 function parsedate(s) {
@@ -96,9 +83,6 @@ function settime(d) {
 	if(!addtime) {
 		$('calendar').style.display = 'none';
 		$('calendar_month').style.display = 'none';
-		if(BROWSER.ie && BROWSER.ie < 7) {
-			$('calendariframe').style.display = 'none';
-		}
 	}
 	currday = new Date(yy, mm, parseInt(d));
 	refreshcalendar(currday.getFullYear(), currday.getMonth());
@@ -163,13 +147,7 @@ function showcalendar(event, controlid1, addtime1, startdate1, enddate1, halfhou
 		$('halfhourselector').style.display = 'none';
 		$('fullhourselector').style.display = '';
 	}
-	if(BROWSER.ie && BROWSER.ie < 7) {
-		$('calendariframe').style.top = $('calendar').style.top;
-		$('calendariframe').style.left = $('calendar').style.left;
-		$('calendariframe').style.width = $('calendar').offsetWidth;
-		$('calendariframe').style.height = $('calendar').offsetHeight;
-		$('calendariframe').style.display = 'block';
-	}
+
 	initclosecalendar();
 }
 
@@ -230,13 +208,6 @@ function showdiv(id) {
 	$('calendar_' + id).style.left = p['left']+'px';
 	$('calendar_' + id).style.top = (p['top'] + 16)+'px';
 	$('calendar_' + id).style.display = 'block';
-	if(BROWSER.ie && BROWSER.ie < 7) {
-		$('calendariframe_' + id).style.top = $('calendar_' + id).style.top;
-		$('calendariframe_' + id).style.left = $('calendar_' + id).style.left;
-		$('calendariframe_' + id).style.width = $('calendar_' + id).offsetWidth;
-		$('calendariframe_' + id ).style.height = $('calendar_' + id).offsetHeight;
-		$('calendariframe_' + id).style.display = 'block';
-	}
 }
 
 function zerofill(s) {

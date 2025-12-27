@@ -124,9 +124,6 @@ function seditor_insertunit(key, text, textend, moveend, selappend) {
 		$(key + 'message').value += text;
 	}
 	hideMenu(2);
-	if(BROWSER.ie) {
-		doane();
-	}
 }
 
 function seditor_ctlent(event, script) {

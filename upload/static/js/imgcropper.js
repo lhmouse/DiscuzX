@@ -100,13 +100,7 @@
 		initialize: function() {
 			this.color && (this._container.style.backgroundColor = this.color);
 			this._tempImg.src = this._layBase.src = this._layCropper.src = this.url;
-			if(BROWSER.ie){
-				this._layBase.style.filter = "alpha(opacity:" + this.opacity + ")";
-				this._layHandle.style.filter = "alpha(opacity:0)";
-				this._layHandle.style.backgroundColor = "#FFF";
-			} else {
-				this._layBase.style.opacity = this.opacity / 100;
-			}
+			this._layBase.style.opacity = this.opacity / 100;
 			this._view && (this._view.src = this.url);
 			if(this.resize){
 				with(this._resize){
@@ -115,7 +109,7 @@
 			}
 		},
 		setPos: function() {
-			if(BROWSER.ie == 6.0){ with(this._layHandle.style){ zoom = .9; zoom = 1; }; };
+
 			var p = this.getPos();
 			this._layCropper.style.clip = "rect(" + p.Top + "px " + (p.Left + p.Width) + "px " + (p.Top + p.Height) + "px " + p.Left + "px)";
 			this.SetPreview();
@@ -336,13 +330,8 @@
 			}
 			Util.addEventHandler(document, "mousemove", this._resizeTranscript);
 			Util.addEventHandler(document, "mouseup", this._stopTranscript);
-			if(BROWSER.ie){
-				Util.addEventHandler(this._resizeObj, "losecapture", this._stopTranscript);
-				this._resizeObj.setCapture();
-			}else{
-				Util.addEventHandler(window, "blur", this._stopTranscript);
-				oEvent.preventDefault();
-			};
+			Util.addEventHandler(window, "blur", this._stopTranscript);
+			oEvent.preventDefault();
 		},
 		resize: function(e) {
 			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
@@ -514,12 +503,7 @@
 		stop: function() {
 			Util.removeEventHandler(document, "mousemove", this._resizeTranscript);
 			Util.removeEventHandler(document, "mouseup", this._stopTranscript);
-			if(BROWSER.ie){
-				Util.removeEventHandler(this._resizeObj, "losecapture", this._stopTranscript);
-				this._resizeObj.releaseCapture();
-			}else{
-				Util.removeEventHandler(window, "blur", this._stopTranscript);
-			}
+			Util.removeEventHandler(window, "blur", this._stopTranscript);
 		}
 	};
 	dzDrag = function() {
@@ -563,13 +547,8 @@
 			this._marginTop = parseInt(curStyle.marginTop) || 0;
 			Util.addEventHandler(document, "mousemove", this._dragMoveTranscript);
 			Util.addEventHandler(document, "mouseup", this._dragEndTranscript);
-			if(BROWSER.ie){
-				Util.addEventHandler(this._handle, "losecapture", this._dragEndTranscript);
-				this._handle.setCapture();
-			}else{
-				Util.addEventHandler(window, "blur", this._dragEndTranscript);
-				event.preventDefault();
-			};
+			Util.addEventHandler(window, "blur", this._dragEndTranscript);
+			event.preventDefault();
 			this.options.onDragStart();
 		},
 		dragMove: function(event) {
@@ -594,12 +573,7 @@
 		dragEnd: function(event) {
 			Util.removeEventHandler(document, "mousemove", this._dragMoveTranscript);
 			Util.removeEventHandler(document, "mouseup", this._dragEndTranscript);
-			if(BROWSER.ie) {
-				Util.removeEventHandler(this._handle, "losecapture", this._dragEndTranscript);
-				this._handle.releaseCapture();
-			} else {
-				Util.removeEventHandler(window, "blur", this._dragEndTranscript);
-			}
+			Util.removeEventHandler(window, "blur", this._dragEndTranscript);
 			this.options.onDragEnd();
 		},
 		setLimit: function() {

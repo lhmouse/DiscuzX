@@ -35,7 +35,7 @@
 	<!--{if helper_access::check_module('doing')}-->
 	<div id="{$_GET[key]}_form_{$doid}_{$docid}">
 		<form id="{$_GET[key]}_docommform_{$doid}_{$docid}" method="post" autocomplete="off" action="home.php?mod=spacecp&ac=doing&op=comment&doid=$doid&docid=$docid" {if $_G[inajax]}onsubmit="ajaxpost(this.id, 'return_$_GET[handlekey]');"{/if} class="pns" style="margin: 5px 0 0;">
-			<span id="{$_GET[key]}_form_{$doid}_{$docid}_face" onclick="showFace(this.id, '{$_GET[key]}_form_{$doid}_{$docid}_t');return false;" class="cur1"><img src="{IMGDIR}/facelist.gif" alt="facelist" class="vm" /></span>
+			<span id="{$_GET[key]}_form_{$doid}_{$docid}_face" onclick="showFace(this.id, '{$_GET[key]}_form_{$doid}_{$docid}_t');return false;" class="cur1"><i class="fico-emojifill fic8 fc-s fnmr vm" ></i></span>
 			<textarea name="message" id="{$_GET[key]}_form_{$doid}_{$docid}_t" cols="40" class="px pts" oninput="resizeTx(this);" onpropertychange="resizeTx(this);" onkeyup="strLenCalc(this, '{$_GET[key]}_form_{$doid}_{$docid}_limit')" onkeydown="ctrlEnter(event, '{$_GET[key]}_replybtn_{$doid}_{$docid}');"></textarea>&nbsp;
 			<input type="hidden" name="commentsubmit" value="true" />
 			<button type="submit" name="do_button" id="{$_GET[key]}_replybtn_{$doid}_{$docid}" class="pn" value="true"><em>{lang reply}</em></button>

@@ -13,7 +13,7 @@ var EXTRASELECTION = '', EXTRASEL = null;
 
 function newEditor(mode, initialtext) {
 	wysiwyg = parseInt(mode);
-	if(!(BROWSER.ie || BROWSER.firefox || (BROWSER.opera >= 9 || BROWSER.rv))) {
+	if(!(BROWSER.firefox || (BROWSER.opera >= 9 || BROWSER.rv))) {
 		allowswitcheditor = wysiwyg = 0;
 	}
 	if(!allowswitcheditor) {
@@ -68,7 +68,7 @@ function initEditor() {
 				buttons[i].innerHTML = !simplodemode ? $L('simple_mode') : $L('advance_mode');
 				buttons[i].onclick = function(e) {editorsimple();doane();}
 			} else {
-				_attachEvent(buttons[i], 'mouseover', function(e) {setEditorTip(BROWSER.ie ? window.event.srcElement.title : e.target.title);});
+				_attachEvent(buttons[i], 'mouseover', function(e) {setEditorTip(e.target.title);});
 				if(buttons[i].id.substr(buttons[i].id.indexOf('_') + 1) == 'url') {
 					buttons[i].onclick = function(e) {discuzcode('unlink');discuzcode('url');doane();};
 				} else {
@@ -81,7 +81,7 @@ function initEditor() {
 		}
 	}
 	setUnselectable($(editorid + '_controls'));
-	if(editorcontroltop === false && (BROWSER.ie && BROWSER.ie > 6 || !BROWSER.ie)) {
+	if(editorcontroltop === false) {
 		seteditorcontrolpos();
 		var obj = wysiwyg ? editwin.document.body.parentNode : $(editorid + '_textarea');
 		editorcontrolwidth = $(editorid + '_controls').clientWidth - 8;
@@ -92,7 +92,7 @@ function initEditor() {
 		$(editorid + '_controls').parentNode.insertBefore(ctrlmObj, $(editorid + '_controls'));
 		_attachEvent(window, 'scroll', function () { editorcontrolpos(); }, document);
 	}
-	if($(editorid + '_fullswitcher') && BROWSER.ie && BROWSER.ie < 7) {
+	if($(editorid + '_fullswitcher')) {
 		$(editorid + '_fullswitcher').onclick = function () {
 			showDialog($L('browser_not_support'), 'notice', $L('friendly_notice'));
 		};
@@ -126,7 +126,7 @@ function initesbar() {
 			if(buttons[i].id.substr(buttons[i].id.indexOf('_') + 1) == 'fullswitcher') {
 			} else if(buttons[i].id.substr(buttons[i].id.indexOf('_') + 1) == 'simple') {
 			} else {
-				_attachEvent(buttons[i], 'mouseover', function(e) {setEditorTip(BROWSER.ie ? window.event.srcElement.title : e.target.title);});
+				_attachEvent(buttons[i], 'mouseover', function(e) {setEditorTip(e.target.title);});
 				if(buttons[i].id.substr(buttons[i].id.indexOf('_') + 1) == 'url') {
 					buttons[i].onclick = function(e) {discuzcode('unlink');discuzcode('url');doane();};
 				} else {
@@ -442,37 +442,21 @@ function keyBackspace() {
 	if(!wysiwyg) {
 		return;
 	}
-	if(BROWSER.ie) {
-		sel = editdoc.selection.createRange();
-		sel.moveStart('character', -1);
-		sel.moveEnd('character', 0);
-		sel.select();
-		editdoc.selection.clear();
-	} else {
-		editdoc.execCommand('delete', false, true);
-	}
+	editdoc.execCommand('delete', false, true);
 }
 
 function keyMenu(code, func) {
 	var km = 'kM' + Math.random();
 	var hs = '<span id="' + km + '">' + code + '</span>';
-	if(BROWSER.ie) {
-		var range = document.selection.createRange();
-		range.pasteHTML(hs);
-		range.moveToElementText(editdoc.getElementById(km));
-		range.moveStart("character");
-		range.select();
-	} else {
-		var selection = editwin.getSelection();
-		var range = selection.getRangeAt(0);
-		var fragment = range.createContextualFragment(hs);
-		range.insertNode(fragment);
-		var tmp = editdoc.getElementById(km).firstChild;
-		range.setStart(tmp, 1);
-		range.setEnd(tmp, 1);
-		selection.removeAllRanges();
-		selection.addRange(range);
-	}
+	var selection = editwin.getSelection();
+	var range = selection.getRangeAt(0);
+	var fragment = range.createContextualFragment(hs);
+	range.insertNode(fragment);
+	var tmp = editdoc.getElementById(km).firstChild;
+	range.setStart(tmp, 1);
+	range.setEnd(tmp, 1);
+	selection.removeAllRanges();
+	selection.addRange(range);
 	keyMenuObj = editdoc.getElementById(km);
 	var b = fetchOffset(editbox);
 	var o = fetchOffset(keyMenuObj);
@@ -501,7 +485,7 @@ function checklength(theform) {
 }
 
 function setUnselectable(obj) {
-	if(BROWSER.ie && BROWSER.ie > 4 && typeof obj.tagName != 'undefined') {
+	if(typeof obj.tagName != 'undefined') {
 		if(obj.hasChildNodes()) {
 			for(var i = 0; i < obj.childNodes.length; i++) {
 				setUnselectable(obj.childNodes[i]);
@@ -526,19 +510,17 @@ function writeEditorContents(text) {
 				'<meta name="renderer" content="webkit" /><meta http-equiv="X-UA-Compatible" content="IE=edge" />' +
 				'<base href="' + document.baseURI + '" />' +
 				'<link rel="stylesheet" type="text/css" href="misc.php?css=' + STYLEID + '_wysiwyg&' + VERHASH + '" />' +
-				(BROWSER.ie ? '<script>window.onerror = function() { return true; }</script>' : '') +
+
 				'</head><body>' + text + '</body></html>';
 			editdoc.designMode = allowhtml ? 'on' : 'off';
 			editdoc = editwin.document;
 			editdoc.open('text/html', 'replace');
 			editdoc.write(text);
 			editdoc.close();
-			if(!BROWSER.ie) {
-				var scriptNode = document.createElement("script");
-				scriptNode.type = "text/javascript";
-				scriptNode.text = 'window.onerror = function() { return true; }';
-				editdoc.getElementById('editorheader').appendChild(scriptNode);
-			}
+			var scriptNode = document.createElement("script");
+			scriptNode.type = "text/javascript";
+			scriptNode.text = 'window.onerror = function() { return true; }';
+			editdoc.getElementById('editorheader').appendChild(scriptNode);
 			editdoc.body.contentEditable = true;
 			editdoc.body.spellcheck = false;
 			initialized = true;
@@ -546,13 +528,7 @@ function writeEditorContents(text) {
 				editdoc.onclick = safariSel;
 			}
 		}
-		if(BROWSER.ie && BROWSER.ie <= 8) {
-			checkpostbg = /<style[^>]+name="editorpostbg"[^>]*>body{background-image:url\("([^\[\<\r\n;'\"\?\(\)]+?)"\);}<\/style>/ig;
-			var matches = checkpostbg.exec(text);
-			if(matches != null) {
-				editdoc.body.innerHTML += '<style type="text/css" name="editorpostbg">body{background-image:url("'+matches[1]+'");}</style>';
-			}
-		}
+
 	} else {
 		textobj.value = text;
 	}
@@ -580,11 +556,7 @@ function setEditorStyle() {
 		textobj.style.display = 'none';
 		editbox.style.display = '';
 		editbox.className = textobj.className;
-		if(BROWSER.ie) {
-			editdoc.body.style.border = '0px';
-			editdoc.body.addBehavior('#default#userData');
-			try{$('subject').focus();} catch(e) {editwin.focus();}
-		}
+
 		if($(editorid + '_iframe')) {
 			$(editorid + '_iframe').style.height = $(editorid + '_iframe').contentWindow.document.body.style.height = editorcurrentheight + 'px';
 		}
@@ -593,11 +565,6 @@ function setEditorStyle() {
 		if(iframe) {
 			textobj.style.display = '';
 			iframe.style.display = 'none';
-		}
-		if(BROWSER.ie) {
-			try{
-				$('subject').focus();
-			} catch(e) {}
 		}
 	}
 	if($('at_menu')) {
@@ -878,7 +845,7 @@ function discuzcode(cmd, arg) {
 		editorform.action = oldAction;
 		editorform.target = "";
 	} else {
-		var formatcmd = cmd == 'backcolor' && !BROWSER.ie ? 'hilitecolor' : cmd;
+		var formatcmd = cmd == 'backcolor' ? 'hilitecolor' : cmd;
 		try {
 			var ret = applyFormat(formatcmd, false, (isUndefined(arg) ? true : arg));
 		} catch(e) {
@@ -930,7 +897,7 @@ function setContext(cmd) {
 	} catch(e) {
 		fs = null;
 	}
-	if(fs == '' && !BROWSER.ie && window.getComputedStyle) {
+	if(fs == '' && window.getComputedStyle) {
 		fs = editdoc.body.style.fontFamily;
 	} else if(fs == null) {
 		fs = '';
@@ -1176,7 +1143,7 @@ function showEditorMenu(tag, params) {
 	for(var i = 0; i < objs.length; i++) {
 		_attachEvent(objs[i], 'keydown', function(e) {
 			e = e ? e : event;
-			obj = BROWSER.ie ? event.srcElement : e.target;
+			obj = e.target;
 			if((obj.type == 'text' && e.keyCode == 13) || (obj.type == 'textarea' && e.ctrlKey && e.keyCode == 13)) {
 				if($(ctrlid + '_submit') && tag != 'image') $(ctrlid + '_submit').click();
 				doane(e);
@@ -1207,17 +1174,13 @@ function showEditorMenu(tag, params) {
 					var isCodeTag = 1 ;
 					opentag = '<div class="blockcode"><blockquote>';
 					closetag = '</blockquote></div><br />';
-					if(!BROWSER.ie) {
-						selection = selection ? selection : '\n';
-					}
+					selection = selection ? selection : '\n';
 				}
 			case 'quote':
 				if(wysiwyg && tag == 'quote') {
 					opentag = '<div class="quote"><blockquote>';
 					closetag = '</blockquote></div><br />';
-					if(!BROWSER.ie) {
-						selection = selection ? selection : '\n';
-					}
+					selection = selection ? selection : '\n';
 				}
 			case 'hide':
 			case 'free':
@@ -1384,11 +1347,7 @@ function showEditorMenu(tag, params) {
 }
 
 function autoTypeset() {
-	var sel;
-	if(BROWSER.ie) {
-		sel = wysiwyg ? editdoc.selection.createRange() : document.selection.createRange();
-	}
-	var selection = sel ? (wysiwyg ? sel.htmlText.replace(/<\/?p>/ig, '<br />') : sel.text) : getSel();
+	var selection = getSel();
 	selection = trim(selection);
 	selection = wysiwyg ? selection.replace(/<br( \/)?>(<br( \/)?>)+/ig, '</p>\n<p style="line-height: 30px; text-indent: 2em;">') : selection.replace(/\n\n+/g, '[/p]\n[p=30, 2, left]');
 	opentag = wysiwyg ? '<p style="line-height: 30px; text-indent: 2em;">' : '[p=30, 2, left]';
@@ -1715,15 +1674,9 @@ function showHrBox(ctrlid, boxtype) {
 		scriptNode.charset = charset ? charset : (BROWSER.firefox ? document.characterSet : document.charset);
 		scriptNode.src = JSPATH + 'common_postimg.js?' + VERHASH;
 		$('append_parent').appendChild(scriptNode);
-		if(BROWSER.ie) {
-			scriptNode.onreadystatechange = function() {
-				_initHrBox(ctrlid, boxtype);
-			};
-		} else {
-			scriptNode.onload = function() {
-				_initHrBox(ctrlid, boxtype);
-			};
-		}
+		scriptNode.onload = function() {
+			_initHrBox(ctrlid, boxtype);
+		};
 	} else {
 		_initHrBox(ctrlid, boxtype);
 	}
@@ -1781,7 +1734,7 @@ function insertPostBackground(img) {
 	if(img != '0.gif') {
 		code = '[postbg]'+img+'[/postbg]';
 		if(wysiwyg) {
-			postbgElement = !BROWSER.ie ? editdoc.getElementsByName('editorpostbg') : editdoc.getElementsByTagName('style');
+			postbgElement = editdoc.getElementsByName('editorpostbg');
 			for(var i = 0; i < postbgElement.length; i++) {
 				postbgElement[i].parentNode.removeChild(postbgElement[i]);
 			}
@@ -1792,7 +1745,7 @@ function insertPostBackground(img) {
 		}
 	} else {
 		if(wysiwyg) {
-			postbgElement = !BROWSER.ie ? editdoc.getElementsByName('editorpostbg') : editdoc.getElementsByTagName('style');
+			postbgElement = editdoc.getElementsByName('editorpostbg');
 			for(var i = 0; i < postbgElement.length; i++) {
 				postbgElement[i].parentNode.removeChild(postbgElement[i]);
 			}

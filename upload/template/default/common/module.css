@@ -1663,7 +1663,7 @@ i.pstatus { display: block; margin-bottom: -30px; font-size: 12px; text-align: c
 		.rwdl p { white-space: nowrap; }
 
 /* .facel -> face_list 空间部分的表情 by Pony */
-	.facel { padding: 8px; width: 240px; }
+	.facel { padding: 8px; width: 265px; }
 		.facel img { margin: 5px; }
 
 /* 提醒的内容中会用到。这里使用独立class，以便个性化。若想使提醒内容更醒目，可对summary下的span进行定义 */

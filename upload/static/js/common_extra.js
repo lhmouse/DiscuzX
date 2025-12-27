@@ -103,7 +103,7 @@ function _checksec(type, idhash, showmsg, recall, modid) {
 	var x = new Ajax('XML', 'checksec' + type + 'verify_' + idhash);
 	x.loading = '';
 	$('checksec' + type + 'verify_' + idhash).innerHTML = '<div class="loadicon vm"></div>';
-	x.get('misc.php?mod=sec' + type + '&action=check&inajax=1&modid=' + modid + '&idhash=' + idhash + '&secverify=' + (BROWSER.ie && document.charset == 'utf-8' ? encodeURIComponent(secverify) : secverify), function(s){
+	x.get('misc.php?mod=sec' + type + '&action=check&inajax=1&modid=' + modid + '&idhash=' + idhash + '&secverify=' + secverify, function(s){
 		var obj = $('checksec' + type + 'verify_' + idhash);
 		obj.style.display = '';
 		if(s.substr(0, 7) == 'succeed') {
@@ -183,7 +183,7 @@ function _copycode(obj) {
 		rng.moveToElementText(obj);
 		rng.select();
 	}
-	setCopy(BROWSER.ie ? obj.innerText.replace(/\r\n\r\n/g, '\r\n') : obj.textContent, $L('copy_clipboard_success'));
+	setCopy(obj.textContent, $L('copy_clipboard_success'));
 }
 
 function _showselect(obj, inpid, t, rettype) {
@@ -251,9 +251,6 @@ function _showselect(obj, inpid, t, rettype) {
 		$(div.id).innerHTML = s;
 	}
 	showMenu({'ctrlid':obj.id,'evt':'click'});
-	if(BROWSER.ie && BROWSER.ie < 7) {
-		doane(event);
-	}
 }
 
 function _zoom(obj, zimg, nocover, pn, showexif) {
@@ -387,31 +384,28 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 	var clientX = 0;
 	var clientY = 0;
 	var adjust = function(e, a) {
-		if(BROWSER.ie && BROWSER.ie<7) {
-		} else {
-			if(adjustTimerCount) {
-				adjustTimer = (function(){
-					return setTimeout(function () {
-						adjustTimerCount++;
-						adjust(e);
-					}, 20);
-					})();
-					$(menuid).setAttribute('timer', adjustTimer);
-				if(adjustTimerCount > 17) {
-					clearTimeout(adjustTimer);
-					adjustTimerCount = 0;
-					doane();
-				}
-			} else if(!a) {
-				adjustTimerCount = 1;
-				if(adjustTimer) {
-					clearTimeout(adjustTimer);
-					adjust(e, a);
-				} else {
-					adjust(e, a);
-				}
+		if(adjustTimerCount) {
+			adjustTimer = (function(){
+				return setTimeout(function () {
+					adjustTimerCount++;
+					adjust(e);
+				}, 20);
+				})();
+				$(menuid).setAttribute('timer', adjustTimer);
+			if(adjustTimerCount > 17) {
+				clearTimeout(adjustTimer);
+				adjustTimerCount = 0;
 				doane();
 			}
+		} else if(!a) {
+			adjustTimerCount = 1;
+			if(adjustTimer) {
+				clearTimeout(adjustTimer);
+				adjust(e, a);
+			} else {
+				adjust(e, a);
+			}
+			doane();
 		}
 		var ele = $(zoomid);
 		if(!ele) {
@@ -443,7 +437,7 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 				}
 				step = 4-parseInt(imgw/ele.width) || 2;
 			}
-			if(BROWSER.ie && BROWSER.ie<7) { step *= 5;}
+
 			wheelDelta = e.wheelDelta;
 			clientX = e.clientX;
 			clientY = e.clientY;
@@ -457,20 +451,16 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 				ele.width += step;
 				ele.height = imgh*(ele.width/imgw);
 			}
-			if(BROWSER.ie && BROWSER.ie<7) {
-				setMenuPosition('', menuid, '00');
-			} else {
-				var menutop = parseFloat(menu.getAttribute('top_') || menu.style.top);
-				var menuleft = parseFloat(menu.getAttribute('left_') || menu.style.left);
-				var imgY = clientY - menutop - 39;
-				var imgX = clientX - menuleft - 10;
-				var newTop = (menutop - imgY*ratio) + 'px';
-				var newLeft = (menuleft - imgX*ratio) + 'px';
-				menu.style.top = newTop;
-				menu.style.left = newLeft;
-				menu.setAttribute('top_', newTop);
-				menu.setAttribute('left_', newLeft);
-			}
+			var menutop = parseFloat(menu.getAttribute('top_') || menu.style.top);
+			var menuleft = parseFloat(menu.getAttribute('left_') || menu.style.left);
+			var imgY = clientY - menutop - 39;
+			var imgX = clientX - menuleft - 10;
+			var newTop = (menutop - imgY*ratio) + 'px';
+			var newLeft = (menuleft - imgX*ratio) + 'px';
+			menu.style.top = newTop;
+			menu.style.left = newLeft;
+			menu.setAttribute('top_', newTop);
+			menu.setAttribute('left_', newLeft);
 		} else {
 			ele.width = imgw;
 			ele.height = imgh;
@@ -523,26 +513,17 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		var displayHeight = ele.height;
 
 		var transformOrigin = 'center center';
-		if(BROWSER.ie && BROWSER.ie < 9) {
-			var rotationMatrix = getRotationMatrix(newRotate);
-			ele.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(' +
-			    'M11=' + rotationMatrix.m11 + ', M12=' + rotationMatrix.m12 +
-			    ', M21=' + rotationMatrix.m21 + ', M22=' + rotationMatrix.m22 +
-			    ', SizingMethod="auto expand")';
-			repositionElementForIE(ele, newRotate, imgw, imgh, displayWidth, displayHeight);
-		} else {
-			ele.style.transformOrigin = transformOrigin;
-			ele.style.webkitTransformOrigin = transformOrigin;
-			ele.style.mozTransformOrigin = transformOrigin;
-			ele.style.oTransformOrigin = transformOrigin;
-			ele.style.msTransformOrigin = transformOrigin;
+		ele.style.transformOrigin = transformOrigin;
+		ele.style.webkitTransformOrigin = transformOrigin;
+		ele.style.mozTransformOrigin = transformOrigin;
+		ele.style.oTransformOrigin = transformOrigin;
+		ele.style.msTransformOrigin = transformOrigin;
 
-			ele.style.transform = 'rotate(' + newRotate + 'deg)';
-			ele.style.webkitTransform = 'rotate(' + newRotate + 'deg)';
-			ele.style.mozTransform = 'rotate(' + newRotate + 'deg)';
-			ele.style.oTransform = 'rotate(' + newRotate + 'deg)';
-			ele.style.msTransform = 'rotate(' + newRotate + 'deg)';
-		}
+		ele.style.transform = 'rotate(' + newRotate + 'deg)';
+		ele.style.webkitTransform = 'rotate(' + newRotate + 'deg)';
+		ele.style.mozTransform = 'rotate(' + newRotate + 'deg)';
+		ele.style.oTransform = 'rotate(' + newRotate + 'deg)';
+		ele.style.msTransform = 'rotate(' + newRotate + 'deg)';
 
 		adjustMenuSize(ele, newRotate, displayWidth, displayHeight);
 		doane(e);
@@ -613,11 +594,8 @@ function _zoom(obj, zimg, nocover, pn, showexif) {
 		} else {
 			menu.innerHTML = '<div class="popupmenu_popup" id="' + menuid + '_zoomlayer" style="width:auto"><span class="right y"><a href="javascript:;" onclick="hideMenu()" class="flbc" style="width:20px;margin:0 0 2px 0">' + $L('close') + '</a></span>' + $L('mouse_wheel_resize') + '<div class="zimg_p" id="' + menuid + '_picpage"></div><div class="hm" id="' + menuid + '_img"></div></div>';
 		}
-		if(BROWSER.ie || BROWSER.chrome){
-			menu.onmousewheel = adjust;
-		} else {
-			menu.addEventListener('DOMMouseScroll', adjust, false);
-		}
+		menu.addEventListener('DOMMouseScroll', adjust, false);
+		menu.onmousewheel = adjust;
 		$('append_parent').appendChild(menu);
 		if($(menuid + '_adjust')) {
 			$(menuid + '_adjust').onclick = function(e) {adjust(e, 1)};
@@ -1299,9 +1277,7 @@ function _imageRotate(imgid, direct) {
 		var deg = 0;
 		image.setAttribute('ow', image.width);
 		image.setAttribute('oh', image.height);
-		if(BROWSER.ie) {
-			image.setAttribute('om', parseInt(image.currentStyle.marginBottom));
-		}
+
 	} else {
 		var deg = parseInt(image.getAttribute('deg'));
 	}
@@ -1314,17 +1290,11 @@ function _imageRotate(imgid, direct) {
 		deg = 270;
 	}
 	image.setAttribute('deg', deg);
-	if(BROWSER.ie) {
-		if(!isNaN(image.getAttribute('om'))) {
-			image.style.marginBottom = (image.getAttribute('om') + (BROWSER.ie < 8 ? 0 : (deg == 90 || deg == 270 ? Math.abs(ow - oh) : 0))) + 'px';
-		}
-		image.style.filter = 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + (deg / 90) + ')';
-	} else {
-	        switch(deg) {
+    switch(deg) {
 			case 90:var cow = oh, coh = ow, cx = 0, cy = -oh;break;
 			case 180:var cow = ow, coh = oh, cx = -ow, cy = -oh;break;
 			case 270:var cow = oh, coh = ow, cx = -ow, cy = 0;break;
-	        }
+	  }
 		var canvas = $(image.getAttribute('canvasid'));
 		if(!canvas) {
 			var i = document.createElement("canvas");
@@ -1345,7 +1315,6 @@ function _imageRotate(imgid, direct) {
 			image.style.display = '';
 			canvas.style.display = 'none';
 		}
-	}
 }
 
 function _createPalette(colorid, id, func) {

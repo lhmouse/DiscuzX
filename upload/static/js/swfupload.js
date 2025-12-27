@@ -263,17 +263,13 @@ SWFUpload.prototype.loadFlash = function () {
 };
 
 SWFUpload.prototype.getFlashHTML = function (flashVersion) {
-	if(BROWSER.ie && !BROWSER.opera) {
-		return AC_FL_RunContent('id', this.movieName, 'width', this.settings.button_width, 'height', this.settings.button_height, 'src', this.settings.flash_url, 'quality', 'high', 'wmode', this.settings.button_window_mode, 'flashvars', this.getFlashVars());
-	} else {
-		return ['<object id="', this.movieName, '" type="application/x-shockwave-flash" data="', (this.support.imageResize ? this.settings.flash_url : this.settings.flash9_url), '" width="', this.settings.button_width, '" height="', this.settings.button_height, '" class="swfupload">',
+	return ['<object id="', this.movieName, '" type="application/x-shockwave-flash" data="', (this.support.imageResize ? this.settings.flash_url : this.settings.flash9_url), '" width="', this.settings.button_width, '" height="', this.settings.button_height, '" class="swfupload">',
 					'<param name="wmode" value="', this.settings.button_window_mode, '" />',
 					'<param name="movie" value="', (this.support.imageResize ? this.settings.flash_url : this.settings.flash9_url), '" />',
 					'<param name="quality" value="high" />',
 					'<param name="allowScriptAccess" value="always" />',
 					'<param name="flashvars" value="' + this.getFlashVars() + '" />',
 					'</object>'].join("");
-	}
 };
 
 SWFUpload.prototype.getFlashVars = function () {

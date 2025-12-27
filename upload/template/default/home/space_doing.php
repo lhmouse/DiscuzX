@@ -127,8 +127,8 @@
 					<!--{hook/space_doing_content_bottom $doid}-->
 					<!--{eval $list = $clist[$doid];}-->
 					<dd class="cmt brm" id="{$key}_$doid"{if empty($list) || !$showdoinglist[$doid]} style="display:none;"{/if}>
-						<span id="{$key}_form_{$doid}_0"></span>
 						<!--{template home/space_doing_li}-->
+						<span id="{$key}_form_{$doid}_0"></span>
 					</dd>
 					<dd class="ptn xg1 doing_bottom">
 						<span class="y"><!--{date($dv['dateline'], 'u')}--></span>

@@ -27,9 +27,7 @@ function modaction(action, pid, extra, mod) {
 	} else {
 		$('modactions').action = mod + '&action='+ action +'&fid=' + fid + '&tid=' + tid + '&handlekey=mods&infloat=yes&nopost=yes' + (!pid ? '' : '&topiclist[]=' + pid) + extra + '&r' + Math.random();
 		showWindow('mods', 'modactions', 'post');
-		if(BROWSER.ie) {
-			doane(event);
-		}
+
 		hideMenu();
 	}
 }
@@ -41,9 +39,7 @@ function modthreads(optgroup, operation) {
 	$('modactions').operation.value = operation;
 	hideWindow('mods');
 	showWindow('mods', 'modactions', 'post', 0);
-	if(BROWSER.ie) {
-		doane(event);
-	}
+
 }
 
 function pidchecked(obj) {

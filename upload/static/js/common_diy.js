@@ -1346,10 +1346,10 @@ var Util = {
 		},
 		deleteFrame : function (name) {
 			if (typeof name == 'string') {
-				if (typeof window['c'+name+'_frame'] == 'object' && !BROWSER.ie) delete window['c'+name+'_frame'];
+				if (typeof window['c'+name+'_frame'] == 'object') delete window['c'+name+'_frame'];
 			} else {
 				for(var i = 0,L = name.length;i < L;i++) {
-					if (typeof window['c'+name[i]+'_frame'] == 'object' && !BROWSER.ie) delete window['c'+name[i]+'_frame'];
+					if (typeof window['c'+name[i]+'_frame'] == 'object') delete window['c'+name[i]+'_frame'];
 				}
  			}
 		},
@@ -1427,11 +1427,11 @@ var Util = {
 		checkSelector : function (selector) {
 			var s  = selector.toLowerCase();
 			if (s.toLowerCase().indexOf('body') > -1) {
-				var body = BROWSER.ie ? 'BODY' : 'body';
+				var body = 'body';
 				selector = selector.replace(/body/i,body);
 			}
 			if (s.indexOf(' a') > -1) {
-				selector = BROWSER.ie ? selector.replace(/ [aA]/,' A') : selector.replace(/ [aA]/,' a');
+				selector = selector.replace(/ [aA]/,' a');
 			}
 			return selector;
 		},
@@ -1723,12 +1723,12 @@ var Util = {
 					break;
 				case 'body' :
 				case 'BODY' :
-					selector = BROWSER.ie ? 'BODY' : 'body';
+					selector = 'body';
 					break;
 				default :
 					selector = currentDiv.indexOf("#")>-1 ? currentDiv : "#"+currentDiv;
 			}
-			var rega = BROWSER.ie ? ' A' : ' a';
+			var rega = ' a';
 			selector = (selector+link).replace(/ a/i,rega);
 			return selector;
 		},

@@ -114,15 +114,10 @@ function attachimginfo(obj, infoobj, show, event) {
 		$(infoobj).style.top = obj.offsetHeight < 40 ? (objinfo['top'] + obj.offsetHeight) + 'px' : objinfo['top'] + 'px';
 		$(infoobj).style.display = '';
 	} else {
-		if(BROWSER.ie) {
+		var mousex = document.body.scrollLeft + event.clientX;
+		var mousey = document.documentElement.scrollTop + event.clientY;
+		if(mousex < objinfo['left'] || mousex > objinfo['left'] + objinfo['width'] || mousey < objinfo['top'] || mousey > objinfo['top'] + objinfo['height']) {
 			$(infoobj).style.display = 'none';
-			return;
-		} else {
-			var mousex = document.body.scrollLeft + event.clientX;
-			var mousey = document.documentElement.scrollTop + event.clientY;
-			if(mousex < objinfo['left'] || mousex > objinfo['left'] + objinfo['width'] || mousey < objinfo['top'] || mousey > objinfo['top'] + objinfo['height']) {
-				$(infoobj).style.display = 'none';
-			}
 		}
 	}
 }
@@ -138,7 +133,7 @@ function signature(obj) {
 }
 
 function tagshow(event) {
-	var obj = BROWSER.ie ? event.srcElement : event.target;
+	var obj = event.target;
 	ajaxmenu(obj, 0, 1, 2);
 }
 
@@ -173,9 +168,6 @@ function parsetag(pid) {
 
 function setanswer(pid, from) {
 	showDialog($L('best_answer_confirm'), 'confirm', '', function () {
-		if (BROWSER.ie) {
-			doane(event);
-		}
 		$('modactions').action = 'forum.php?mod=misc&action=bestanswer&tid=' + tid + '&pid=' + pid + '&from=' + from + '&bestanswersubmit=yes';
 		$('modactions').submit();
 	}, 1, null, null, $L('confirm'), $L('cancel'));
@@ -601,9 +593,7 @@ function fixed_avatar(pids, fixednv) {
 			}
 		}
 	}
-	if(!(BROWSER.ie && BROWSER.ie < 7)) {
-		_attachEvent(window, 'load', function(){_attachEvent(window, 'scroll', fixedavatar);});
-	}
+	_attachEvent(window, 'load', function(){_attachEvent(window, 'scroll', fixedavatar);});
 }
 
 function submitpostpw(pid, tid) {
@@ -642,11 +632,7 @@ function autofade(w, h, s) {
 	this.imgobj = $('threadbeginid');
 	this.opacity = 0;
 	this.fadein = function() {
-		if(BROWSER.ie) {
-			this.imgobj.filters.alpha.opacity = this.opacity;
-		} else {
-			this.imgobj.style.opacity = this.opacity/100;
-		}
+		this.imgobj.style.opacity = this.opacity/100;
 		if(this.opacity >= 100) {
 			setTimeout(this.fadeout, s);
 			return;
@@ -655,11 +641,7 @@ function autofade(w, h, s) {
 		setTimeout(this.fadein, 50);
 	};
 	this.fadeout = function() {
-		if(BROWSER.ie) {
-			this.imgobj.filters.alpha.opacity = this.opacity;
-		} else {
-			this.imgobj.style.opacity = this.opacity/100;
-		}
+		this.imgobj.style.opacity = this.opacity/100;
 		if(this.opacity <= 0) {
 			this.imgobj.style.display = 'none';
 			return;
