@@ -28,6 +28,15 @@ class ip_system {
 	private $indexOffset = 0;
 	private $dataOffset = 0;
 
+	private $indexCache = [];
+	private $recordCache = [];
+	private $maxRecordCacheSize = 1000;
+	private $useMemoryCache = true;
+
+	private $memoryCacheKey = 'ipdb_index';
+
+	private $memoryCacheTTL = 86400;
+
 	/**
 	 * 构造函数
 	 */
@@ -73,48 +82,74 @@ class ip_system {
 			throw new Exception('IPDB: language not found');
 		}
 
-		if(file_exists($binaryFile)) {
-			$this->filePointer = fopen($binaryFile, 'rb');
-			if(!$this->filePointer) {
-				throw new Exception('IPDB: ipdb.dat not found');
-			}
+		if(!file_exists($binaryFile)) {
+			throw new Exception('IPDB: ipdb.dat not found');
+		}
+		$this->filePointer = fopen($binaryFile, 'rb');
+		if(!$this->filePointer) {
+			throw new Exception('IPDB: ipdb.dat not found');
+		}
 
-			$fileHeader = fread($this->filePointer, $this->headerLength);
-            		if (!str_starts_with($fileHeader, 'Discuz! IPDB')) {
-				fclose($this->filePointer);
-				$this->filePointer = null;
-				throw new Exception('IPDB: ipdb.dat is not valid');
-			}
-
-			$indexCountData = fread($this->filePointer, 4);
-			if(strlen($indexCountData) !== 4) {
-				fclose($this->filePointer);
-				$this->filePointer = null;
-				throw new Exception('IPDB: ipdb.dat index error');
-			}
-			$this->indexCount = unpack('N', $indexCountData)[1];
-
-			$this->indexOffset = $this->headerLength + 4;
-			$this->dataOffset = $this->indexOffset + ($this->indexCount * $this->indexSize) + 4;
-
-			if(fseek($this->filePointer, $this->dataOffset - 4, SEEK_SET) === -1) {
-				fclose($this->filePointer);
-				$this->filePointer = null;
-				throw new Exception('IPDB: ipdb.dat index error');
-			}
-
-			$countData = fread($this->filePointer, 4);
-			if(strlen($countData) !== 4) {
-				fclose($this->filePointer);
-				$this->filePointer = null;
-				throw new Exception('IPDB: ipdb.dat index error');
-			}
-
-			$this->totalCount = unpack('N', $countData)[1];
-			$this->binaryFile = $binaryFile;
-			$this->dataLoaded = true;
-		} else {
+		$fileHeader = fread($this->filePointer, $this->headerLength);
+		if(!str_starts_with($fileHeader, 'Discuz! IPDB')) {
+			fclose($this->filePointer);
+			$this->filePointer = null;
 			throw new Exception('IPDB: ipdb.dat is not valid');
+		}
+
+		$indexCountData = fread($this->filePointer, 4);
+		if(strlen($indexCountData) !== 4) {
+			fclose($this->filePointer);
+			$this->filePointer = null;
+			throw new Exception('IPDB: ipdb.dat index error');
+		}
+		$this->indexCount = unpack('N', $indexCountData)[1];
+
+		$this->indexOffset = $this->headerLength + 4;
+		$this->dataOffset = $this->indexOffset + ($this->indexCount * $this->indexSize) + 4;
+
+		if(fseek($this->filePointer, $this->dataOffset - 4, SEEK_SET) === -1) {
+			fclose($this->filePointer);
+			$this->filePointer = null;
+			throw new Exception('IPDB: ipdb.dat index error');
+		}
+
+		$countData = fread($this->filePointer, 4);
+		if(strlen($countData) !== 4) {
+			fclose($this->filePointer);
+			$this->filePointer = null;
+			throw new Exception('IPDB: ipdb.dat index error');
+		}
+
+		$this->totalCount = unpack('N', $countData)[1];
+		$this->binaryFile = $binaryFile;
+		$this->dataLoaded = true;
+		if($this->useMemoryCache && $this->indexCount > 0) {
+			if(memory('check') && ($this->indexCache = memory('get', $this->memoryCacheKey))) {
+				return;
+			}
+			if(fseek($this->filePointer, $this->indexOffset, SEEK_SET) === -1) {
+				throw new Exception('IPDB: ipdb.dat index error');
+			}
+
+			$allIndexData = fread($this->filePointer, $this->indexCount * $this->indexSize);
+			if(strlen($allIndexData) !== $this->indexCount * $this->indexSize) {
+				throw new Exception('IPDB: ipdb.dat index error');
+			}
+
+			$this->indexCache = [];
+			for($i = 0; $i < $this->indexCount; $i++) {
+				$offset = $i * $this->indexSize;
+				$startIp = unpack('N', substr($allIndexData, $offset, 4))[1];
+				$dataOffset = unpack('N', substr($allIndexData, $offset + 4, 4))[1];
+				$this->indexCache[$i] = [
+					'startIp' => $startIp,
+					'offset' => $dataOffset
+				];
+			}
+			if(memory('check') && $this->indexCache) {
+				memory('set', $this->memoryCacheKey, $this->indexCache, $this->memoryCacheTTL);
+			}
 		}
 	}
 
@@ -125,6 +160,10 @@ class ip_system {
 	private function readIndexRecord($index) {
 		if($index < 0 || $index >= $this->indexCount || $this->filePointer === null) {
 			return null;
+		}
+
+		if($this->useMemoryCache && isset($this->indexCache[$index])) {
+			return $this->indexCache[$index];
 		}
 
 		$offset = $this->indexOffset + $index * $this->indexSize;
@@ -141,15 +180,25 @@ class ip_system {
 		$startIp = unpack('N', substr($indexData, 0, 4))[1];
 		$dataOffset = unpack('N', substr($indexData, 4, 4))[1];
 
-		return [
+		$result = [
 			'startIp' => $startIp,
 			'offset' => $dataOffset
 		];
+
+		if($this->useMemoryCache) {
+			$this->indexCache[$index] = $result;
+		}
+
+		return $result;
 	}
 
 	private function readRecord($index) {
 		if($index < 0 || $index >= $this->totalCount || $this->filePointer === null) {
 			return null;
+		}
+
+		if($this->useMemoryCache && isset($this->recordCache[$index])) {
+			return $this->recordCache[$index];
 		}
 
 		$offset = $this->dataOffset + $index * $this->recordSize;
@@ -167,15 +216,25 @@ class ip_system {
 		$endIp = unpack('N', substr($recordData, 4, 4))[1];
 		$locationIndex = unpack('n', substr($recordData, 8, 2))[1];
 
-	        if ($locationIndex > 0x7FFF) {
-	            $locationIndex = $locationIndex - 0x10000;
-	        }
+		if($locationIndex > 0x7FFF) {
+			$locationIndex = $locationIndex - 0x10000;
+		}
 
-		return [
+		$result = [
 			'startIp' => $startIp,
 			'endIp' => $endIp,
 			'locationIndex' => $locationIndex
 		];
+
+		if($this->useMemoryCache) {
+			if(count($this->recordCache) >= $this->maxRecordCacheSize) {
+				reset($this->recordCache);
+				unset($this->recordCache[key($this->recordCache)]);
+			}
+			$this->recordCache[$index] = $result;
+		}
+
+		return $result;
 	}
 
 	public function query($ip) {
