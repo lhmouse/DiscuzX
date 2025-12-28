@@ -4,13 +4,10 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class ip_v6wry_init_exception extends Exception {
-}
-
 /**
  * Modified from class IPDBv6 ( popcorner, MIT License )
  */
-class ip_v6wry {
+class ip_v6wry extends ip_base {
 	private static $instance = null;
 	public $ipdb, $firstIndex, $indexCount, $offlen;
 
@@ -18,7 +15,7 @@ class ip_v6wry {
 		$ipdatafile = constant('DISCUZ_ROOT').'./source/data/ip/ipv6wry.dat';
 		$this->ipdb = fopen($ipdatafile, 'rb');
 		if(!$this->ipdb) {
-			throw new ip_v6wry_init_exception();
+			throw new ip_base_exception();
 		}
 		$this->firstIndex = unpack('V', $this->reader(16, 8))[1];
 		$this->indexCount = unpack('V', $this->reader(8, 8))[1];
@@ -126,12 +123,11 @@ class ip_v6wry {
 		$iprev = strrev($ipbinary);
 		$i = $this->finder($iprev, 0, $this->indexCount);
 		$o = $this->firstIndex + $i * (8 + $this->offlen);
-		$output = $this->getaddr(unpack('L', str_pad($this->reader($o + 8, $this->offlen), 4, "\0"))[1]);
-		return $output;
+		return $this->getaddr(unpack('L', str_pad($this->reader($o + 8, $this->offlen), 4, "\0"))[1]);
 	}
 
 	public function convert($ip) {
 		return '- '.diconv(implode(' ', $this->getipaddr($ip)), 'utf-8');
 	}
-}
 
+}

@@ -10,10 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class ip_tiny_init_exception extends Exception {
-}
-
-class ip_tiny {
+class ip_tiny extends ip_base {
 
 	private static $instance = NULL;
 	private $fp = NULL;
@@ -28,7 +25,7 @@ class ip_tiny {
 			$this->index = fread($this->fp, $this->offset['len'] - 4);
 		}
 		if($this->fp === FALSE) {
-			throw new ip_tiny_init_exception();
+			throw new ip_base_exception();
 		}
 
 		$this->length = $this->offset['len'] - 1028;
@@ -80,4 +77,3 @@ class ip_tiny {
 	}
 
 }
-

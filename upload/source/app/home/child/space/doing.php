@@ -83,6 +83,7 @@ if($count) {
 	foreach($query as $value) {
 		if(!empty($value['ip'])) {
 			$value['ip'] = ip::to_display($value['ip']);
+			$value['iplocation'] = $_G['setting']['showiplocation'] ? ip::convert($value['ip'], true) : '';
 		}
 
 		// 处理记录内容，确保链接和媒体正确显示

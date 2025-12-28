@@ -17,11 +17,11 @@ if(str_contains($ip, '/')) {
 }
 
 if(!self::validate_ip($ip)) {
-	$return = '- Invalid';
+	$return = 'Invalid';
 } elseif(!(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE) !== false)) {
-	$return = '- LAN';
+	$return = lang('ipdb', 0);
 } elseif(!(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) !== false)) {
-	$return = '- Reserved';
+	$return = 'Reserved';
 } else {
 	if(array_key_exists('ipdb', $_G['config']) && array_key_exists('setting', $_G['config']['ipdb'])) {
 		$s = $_G['config']['ipdb']['setting'];
@@ -34,11 +34,19 @@ if(!self::validate_ip($ip)) {
 		} else if(!empty($s['default'])) {
 			$c = 'ip_'.$s['default'];
 		} else {
-			$c = 'ip_tiny';
+			$c = 'ip_system';
 		}
 	} else {
-		$c = 'ip_tiny';
+		$c = 'ip_system';
 	}
 	$ipobject = $c::getInstance();
-	$return = $ipobject === NULL ? '- Error' : $ipobject->convert($ip);
+	if($ipobject === NULL) {
+		$return = 'Error';
+	} else {
+		if($simple && method_exists($ipobject, 'convertSimple')) {
+			$return = $ipobject->convertSimple($ip);
+		} else {
+			$return = $ipobject->convert($ip);
+		}
+	}
 }

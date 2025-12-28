@@ -205,6 +205,7 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_styles_global_showfjump', 'settingnew[showfjump]', $setting['showfjump'], 'radio');
 	showsetting('setting_styles_global_creditnotice', 'settingnew[creditnotice]', $setting['creditnotice'], 'radio');
 	showsetting('setting_styles_global_showusercard', 'settingnew[showusercard]', $setting['showusercard'], 'radio');
+	showsetting('setting_styles_global_showiplocation', 'settingnew[showiplocation]', $setting['showiplocation'], 'radio');
 	showsetting('setting_styles_global_anonymoustext', 'settingnew[anonymoustext]', $setting['anonymoustext'], 'text');
 	showtablefooter();
 	/*search*/

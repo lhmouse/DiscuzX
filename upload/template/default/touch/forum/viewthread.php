@@ -179,6 +179,7 @@
 							<!--{/if}-->
 						<!--{/if}-->
 					$post['dateline']
+					<!--{if $_G['setting']['showiplocation']}--><em class="pl10">$post['iplocation']</em><!--{/if}-->
 				</li>
 				<!--{if !$post['first'] && $_G['forum_thread']['special'] == 5}-->
 				<li class="mtime">

@@ -10,11 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class ip_wry_init_exception extends Exception {
-}
-
-class ip_wry {
-
+class ip_wry extends ip_base {
 
 	private static $instance = null;
 	private $fp = null;
@@ -25,7 +21,7 @@ class ip_wry {
 		$ipdatafile = constant('DISCUZ_ROOT').'./source/data/ip/wry.dat';
 		$this->fp = fopen($ipdatafile, 'rb');
 		if(!$this->fp) {
-			throw new ip_wry_init_exception();
+			throw new ip_base_exception();
 		}
 		if(!($DataBegin = fread($this->fp, 4)) || !($DataEnd = fread($this->fp, 4))) throw new ip_wry_init_exception();
 		$this->ipbegin = implode('', unpack('L', $DataBegin));

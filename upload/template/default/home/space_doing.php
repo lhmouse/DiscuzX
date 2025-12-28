@@ -93,7 +93,18 @@
 					<!--{hook/space_doing_content_top $doid}-->
 					<!--{if empty($diymode)}--><dd class="m avt"><a href="home.php?mod=space&uid=$dv[uid]" c="1"><!--{avatar($dv['uid'], 'small')}--></a></dd><!--{/if}-->
 					<dd class="{if empty($diymode)}ptm{else}ptw{/if} xs2">
-					<!--{if empty($diymode)}--><a href="home.php?mod=space&uid=$dv[uid]">$dv[username]</a>: <!--{/if}--><span>$dv[message]</span> <!--{if $dv[status] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}-->
+					<!--{if empty($diymode)}--><a href="home.php?mod=space&uid=$dv[uid]">$dv[username]</a><!--{/if}-->
+					</dd>
+					<dd class="xs1">
+						<span class="xg1"><!--{date($dv['dateline'], 'u')}--></span>
+						<!--{if $_G['setting']['showiplocation']}--><span class="pipe">|</span><span class="xg1">$dv['iplocation']</span><!--{/if}-->
+						<!--{if $dv[status] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}-->
+						<!--{if checkperm('managedoing')}-->
+						<span class="pipe">|</span><span class="pipe">IP: $dv[ip]:$dv[port]</span>
+						<!--{/if}-->
+					</dd>
+					<dd class="{if empty($diymode)}ptm{else}ptw{/if} xs2">
+						<span>$dv[message]</span>
 					</dd>
 					<!--{if $dv['attachments']}-->
 					<dd class="ptm">
@@ -131,24 +142,16 @@
 						<span id="{$key}_form_{$doid}_0"></span>
 					</dd>
 					<dd class="ptn xg1 doing_bottom">
-						<span class="y"><!--{date($dv['dateline'], 'u')}--></span>
-						
+						<!--{if $dv[uid]==$_G[uid] || checkperm('managedoing')}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv[id]&handlekey=doinghk_{$doid}_$dv[id]" id="{$key}_doing_delete_{$doid}_{$dv[id]}" onclick="showWindow(this.id, this.href, 'get', 0);" class="y"><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
 						<!--{if helper_access::check_module('doing')}-->
 						<a href="javascript:;" onclick="docomment_form($doid, 0, '$key')"><i class="fico-comment"></i>{lang reply}</a>
 						<!--{/if}-->
 						<!-- 点赞功能 -->
-						
 						<a href="javascript:;" class="doing_recommend_btn" data-doid="$doid" data-status="<!--{if $dv['recommendstatus']}-->1<!--{else}-->0<!--{/if}-->">
 							<i class="<!--{if $dv['recommendstatus']}-->fico-thumbup fc-i<!--{else}-->fico-thumbup fc-s<!--{/if}-->"></i> 
 							<span class="recommend_count">$dv[recomends]</span>
 						</a>
-						<!--{if $dv[uid]==$_G[uid] || checkperm('managedoing')}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv[id]&handlekey=doinghk_{$doid}_$dv[id]" id="{$key}_doing_delete_{$doid}_{$dv[id]}" onclick="showWindow(this.id, this.href, 'get', 0);"><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
-
 						<!--{hook/space_doing_content_toolbar $doid}-->
-
-						<!--{if checkperm('managedoing')}-->
-						<span class="pipe">IP: $dv[ip]:$dv[port]</span>
-						<!--{/if}-->
 					</dd>
 				</dl>
 			<!--{/loop}-->

@@ -218,7 +218,7 @@ class ip {
 	/*
 	 * 将IP转为位置，支持传入CIDR
 	 */
-	public static function convert($ip) {
+	public static function convert($ip, $simple = false) {
 		$return = '';
 		require childfile('ip', 'global/core');
 		return $return;

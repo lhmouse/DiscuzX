@@ -77,6 +77,10 @@
 							<div class="doing_card_info_top">
 								<a href="home.php?mod=space&uid=$dv['uid']&do=profile" id="author_$value['cid']" class="doing_card_info_name">$dv['username']</a>
 							</div>
+							<div class="doing_card_info_top">
+								<span class="xg1"><!--{date($dv['dateline'], 'u')}--></span>
+								<!--{if $_G['setting']['showiplocation']}--><span class="pl15 xg1">$dv['iplocation']</span><!--{/if}-->
+							</div>
 						</div>
 
 					</div>
@@ -106,7 +110,7 @@
 				<!--{/if}-->
 				<div class="doing_card_bottom">
 					<div class="doing_card_bottom_left">
-						<span class="doing_card_info-bottom-info"><!--{date($dv['dateline'], 'u')}--></span>
+						<span class="doing_card_info-bottom-info"></span>
 					</div>
 					<div class="doing_card_bottom_right">
 						<a href="javascript:;" class="recommend doing_recommend_btn" data-doid="$doid" data-status="<!--{if $dv['recommendstatus']}-->1<!--{else}-->0<!--{/if}-->">

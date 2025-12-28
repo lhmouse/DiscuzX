@@ -726,6 +726,11 @@ foreach($postlist as $pid => $post){
 			$postlist[$pid] = $post;
 		}
 	}
+	//支持IP省级地理信息
+	if($_G['setting']['showiplocation']){
+		$post['iplocation'] = ip::convert($post['useip'], true);
+		$postlist[$pid] = $post;
+	}
 }
 // 结束将json编辑器中的图片从未使用列表中移除
 
