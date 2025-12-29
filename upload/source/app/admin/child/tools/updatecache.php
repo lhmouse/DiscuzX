@@ -91,7 +91,7 @@ if($step == 1) {
 		if(in_array('data', $type)) {
 			updatecache(['styles']);
 		}else{
-			updatecache(['setting', 'styles']);
+			updatecache(['setting', 'styles', 'smilies_js']);
 		}
 		loadcache('style_default', true);
 		if(!in_array('data', $type)) {
