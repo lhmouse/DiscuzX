@@ -308,18 +308,19 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .listbox .boxbody>div { border-bottom: 1px solid var(--admincp-bordera); padding: 8px 0; }
 
 
-.retheader { padding: 0 20px; height:20px;background: #182433; display: flex; align-items: flex-start; flex-direction: column; margin: -10px -10px 10px -10px }
+.retheader { padding: 0 20px; height:20px;background: #182433; display: flex; align-items: flex-start; margin: -10px -10px 10px -10px;justify-content: space-between; }
 .retheader a:hover { text-decoration:none; }
     .retheader a path { fill: var(--admincp-btntxt); }
     .retheader a { color: var(--admincp-btntxt); font-size: 16px; }
     .retheader i:before { font-family: dzicon;font-size: 16px;font-style: normal;content: "\e6db"; }
+    .retheader a.index:before { font-family: dzicon; font-size: 16px;font-style: normal;content: "\e604"; }
     #retheader_menu { background: #182433; padding: 10px; }
         #retheader_menu li { margin: 0; padding: 0; list-style-type: none; }
-        #retheader_menu>ul { flex-grow: 1;overflow: auto; }
+        #retheader_menu>ul { flex-grow: 1; overflow: auto; display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap; }
         #retheader_menu span { color: var(--admincp-btntxt); }
-        #retheader_menu li[id^="lm_"] { float: left; }
+        #retheader_menu li[id^="lm_"] { width: 120px; }
         #retheader_menu a[id^="leftmn"] { background-color: #192433; font-size: 16px; }
-        #retheader_menu>ul a { font-size: 12px;display: flex;border-radius: 0;color: rgba(255, 255, 255, .7);margin-bottom: 0;padding: 4px 18px;height: 35px;align-items: center;text-decoration: none; }
+        #retheader_menu>ul a { font-size: 12px;display: flex;border-radius: 0;color: rgba(255, 255, 255, .7);margin-bottom: 0;padding: 2px 4px;height: 30px;align-items: center;text-decoration: none; }
         #retheader_menu>ul li.s span { font-size: 14px; color: #bcc3d3; line-height: 30px; font-weight: 400; padding: 14px 14px 0 14px; margin-left: 0px; }
         #retheader_menu>ul li.sp { display: none; }
 /* table */

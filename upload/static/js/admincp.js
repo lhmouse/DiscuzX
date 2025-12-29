@@ -554,7 +554,7 @@ function showretheader(title, jsmenu) {
 	if (ISFRAME && !parent.document.getElementById('leftmenu') && !parent.parent.document.getElementById('leftmenu')) {
 		document.write('<div class="retheader">' +
 		    '<a id="retheader" onmouseover="showMenu({\'ctrlid\':this.id})" href="' + document.location.origin + document.location.pathname + document.location.search + '&frames=yes">' +
-		    '<i></i> ' + title + '</a>' +
+		    '<i></i> ' + title + '</a><a class="index" href="index.php" target="_blank"></a>' +
 		    '</div><div id="retheader_menu" style="display:none"></div>');
 		appendscript(jsmenu);
 	}
