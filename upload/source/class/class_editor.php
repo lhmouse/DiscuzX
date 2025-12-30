@@ -229,6 +229,7 @@ class editorBlock {
 		$script = <<<EOF
 <script type="application/javascript">
 			const editorElem$rand = document.getElementById('codeflask-$id');
+			var isCollapsed$rand = true;
 			const flask$rand = new CodeFlask(editorElem$rand, {
 				language: '$language',
 				lineNumbers: true,
@@ -245,22 +246,115 @@ class editorBlock {
 				// in the editor changes.
 			    // console.log(code)
 			});
-			// flask.updateCode('云诺');
+			// flask.updateCode('');
 			// This will also trigger .onUpdate()
 			flask$rand.updateCode(code$rand);
 
 			const currentCode$rand = flask$rand.getCode();
             
-		            var coderow = parseInt('$n_count');
-			    if (coderow === undefined || coderow !== coderow || coderow === 0) {
-				    coderow = flask$rand.lineNumber;
+		            var coderow$rand = parseInt('$n_count');
+			    if (coderow$rand === undefined || coderow$rand !== coderow$rand || coderow$rand === 0) {
+				    coderow$rand = flask$rand.lineNumber;
 			    }
-		            if (coderow > 10 && coderow < 20) {
+			    
+		            if (coderow$rand < 20) {
 		                editorElem$rand.parentElement.style.height = '300px';
-		            } else if (coderow >= 20) {
+				editorElem$rand.style.height = '300px';
+		            } else if (coderow$rand >= 20) {
 		                editorElem$rand.parentElement.style.height = '500px';
+		                editorElem$rand.style.height = '500px';
 		            }
+		            
 			//console.log({currentCode$rand})    
+			
+			const copyBtn$rand = document.getElementById('codeflask-copy-{id}');
+			copyBtn$rand.addEventListener('click', function() {
+			    try {
+			        // 先检查 Clipboard API 是否可用
+			        if (navigator.clipboard && navigator.clipboard.writeText) {
+			            // 使用 Clipboard API 复制代码
+			            navigator.clipboard.writeText(code$rand).then(function() {
+			                // 复制成功提示
+			                const originalText = copyBtn$rand.innerHTML;
+			                copyBtn$rand.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+			                
+			                // 一段时间后恢复原文本
+			                setTimeout(function() {
+			                    copyBtn$rand.innerHTML = originalText;
+			                }, 2000);
+			            }).catch(function(err) {
+			                // 复制失败处理
+			                console.error('复制失败:', err);
+			                
+			                // 降级方案：使用传统的复制方法
+			                fallbackCopyTextToClipboard(code$rand);
+			            });
+			        } else {
+			            // Clipboard API 不可用时直接使用降级方案
+			            fallbackCopyTextToClipboard(code$rand);
+			        }
+			        
+			        // 提取降级方案为独立函数
+			        function fallbackCopyTextToClipboard(text) {
+			            const textArea = document.createElement('textarea');
+			            textArea.value = text;
+			            textArea.style.position = 'fixed';
+			            textArea.style.opacity = '0';
+			            document.body.appendChild(textArea);
+			            textArea.select();
+			            
+			            try {
+			                document.execCommand('copy');
+			                const originalText = copyBtn$rand.innerHTML;
+			                copyBtn$rand.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+			                
+			                setTimeout(function() {
+			                    copyBtn$rand.innerHTML = originalText;
+			                }, 2000);
+			            } catch (copyErr) {
+			                console.error('传统复制方法也失败了:', copyErr);
+			            } finally {
+			                document.body.removeChild(textArea);
+			            }
+			        }
+			    } catch (err) {
+			        console.error('复制功能不可用:', err);
+			    }
+			});
+			
+			const bottomBtn$rand = document.getElementById('codeflask-bottomBtn-{id}');
+			const Toggle$rand = document.getElementById('codeflask-Toggle-{id}');
+			bottomBtn$rand.addEventListener('click', function() {
+			        if (isCollapsed$rand) {
+			            // 展开代码
+			            isCollapsed$rand = false;
+				    const codeElement$rand = editorElem$rand.querySelector('.codeflask__code');
+			            if (codeElement$rand) {
+				            const actualHeight$rand = codeElement$rand.scrollHeight + 20;
+				           
+				            editorElem$rand.parentElement.style.height = actualHeight$rand + 'px';
+				            editorElem$rand.style.height = actualHeight$rand + 'px';
+			            }
+			            bottomBtn$rand.innerHTML = '<button class="editorjs-codeFlask_BottomToggle" title="折叠代码"><span class="toggle-icon">▲</span> 折叠</button>';
+			            Toggle$rand.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+				} else {
+			            // 折叠代码
+			            isCollapsed$rand = true;
+				    if (coderow$rand < 20) {
+			                editorElem$rand.parentElement.style.height = '300px';
+					editorElem$rand.style.height = '300px';
+			            } else if (coderow$rand >= 20) {
+			                editorElem$rand.parentElement.style.height = '500px';
+			                editorElem$rand.style.height = '500px';
+			            }
+			            bottomBtn$rand.innerHTML = '<button class="editorjs-codeFlask_BottomToggle expand-mode" title="展开代码" data-empty="false"><span class="toggle-icon">▼</span> 展开</button>';
+			            Toggle$rand.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+				}
+			});
+			
+			Toggle$rand.addEventListener('click', function() {
+				bottomBtn$rand.click();
+			});
 </script>
 EOF;
 		return $script;
