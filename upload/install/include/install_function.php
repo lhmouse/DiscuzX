@@ -1033,235 +1033,7 @@ function show_db_install($upgrade = false) {
 	$allinfo = base64_encode(serialize(compact('dbhost', 'dbuser', 'dbpw', 'dbname', 'tablepre', 'username', 'password', 'email', 'dzucfull', 'dzucstl', 'uid', 'myisam2innodb')));
 	init_install_log_file();
 	?>
-	<script type="text/javascript">
-		var ajax = {};
-		ajax.x = function () {
-			if (typeof XMLHttpRequest !== 'undefined') {
-				return new XMLHttpRequest();
-			}
-			var versions = ["MSXML2.XmlHttp.6.0", "MSXML2.XmlHttp.5.0", "MSXML2.XmlHttp.4.0", "MSXML2.XmlHttp.3.0", "MSXML2.XmlHttp.2.0", "Microsoft.XmlHttp"];
-			var xhr;
-			for (var i = 0; i < versions.length; i++) {
-				try {
-					xhr = new ActiveXObject(versions[i]);
-					break;
-				} catch (e) {
-				}
-			}
-			return xhr;
-		};
 
-		ajax.send = function (url, callback, method, data, async) {
-			if (async === undefined) {
-				async = true;
-			}
-			var x = ajax.x();
-			x.open(method, url, async);
-			x.onreadystatechange = function () {
-				if ((x.readyState == 4) && (typeof callback == 'function')) {
-					callback(x.responseText, x.status);
-				}
-			};
-			if (method == 'POST') {
-				x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			}
-			x.send(data);
-		};
-
-		ajax.get = function (url, callback) {
-			ajax.send(url, callback, 'GET', null, true);
-		};
-
-		function set_notice(str) {
-			document.getElementById('notice').innerHTML = str;
-			document.getElementById('notice').scrollTop = 100000000;
-		}
-
-		function append_notice(str) {
-			document.getElementById('notice').innerHTML += str;
-			document.getElementById('notice').scrollTop = 100000000;
-		}
-
-		function refresh_lastmsg() {
-			document.getElementById('lastmsg').innerHTML = document.querySelector('#notice>p:last-child').outerHTML;
-		}
-
-		function add_instfail() {
-			document.querySelector('.box').classList.add('instfail');
-			document.getElementById('notice').scrollTop = 100000000;
-		}
-
-		function refresh_progress() {
-			// 进度条的总数，需要跟进实际安装情况修改
-			var total = <?php echo !$upgrade ? 336 : 94; ?>;
-			var percent = document.querySelectorAll('#notice>p').length * 95 / total;
-			percent = (percent > 95) ? 95 : percent;
-			document.getElementById('pgb').style.width = percent + '%';
-		}
-
-		function init_bind() {
-			document.querySelector(".progress").addEventListener("click", function () {
-				var a = document.getElementById("notice");
-				a.style.display = "block" == a.style.display ? "" : "block";
-			});
-		}
-
-		function initinput() {
-			window.location = '<?php echo 'index.php?step='.($GLOBALS['step']);?>';
-		}
-
-		var old_log_data = '';
-		var log_offset = 0;
-		var stuck_times = 0;
-
-		function request_do_db_init() {
-			// 发起数据库初始化请求
-			ajax.get('index.php?<?= http_build_query(array('method' => !$upgrade ? 'do_db_init' : 'do_db_upgrade', 'allinfo' => $allinfo)) ?>', function (data) {
-				if (data.indexOf('Discuz! Database Error') !== -1 || data.indexOf('Discuz! System Error') !== -1 || data.indexOf('Fatal error') !== -1) {
-					var p = document.createElement('p');
-					p.innerHTML = '<?= lang('failed') ?> ' + data;
-					p.className = 'red';
-					append_notice(p.outerHTML);
-					append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
-					document.getElementById('laststep').value = '<?= lang('error_reinstall_msg') ?>';
-					add_instfail();
-					return;
-				}
-				// 失败时不继续请求后续操作
-				var resultDiv = document.getElementById('notice');
-				if (resultDiv.innerHTML.indexOf('<?= lang('failed') ?>') === -1) {
-					<?php if(!$upgrade) {?>
-					// 数据库表创建请求完成拉起数据库数据初始化
-					request_do_db_data_init();
-					<?php } else {?>
-					// 拉起系统初始化
-					request_do_initsys();
-					<?php } ?>
-				}
-			});
-		}
-
-		function request_do_db_data_init() {
-			ajax.get('index.php?<?= http_build_query(array('method' => 'do_db_data_init', 'allinfo' => $allinfo)) ?>', function (data) {
-				if (data.indexOf('Discuz! Database Error') !== -1 || data.indexOf('Discuz! System Error') !== -1 || data.indexOf('Fatal error') !== -1) {
-					var p = document.createElement('p');
-					p.innerHTML = '<?= lang('failed') ?> ' + data;
-					p.className = 'red';
-					append_notice(p.outerHTML);
-					append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
-					document.getElementById('laststep').value = '<?= lang('error_reinstall_msg') ?>';
-					add_instfail();
-					return;
-				}
-				var resultDiv = document.getElementById('notice');
-				if (resultDiv.innerHTML.indexOf('<?= lang('failed') ?>') === -1) {
-					<?php echo 'request_do_initsys();';?>
-				}
-			});
-		}
-
-		function request_log() {
-			var timest = new Date().getTime().toString().substring(5);
-			ajax.get('index.php?method=check_db_init_progress&timestamp=' + timest + '&offset=' + log_offset, function (data, status) {
-				// 新增对于 >= 400 状态的判断, 避免被服务器自带安全软件或者 CDN 拉黑地址之后不报错
-				if (status >= 400) {
-					append_notice('<p class="red">HTTP ' + status + ' <?= lang('failed') ?></p>');
-					append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
-					add_instfail();
-					return;
-				}
-				log_offset = parseInt(data.substring(0, 5));
-				data = data.substring(5);
-				if (stuck_times >= 120) {
-					// 如果安装程序两分钟没有响应, 则提示安装可能卡死
-					stuck_times = 0;
-					append_notice('<p class="red"><?= lang('error_stuck_msg') ?></p>');
-					setTimeout(request_log, 1000);
-					return;
-				}
-				if (data === old_log_data && stuck_times < 120) {
-					stuck_times++;
-					setTimeout(request_log, 1000);
-					return;
-				}
-				stuck_times = 0;
-				old_log_data = data;
-				append_notice(
-					data.trim().split("\n").map(function (l) {
-						if (l.indexOf('<?= lang('failed') ?>') !== -1) {
-							return '<p class="red">' + l + '</p>';
-						} else if (!l) {
-							return '';
-						} else {
-							return '<p>' + l + '</p>';
-						}
-					}).join('')
-				);
-				refresh_lastmsg();
-				refresh_progress();
-				if (data.indexOf('<?= lang('failed') ?>') !== -1) {
-					append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
-					add_instfail();
-					return;
-				}
-				if (data.indexOf('<?= lang($succlang) ?>') === -1) {
-					setTimeout(request_log, 200);
-				}
-			});
-		}
-
-		function request_do_initsys() {
-			var resultDiv = document.getElementById('notice');
-			// 数据库初始化失败不进行系统初始化
-			if (resultDiv.innerHTML.indexOf('<?= lang('failed') ?>') !== -1) {
-				if (document.getElementById('laststep').value.indexOf('<?= lang('error_reinstall_msg') ?>') === -1) {
-					document.getElementById('laststep').value = '<?= lang('error_quit_msg') ?>';
-				}
-				return;
-			}
-			if (resultDiv.innerHTML.indexOf('<?= lang($succlang) ?>') !== -1) {
-				// 数据库初始化成功就进行系统初始化
-				append_notice("<p><?= lang('initsys') ?> ... </p>");
-				refresh_lastmsg();
-				ajax.get('../misc.php?mod=initsys<?php if($upgrade) {
-					echo '&force='.rawurlencode(authcode(time(), 'ENCODE', $_config['security']['authkey']));
-				} ?>', function (callback, status) {
-					if (status >= 400 || callback.indexOf('Access Denied') !== -1 || callback.indexOf('Discuz! Database Error') !== -1 || callback.indexOf('Discuz! System Error') !== -1 || callback.indexOf('Fatal error') !== -1) {
-						var p = document.createElement('p');
-						p.className = 'red';
-						if (status >= 400) {
-							p.innerText = 'HTTP ' + status + ' <?= lang('failed') ?> ' + callback;
-						} else {
-							p.innerText = '<?= lang('failed') ?> ' + callback;
-						}
-						append_notice(p.outerHTML);
-						append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
-						document.getElementById('laststep').value = '<?= lang('error_quit_msg') ?>';
-						add_instfail();
-						return;
-					}
-					append_notice('<p><?= lang('initsys').lang('succeed') ?></p>');
-					refresh_lastmsg();
-					document.getElementById('pgb').style.width = '100%';
-					document.getElementById('pgb').className = '';
-					document.getElementById('laststep').value = '<?= lang('succeed') ?>';
-					document.getElementById('laststep').disabled = false;
-					window.setTimeout(function () {
-						window.location = 'index.php?method=ext_info';
-					}, 1000);
-				});
-			} else {
-				// 数据库初始化状态未知时不做初始化, 一秒钟后重新判断数据库初始化状态
-				setTimeout(request_do_initsys, 1000);
-			}
-		}
-
-		window.onload = function () {
-			request_do_db_init();
-			init_bind();
-			setTimeout(request_log, 500);
-		}
-	</script>
 	<div class="box">
 		<div class="desc" id="lastmsg"><?= lang('install_in_processed') ?></div>
 		<div class="progress">
@@ -1273,6 +1045,79 @@ function show_db_install($upgrade = false) {
 		<input type="button" class="btn" name="submit" value="<?php echo lang('install_in_processed'); ?>"
 		       disabled="disabled" id="laststep" onclick="initinput()">
 	</div>
+    <script type="text/javascript">
+        var eventSource = null;
+        function sse_start(url,cb) {
+            eventSource = new EventSource(url);
+            eventSource.onmessage = function(e) {
+                cb(e.data);
+            };
+            eventSource.onerror = function(e) {
+                console.log(e)
+                add_instfail();
+            };
+        }
+        function append_notice(str) {
+            document.getElementById('notice').innerHTML += str;
+            document.getElementById('notice').scrollTop = 100000000;
+        }
+
+        function refresh_lastmsg() {
+            document.getElementById('lastmsg').innerHTML = document.querySelector('#notice>p:last-child').outerHTML;
+        }
+
+        function add_instfail() {
+            document.querySelector('.box').classList.add('instfail');
+            document.getElementById('notice').scrollTop = 100000000;
+            eventSource.close();
+        }
+
+        function refresh_progress() {
+            // 进度条的总数，需要跟进实际安装情况修改
+            var total = <?php echo !$upgrade ? 336 : 94; ?>;
+            var percent = document.querySelectorAll('#notice>p').length * 95 / total;
+            percent = (percent > 95) ? 95 : percent;
+            document.getElementById('pgb').style.width = percent + '%';
+        }
+
+
+        sse_start('index.php?<?= http_build_query(array('method' => !$upgrade ? 'do_db_init' : 'do_db_upgrade', 'allinfo' => $allinfo)) ?>',function(data)
+        {
+            if(data){
+                append_notice(
+                    data.trim().split("\n").map(function (l) {
+                        if (l.indexOf('<?= lang('failed') ?>') !== -1) {
+                            return '<p class="red">' + l + '</p>';
+                        } else if (!l) {
+                            return '';
+                        } else {
+                            return '<p>' + l + '</p>';
+                        }
+                    }).join('')
+                );
+
+                refresh_lastmsg();
+                refresh_progress();
+                if (data.indexOf('<?= lang('failed') ?>') !== -1) {
+                    append_notice('<p class="red"><?= lang('error_quit_msg') ?></p>');
+                    add_instfail();
+                    return;
+                }
+                if (data.indexOf('<?= lang($succlang) ?>') !== -1) {
+                    eventSource.close();
+                    append_notice('<p><?= lang('initsys').lang('succeed') ?></p>');
+                    document.getElementById('pgb').style.width = '100%';
+                    document.getElementById('pgb').className = '';
+                    document.getElementById('laststep').value = '<?= lang('succeed') ?>';
+                    document.getElementById('laststep').disabled = false;
+                    window.setTimeout(function () {
+                        window.location = 'index.php?method=ext_info';
+                    }, 1000);
+                }
+            }
+
+        })
+	</script>
 	<?php
 }
 
@@ -1441,6 +1286,23 @@ function fsocketopen($hostname, $port = 80, &$errno = null, &$errstr = null, $ti
 		$fp = @stream_socket_client($hostname.':'.$port, $errno, $errstr, $timeout);
 	}
 	return $fp;
+}
+
+function sse_header(){
+    @set_time_limit(0);
+    @ignore_user_abort(true);
+    ini_set('max_execution_time', 0);
+    ini_set('mysql.connect_timeout', 0);
+
+    header_remove();
+    ob_end_clean();
+    ob_implicit_flush();
+    header("X-Accel-Buffering: no");
+    header('Content-Type: text/event-stream');
+    header('Cache-Control: no-cache');
+    header('Connection: keep-alive');
+    header('Access-Control-Allow-Origin: *');
+    ob_start();
 }
 
 function dfopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE, $ip = '', $timeout = 15, $block = TRUE, $encodetype = 'URLENCODE', $allowcurl = TRUE) {
@@ -2337,17 +2199,9 @@ function init_install_log_file() {
 }
 
 function append_to_install_log_file($message, $close = false) {
-	static $fh = false;
-	if(!$fh) {
-		$fh = fopen(INST_LOG_PATH, "a+");
-	}
-	if($fh) {
-		fwrite($fh, $message);
-		fflush($fh);
-		if($close) {
-			fclose($fh);
-		}
-	}
+    echo "data:{$message}\n\n";
+    ob_flush();
+    flush();
 }
 
 function read_sql($f) {

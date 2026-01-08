@@ -380,16 +380,14 @@ if($method == 'show_license') {
 		show_msg('tablepre_exists', $tablepre, 0);
 	}
 } elseif($method == 'do_db_init') {
+
 	$allinfo = getgpc('allinfo');
 	$allinfo_arr = unserialize(base64_decode($allinfo));
 	extract($allinfo_arr);
 
-	@set_time_limit(0);
-	@ignore_user_abort(true);
-	ini_set('max_execution_time', 0);
-	ini_set('mysql.connect_timeout', 0);
+    sse_header();
 
-	$db = new dbstuff;
+    $db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
 
 	if($dzucfull) {
@@ -398,11 +396,106 @@ if($method == 'show_license') {
 
 	$sql = read_sql($sqlfile);
 	if(!runquery($sql)) {
-		exit();
+        append_to_install_log_file(lang('failed'));
 	}
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
 
-	!VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
+
+
+    $sql = read_sql($data_sqlfile);
+    if(!runquery($sql)) {
+        exit();
+    }
+
+
+    !VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
+
+    $onlineip = $_SERVER['REMOTE_ADDR'];
+    $timestamp = time();
+    $backupdir = substr(md5((isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '').$_SERVER['HTTP_USER_AGENT'].substr($timestamp, 0, 4)), 8, 6);
+    $ret = false;
+    if(is_dir(ROOT_PATH.'data/backup')) {
+        $ret = @rename(ROOT_PATH.'data/backup', ROOT_PATH.'data/backup_'.$backupdir);
+    }
+    if(!$ret) {
+        @mkdir(ROOT_PATH.'data/backup_'.$backupdir, 0777);
+    }
+    if(is_dir(ROOT_PATH.'data/backup_'.$backupdir)) {
+        $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('backupdir', '$backupdir')");
+    }
+    $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+    $siteuniqueid = 'DX'.$chars[date('y') % 60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5($onlineip.$timestamp), 0, 4).random(4);
+
+    $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('authkey', '')");
+    $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('siteuniqueid', '$siteuniqueid')");
+    $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('adminemail', '$email')");
+
+    install_extra_setting();
+
+    $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('backupdir', '".$backupdir."')");
+
+    $password = md5(random(10));
+
+    $db->query("REPLACE INTO {$tablepre}common_member (uid, loginname, username, password, adminid, groupid, email, regdate, timeoffset) VALUES ('$uid', '$username', '$username', '$password', '1', '1', '$email', '".time()."', '9999');");
+
+    // UID 是变量, 不做适配会导致积分操作等异常
+    if($uid) {
+        $db->query("REPLACE INTO {$tablepre}common_member_count SET uid='$uid';");
+        $db->query("REPLACE INTO {$tablepre}common_member_status SET uid='$uid';");
+        $db->query("REPLACE INTO {$tablepre}common_member_field_forum SET uid='$uid';");
+        $db->query("REPLACE INTO {$tablepre}common_member_field_home SET uid='$uid';");
+        $db->query("REPLACE INTO {$tablepre}common_member_profile SET uid='$uid';");
+    }
+
+    $notifyusers = addslashes('a:1:{i:1;a:2:{s:8:"username";s:'.strlen($username).':"'.$username.'";s:5:"types";s:20:"11111111111111111111";}}');
+    $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('notifyusers', '$notifyusers')");
+
+    $db->query("UPDATE {$tablepre}common_cron SET lastrun='0', nextrun='".($timestamp + 3600)."'");
+    $db->query("UPDATE {$tablepre}common_adminnote SET dateline='$timestamp', expiration='".($timestamp + 2592000)."'");
+
+    install_data($username, $uid);
+
+    $portalstatus = 1;
+    $groupstatus = $homestatus = 0;
+
+    if(!$portalstatus) {
+        $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('portalstatus', '0')");
+    }
+
+    if(!$groupstatus) {
+        $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('groupstatus', '0')");
+    }
+
+    if(!$homestatus) {
+        $db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('homestatus', '0')");
+    }
+
+    dir_clear(ROOT_PATH.'./data/template');
+    dir_clear(ROOT_PATH.'./data/cache');
+    dir_clear(ROOT_PATH.'./data/threadcache');
+
+    foreach($serialize_sql_setting as $k => $v) {
+        $v = addslashes(serialize($v));
+        $db->query("REPLACE INTO {$tablepre}common_setting VALUES ('$k', '$v')");
+    }
+
+    $query = $db->query("SELECT COUNT(*) FROM {$tablepre}common_member");
+    $totalmembers = $db->result($query, 0);
+    $userstats = ['totalmembers' => $totalmembers, 'newsetuser' => $username];
+    $ctype = 1;
+    $data = addslashes(serialize($userstats));
+    $db->query("REPLACE INTO {$tablepre}common_syscache (cname, ctype, dateline, data) VALUES ('userstats', '$ctype', '".time()."', '$data')");
+
+    //自动登录前台
+    $saltkey = random(8);
+    $authkey = md5($_config['security']['authkey'].$saltkey);
+    $cookiepre = $_config['cookie']['cookiepre'].substr(md5($_config['cookie']['cookiepath'].'|'.$_config['cookie']['cookiedomain']), 0, 4).'_';
+    setcookie($cookiepre.'saltkey', $saltkey, time() + 84600, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
+    setcookie($cookiepre.'auth', authcode("{$password}\t{$uid}", 'ENCODE', $authkey), time() + 84600, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
+    setcookie($cookiepre.'adminauth', authcode("{$password}\t{$uid}", 'ENCODE', $authkey), 0, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
+    $db->query("insert into {$tablepre}common_admincp_session SET uid='$uid', adminid=1, panel=1, dateline='$timestamp', ip='".addslashes($_SERVER['REMOTE_ADDR'])."', errorcount='-1'");
+
+    !VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
 } elseif($method == 'do_db_upgrade') {
 	include ROOT_PATH.CONFIG;
 	$_config['memory']['redis']['server'] = '';
@@ -413,10 +506,7 @@ if($method == 'show_license') {
 	$allinfo_arr = unserialize(base64_decode($allinfo));
 	extract($allinfo_arr);
 
-	@set_time_limit(0);
-	@ignore_user_abort(true);
-	ini_set('max_execution_time', 0);
-	ini_set('mysql.connect_timeout', 0);
+    sse_header();
 
 	$db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
@@ -443,97 +533,6 @@ if($method == 'show_license') {
 	$db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
 
-	$sql = read_sql($data_sqlfile);
-	if(!runquery($sql)) {
-		exit();
-	}
-
-	$onlineip = $_SERVER['REMOTE_ADDR'];
-	$timestamp = time();
-	$backupdir = substr(md5((isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '').$_SERVER['HTTP_USER_AGENT'].substr($timestamp, 0, 4)), 8, 6);
-	$ret = false;
-	if(is_dir(ROOT_PATH.'data/backup')) {
-		$ret = @rename(ROOT_PATH.'data/backup', ROOT_PATH.'data/backup_'.$backupdir);
-	}
-	if(!$ret) {
-		@mkdir(ROOT_PATH.'data/backup_'.$backupdir, 0777);
-	}
-	if(is_dir(ROOT_PATH.'data/backup_'.$backupdir)) {
-		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('backupdir', '$backupdir')");
-	}
-	$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
-	$siteuniqueid = 'DX'.$chars[date('y') % 60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5($onlineip.$timestamp), 0, 4).random(4);
-
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('authkey', '')");
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('siteuniqueid', '$siteuniqueid')");
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('adminemail', '$email')");
-
-	install_extra_setting();
-
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('backupdir', '".$backupdir."')");
-
-	$password = md5(random(10));
-
-	$db->query("REPLACE INTO {$tablepre}common_member (uid, loginname, username, password, adminid, groupid, email, regdate, timeoffset) VALUES ('$uid', '$username', '$username', '$password', '1', '1', '$email', '".time()."', '9999');");
-
-	// UID 是变量, 不做适配会导致积分操作等异常
-	if($uid) {
-		$db->query("REPLACE INTO {$tablepre}common_member_count SET uid='$uid';");
-		$db->query("REPLACE INTO {$tablepre}common_member_status SET uid='$uid';");
-		$db->query("REPLACE INTO {$tablepre}common_member_field_forum SET uid='$uid';");
-		$db->query("REPLACE INTO {$tablepre}common_member_field_home SET uid='$uid';");
-		$db->query("REPLACE INTO {$tablepre}common_member_profile SET uid='$uid';");
-	}
-
-	$notifyusers = addslashes('a:1:{i:1;a:2:{s:8:"username";s:'.strlen($username).':"'.$username.'";s:5:"types";s:20:"11111111111111111111";}}');
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('notifyusers', '$notifyusers')");
-
-	$db->query("UPDATE {$tablepre}common_cron SET lastrun='0', nextrun='".($timestamp + 3600)."'");
-	$db->query("UPDATE {$tablepre}common_adminnote SET dateline='$timestamp', expiration='".($timestamp + 2592000)."'");
-
-	install_data($username, $uid);
-
-	$portalstatus = 1;
-	$groupstatus = $homestatus = 0;
-
-	if(!$portalstatus) {
-		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('portalstatus', '0')");
-	}
-
-	if(!$groupstatus) {
-		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('groupstatus', '0')");
-	}
-
-	if(!$homestatus) {
-		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('homestatus', '0')");
-	}
-
-	dir_clear(ROOT_PATH.'./data/template');
-	dir_clear(ROOT_PATH.'./data/cache');
-	dir_clear(ROOT_PATH.'./data/threadcache');
-
-	foreach($serialize_sql_setting as $k => $v) {
-		$v = addslashes(serialize($v));
-		$db->query("REPLACE INTO {$tablepre}common_setting VALUES ('$k', '$v')");
-	}
-
-	$query = $db->query("SELECT COUNT(*) FROM {$tablepre}common_member");
-	$totalmembers = $db->result($query, 0);
-	$userstats = ['totalmembers' => $totalmembers, 'newsetuser' => $username];
-	$ctype = 1;
-	$data = addslashes(serialize($userstats));
-	$db->query("REPLACE INTO {$tablepre}common_syscache (cname, ctype, dateline, data) VALUES ('userstats', '$ctype', '".time()."', '$data')");
-
-	//自动登录前台
-	$saltkey = random(8);
-	$authkey = md5($_config['security']['authkey'].$saltkey);
-	$cookiepre = $_config['cookie']['cookiepre'].substr(md5($_config['cookie']['cookiepath'].'|'.$_config['cookie']['cookiedomain']), 0, 4).'_';
-	setcookie($cookiepre.'saltkey', $saltkey, time() + 84600, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
-	setcookie($cookiepre.'auth', authcode("{$password}\t{$uid}", 'ENCODE', $authkey), time() + 84600, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
-	setcookie($cookiepre.'adminauth', authcode("{$password}\t{$uid}", 'ENCODE', $authkey), 0, $_config['cookie']['cookiepath'], $_config['cookie']['cookiedomain'], is_https(), true);
-	$db->query("insert into {$tablepre}common_admincp_session SET uid='$uid', adminid=1, panel=1, dateline='$timestamp', ip='".addslashes($_SERVER['REMOTE_ADDR'])."', errorcount='-1'");
-
-	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
 } elseif($method == 'check_db_init_progress') {
 	@set_time_limit(5);
 	send_mime_type_header("text/plain");
