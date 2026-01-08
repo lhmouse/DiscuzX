@@ -657,11 +657,7 @@ class register_ctl {
 				}
 			}
 
-			$censorexp = '/^('.str_replace(['\\*', "\r\n", ' '], ['.*', '|', ''], preg_quote(($this->setting['censoruser'] = trim($this->setting['censoruser'])), '/')).')$/i';
-
-			if($this->setting['censoruser'] && @preg_match($censorexp, $username)) {
-				showmessage('profile_username_protect');
-			}
+			check_protect_username($username);
 
 			if($this->setting['regverify'] == 2 && !trim($_GET['regmessage'])) {
 				showmessage('profile_required_info_invalid');

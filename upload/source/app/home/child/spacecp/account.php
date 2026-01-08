@@ -653,6 +653,7 @@ function chgusername($param, $tmp_load = false) {
 			}
 		}
 		$username = getgpc('username');
+		check_protect_username($username);
 		loaducenter();
 		uc_user_chgusername($_G['uid'], $username);
 		if($setting['credits_pay'] > 0 && $username != $_G['username']) {

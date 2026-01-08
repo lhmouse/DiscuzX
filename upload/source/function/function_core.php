@@ -2807,6 +2807,21 @@ function dpreg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 
 	return _dpreg_replace($pattern, $replacement, $subject, $limit, $count);
 }
 
+function check_protect_username($username, $return = false) {
+	global $_G;
+
+	$censorexp = '/^('.str_replace(['\\*', "\r\n", ' '], ['.*', '|', ''], preg_quote(($_G['setting']['censoruser'] = trim($_G['setting']['censoruser'])), '/')).')$/i';
+
+	if($_G['setting']['censoruser'] && @preg_match($censorexp, $username)) {
+		if(!$return) {
+			showmessage('profile_username_protect');
+		} else {
+			return true;
+		}
+	}
+	return false;
+}
+
 function delay_task($op, $key, $func = [], $ttl = 86400) {
 	$key = 'dzDt_'.$key;
 	switch($op) {
