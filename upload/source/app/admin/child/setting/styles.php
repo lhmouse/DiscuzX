@@ -119,7 +119,6 @@ if(submitcheck('settingsubmit')) {
 	$settingnew['guestviewthumb']['height'] = $settingnew['guestviewthumb']['height'] ? $settingnew['guestviewthumb']['height'] : 100;
 
 	$settingnew['guesttipsinthread']['flag'] = intval($settingnew['guesttipsinthread']['flag']) ? 1 : 0;
-	$settingnew['guesttipsinthread']['text'] = $settingnew['guesttipsinthread']['text'];
 
 
 	if($showinthreadfields) {

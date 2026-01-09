@@ -122,7 +122,7 @@ if($op == 'comment') {
 	}
 
 	$doid = intval($_GET['doid']);
-	$clist = $do = [];
+	$clist = $do = $doids =[];
 	$icon = $_GET['icon'] == 'plus' ? 'minus' : 'plus';
 	if($doid) {
 		if($value = table_home_doing::t()->fetch($doid)) {

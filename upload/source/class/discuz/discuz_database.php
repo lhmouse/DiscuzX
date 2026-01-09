@@ -279,6 +279,10 @@ class discuz_database {
 
 		switch($glue) {
 			case '>=':
+			case '<=':
+			case '<>':
+			case '<':
+			case '>':
 			case '=':
 				return $field.$glue.self::quote($val);
 				break;
@@ -291,12 +295,6 @@ class discuz_database {
 			case '^':
 			case '&~':
 				return $field.'='.$field.$glue.self::quote($val);
-				break;
-			case '>':
-			case '<':
-			case '<>':
-			case '<=':
-				return $field.$glue.self::quote($val);
 				break;
 
 			case 'like':

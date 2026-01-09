@@ -9,7 +9,7 @@
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
-const NOROBOT = TRUE;
+const NOROBOT = true;
 
 if(!$_G['setting']['search']['forum']['status']) {
 	showmessage('search_forum_closed');
@@ -230,19 +230,19 @@ if(!submitcheck('searchsubmit', 1)) {
 				require_once libfile('class/sphinx');
 
 				$s = new SphinxClient();
-				$s->setServer($_G['setting']['sphinxhost'], intval($_G['setting']['sphinxport']));
-				$s->setMaxQueryTime(intval($_G['setting']['sphinxmaxquerytime']));
+				$s->SetServer($_G['setting']['sphinxhost'], intval($_G['setting']['sphinxport']));
+				$s->SetMaxQueryTime(intval($_G['setting']['sphinxmaxquerytime']));
 				$s->SetRankingMode($_G['setting']['sphinxrank']);
-				$s->setLimits(0, intval($_G['setting']['sphinxlimit']), intval($_G['setting']['sphinxlimit']));
-				$s->setGroupBy('tid', SPH_GROUPBY_ATTR);
+				$s->SetLimits(0, intval($_G['setting']['sphinxlimit']), intval($_G['setting']['sphinxlimit']));
+				$s->SetGroupBy('tid', SPH_GROUPBY_ATTR);
 
 				if($srchfilter == 'digest') {
-					$s->setFilterRange('digest', 1, 3, false);
+					$s->SetFilterRange('digest', 1, 3, false);
 				}
 				if($srchfilter == 'top') {
-					$s->setFilterRange('displayorder', 1, 2, false);
+					$s->SetFilterRange('displayorder', 1, 2, false);
 				} else {
-					$s->setFilterRange('displayorder', 0, 2, false);
+					$s->SetFilterRange('displayorder', 0, 2, false);
 				}
 
 				if(!empty($srchfrom) && empty($srchtxt) && empty($srchuid) && empty($srchuname)) {
@@ -266,21 +266,21 @@ if(!submitcheck('searchsubmit', 1)) {
 						$uids = [$srchuid];
 					}
 					if(is_array($uids) && count($uids) > 0) {
-						$s->setFilter('authorid', $uids, false);
+						$s->SetFilter('authorid', $uids, false);
 					}
 
 					if($srchtxt) {
 						if(preg_match("/\".*\"/", $srchtxt)) {
 							$spx_matchmode = 'PHRASE';
-							$s->setMatchMode(SPH_MATCH_PHRASE);
+							$s->SetMatchMode(SPH_MATCH_PHRASE);
 						} elseif(preg_match('(AND|\+|&|\s)', $srchtxt) && !preg_match('(OR|\|)', $srchtxt)) {
 							$srchtxt = preg_replace('/( AND |&| )/is', '+', $srchtxt);
 							$spx_matchmode = 'ALL';
-							$s->setMatchMode(SPH_MATCH_ALL);
+							$s->SetMatchMode(SPH_MATCH_ALL);
 						} else {
 							$srchtxt = preg_replace('/( OR |\|)/is', '+', $srchtxt);
 							$spx_matchmode = 'ANY';
-							$s->setMatchMode(SPH_MATCH_ANY);
+							$s->SetMatchMode(SPH_MATCH_ANY);
 						}
 						$srchtxt = str_replace('*', '%', addcslashes($srchtxt, '%_'));
 						foreach(explode('+', $srchtxt) as $text) {
@@ -301,10 +301,10 @@ if(!submitcheck('searchsubmit', 1)) {
 							$spx_timemix = TIMESTAMP - $srchfrom;
 							$spx_timemax = TIMESTAMP;
 						}
-						$s->setFilterRange('lastpost', $spx_timemix, $spx_timemax, false);
+						$s->SetFilterRange('lastpost', $spx_timemix, $spx_timemax, false);
 					}
 					if(!empty($specials)) {
-						$s->setFilter('special', explode(',', $special), false);
+						$s->SetFilter('special', explode(',', $special), false);
 					}
 
 					$keywords = str_replace('%', '+', $srchtxt).(trim($srchuname) ? '+'.str_replace('%', '+', $srchuname) : '');
@@ -312,9 +312,9 @@ if(!submitcheck('searchsubmit', 1)) {
 
 				}
 				if($srchtype == 'fulltext') {
-					$result = $s->query("'".$srchtxt."'", $_G['setting']['sphinxmsgindex']);
+					$result = $s->Query("'".$srchtxt."'", $_G['setting']['sphinxmsgindex']);
 				} else {
-					$result = $s->query($srchtxt, $_G['setting']['sphinxsubindex']);
+					$result = $s->Query($srchtxt, $_G['setting']['sphinxsubindex']);
 				}
 				$tids = [];
 				if($result) {
@@ -384,7 +384,7 @@ if(!submitcheck('searchsubmit', 1)) {
 
 				$num = $ids = 0;
 				$_G['setting']['search']['forum']['maxsearchresults'] = $_G['setting']['search']['forum']['maxsearchresults'] ? intval($_G['setting']['search']['forum']['maxsearchresults']) : 500;
-				$query = DB::query('SELECT ' .($srchtype == 'fulltext' ? 'DISTINCT' : '')." t.tid, t.closed, t.author, t.authorid $sqlsrch ORDER BY tid DESC LIMIT ".$_G['setting']['search']['forum']['maxsearchresults']);
+				$query = DB::query('SELECT '.($srchtype == 'fulltext' ? 'DISTINCT' : '')." t.tid, t.closed, t.author, t.authorid $sqlsrch ORDER BY tid DESC LIMIT ".$_G['setting']['search']['forum']['maxsearchresults']);
 				while($thread = DB::fetch($query)) {
 					$ids .= ','.$thread['tid'];
 					$num++;

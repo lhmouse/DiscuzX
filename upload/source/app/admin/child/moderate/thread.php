@@ -331,7 +331,6 @@ if(!submitcheck('modsubmit') && !$_GET['fast']) {
 					$feed = [
 						'icon' => 'thread',
 						'title_template' => 'feed_thread_title',
-						'title_data' => [],
 						'body_template' => 'feed_thread_message',
 						'body_data' => [],
 						'title_data' => [],

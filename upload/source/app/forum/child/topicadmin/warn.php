@@ -132,7 +132,7 @@ if(!submitcheck('modsubmit')) {
 		'redirect' => "forum.php?mod=viewthread&tid={$_G['tid']}&page=$page",
 		'reasonpm' => ($sendreasonpm ? ['data' => $posts, 'var' => 'post', 'item' => 'reason_warn_post', 'notictype' => 'post'] : []),
 		'reasonvar' => ['tid' => $thread['tid'], 'subject' => $thread['subject'], 'modaction' => $modaction, 'reason' => $reason,
-			'warningexpiration' => $_G['setting']['warningexpiration'], 'warninglimit' => $_G['setting']['warninglimit'], 'warningexpiration' => $_G['setting']['warningexpiration'],
+			'warningexpiration' => $_G['setting']['warningexpiration'], 'warninglimit' => $_G['setting']['warninglimit'],
 			'authorwarnings' => $authorwarnings],
 		'modtids' => 0,
 		'modlog' => $thread

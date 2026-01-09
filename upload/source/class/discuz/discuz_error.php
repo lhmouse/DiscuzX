@@ -304,7 +304,7 @@ EOT;
 				echo '<br />'.$suggestion;
 			}
 
-			'</div>';
+			echo '</div>';
 			$endmsg = lang('error', $_G['adminid'] ? 'error_end_message_admin' : 'error_end_message_user', ['host' => $host]);
 		} else {
 			$endmsg = '';

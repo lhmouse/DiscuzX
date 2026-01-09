@@ -223,9 +223,9 @@ class rp {
 			}
 			$start = dgmdate(TIMESTAMP - 30 * 86400, 'Ymd');
 			$end = dgmdate(TIMESTAMP, 'Ymd');
-			$stats = table_restful_stat::t()->fetch_all_stat($appid, '', $start, $end);
+			$allstats = table_restful_stat::t()->fetch_all_stat($appid, '', $start, $end);
 			$statdata = [];
-			foreach($stats as $api => $stats) {
+			foreach($allstats as $api => $stats) {
 				foreach($stats as $date => $count) {
 					$statdata['all'] += $count;
 					$statdata[$api] += $count;
@@ -360,9 +360,9 @@ class rp {
 
 		$start = dgmdate(TIMESTAMP - 30 * 86400, 'Ymd');
 		$end = dgmdate(TIMESTAMP, 'Ymd');
-		$stats = table_restful_stat::t()->fetch_all_stat($appid, $api != 'all' ? $api : '', $start, $end);
+		$allstats = table_restful_stat::t()->fetch_all_stat($appid, $api != 'all' ? $api : '', $start, $end);
 		$statdata = [];
-		foreach($stats as $stats) {
+		foreach($allstats as $stats) {
 			foreach($stats as $date => $count) {
 				$statdata[$date] += $count;
 			}

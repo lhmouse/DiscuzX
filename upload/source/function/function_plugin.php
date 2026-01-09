@@ -604,13 +604,13 @@ function threadtype_install($name, $fieldPrefix, $typeData, $fieldData) {
 
 	$fieldIndex = [];
 	$classId = table_forum_typeoption::t()->insert(['title' => $name, 'identifier' => $fieldPrefix], 1);
-	foreach($fieldData as $fieldKey => $fieldData) {
-		$fieldData['classid'] = $classId;
-		$fieldId = table_forum_typeoption::t()->insert($fieldData, 1);
-		$fieldIndex[$fieldId] = $fieldData;
+	foreach($fieldData as $fieldKey => $row) {
+		$row['classid'] = $classId;
+		$fieldId = table_forum_typeoption::t()->insert($row, 1);
+		$fieldIndex[$fieldId] = $row;
 	}
 	$typeId = table_forum_threadtype::t()->insert($typeData, 1);
-	foreach($fieldIndex as $fieldId => $fieldData) {
+	foreach($fieldIndex as $fieldId => $row) {
 		table_forum_typevar::t()->insert(['sortid' => $typeId, 'optionid' => $fieldId, 'available' => 1, 'subjectshow' => 1]);
 	}
 

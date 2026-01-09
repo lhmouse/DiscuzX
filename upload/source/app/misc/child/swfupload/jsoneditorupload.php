@@ -253,7 +253,6 @@ function get_file_mime_type($file) {
 		// 视频类型
 		'mp4' => 'video/mp4',
 		'webm' => 'video/webm',
-		'ogg' => 'video/ogg',
 		'flv' => 'video/x-flv',
 		'mov' => 'video/quicktime',
 		'avi' => 'video/x-msvideo',
