@@ -3863,8 +3863,8 @@ CREATE TABLE pre_home_doing_attachment
 	KEY `doid` (`doid`)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `pre_home_doing_recomend_log`;
-CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
+DROP TABLE IF EXISTS pre_home_doing_recomend_log;
+CREATE TABLE pre_home_doing_recomend_log
 (
 	id              int(10) unsigned NOT NULL AUTO_INCREMENT,
 	doid            int(10) unsigned NOT NULL DEFAULT '0',
