@@ -384,10 +384,7 @@ if($method == 'show_license') {
 	$allinfo_arr = unserialize(base64_decode($allinfo));
 	extract($allinfo_arr);
 
-	@set_time_limit(0);
-	@ignore_user_abort(true);
-	ini_set('max_execution_time', 0);
-	ini_set('mysql.connect_timeout', 0);
+	sse_header();
 
 	$db = new dbstuff;
 	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
@@ -398,55 +395,18 @@ if($method == 'show_license') {
 
 	$sql = read_sql($sqlfile);
 	if(!runquery($sql)) {
-		exit();
+		sse_output(lang('failed'));
 	}
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
 
-	!VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
-} elseif($method == 'do_db_upgrade') {
-	include ROOT_PATH.CONFIG;
-	$_config['memory']['redis']['server'] = '';
-	$_config['lang'] = $_COOKIE['LANG'];
-	save_config_file(ROOT_PATH.CONFIG, $_config, []);
-
-	$allinfo = getgpc('allinfo');
-	$allinfo_arr = unserialize(base64_decode($allinfo));
-	extract($allinfo_arr);
-
-	@set_time_limit(0);
-	@ignore_user_abort(true);
-	ini_set('max_execution_time', 0);
-	ini_set('mysql.connect_timeout', 0);
-
-	$db = new dbstuff;
-	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
-
-	$sql = read_sql($upgrade_sqlfile);
-	if(!runquery($sql, true)) {
-		exit();
-	}
-	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
-
-	$db->query("TRUNCATE TABLE {$tablepre}common_syscache");
-
-	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
-} elseif($method == 'do_db_data_init') {
-	$allinfo = getgpc('allinfo');
-	$allinfo_arr = unserialize(base64_decode($allinfo));
-	extract($allinfo_arr);
-
-	@set_time_limit(0);
-	@ignore_user_abort(true);
-	ini_set('max_execution_time', 0);
-	ini_set('mysql.connect_timeout', 0);
-
-	$db = new dbstuff;
-	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
+	sleep(2);
 
 	$sql = read_sql($data_sqlfile);
 	if(!runquery($sql)) {
 		exit();
 	}
+
+	!VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
 
 	$onlineip = $_SERVER['REMOTE_ADDR'];
 	$timestamp = time();
@@ -462,7 +422,7 @@ if($method == 'show_license') {
 		$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('backupdir', '$backupdir')");
 	}
 	$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
-	$siteuniqueid = 'DX'.$chars[date('y') % 60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5($onlineip.$timestamp), 0, 4).random(4);
+	$siteuniqueid = 'QY'.$chars[date('y') % 60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5($onlineip.$timestamp), 0, 4).random(4);
 
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('authkey', '')");
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('siteuniqueid', '$siteuniqueid')");
@@ -534,6 +494,43 @@ if($method == 'show_license') {
 	$db->query("insert into {$tablepre}common_admincp_session SET uid='$uid', adminid=1, panel=1, dateline='$timestamp', ip='".addslashes($_SERVER['REMOTE_ADDR'])."', errorcount='-1'");
 
 	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
+} elseif($method == 'do_db_upgrade') {
+	include ROOT_PATH.CONFIG;
+	$_config['memory']['redis']['server'] = '';
+	$_config['lang'] = $_COOKIE['LANG'];
+	save_config_file(ROOT_PATH.CONFIG, $_config, []);
+
+	$allinfo = getgpc('allinfo');
+	$allinfo_arr = unserialize(base64_decode($allinfo));
+	extract($allinfo_arr);
+
+	sse_header();
+
+	$db = new dbstuff;
+	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
+
+	$sql = read_sql($upgrade_sqlfile);
+	if(!runquery($sql, true)) {
+		exit();
+	}
+	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
+
+	$db->query("TRUNCATE TABLE {$tablepre}common_syscache");
+
+	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
+} elseif($method == 'do_db_data_init') {
+	$allinfo = getgpc('allinfo');
+	$allinfo_arr = unserialize(base64_decode($allinfo));
+	extract($allinfo_arr);
+
+	@set_time_limit(0);
+	@ignore_user_abort(true);
+	ini_set('max_execution_time', 0);
+	ini_set('mysql.connect_timeout', 0);
+
+	$db = new dbstuff;
+	$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
+
 } elseif($method == 'check_db_init_progress') {
 	@set_time_limit(5);
 	send_mime_type_header("text/plain");

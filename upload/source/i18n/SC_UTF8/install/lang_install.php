@@ -327,12 +327,13 @@ $lang = [
 
 	'version_title' => '产品说明',
 	'version_notice' => '
-<p>- 基于 MitFrame<sup>&reg;</sup> 内核的全新框架体系重构</p>
-<p>- 既是社区又是框架，全面开拓更广泛的开放视角</p>
+<p>- 基于 MitFrame<sup>&reg;</sup> 内核的全新框架体系重构，既是社区又是框架，全面开拓更广泛的开放视角</p>
+<p>- 从前台到后台，开放更加彻底</p>
+<p>- 轻重兼顾的多功能一体化社区</p>
+<p>- 全新 JSON 编辑器</p>
+<p>- 版块、用户组、积分全面加强</p>
 <p>- 全面拥抱 OAuth2.0 的 RESTful API 接口，开发者可随意自定义自己的接口</p>
-<p>- 基于 WitFrame<sup>&reg;</sup> 云平台的云插件体系</p>
-<p>- 内核级第三方登录接入、内核级支付接入、内核级多国语言接入</p>
-<p><a href="https://www.dismall.com/thread-18472-1-1.html" target="_blank">点击了解更多...</a></p>
+<p><a href="https://www.dismall.com/thread-27135-1-1.html" target="_blank">点击了解更多...</a></p>
 ',
 
 	'php_version_too_low' => 'PHP 版本不符合 Discuz! 的安装要求，必须满足 PHP %s',

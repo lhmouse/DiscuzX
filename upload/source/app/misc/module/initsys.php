@@ -9,12 +9,27 @@
 @set_time_limit(0);
 @ignore_user_abort(TRUE);
 
+@set_time_limit(0);
+@ignore_user_abort(true);
+ini_set('max_execution_time', 0);
+ini_set('mysql.connect_timeout', 0);
+
+header_remove();
+ob_end_clean();
+ob_implicit_flush();
+header('X-Accel-Buffering: no');
+header('Content-Type: text/event-stream');
+header('Cache-Control: no-cache');
+header('Connection: keep-alive');
+header('Access-Control-Allow-Origin: *');
+ob_start();
+
 if(!defined('IN_DISCUZ')) {
-	exit('Access Denied');
+	sse_output('Access Denied');
 }
 
 if(file_exists(DISCUZ_DATA.'./install.lock') && file_exists(DISCUZ_DATA.'./update.lock')) {
-	exit('Access Denied');
+	sse_output('Access Denied');
 }
 
 @touch(DISCUZ_DATA.'./install.lock');
@@ -36,3 +51,12 @@ if($_G['config']['output']['tplrefresh']) {
 }
 
 C::memory()->clear();
+
+sse_output('Done');
+
+function sse_output($message, $close = false) {
+	echo "data:{$message}\n\n";
+	ob_flush();
+	flush();
+	exit;
+}
