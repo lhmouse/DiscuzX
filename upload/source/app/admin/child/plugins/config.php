@@ -95,8 +95,8 @@ if(empty($_GET['pmod'])) {
 				showtitle($lang['plugins_config']);
 			}
 
-			$extra = [];
 			foreach($pluginvars as $var) {
+				$extra = [];
 				if(strexists($var['type'], ':') || str_starts_with($var['type'], 'component_')) {
 					$var['variable'] = 'varsnew['.$var['variable'].']';
 					$_G['showcomponent'][$var['type']][] = $var['variable'];
@@ -127,6 +127,7 @@ if(empty($_GET['pmod'])) {
 				}
 
 				showsetting($lang[$var['title']] ?? dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, $lang[$var['description']] ?? nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']));
+				echo implode('', $extra);
 			}
 			if(!$custom || $boxHeader) {
 				showsubmit('editsubmit');
@@ -136,7 +137,6 @@ if(empty($_GET['pmod'])) {
 			if(!$custom) {
 				showformfooter();
 			}
-			echo implode('', $extra);
 		}
 
 	} else {

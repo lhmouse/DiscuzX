@@ -412,6 +412,7 @@ EOF;
 		$group['maxattachsize'] = intval($group['maxattachsize'] / 1024);
 		$group['maxsizeperday'] = intval($group['maxsizeperday'] / 1024);
 		$group['maximagesize'] = intval($group['maximagesize'] / 1024);
+		$group['maxspacesize'] = intval($group['maxspacesize'] / 1024);
 
 		/*search={"nav_usergroups":"action=usergroups","usergroups_edit_attach":"action=usergroups&operation=edit&anchor=attach"}*/
 		showtagheader('div', 'attach', $anchor == 'attach');
@@ -795,6 +796,7 @@ EOF;
 		$maxinvitedaynew = $_GET['maxinvitedaynew'] > 0 ? intval($_GET['maxinvitedaynew']) : 10;
 		$maxattachsizenew = $_GET['maxattachsizenew'] > 0 ? intval($_GET['maxattachsizenew'] * 1024) : 0;
 		$maximagesizenew = $_GET['maximagesizenew'] > 0 ? intval($_GET['maximagesizenew'] * 1024) : 0;
+		$maxspacesizenew = $_GET['maxspacesizenew'] > 0 ? intval($_GET['maxspacesizenew'] * 1024) : 0;
 		$maxsizeperdaynew = $_GET['maxsizeperdaynew'] > 0 ? intval($_GET['maxsizeperdaynew'] * 1024) : 0;
 		$maxattachnumnew = $_GET['maxattachnumnew'] > 0 ? intval($_GET['maxattachnumnew']) : 0;
 		$allowrecommendnew = $_GET['allowrecommendnew'] > 0 ? intval($_GET['allowrecommendnew']) : 0;
@@ -886,7 +888,7 @@ EOF;
 			'reasonpm' => $_GET['reasonpmnew'],
 			'maxprice' => $maxpricenew,
 			'maxsigsize' => $_GET['maxsigsizenew'],
-			'maxspacesize' => $_GET['maxspacesizenew'],
+			'maxspacesize' => $maxspacesizenew,
 			'maxattachsize' => $maxattachsizenew,
 			'maximagesize' => $maximagesizenew,
 			'maxsizeperday' => $maxsizeperdaynew,

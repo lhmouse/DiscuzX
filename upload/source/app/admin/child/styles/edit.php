@@ -259,8 +259,8 @@ if(!submitcheck('editsubmit')) {
 				showtitle($lang['plugins_config']);
 			}
 
-			$extra = [];
 			foreach($stylevars as $var) {
+				$extra = [];
 				if(strexists($var['type'], ':') || str_starts_with($var['type'], 'component_')) {
 					$var['variable'] = 'varsnew['.$var['variable'].']';
 					$_G['showcomponent'][$var['type']][] = $var['variable'];
@@ -291,14 +291,13 @@ if(!submitcheck('editsubmit')) {
 				}
 
 				showsetting($lang[$var['title']] ?? dhtmlspecialchars($var['title']), $var['variable'], $var['value'], $var['type'], '', 0, $lang[$var['description']] ?? nl2br(dhtmlspecialchars($var['description'])), dhtmlspecialchars($var['extra']), '', true, 0, !empty($var['widemode']));
+				echo implode('', $extra);
 			}
 			if(!$customMenus || $boxHeader) {
 				showsubmit('editsubmit');
 				showtablefooter();
 				echo '</div>';
 			}
-
-			echo implode('', $extra);
 		}
 		/*search*/
 

@@ -75,7 +75,6 @@ function build_cache_usergroups_single() {
 		$data['grouppublic'] = $data['system'] != 'private';
 		$data['groupcreditshigher'] = $data['creditshigher'];
 		$data['groupcreditslower'] = $data['creditslower'];
-		$data['maxspacesize'] = intval($data['maxspacesize']) * 1024 * 1024;
 		$data['allowthreadplugin'] = !empty($allowthreadplugin[$data['groupid']]) ? $allowthreadplugin[$data['groupid']] : [];
 		$data['plugin'] = $pluginvalue[$data['groupid']];
 		$data['style'] = $stylevalue[$data['groupid']];
