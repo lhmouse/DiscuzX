@@ -8,7 +8,7 @@
 ![Fork](https://gitee.com/Discuz/DiscuzX/badge/fork.svg?theme=dark)
 
 ### 简介
-Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree/MitFrame)，简体中文 UTF8 版本
+Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree/MitFrame) 中文版
 
 ### 关于开发者预览版
 **重要提示：本预览版仅限开发者提前为站长开发适配 X5.0 和 W1.5 版应用而设计，正常运营的 X3.5 社区请勿安装、升级，可供普通站长使用的版本尚未发布，请勿随意尝鲜。在开发者们未跟进 X5.0 应用前，盲目升级会导致无法安装任何应用，还会产生未知问题。如果您想体验 X5.0 版 Discuz! 可开通 [Discuz!ᵂ](https://w.discuz.vip) SaaS 版 Discuz! 试用**
@@ -22,12 +22,13 @@ Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree
 - 欢迎 D 粉们积极 PR，Discuz! 24 年，开源产品少不了大家的支持
 
 ### 更新说明
-- 基于 MitFrame® 内核的全新框架体系重构
-- 既是社区又是框架，全面开拓更广泛的开放视角
+- 基于 MitFrame® 内核的全新框架体系重构，既是社区又是框架，全面开拓更广泛的开放视角
+- 从前台到后台，开放更加彻底
+- 轻重兼顾的多功能一体化社区
+- 全新 JSON 编辑器
+- 版块、用户组、积分全面加强
 - 全面拥抱 OAuth2.0 的 RESTful API 接口，开发者可随意自定义自己的接口
-- 基于 WitFrame® 云平台的云插件体系
-- 内核级第三方登录接入、内核级支付接入、内核级多国语言接入
-- [点击了解更多...](https://www.dismall.com/thread-18472-1-1.html)
+- [点击了解更多...](https://www.dismall.com/thread-27135-1-1.html)
 
 ### X5 特性应用列表
 - [插件](https://addon.dismall.com/plugins/list-2-210-0-0-1.html)
