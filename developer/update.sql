@@ -111,3 +111,11 @@ CREATE TABLE IF NOT EXISTS `pre_home_doing_attachment`
 	KEY `uid` (`uid`),
 	KEY `doid` (`doid`)
 	) ENGINE=InnoDB;
+
+-- 如果存在时执行
+
+ALTER TABLE pre_common_member_archive
+	MODIFY username char (50) NOT NULL DEFAULT '';
+
+ALTER TABLE pre_common_member_profile_archive
+	ADD COLUMN fields json NOT NULL AFTER `field8`;

@@ -619,12 +619,18 @@ ALTER TABLE `pre_forum_forumfield`
 
 CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
 (
-id              int(10) unsigned NOT NULL AUTO_INCREMENT,
-doid            int(10) unsigned NOT NULL DEFAULT '0',
-uid             int(10) unsigned NOT NULL DEFAULT '0',
-dateline        int(10) unsigned NOT NULL DEFAULT '0',
-PRIMARY KEY (id),
-UNIQUE KEY doid_uid (doid,uid),
-KEY doid (doid),
-KEY uid (uid)
+	id              int(10) unsigned NOT NULL AUTO_INCREMENT,
+	doid            int(10) unsigned NOT NULL DEFAULT '0',
+	uid             int(10) unsigned NOT NULL DEFAULT '0',
+	dateline        int(10) unsigned NOT NULL DEFAULT '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY doid_uid (doid,uid),
+	KEY doid (doid),
+	KEY uid (uid)
 ) ENGINE=InnoDB;
+
+ALTER TABLE pre_common_member_archive
+	MODIFY username char (50) NOT NULL DEFAULT '';
+
+ALTER TABLE pre_common_member_profile_archive
+	ADD COLUMN fields json NOT NULL AFTER `field8`;
