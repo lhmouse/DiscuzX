@@ -435,6 +435,7 @@ $lang = [
 	'tool_select_resetpw' => '<div class="selradio"><input type="radio" name="method" id="select_resetpw" value="resetpw" /><label for="select_resetpw">重置创始人密码</label></div>',
 	'tool_select_dircheck' => '<div class="selradio"><input type="radio" name="method" id="select_dircheck" value="dircheck" /><label for="select_dircheck">文件目录检测</label></div>',
 	'tool_select_updatecache' => '<div class="selradio"><input type="radio" name="method" id="select_updatecache" value="updatecache" /><label for="select_updatecache">更新缓存</label></div>',
+	'tool_select_restore' => '<div class="selradio"><input type="radio" name="method" id="select_restore" value="restore" /><label for="select_restore">恢复数据库</label></div>',
 
 	'tool_resetpw_uid1' => '本工具只恢复 UID 为 1 的创始人密码，请恢复该用户为创始人后再进行此操作',
 	'tool_resetpw_founder' => '填写创始人信息',
@@ -455,6 +456,39 @@ $lang = [
 	'done' => '完成',
 	'all_done_exists' => '当前脚本删除失败，为了安全起见请人工删除',
 	'all_done_noexists' => '当前脚本删除完成',
+
+	'filename' => '文件名称',
+	'time' => '备份时间',
+	'type' => '类型',
+	'size' => '尺寸',
+	'db_volume' => '卷数',
+	'import' => '导入',
+	'different_dbcharset_tablepre' => '检测到导入的备份数据与配置文件的{diff} 不同，您还要继续运行此程序吗？',
+	'db_import_tips' => '<ul style="margin:0px 20px 20px 20px;font-size: 14px">
+		<li>请确定在进行此操作前站点已关闭，恢复完成后可以将站点重新开放</li>
+		<li>本工具不支持压缩卷备份数据的导入，请先自行解压缩</li>
+	</ul>',
+	'db_export_discuz' => 'Discuz! 数据(不含UCenter)',
+	'db_export_discuz_uc' => 'Discuz! 和 UCenter 数据',
+	'db_export_custom' => '自定义备份',
+	'unknown' => '未知',
+	'backup_file_unexist' => '备份文件不存在',
+	'dbcharsetdiff' => ' 数据库字符集('.$_config['db']['1']['dbcharset'].')',
+	'tableprediff' => ' 表前缀('.$_config['db']['1']['tablepre'].')',
+	'database_import_file_illegal' => '数据文件不存在：可能服务器不允许上传文件或文件大小超过限制',
+	'database_import_file_write_error' => '数据文件解压写入失败，请检查服务器是否有可写入权限',
+	'database_import_multivol_prompt' => '分卷数据第一卷成功导入数据库，您需要自动导入本次备份的其他分卷吗？',
+	'database_import_succeed' => '数据已成功导入站点数据库<br />请在后台更新缓存<br /><span class="red">出于安全考虑，我们强烈建议您删除备份文件</span>',
+	'database_import_format_illegal' => '数据文件非 Discuz! 格式，无法导入',
+	'database_import_confirm' => '导入和当前 Discuz! 版本不一致的数据极有可能产生无法解决的故障，您确定继续吗？',
+	'database_import_confirm_sql' => '您确定导入该备份吗？',
+	'database_import_confirm_zip' => '您确定解压该备份吗？',
+	'database_import_multivol_confirm' => '所有分卷文件解压缩完毕，您需要自动导入备份吗？导入后解压缩的文件将会被删除',
+	'database_import_multivol_start' => '正在导入备份文件，程序将自动继续',
+	'database_import_multivol_redirect' => '数据文件 #{volume} 成功导入，程序将自动继续',
+	'database_waiting_link' => '浏览器会自动跳转页面，无需人工干预。除非当您的浏览器长时间没有自动跳转时，请点击这里',
+	'database_confirm' => '确定',
+	'database_cancel' => '取消',
 ];
 
 $msglang = array(

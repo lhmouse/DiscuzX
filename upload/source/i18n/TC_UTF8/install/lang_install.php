@@ -435,6 +435,7 @@ $lang = [
 	'tool_select_resetpw' => '<div class="selradio"><input type="radio" name="method" id="select_resetpw" value="resetpw" /><label for="select_resetpw">重置創始人密碼</label></div>',
 	'tool_select_dircheck' => '<div class="selradio"><input type="radio" name="method" id="select_dircheck" value="dircheck" /><label for="select_dircheck">文件目錄檢測</label></div>',
 	'tool_select_updatecache' => '<div class="selradio"><input type="radio" name="method" id="select_updatecache" value="updatecache" /><label for="select_updatecache">更新緩存</label></div>',
+	'tool_select_restore' => '<div class="selradio"><input type="radio" name="method" id="select_restore" value="restore" /><label for="select_restore">復原資料庫</label></div>',
 
 	'tool_resetpw_uid1' => '本工具只恢復 UID 為 1 的創始人密碼，請恢復該用戶為創始人後再進行此操作',
 	'tool_resetpw_founder' => '填寫創始人資訊',
@@ -455,6 +456,39 @@ $lang = [
 	'done' => '完成',
 	'all_done_exists' => '當前腳本刪除失敗，為了安全起見請人工刪除',
 	'all_done_noexists' => '當前腳本刪除完成',
+
+	'filename' => '檔案名稱',
+	'time' => '備份時間',
+	'type' => '類型',
+	'size' => '大小',
+	'db_volume' => '卷數',
+	'import' => '匯入',
+	'different_dbcharset_tablepre' => '偵測到匯入的備份資料與設定檔的{diff} 不同，您是否仍要繼續執行此程式？',
+	'db_import_tips' => '<ul style="margin:0px 20px 20px 20px;font-size: 14px">
+		<li>請確定在執行此操作前網站已關閉，復原完成後可將網站重新開放</li>
+		<li>本工具不支援壓縮卷備份資料的匯入，請先自行解壓縮</li>
+	</ul>',
+	'db_export_discuz' => 'Discuz! 資料(不含UCenter)',
+	'db_export_discuz_uc' => 'Discuz! 和 UCenter 資料',
+	'db_export_custom' => '自訂備份',
+	'unknown' => '未知',
+	'backup_file_unexist' => '備份檔案不存在',
+	'dbcharsetdiff' => ' 數據庫字元集('.$_config['db']['1']['dbcharset'].')',
+	'tableprediff' => ' 表格前綴('.$_config['db']['1']['tablepre'].')',
+	'database_import_file_illegal' => '資料檔案不存在：可能伺服器不允許上傳檔案或檔案大小超過限制',
+	'database_import_file_write_error' => '資料檔案解壓縮寫入失敗，請檢查伺服器是否有可寫入權限',
+	'database_import_multivol_prompt' => '分卷資料第一卷成功匯入數據庫，您需要自動匯入本次備份的其他分卷嗎？',
+	'database_import_succeed' => '資料已成功匯入網站數據庫<br />請在後台更新快取<br /><span class="red">基於安全考量，我們強烈建議您刪除備份檔案</span>',
+	'database_import_format_illegal' => '資料檔案非 Discuz! 格式，無法匯入',
+	'database_import_confirm' => '匯入與目前 Discuz! 版本不一致的資料，極有可能產生無法解決的故障，您確定要繼續嗎？',
+	'database_import_confirm_sql' => '您確定要匯入此備份嗎？',
+	'database_import_confirm_zip' => '您確定要解壓縮此備份嗎？',
+	'database_import_multivol_confirm' => '所有分卷檔案解壓縮完畢，您需要自動匯入備份嗎？匯入後解壓縮的檔案將會被刪除',
+	'database_import_multivol_start' => '正在匯入備份檔案，程式將自動繼續執行',
+	'database_import_multivol_redirect' => '資料檔案 #{volume} 成功匯入，程式將自動繼續執行',
+	'database_waiting_link' => '瀏覽器會自動跳轉頁面，無需手動操作。除非您的瀏覽器長時間未自動跳轉，請點擊此處',
+	'database_confirm' => '確定',
+	'database_cancel' => '取消',
 ];
 
 $msglang = array(

@@ -6684,7 +6684,7 @@ URL转换绝对网址：<pre>
 	'db_delete_tips' => '<br /><br /><a href="'.ADMINSCRIPT.'?action=db&operation=import&deletesubmit=1&delete[]={filename}&formhash={FORMHASH}" onclick="return confirm(\'您确定要把服务器上的备份数据删除么？\');"><font color="#fe7e01"><strong>删除服务器上的备份数据</strong></font></a>',
 	'db_export_tips_nouc' => '<li><font color="blue"><b>您当前的数据备份不包含 UCenter，会影响到您的会员数据，请点击<a href="{uc_backup_url}">这里</a>单独备份 UCenter 数据</b></font></li><li>数据备份功能根据您的选择备份全部Discuz!数据，导出的数据文件可用“数据恢复”功能或 phpMyAdmin 导入。</li>',
 	'db_export_tips_uc' => '<li>数据备份功能根据您的选择备份全部Discuz! 和 UCenter数据，导出的数据文件可用“数据恢复”功能或 phpMyAdmin 导入。</li>',
-	'db_export_tips' => '<li><font color="blue"><b>出于安全考虑，我们强烈建议您下载数据库备份文件后删除文件或设置文件不可通过 URL 访问。</b></font></li><li>全部备份均不包含模板文件和附件文件。模板、附件的备份只需通过 FTP 等下载 template/、data/attachment/ 目录即可，Discuz! 不提供单独备份。</li><li>MySQL Dump 的速度比 Discuz! 分卷备份快很多，但需要服务器支持相关的 Shell 权限，同时由于 MySQL 本身的兼容性问题，通常进行备份和恢复的服务器应当具有相同或相近的版本号才能顺利进行。因此 MySQL Dump 是有风险的：一旦进行备份或恢复操作的服务器其中之一禁止了 Shell，或由于版本兼容性问题导致导入失败，您将无法使用 MySQL Dump 备份或由备份数据恢复；Discuz! 分卷备份没有此限制。</li><li>数据备份选项中的设置，仅供高级用户的特殊用途使用，当您尚未对数据库做全面细致的了解之前，请使用默认参数备份，否则将导致备份数据错误等严重问题。</li><li>十六进制方式可以保证备份数据的完整性，但是备份文件会占用更多的空间。</li><li>压缩备份文件可以让您的备份文件占用更小的空间。</li>',
+	'db_export_tips' => '<li><font color="blue"><b>出于安全考虑，我们强烈建议您下载数据库备份文件后删除文件或设置文件不可通过 URL 访问。</b></font></li><li>全部备份均不包含模板文件和附件文件。模板、附件的备份只需通过 FTP 等下载 template/、data/attachment/ 目录即可，Discuz! 不提供单独备份。</li><li>数据备份选项中的设置，仅供高级用户的特殊用途使用，当您尚未对数据库做全面细致的了解之前，请使用默认参数备份，否则将导致备份数据错误等严重问题。</li><li>十六进制方式可以保证备份数据的完整性，但是备份文件会占用更多的空间。</li><li>压缩备份文件可以让您的备份文件占用更小的空间。</li><li>恢复备份的数据请使用 Discuz! 安装程序内置的工具箱操作（将 install/index.php 改名后访问）</li>',
 	'db_export_type' => '数据备份类型',
 	'db_export_discuz' => 'Discuz! 数据(不含UCenter)',
 	'db_export_discuz_uc' => 'Discuz! 和 UCenter 数据',

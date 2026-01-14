@@ -176,7 +176,14 @@ function sqldumptable($table, $startfrom = 0, $currsize = 0) {
 				while($row = $db->fetch_row($rows)) {
 					$comma = $t = '';
 					for($i = 0; $i < $numfields; $i++) {
-						$t .= $comma.($_GET['usehex'] && !empty($row[$i]) && (strexists($tablefields[$i]['Type'], 'char') || strexists($tablefields[$i]['Type'], 'text')) ? '0x'.bin2hex($row[$i]) : '\''.$db->escape_string($row[$i]).'\'');
+						if($tablefields[$i]['Type'] == 'json' && empty($row[$i])) {
+							$value = 'NULL';
+						} elseif($_GET['usehex'] && !empty($row[$i]) && (strexists($tablefields[$i]['Type'], 'char') || strexists($tablefields[$i]['Type'], 'text'))) {
+							$value = '0x'.bin2hex($row[$i]);
+						} else {
+							$value = '\''.$db->escape_string($row[$i]).'\'';
+						}
+						$t .= $comma.$value;
 						$comma = ',';
 					}
 					if(strlen($t) + $currsize + strlen($tabledump) + 500 < $_GET['sizelimit'] * 1000) {

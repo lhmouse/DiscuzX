@@ -295,7 +295,6 @@ if($step == 3) {
 shownav('founder', 'nav_db', 'nav_db_dbcheck');
 showsubmenu('nav_db', [
 	['nav_db_export', 'db&operation=export', 0],
-	['nav_db_import', 'db&operation=import', 0],
 	['nav_db_runquery', 'db&operation=runquery', 0],
 	['nav_db_optimize', 'db&operation=optimize', 0],
 	['nav_db_dbcheck', 'db&operation=dbcheck', 1]

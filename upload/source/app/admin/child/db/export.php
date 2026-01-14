@@ -20,7 +20,7 @@ if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 $_SERVER['REQUEST_METHOD'] = 'POST';
 if(!submitcheck('exportsubmit')) {
 
-	$shelldisabled = function_exists('shell_exec') ? '' : 'disabled';
+	$shelldisabled = 'disabled';
 
 	$tables = '';
 	$dztables = [];
@@ -54,7 +54,6 @@ if(!submitcheck('exportsubmit')) {
 	shownav('founder', 'nav_db', 'nav_db_export');
 	showsubmenu('nav_db', [
 		['nav_db_export', 'db&operation=export', 1],
-		['nav_db_import', 'db&operation=import', 0],
 		['nav_db_runquery', 'db&operation=runquery', 0],
 		['nav_db_optimize', 'db&operation=optimize', 0],
 		['nav_db_dbcheck', 'db&operation=dbcheck', 0]
@@ -290,79 +289,7 @@ if(!submitcheck('exportsubmit')) {
 
 	} else {
 
-		$tablesstr = '';
-		foreach($tables as $table) {
-			$tablesstr .= ''.preg_replace('#[^\w]+#is', '', $table).' ';
-		}
-		$tablesstr = trim($tablesstr);
-
-		require DISCUZ_ROOT.'./config/config_global.php';
-		$dbhost = $_config['db'][1]['dbhost'];
-		$dbname = $_config['db'][1]['dbname'];
-		$dbpw = $_config['db'][1]['dbpw'];
-		$dbuser = $_config['db'][1]['dbuser'];
-		list($dbhost, $dbport) = explode(':', $dbhost);
-
-		$db = DB::object();
-		$query = DB::query("SHOW VARIABLES LIKE 'basedir'");
-		list(, $mysql_base) = DB::fetch($query, constant('MYSQLI_NUM'));
-
-		$dumpfile = addslashes(dirname(__FILE__, 3)).'/'.$backupfilename.'.sql';
-		@unlink($dumpfile);
-		$tablesstr = escapeshellarg($tablesstr);
-		$tablesstr = str_replace(' ', '" "', $tablesstr);
-
-		$mysqlbin = $mysql_base == '/' ? '' : addslashes(rtrim($mysql_base, '/\\')).'/bin/';
-		@shell_exec($mysqlbin.'mysqldump --force --quick --skip-opt --create-options --add-drop-table'.($_GET['extendins'] == 1 ? ' --extended-insert' : '').''.($_GET['sqlcompat'] == 'MYSQL40' ? ' --compatible=mysql40' : '').' --host="'.$dbhost.'"'.($dbport ? (is_numeric($dbport) ? ' --port='.$dbport : ' --socket="'.$dbport.'"') : '').' --user="'.$dbuser.'" --password="'.$dbpw.'" "'.$dbname.'" '.$tablesstr.' > '.$dumpfile);
-		if(@file_exists($dumpfile)) {
-
-			if($_GET['usezip']) {
-				require_once libfile('class/zip');
-				$zip = new zipfile();
-				$zipfilename = $backupfilename.'.zip';
-				$fp = fopen($dumpfile, 'r');
-				$content = @fread($fp, filesize($dumpfile));
-				fclose($fp);
-				$zip->addFile($idstring."# <?php exit();?>\n ".$setnames."\n #".$content, basename($dumpfile));
-				$fp = fopen($zipfilename, 'c');
-				if(!($fp && flock($fp, LOCK_EX) && ftruncate($fp, 0) && fwrite($fp, $zip->file()) && fflush($fp) && flock($fp, LOCK_UN) && fclose($fp))) {
-					flock($fp, LOCK_UN);
-					fclose($fp);
-					cpmsg('database_export_zip_invalid', '', 'error');
-				}
-				@unlink($dumpfile);
-				@touch('./data/'.$backupdir.'/index.htm');
-				$filename = $backupfilename.'.zip';
-				unset($sqldump, $zip, $content);
-				table_common_cache::t()->insert([
-					'cachekey' => 'db_export',
-					'cachevalue' => serialize(['dateline' => $_G['timestamp']]),
-					'dateline' => $_G['timestamp'],
-				], false, true);
-				$deletetips = $_G['config']['admincp']['dbimport'] ? cplang('db_delete_tips', ['filename' => basename($zipfilename), 'FORMHASH' => formhash()]) : '';
-				cpmsg('database_export_zip_succeed', '', 'succeed', ['filename' => $filename, 'deletetips' => $deletetips]);
-			} else {
-				if(@is_writeable($dumpfile)) {
-					$fp = fopen($dumpfile, 'rb+');
-					@fwrite($fp, $idstring."# <?php exit();?>\n ".$setnames."\n #");
-					fclose($fp);
-				}
-				@touch('./data/'.$backupdir.'/index.htm');
-				$filename = $backupfilename.'.sql';
-				table_common_cache::t()->insert([
-					'cachekey' => 'db_export',
-					'cachevalue' => serialize(['dateline' => $_G['timestamp']]),
-					'dateline' => $_G['timestamp'],
-				], false, true);
-				$deletetips = $_G['config']['admincp']['dbimport'] ? cplang('db_delete_tips', ['filename' => basename($filename), 'FORMHASH' => formhash()]) : '';
-				cpmsg('database_export_succeed', '', 'succeed', ['filename' => $filename, 'deletetips' => $deletetips]);
-			}
-
-		} else {
-
-			cpmsg('database_shell_fail', '', 'error');
-
-		}
+		cpmsg('database_shell_fail', '', 'error');
 
 	}
 }
