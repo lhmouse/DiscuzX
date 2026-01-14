@@ -19,9 +19,16 @@ if(!defined('IN_DISCUZ')) {
 
 class extend_thread_sort extends extend_thread_base {
 
-	public function before_newthread() {
+	public function before_newthread($parameters) {
+		global $_G;
+
 		if($_GET['typeoption']) {
 			$this->param['extramessage'] = "\t".implode("\t", $_GET['typeoption']);
+		}
+
+		$_G['forum_optiondata'] = [];
+		if($this->forum['threadsorts']['types'][$parameters['sortid']] && !$this->forum['allowspecialonly']) {
+			$_G['forum_optiondata'] = threadsort_validator($_GET['typeoption'], 0);
 		}
 	}
 
@@ -30,10 +37,6 @@ class extend_thread_sort extends extend_thread_base {
 
 		$sortid = $this->param['sortid'];
 		$pid = $this->pid;
-		$_G['forum_optiondata'] = [];
-		if($this->forum['threadsorts']['types'][$sortid] && !$this->forum['allowspecialonly']) {
-			$_G['forum_optiondata'] = threadsort_validator($_GET['typeoption'], $pid);
-		}
 
 		if($this->forum['threadsorts']['types'][$sortid] && !empty($_G['forum_optiondata']) && is_array($_G['forum_optiondata'])) {
 			$sortaids = [];
