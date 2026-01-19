@@ -36,8 +36,12 @@ showsubmenusteps('menu_upgrade', [
 ]);
 
 if($step == 1) {
-	showtips('upgrade_tips');
 	[$current, $remote] = $u->getVersion();
+	$tips = cplang('upgrade_tips');
+	if($u->readmeUrl) {
+		$tips .= cplang('upgrade_tips_readme', ['URL' => $u->readmeUrl]);
+	}
+	showtips($tips);
 	if($current >= $remote) {
 		cpmsg('<h4 class="infotitle2">'.cplang('upgrade_latest').'</h4>', '', 'succeed');
 	} else {
@@ -66,6 +70,8 @@ class discuzUpgrade {
 
 	const RemoteMd5 = '/source/data/admincp/discuzfiles.md5';
 	const RemoteVer = '/source/discuz_version.php';
+
+	public $readmeUrl = '';
 
 	public function getVersion() {
 		$current = $this->getCurrentData(true);
@@ -230,6 +236,9 @@ class discuzUpgrade {
 		set_time_limit(0);
 		if(!$apiData = $this->_getApiData()) {
 			cpmsg('upgrade_remote_get_failed', extra: 'api error');
+		}
+		if(!empty($apiData['readmeUrl'])) {
+			$this->readmeUrl = $apiData['readmeUrl'];
 		}
 		if($verOnly) {
 			return $apiData;

@@ -626,7 +626,7 @@ $lang =
 	'upgrade_step2' => '下载更新',
 	'upgrade_step3' => '完成',
 	'upgrade_tips' => '<li>升级补丁为您提供了安全、稳定、高效的升级方式，您可以通过下载生成的补丁包，快速、安全地升级 Discuz! 到最新版本；</li><li>本功能不提供在线升级，请下载补丁包后自行上传到服务器相应目录下覆盖源文件，覆盖前请注意文件的备份；</li>',
-
+	'upgrade_tips_readme' => '<li><a href="{URL}" target="_blank">点此查看更新日志</a></li>',
 	'nav_founder_optimizer' => '优化大师',
 	'founder_optimizer_index' => '优化首页',
 	'founder_optimizer_setting' => '设置项优化',
