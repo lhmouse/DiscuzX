@@ -35,24 +35,15 @@
 		<div class="notice-dropdown poptip-popper">
 			<div class="poptip-arrow"></div>
 			<ul class="notice-content">
-				<li class="notice-item"><a href="home.php?mod=space&do=notice">{lang remind}<!--{if $_G[member][newprompt]}-->
-						<span class="num">($_G[member][newprompt])</span><span class="dot"></span><!--{/if}--></a>
-				<li class="notice-item"><a href="home.php?mod=space&do=pm">{lang pm_center}{if $_G[member][newpm]}<span
-							class="dot"></span>{/if}</a></li>
-				<li class="notice-item"><a
-						href="home.php?mod=follow&do=follower"><!--{lang notice_interactive_follower}-->{if
-						$_G[member][newprompt_num][follower]} <span
-							class="num">$_G[member][newprompt_num][follower]</span>{/if}{if
-						$_G[member][newprompt_num][follower]}<span class="dot"></span>{/if}</a></li>
+				<li class="notice-item"><a href="home.php?mod=space&do=notice">{lang remind}<!--{if $_G[member][newprompt]}--><span class="num">($_G[member][newprompt])</span><span class="dot"></span><!--{/if}--></a>
+				<li class="notice-item"><a href="home.php?mod=space&do=pm">{lang pm_center}{if $_G[member][newpm]}<span class="dot"></span>{/if}</a></li>
+				<li class="notice-item"><a href="home.php?mod=follow&do=follower"><!--{lang notice_interactive_follower}-->{if $_G[member][newprompt_num][follower]} <span class="num">$_G[member][newprompt_num][follower]</span>{/if}{if $_G[member][newprompt_num][follower]}<span class="dot"></span>{/if}</a></li>
 				<!--{if $_G[member][newprompt] && $_G[member][newprompt_num][follow]}-->
-				<li class="notice-item"><a href="home.php?mod=follow"><!--{lang notice_interactive_follow}-->
-						($_G[member][newprompt_num][follow])<span class="dot"></span></a></li>
+					<li class="notice-item"><a href="home.php?mod=follow"><!--{lang notice_interactive_follow}-->($_G[member][newprompt_num][follow])<span class="dot"></span></a></li>
 				<!--{/if}-->
 				<!--{if $_G[member][newprompt]}-->
 				<!--{loop $_G['member']['category_num'] $key $val}-->
-				<li class="notice-item"><a
-						href="home.php?mod=space&do=notice&view=$key"><!--{echo lang('template', 'notice_'.$key)}-->
-						<span class="num">$val</span><span class="dot"></span></a></li>
+					<li class="notice-item"><a href="home.php?mod=space&do=notice&view=$key"><!--{echo lang('template', 'notice_'.$key)}--><span class="num">$val</span><span class="dot"></span></a></li>
 				<!--{/loop}-->
 				<!--{/if}-->
 			</ul>

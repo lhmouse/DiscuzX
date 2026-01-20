@@ -85,64 +85,8 @@
 			</div>
 		</div>
 	</div>
-	<!--{eval updatesession();}-->
-	<!--{if $_G['uid'] && $_G['group']['allowinvisible']}-->
-		<script type="text/javascript">
-		var invisiblestatus = '<!--{if $_G['session']['invisible']}-->{lang login_invisible_mode}<!--{else}-->{lang login_normal_mode}<!--{/if}-->';
-		var loginstatusobj = $('loginstatusid');
-		if(loginstatusobj != undefined && loginstatusobj != null) loginstatusobj.innerHTML = invisiblestatus;
-		</script>
-	<!--{/if}-->
 <!--{/if}-->
-<!--{if !$_G['setting']['bbclosed'] && !$_G['member']['freeze']}-->
-	<!--{if $_G['uid'] && !isset($_G['cookie']['checkpm'])}-->
-	<script type="text/javascript" src="home.php?mod=spacecp&ac=pm&op=checknewpm&rand=$_G['timestamp']"></script>
-	<!--{/if}-->
-	<!--{if $_G['uid'] && helper_access::check_module('follow') && !isset($_G['cookie']['checkfollow'])}-->
-	<script type="text/javascript" src="home.php?mod=spacecp&ac=follow&op=checkfeed&rand=$_G['timestamp']"></script>
-	<!--{/if}-->
-	<!--{if !isset($_G['cookie']['sendmail'])}-->
-	<script type="text/javascript" src="home.php?mod=misc&ac=sendmail&rand=$_G['timestamp']"></script>
-	<!--{/if}-->	
-<!--{/if}-->
-<!--{if $_GET['diy'] == 'yes'}-->
-	<!--{if check_diy_perm($topic) && (empty($do) || $do != 'index')}-->
-		<script type="text/javascript" src="{$_G['setting']['jspath']}common_diy.js?{VERHASH}"></script>
-		<script type="text/javascript" src="{$_G['setting']['jspath']}portal_diy{if !check_diy_perm($topic, 'layout')}_data{/if}.js?{VERHASH}"></script>
-	<!--{/if}-->
-	<!--{if $space['self'] && CURMODULE == 'space' && $do == 'index'}-->
-		<script type="text/javascript" src="{$_G['setting']['jspath']}common_diy.js?{VERHASH}"></script>
-		<script type="text/javascript" src="{$_G['setting']['jspath']}space_diy.js?{VERHASH}"></script>
-	<!--{/if}-->
-<!--{/if}-->
-<!--{if $_G['uid'] && $_G['member']['allowadmincp'] == 1 && empty($_G['cookie']['pluginnotice'])}-->
-	<div class="focus plugin" id="plugin_notice"></div>
-	<script type="text/javascript">pluginNotice();</script>
-<!--{/if}-->
-<!--{if !$_G['setting']['bbclosed'] && !$_G['member']['freeze'] && !$_G['member']['groupexpiry'] && $_G['setting']['disableipnotice'] != 1 && $_G['uid'] && !empty($_G['cookie']['lip'])}-->
-	<div class="focus plugin" id="ip_notice"></div>
-	<script type="text/javascript">ipNotice();</script>
-<!--{/if}-->
-<!--{if $_G['member']['newprompt'] && (empty($_G['cookie']['promptstate_'.$_G['uid']]) || $_G['cookie']['promptstate_'.$_G['uid']] != $_G['member']['newprompt']) && $_GET['do'] != 'notice'}-->
-	<script type="text/javascript">noticeTitle();</script>
-<!--{/if}-->
-<!--{if ($_G['member']['newpm'] || $_G['member']['newprompt']) && empty($_G['cookie']['ignore_notice'])}-->
-	<script type="text/javascript" src="{$_G['setting']['jspath']}html5notification.js?{VERHASH}"></script>
-	<script type="text/javascript">
-	var h5n = new Html5notification();
-	if(h5n.issupport()) {
-		<!--{if $_G['member']['newpm'] && $_GET['do'] != 'pm'}-->
-		h5n.shownotification('pm', '$_G['siteurl']home.php?mod=space&do=pm', '<!--{avatar($_G['uid'],'small',true)}-->', '{lang newpm_subject}', '{lang newpm_notice_info}');
-		<!--{/if}-->
-		<!--{if $_G['member']['newprompt'] && $_GET['do'] != 'notice'}-->
-				<!--{loop $_G['member']['category_num'] $key $val}-->
-					<!--{eval $noticetitle = lang('template', 'notice_'.$key);}-->
-					h5n.shownotification('notice_$key', '$_G['siteurl']home.php?mod=space&do=notice&view=$key', '<!--{avatar($_G['uid'],'small',true)}-->', '$noticetitle ($val)', '{lang newnotice_notice_info}');
-				<!--{/loop}-->
-		<!--{/if}-->
-	}
-	</script>
-<!--{/if}-->
+
 <div class="dz_rnav" id="dz_rnav">
 
 	<!--{if $_G['style']['sider_fastpost']}-->
@@ -181,17 +125,7 @@
 	</span>
 	<!--{/if}-->
 </div>
-<script type="text/javascript">_attachEvent(window, 'scroll', function () { new_showTopLink(); });checkBlind();</script>
-<!--{if isset($_G['makehtml'])}-->
-	<script type="text/javascript" src="{$_G['setting']['jspath']}html2dynamic.js?{VERHASH}"></script>
-	<script type="text/javascript">
-		var html_lostmodify = {TIMESTAMP};
-		htmlGetUserStatus();
-		<!--{if isset($_G['htmlcheckupdate'])}-->
-		htmlCheckUpdate();
-		<!--{/if}-->
-	</script>
-<!--{/if}-->
+
 <script type="text/javascript">
 	function new_showTopLink() {
 		var ft = $('ft');
@@ -230,6 +164,9 @@
 	}
 
 </script>
+
+{cells common/footer/js}
+
 <!--{eval output();}-->
 </body>
 </html>
