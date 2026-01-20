@@ -130,7 +130,10 @@ class class_core {
 
 		$this->check_cpaccess();
 
-		$this->writecplog();
+		try {
+			$this->writecplog();
+		} catch (Exception $e) {
+		}
 	}
 
 	function writecplog() {
