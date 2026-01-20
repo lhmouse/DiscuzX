@@ -18,10 +18,6 @@ if(($special == 1 && !$_G['group']['allowpostpoll']) || ($special == 2 && !$_G['
 	showmessage('group_nopermission', NULL, ['grouptitle' => $_G['group']['grouptitle']], ['login' => 1]);
 }
 
-if(getglobal('setting/connect/allow') && $_G['setting']['accountguard']['postqqonly'] && !$_G['member']['conisbind']) {
-	showmessage('postperm_qqonly_nopermission');
-}
-
 if(!$_G['uid'] && !((!$_G['forum']['postperm'] && $_G['group']['allowpost']) || ($_G['forum']['postperm'] && forumperm($_G['forum']['postperm'])))) {
 	if(!defined('IN_MOBILE')) {
 		showmessage('postperm_login_nopermission', NULL, [], ['login' => 1]);

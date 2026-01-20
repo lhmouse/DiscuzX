@@ -20,7 +20,7 @@ class membersearch {
 			'uid' => 'member', 'loginname' => 'member', 'username' => 'member', 'groupid' => 'member', 'secmobile' => 'member', 'medalid' => 'medal', 'tagid' => 'tag', 'idtype' => 'tag',
 			'email' => 'member', 'credits' => 'member', 'regdate' => 'member',
 			'status' => 'member', 'freeze' => 'member', 'emailstatus' => 'member', 'avatarstatus' => 'member',
-			'conisbind' => 'member', 'uin' => 'black', 'sid' => 'session',
+			'uin' => 'black', 'sid' => 'session',
 			'extcredits1' => 'count', 'extcredits2' => 'count', 'extcredits3' => 'count', 'extcredits4' => 'count',
 			'extcredits5' => 'count', 'extcredits6' => 'count', 'extcredits7' => 'count', 'extcredits8' => 'count',
 			'posts' => 'count', 'friends' => 'count', 'oltime' => 'count',
