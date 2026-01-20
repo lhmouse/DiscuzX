@@ -2,9 +2,10 @@
 
 class app_misc_switch {
 
-	const Icon = STATICURL.'image/feed/ranklist_b.png';
+	const Icon = STATICURL.'image/app/ranklist.svg';
 	const Name = 'setting_functions_curscript_ranklist';
 	const Desc = 'setting_functions_curscript_ranklist_intro';
+	const OrderId = 2;
 
 	public static function getStatus() {
 		return getglobal('setting/rankliststatus');

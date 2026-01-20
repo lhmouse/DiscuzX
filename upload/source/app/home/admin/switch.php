@@ -9,9 +9,10 @@ class app_home_switch {
 
 class app_home_switch_follow {
 
-	const Icon = STATICURL.'image/feed/follow_b.png';
+	const Icon = STATICURL.'image/app/friend.svg';
 	const Name = 'setting_functions_curscript_follow';
 	const Desc = 'setting_functions_curscript_follow_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/followstatus');
@@ -25,9 +26,10 @@ class app_home_switch_follow {
 
 class app_home_switch_feed {
 
-	const Icon = STATICURL.'image/feed/feed_b.png';
+	const Icon = STATICURL.'image/app/feed.svg';
 	const Name = 'setting_functions_curscript_feed';
 	const Desc = 'setting_functions_curscript_feed_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/feedstatus');
@@ -41,9 +43,10 @@ class app_home_switch_feed {
 
 class app_home_switch_blog {
 
-	const Icon = STATICURL.'image/feed/blog_b.png';
+	const Icon = STATICURL.'image/app/blog.svg';
 	const Name = 'setting_functions_curscript_blog';
 	const Desc = 'setting_functions_curscript_blog_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/blogstatus');
@@ -57,9 +60,10 @@ class app_home_switch_blog {
 
 class app_home_switch_friend {
 
-	const Icon = STATICURL.'image/feed/friend_b.png';
+	const Icon = STATICURL.'image/app/friend.svg';
 	const Name = 'setting_functions_curscript_friend';
 	const Desc = 'setting_functions_curscript_friend_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/friendstatus');
@@ -73,9 +77,10 @@ class app_home_switch_friend {
 
 class app_home_switch_album {
 
-	const Icon = STATICURL.'image/feed/album_b.png';
+	const Icon = STATICURL.'image/app/album.svg';
 	const Name = 'setting_functions_curscript_album';
 	const Desc = 'setting_functions_curscript_album_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/albumstatus');
@@ -89,9 +94,10 @@ class app_home_switch_album {
 
 class app_home_switch_share {
 
-	const Icon = STATICURL.'image/feed/share_b.png';
+	const Icon = STATICURL.'image/app/share.svg';
 	const Name = 'setting_functions_curscript_share';
 	const Desc = 'setting_functions_curscript_share_intro';
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/sharestatus');
@@ -105,9 +111,10 @@ class app_home_switch_share {
 
 class app_home_switch_doing {
 
-	const Icon = STATICURL.'image/feed/doing_b.png';
+	const Icon = STATICURL.'image/app/doing.svg';
 	const Name = 'setting_functions_curscript_doing';
 	const Desc = 'setting_functions_curscript_doing_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/doingstatus');
@@ -121,9 +128,10 @@ class app_home_switch_doing {
 
 class app_home_switch_wall {
 
-	const Icon = STATICURL.'image/feed/wall_b.png';
+	const Icon = STATICURL.'image/app/pm.svg';
 	const Name = 'setting_functions_curscript_message';
 	const Desc = 'setting_functions_curscript_message_intro';
+	const OrderId = 2;
 
 	public static function getStatus() {
 		return getglobal('setting/wallstatus');
@@ -137,9 +145,10 @@ class app_home_switch_wall {
 
 class app_home_switch_task {
 
-	const Icon = STATICURL.'image/feed/task_b.png';
+	const Icon = STATICURL.'image/app/task.svg';
 	const Name = 'setting_functions_curscript_task';
 	const Desc = 'setting_functions_curscript_task_intro';
+	const OrderId = 2;
 
 	public static function getStatus() {
 		return getglobal('setting/taskstatus');
@@ -153,9 +162,10 @@ class app_home_switch_task {
 
 class app_home_switch_medal {
 
-	const Icon = STATICURL.'image/feed/medal_b.png';
+	const Icon = STATICURL.'image/app/medal.svg';
 	const Name = 'setting_functions_curscript_medal';
 	const Desc = 'setting_functions_curscript_medal_intro';
+	const OrderId = 2;
 
 	public static function getStatus() {
 		return getglobal('setting/medalstatus');
@@ -169,9 +179,10 @@ class app_home_switch_medal {
 
 class app_home_switch_magic {
 
-	const Icon = STATICURL.'image/feed/magic_b.png';
+	const Icon = STATICURL.'image/app/magic.svg';
 	const Name = 'setting_functions_curscript_magic';
 	const Desc = 'setting_functions_curscript_magic_intro';
+	const OrderId = 2;
 
 	public static function getStatus() {
 		return getglobal('setting/magicstatus');
@@ -185,9 +196,10 @@ class app_home_switch_magic {
 
 class app_home_switch_favorite {
 
-	const Icon = STATICURL.'image/feed/favorite_b.png';
+	const Icon = STATICURL.'image/app/favorite.svg';
 	const Name = 'setting_functions_curscript_favorite';
 	const Desc = 'setting_functions_curscript_favorite_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/favoritestatus');

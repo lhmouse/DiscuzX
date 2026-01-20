@@ -9,9 +9,10 @@ class app_forum_switch {
 
 class app_forum_switch_forum {
 
-	const Icon = STATICURL.'image/feed/dzwap_b.png';
+	const Icon = STATICURL.'image/app/forum.svg';
 	const Name = 'setting_functions_curscript_forum';
 	const Desc = 'setting_functions_curscript_forum_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/forumstatus');
@@ -25,9 +26,10 @@ class app_forum_switch_forum {
 
 class app_forum_switch_collection {
 
-	const Icon = STATICURL.'image/feed/collection_b.png';
+	const Icon = STATICURL.'image/app/collection.svg';
 	const Name = 'setting_functions_curscript_collection';
 	const Desc = 'setting_functions_curscript_collection_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/collectionstatus');
@@ -41,9 +43,10 @@ class app_forum_switch_collection {
 
 class app_forum_switch_guide {
 
-	const Icon = STATICURL.'image/feed/guide_b.png';
+	const Icon = STATICURL.'image/app/guide.svg';
 	const Name = 'setting_functions_curscript_guide';
 	const Desc = 'setting_functions_curscript_guide_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/guidestatus');

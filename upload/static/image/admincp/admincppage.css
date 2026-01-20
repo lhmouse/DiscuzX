@@ -114,6 +114,7 @@
     font-weight: normal;
     font-style: normal;
 }
+*:focus { outline: none !important; }
 #ajaxwaitid { display: none; position: absolute; right: 0; top: 0; z-index: 1; padding: 0 5px; background: #D00; color: #FFF; }
 body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;min-width: 1000px; margin: 10px;background: var(--admincp-bodybg)}
 a{ color:var(--admincp-alink); text-decoration:none; }
@@ -234,7 +235,8 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .d-14 { flex-basis: 25%; }
 .d-34 { flex-basis: 75%; }
 @media (max-width: 900px) {
-	.dcol { flex-basis: 100% !important; }
+	.apps .drow{width: 100%!important;margin: 0 !important;}
+	.apps .boxbody{padding: 10px!important;}
 	.pluginlist .dcol { flex-basis: unset !important; }
 }
 @media (max-width: 1000px) {

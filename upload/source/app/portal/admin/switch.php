@@ -2,9 +2,10 @@
 
 class app_portal_switch {
 
-	const Icon = STATICURL.'image/feed/portal_b.png';
+	const Icon = STATICURL.'image/app/portal.svg';
 	const Name = 'setting_functions_curscript_portal';
 	const Desc = 'setting_functions_curscript_portal_intro';
+	const OrderId = 4;
 
 	public static function getStatus() {
 		return getglobal('setting/portalstatus');

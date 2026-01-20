@@ -2,7 +2,7 @@
 
 class app_sample_switch {
 
-	const Icon = 'source/app/sample/static/image/icon.png';
+	const Icon = STATICURL.'image/app/empty.svg';
 	const Name = 'sample_app_name';
 	const Desc = 'sample_app_desc';
 

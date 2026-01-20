@@ -14,28 +14,38 @@ cpheader();
 
 showsubmenu('mitframe_apps');
 
-$allowfuntype = ['portal', 'forum', 'friend', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite'];
+$allowfuntype = ['portal', 'forum', 'friend', 'follower', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite'];
 $_GET['type'] = in_array($_GET['type'], $allowfuntype) ? trim($_GET['type']) : '';
 echo "<script>disallowfloat = '{$_G['setting']['disallowfloat']}';</script>";
-echo "<style>.td25 { width: 40px; } .light { margin-top: 2px; }</style>";
+echo "<style>.td25 { width: 60px; } .light { margin-top: 2px; }".
+	".apps .drow {height: 65px;float: left;margin: 0 10px 10px 0;padding: 10px;width: calc(33.33333% - 30px);border-radius: 5px;align-items: flex-start;}".
+	".apps .c1 { width: 60px; padding-left: 5px !important; padding-right: 5px !important; }".
+	".apps .c2 { display: flex;flex: 1 0 0;flex-direction: column;} .apps .c2 h3 { font-size:16px;margin-bottom:2px; }".
+	".apps .c3 { line-height: 50px;height: 50px; overflow: hidden; }".
+	".apps img.close { opacity: 0.2 } ".
+	".apps .hover:hover img.close { opacity: 0.6 } ".
+	"</style>";
 
 /*search={"setting_functions":"action=mitframe"}*/
-showboxheader('');
-showtableheader('', 'nobottom');
+
 $apps = [];
 
 getapps($apps);
 
-foreach($apps as $app => $data) {
-	[$icon, $status, $name, $desc, $op] = $data;
-	echo '<tr>'.
-		'<td class="td25"><img src="'.$icon.'" /></td>'.
-		'<td width="490" s="1">'.cplang($name, mitframeApp: $app).'<div class="light">'.cplang($desc, mitframeApp: $app).'</div></td>'.
-		'<td class="td30"><img class="vm" src="'.$_G['style']['imgdir'].'/data_'.($status ? 'valid' : 'invalid').'.gif"></td>'.
-		'<td>'.$op.'</td>'.
-		'</tr>';
+showboxheader('', 'apps');
+foreach($apps as $orderid => $oapps) {
+	foreach($oapps as $app => $data) {
+		[$icon, $status, $name, $desc, $op] = $data;
+		showboxrow('',
+			['class="dcol c1"', 'class="dcol d-2-3 c2"', 'class="dcol c3"'],
+			[
+				'<img src="'.$icon.'" '.(!$status ? 'class="close"' : '').' />',
+				'<h3>'.cplang($name, mitframeApp: $app).'</h3>'.
+				'<p><span class="light">'.cplang($desc, mitframeApp: $app).'</p>',
+				'<p>'.$op.'</p>',
+			]);
+	}
 }
-showtablefooter();
 showboxfooter();
 /*search*/
 
@@ -59,12 +69,15 @@ function getapps(&$apps) {
 				foreach($modules as $module) {
 					$c = 'app_'.$entry.'_switch_'.$module;
 					if(class_exists($c)) {
-						$apps[$module] = [$c::Icon, $c::getStatus(), $c::Name, $c::Desc, $c::GetOptions()];
+						$orderid = defined($c.'::OrderId') ? $c::OrderId : 99;
+						$apps[$orderid][$module] = [$c::Icon, $c::getStatus(), $c::Name, $c::Desc, $c::GetOptions()];
 					}
 				}
 			} else {
-				$apps[$entry] = [$c::Icon, $c::getStatus(), $c::Name, $c::Desc, $c::GetOptions()];
+				$orderid = defined($c.'::OrderId') ? $c::OrderId : 99;
+				$apps[$orderid][$entry] = [$c::Icon, $c::getStatus(), $c::Name, $c::Desc, $c::GetOptions()];
 			}
 		}
 	}
+	ksort($apps);
 }

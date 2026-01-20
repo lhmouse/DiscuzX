@@ -2,9 +2,10 @@
 
 class app_group_switch {
 
-	const Icon = STATICURL.'image/feed/group_b.png';
+	const Icon = STATICURL.'image/app/group.svg';
 	const Name = 'setting_functions_curscript_group';
 	const Desc = 'setting_functions_curscript_group_intro';
+	const OrderId = 1;
 
 	public static function getStatus() {
 		return getglobal('setting/groupstatus');
