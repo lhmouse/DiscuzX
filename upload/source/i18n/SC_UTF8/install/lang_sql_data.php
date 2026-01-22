@@ -151,31 +151,31 @@ INSERT INTO pre_common_nav VALUES ('', '0', 'Archiver', '', 'archiver/', 'archiv
 INSERT INTO pre_common_nav VALUES ('', '0', '手机版', '', 'forum.php?showmobile=yes', 'mobile', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '小黑屋', '', 'misc.php?mod=darkroom', 'darkroom', 0, 0, 1, 3, 0, 0, 0, 0, '', '', '', 1, '');
 
-INSERT INTO pre_common_nav VALUES ('', '0', '日志', '', 'home.php?mod=space&do=blog', 'blog', 0, 0, -1, 2, 0, 0, 0, 0, '{STATICURL}image/feed/blog.gif', '发布', 'home.php?mod=spacecp&ac=blog', 2, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '相册', '', 'home.php?mod=space&do=album', 'album', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/feed/album.gif', '上传', 'home.php?mod=spacecp&ac=upload', 2, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '分享', '', 'home.php?mod=space&do=share', 'share', 0, 0, -1, 4, 0, 0, 0, 0, '{STATICURL}image/feed/share.gif', '添加', 'home.php?mod=spacecp&ac=share', 2, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '记录', '', 'home.php?mod=space&do=doing', 'doing', 0, 0, -1, 5, 0, 0, 0, 0, '{STATICURL}image/feed/doing.gif', '', '', 2, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '广播', '', 'home.php?mod=follow', 'follow', 0, 0, -1, 6, 0, 0, 0, 0, '{STATICURL}image/feed/follow.gif', '', '', 2, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '日志', '', 'home.php?mod=space&do=blog', 'blog', 0, 0, -1, 2, 0, 0, 0, 0, '{STATICURL}image/app/blog.svg', '发布', 'home.php?mod=spacecp&ac=blog', 2, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '相册', '', 'home.php?mod=space&do=album', 'album', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/app/album.svg', '上传', 'home.php?mod=spacecp&ac=upload', 2, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '分享', '', 'home.php?mod=space&do=share', 'share', 0, 0, -1, 4, 0, 0, 0, 0, '{STATICURL}image/app/share.svg', '添加', 'home.php?mod=spacecp&ac=share', 2, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '记录', '', 'home.php?mod=space&do=doing', 'doing', 0, 0, -1, 5, 0, 0, 0, 0, '{STATICURL}image/app/doing.svg', '', '', 2, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '广播', '', 'home.php?mod=follow', 'follow', 0, 0, -1, 6, 0, 0, 0, 0, '{STATICURL}image/app/follow.svg', '', '', 2, '');
 INSERT INTO pre_common_nav VALUES ('', '0', '{hr}', '', '', '', 0, 1, 1, 8, 0, 0, 0, 0, '', '', '', 2, '');
 
-INSERT INTO pre_common_nav VALUES ('', '0', '好友', '', 'home.php?mod=space&do=friend', 'friend', 0, 0, -1, 1, 0, 0, 0, 0, '{STATICURL}image/feed/friend_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '帖子', '', 'home.php?mod=space&do=thread&view=me', 'thread', 0, 0, 1, 2, 0, 0, 0, 0, '{STATICURL}image/feed/thread_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '收藏', '', 'home.php?mod=space&do=favorite&view=me', 'favorite', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/feed/favorite_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '道具', '', 'home.php?mod=magic', 'magic', 0, 0, -1, 4, 0, 0, 0, 0, '{STATICURL}image/feed/magic_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '勋章', '', 'home.php?mod=medal', 'medal', 0, 0, -1, 5, 0, 0, 0, 0, '{STATICURL}image/feed/medal_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '任务', '', 'home.php?mod=task', 'task', 0, 0, -1, 6, 0, 0, 0, 0, '{STATICURL}image/feed/task_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '淘帖', '', 'forum.php?mod=collection&op=my', 'collection', 0, 0, -1, 7, 0, 0, 0, 0, '{STATICURL}image/feed/collection_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '动态', '', 'home.php', 'feed', 0, 0, -1, 8, 0, 0, 0, 0, '{STATICURL}image/feed/feed_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '日志', '', 'home.php?mod=space&do=blog', 'blog', 0, 0, -1, 9, 0, 0, 0, 0, '{STATICURL}image/feed/blog_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '相册', '', 'home.php?mod=space&do=album', 'album', 0, 0, -1, 10, 0, 0, 0, 0, '{STATICURL}image/feed/album_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '分享', '', 'home.php?mod=space&do=share', 'share', 0, 0, -1, 11, 0, 0, 0, 0, '{STATICURL}image/feed/share_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '记录', '', 'home.php?mod=space&do=doing', 'doing', 0, 0, -1, 12, 0, 0, 0, 0, '{STATICURL}image/feed/doing_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '留言板', '', 'home.php?mod=space&do=wall', 'wall', 0, 0, -1, 13, 0, 0, 0, 0, '{STATICURL}image/feed/wall_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '广播', '', 'home.php?mod=follow', 'follow', 0, 0, -1, 14, 0, 0, 0, 0, '{STATICURL}image/feed/follow_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '圈子', '', 'group.php', 'group', 0, 0, -1, 15, 0, 0, 0, 0, '{STATICURL}image/feed/group_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '门户', '', 'portal.php', 'portal', 0, 0, -1, 16, 0, 0, 0, 0, '{STATICURL}image/feed/portal_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '导读', '', 'forum.php?mod=guide', 'guide', 0, 0, -1, 17, 0, 0, 0, 0, '{STATICURL}image/feed/guide_b.png', '', '', 3, '');
-INSERT INTO pre_common_nav VALUES ('', '0', '排行榜', '', 'misc.php?mod=ranklist', 'ranklist', 0, 0, -1, 18, 0, 0, 0, 0, '{STATICURL}image/feed/ranklist_b.png', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '好友', '', 'home.php?mod=space&do=friend', 'friend', 0, 0, -1, 1, 0, 0, 0, 0, '{STATICURL}image/app/friend.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '帖子', '', 'home.php?mod=space&do=thread&view=me', 'thread', 0, 0, 1, 2, 0, 0, 0, 0, '{STATICURL}image/app/forum.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '收藏', '', 'home.php?mod=space&do=favorite&view=me', 'favorite', 0, 0, -1, 3, 0, 0, 0, 0, '{STATICURL}image/app/favorite.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '道具', '', 'home.php?mod=magic', 'magic', 0, 0, -1, 4, 0, 0, 0, 0, '{STATICURL}image/app/magic.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '勋章', '', 'home.php?mod=medal', 'medal', 0, 0, -1, 5, 0, 0, 0, 0, '{STATICURL}image/app/medal.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '任务', '', 'home.php?mod=task', 'task', 0, 0, -1, 6, 0, 0, 0, 0, '{STATICURL}image/app/task.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '淘帖', '', 'forum.php?mod=collection&op=my', 'collection', 0, 0, -1, 7, 0, 0, 0, 0, '{STATICURL}image/app/collection.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '动态', '', 'home.php', 'feed', 0, 0, -1, 8, 0, 0, 0, 0, '{STATICURL}image/app/feed.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '日志', '', 'home.php?mod=space&do=blog', 'blog', 0, 0, -1, 9, 0, 0, 0, 0, '{STATICURL}image/app/blog.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '相册', '', 'home.php?mod=space&do=album', 'album', 0, 0, -1, 10, 0, 0, 0, 0, '{STATICURL}image/app/album.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '分享', '', 'home.php?mod=space&do=share', 'share', 0, 0, -1, 11, 0, 0, 0, 0, '{STATICURL}image/app/share.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '记录', '', 'home.php?mod=space&do=doing', 'doing', 0, 0, -1, 12, 0, 0, 0, 0, '{STATICURL}image/app/doing.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '留言板', '', 'home.php?mod=space&do=wall', 'wall', 0, 0, -1, 13, 0, 0, 0, 0, '{STATICURL}image/app/wall.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '广播', '', 'home.php?mod=follow', 'follow', 0, 0, -1, 14, 0, 0, 0, 0, '{STATICURL}image/app/follow.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '圈子', '', 'group.php', 'group', 0, 0, -1, 15, 0, 0, 0, 0, '{STATICURL}image/app/group.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '门户', '', 'portal.php', 'portal', 0, 0, -1, 16, 0, 0, 0, 0, '{STATICURL}image/app/portal.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '导读', '', 'forum.php?mod=guide', 'guide', 0, 0, -1, 17, 0, 0, 0, 0, '{STATICURL}image/app/guide.svg', '', '', 3, '');
+INSERT INTO pre_common_nav VALUES ('', '0', '排行榜', '', 'misc.php?mod=ranklist', 'ranklist', 0, 0, -1, 18, 0, 0, 0, 0, '{STATICURL}image/app/ranklist.svg', '', '', 3, '');
 
 
 INSERT INTO pre_common_nav VALUES ('', '0', '设为首页', '', '#', 'sethomepage', 0, 0, 1, 1, 0, 0, 0, 0, '', '', '', 4, '');

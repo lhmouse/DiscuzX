@@ -9,7 +9,7 @@ class app_home_switch {
 
 class app_home_switch_follow {
 
-	const Icon = STATICURL.'image/app/friend.svg';
+	const Icon = STATICURL.'image/app/follow.svg';
 	const Name = 'setting_functions_curscript_follow';
 	const Desc = 'setting_functions_curscript_follow_intro';
 	const OrderId = 3;
@@ -128,10 +128,10 @@ class app_home_switch_doing {
 
 class app_home_switch_wall {
 
-	const Icon = STATICURL.'image/app/pm.svg';
+	const Icon = STATICURL.'image/app/wall.svg';
 	const Name = 'setting_functions_curscript_message';
 	const Desc = 'setting_functions_curscript_message_intro';
-	const OrderId = 2;
+	const OrderId = 3;
 
 	public static function getStatus() {
 		return getglobal('setting/wallstatus');
