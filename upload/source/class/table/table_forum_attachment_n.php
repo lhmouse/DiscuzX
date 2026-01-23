@@ -186,7 +186,7 @@ class table_forum_attachment_n extends discuz_table {
 	}
 
 	public function fetch_all_by_pid_width($tableid, $pids, $width) {
-		return DB::fetch_all("SELECT * FROM %t WHERE %i AND isimage IN ('1', '-1') AND width>=%d OR isimage=2", [$this->_get_table($tableid), DB::field('pid', $pids), $width]);
+		return DB::fetch_all("SELECT * FROM %t WHERE %i AND (isimage IN ('1', '-1') AND width>=%d OR isimage=2)", [$this->_get_table($tableid), DB::field('pid', $pids), $width]);
 	}
 
 	public function get_total_filesize() {
