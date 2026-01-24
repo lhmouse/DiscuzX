@@ -93,24 +93,28 @@
 	<!--{if $_G['basescript'] == 'forum' || ($_G['basescript'] == 'group' && $_G['fid']) || ($_G['basescript'] == 'portal' && CURMODULE == 'index')}--><a {if $_G['fid']}href="forum.php?mod=post&action=newthread&fid={$_G['fid']}"{else}href="forum.php?mod=misc&action=nav" onclick="showWindow('nav', this.href, 'get', 0)"{/if} class="dz_rpost" rel="nofollow"><span class="dz_tip_text">{if $_G['fid']}{lang tmp104}{if $_G['basescript'] == 'group'}{lang tmp118}{else}{lang tmp105}{/if}{lang tmp066}{else}{lang tmp103}{lang tmp066}{/if}</span></a><!--{/if}-->
 	<!--{/if}-->
 	<!--{if $_G['style']['sider_wechat']}-->
-	<a href="javascript:;" class="dz_rwx" rel="nofollow"><div class="dz_rewm_box"><div class="dz_rewm">
-		<!--{if $_G['style']['sider_wechat']}-->
-			<img src="{$_G['style']['sider_wechat_qrcode']}">
-		<!--{else}-->
-			<img src="{STYLEIMGDIR}/img/dz_wx.jpg">
-		<!--{/if}-->
-		<!--{if $_G['style']['sider_wechat']}-->
-			<span>{$_G['style']['sider_wechat_txt']}</span>
-		<!--{else}-->
-			<span>{lang addservice}</span>
-		<!--{/if}-->
-	</div></div></a>
+	<a href="javascript:;" class="dz_rwx" rel="nofollow">
+		<div class="dz_rewm_box">
+			<div class="dz_rewm">
+				<!--{if $_G['style']['sider_wechat']}-->
+					<img src="{$_G['style']['sider_wechat_qrcode']}">
+				<!--{else}-->
+					<img src="{STYLEIMGDIR}/img/dz_wx.jpg">
+				<!--{/if}-->
+				<!--{if $_G['style']['sider_wechat']}-->
+					<span>{$_G['style']['sider_wechat_txt']}</span>
+				<!--{else}-->
+					<span>{lang addservice}</span>
+				<!--{/if}-->
+			</div>
+		</div>
+	</a>
 	<!--{/if}-->
 	<!--{if $_G['setting']['site_qq']}--><a href="//wpa.qq.com/msgrd?v=3&uin=$_G['setting']['site_qq']&site=$_G['setting']['bbname']&menu=yes&from=discuz" class="dz_rqq" rel="nofollow" target="_blank"><span class="dz_tip_text">QQ{lang tmp097}</span></a><!--{/if}-->
 	<a href="javascript:;" onclick="jQuery('body,html').animate({scrollTop:0}, 600);" title="{lang scrolltop}" id="dz_rtop" class="dz_rtop" rel="nofollow"><span class="dz_tip_text">{lang tmp096}</span></a>
 </div>
 
-<div id="scrolltop">
+<div id="scrolltop" style="display: none;">
 	<!--{if $_G['fid'] && $_G['mod'] == 'viewthread'}-->
 	<span><a href="forum.php?mod=post&action=reply&fid=$_G['fid']&tid=$_G['tid']&extra=$_GET['extra']&page=$page{if $_GET['from']}&from=$_GET['from']{/if}" onclick="showWindow('reply', this.href)" class="replyfast" title="{lang fastreply}"><b>{lang fastreply}</b></a></span>
 	<!--{/if}-->
@@ -125,25 +129,28 @@
 	</span>
 	<!--{/if}-->
 </div>
-
+<script type="text/javascript">_attachEvent(window, 'scroll', function () { new_showTopLink(); });
+_attachEvent(window, 'resize', function(){ new_showTopLink(); });checkBlind();</script>
 <script type="text/javascript">
 	function new_showTopLink() {
 		var ft = $('ft');
 		if(ft){
-			var scrolltop = $('dz_rnav');
+			var dzscrolltop = $('dz_rnav');
 			var viewPortHeight = parseInt(document.documentElement.clientHeight);
-			var scrollHeight = parseInt(document.body.getBoundingClientRect().top);
-			var basew = parseInt(ft.clientWidth);
-			var sw = scrolltop.clientWidth;
-			if (basew < 1500) {
+			var dzscrollHeight = parseInt(document.body.getBoundingClientRect().top);
+			var dzbasew = parseInt(ft.clientWidth);
+			var dzsw = dzscrolltop.clientWidth;
+			if (dzbasew < 1500) {
 				var left = parseInt(fetchOffset(ft)['left']);
-				left = left < sw ? left * 2 - sw : left;
-				scrolltop.style.left = ( basew + left ) + 'px';
+				left = left < dzsw ? left * 2 - dzsw : left;
+				dzscrolltop.style.left = ( dzbasew + left ) + 'px';
 			} else {
-				scrolltop.style.left = 'auto';
-				scrolltop.style.right = 0;
+				dzscrolltop.style.left = 'auto';
+				dzscrolltop.style.right = 0;
 			}
-			if (scrollHeight < -100) {
+			console.log(dzscrollHeight);
+			
+			if (dzscrollHeight < -100) {
 				jQuery(".dz_rtop").slideDown();
 			} else {
 				jQuery(".dz_rtop").slideUp();
