@@ -21,6 +21,15 @@ Discuz! X5.0 开发者预览版官方 Git (https://gitee.com/Discuz/DiscuzX/tree
 - 有任何开发、使用方面的问题请直接在[开发者预览版官方讨论区](https://www.dismall.com/forum-mitframe-1.html)发帖，本版块仅限绑定了应用中心开发者账号的开发者进入。官方人员不解答在其他版块的 X5.0 相关问题
 - 欢迎 D 粉们积极 PR，Discuz! 24 年，开源产品少不了大家的支持
 
+### 额外目录说明
+
+以下目录默认为空，如需要请自行单独下载覆盖
+
+| 文件名            | 含义              | Git 仓库地址                                 |
+|----------------|-----------------|--------------------------------------------|
+| /vendor         | Discuz! X5 Vendor 库 | https://gitee.com/Discuz/vendor            |
+| /source/data/ip | Discuz! X5 IP 库 | https://gitee.com/Discuz/IP            |
+
 ### 更新说明
 - 基于 MitFrame® 内核的全新框架体系重构，既是社区又是框架，全面开拓更广泛的开放视角
 - 从前台到后台，开放更加彻底
