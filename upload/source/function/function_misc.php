@@ -353,7 +353,9 @@ function process_ipnotice($ipconverted) {
 		return '';
 	}
 
-	$ipconverted = substr($ipconverted, 1);
+	if(str_starts_with($ipconverted, '-')) {
+		$ipconverted = substr($ipconverted, 1);
+	}
 	if(str_contains($ipconverted, '-')) {
 		$ipconverted = substr($ipconverted, 0, strpos($ipconverted, '-'));
 	}
