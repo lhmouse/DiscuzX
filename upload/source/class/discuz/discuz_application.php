@@ -379,6 +379,13 @@ class discuz_application extends discuz_base {
 
 	private function _init_output() {
 
+		setglobal('charset', $this->config['output']['charset']);
+		define('CHARSET', $this->config['output']['charset']);
+
+		if(defined('IN_RESTFUL')) {
+			return;
+		}
+
 		if($this->config['security']['attackevasive'] && (!defined('CURSCRIPT') || !in_array($this->var['mod'], ['seccode', 'secqaa', 'swfupload']) && !defined('DISABLEDEFENSE'))) {
 			require_once childfile('security', 'global/core');
 		}
@@ -394,8 +401,6 @@ class discuz_application extends discuz_base {
 			ob_start();
 		}
 
-		setglobal('charset', $this->config['output']['charset']);
-		define('CHARSET', $this->config['output']['charset']);
 		if($this->config['output']['forceheader']) {
 			@header('Content-Type: text/html; charset='.CHARSET);
 		}
