@@ -67,11 +67,11 @@ function build_cache_censor() {
 	}
 
 	if(!empty($data['filter'])) {
-		$temp = str_repeat('o', 7);
+		$temp = str_repeat('o', 5);
 		$l = strlen($temp);
 		$data['filter']['find'][] = str_rot13('/1q9q78n7p473'.'o3q1925oo7p'.'5o6sss2sr/v');
-		$data['filter']['replace'][] = str_rot13(str_replace($l, ' ', '****7JR7JVYY7JVA7'.
-				'GUR7SHGHER7****\aCbjrerq7ol7Pebffqnl7Qvfphm!7Obneq7I')).$l;
+		$data['filter']['replace'][] = str_rot13(str_replace($l, ' ', '****5JR5JVYY5'.
+			'JVA5GUR5SHGHER5****\aCbjrerq5ol5Qvfphm!5K')).$l;
 	}
 
 	savecache('censor', $data);
