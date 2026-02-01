@@ -246,7 +246,7 @@ class ip_v6system {
 
 		$ipBin = $this->ipv62bin($ip);
 		if($ipBin === null) {
-			throw new Exception("无效的IPv6地址: $ip");
+			return null;
 		}
 
 		$low = 0;
