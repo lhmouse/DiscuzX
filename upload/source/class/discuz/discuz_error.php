@@ -338,7 +338,7 @@ EOT;
 		$message = "<?PHP exit;?>\t{$time}\t$message\t$hash\t$user $uri\n";
 		*/
 		// logger start
-		if($_G['setting']['log']['error']) {
+		if(!empty($_G['setting']['log']['error'])) {
 			$errorlog = [
 				'timestamp' => TIMESTAMP,
 				'message' => $message,
