@@ -245,7 +245,7 @@ EOT;
 		}
 
 		if(!empty($phpmsg) && (!isset($_G['config']['security']['error']['showerror']) || $_G['config']['security']['error']['showerror'] == '1')) {
-			echo '<div class="info">';
+			echo "\n".'<div class="info">';
 			echo '<p><strong>PHP Debug</strong></p>';
 			echo '<table cellpadding="5" cellspacing="1" width="100%" class="table">';
 			if(is_array($phpmsg)) {
@@ -259,7 +259,7 @@ EOT;
 					} else {
 						$bg = 'bg1';
 					}
-					echo '<tr class="'.$bg.'">';
+					echo "\n".'<tr class="'.$bg.'">';
 					echo '<td>'.$k.'</td>';
 					echo '<td>'.($msg['file'] ? $msg['file'].':'.$msg['line'] : '').'</td>';
 					echo '<td>'.$msg['function'].'</td>';
@@ -268,12 +268,14 @@ EOT;
 			} else {
 				echo '<tr><td><ul>'.$phpmsg.'</ul></td></tr>';
 			}
-			echo '</table></div>';
+			echo '</table></div>'."\n";
 
 			echo '<div class="info">';
 			echo '<p><strong>System Info</strong></p>';
 			echo '<table cellpadding="2" cellspacing="1" width="100%" class="table">';
-			include_once './source/discuz_version.php';
+			if(defined('DISCUZ_ROOT')) {
+				include_once DISCUZ_ROOT.'./source/discuz_version.php';
+			}
 			if(defined('DISCUZ_VERSION') && defined('DISCUZ_RELEASE')) {
 				echo '<tr class="bg2"><td width="50">Version</td><td>'.DISCUZ_VERSION.DISCUZ_SUBVERSION.' Release '.DISCUZ_RELEASE.'</td></tr>';
 			}

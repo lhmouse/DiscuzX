@@ -153,6 +153,9 @@ formula: 按照权限公式表达式方式显示
 	}
 
 	private function _check($s) {
+		if(!$s) {
+			return;
+		}
 		global $_G;
 
 		$check = true;
@@ -191,12 +194,11 @@ formula: 按照权限公式表达式方式显示
 			cpmsg('forums_permformula_error', '', 'error');
 		}
 
-		$s .= ';';
 		$_c = [];
 		set_exception_handler(function() {
 			cpmsg('forums_permformula_error', '', 'error');
 		});
-		eval($s);
+		@eval("\$result = ($s) ? TRUE : FALSE;");
 		restore_exception_handler();
 	}
 

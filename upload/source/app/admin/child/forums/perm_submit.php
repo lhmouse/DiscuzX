@@ -99,16 +99,13 @@ foreach($perms as $perm) {
 			cpmsg('forums_permformula_error', '', 'error', ['frame' => $multiset]);
 		}
 
-		$s .= ';';
 		$_c = [];
-		set_exception_handler('_checkperm');
-		eval($s);
+		set_exception_handler(function() {
+			cpmsg('forums_permformula_error', '', 'error', ['frame' => $GLOBALS['multiset']]);
+		});
+		@eval("\$result = ($s) ? TRUE : FALSE;");
 		restore_exception_handler();
 
 		$_GET[''.$perm.'new'] .= '_formula['.$_GET['permformula'][$perm].']'."\t";
 	}
-}
-
-function _checkperm($e) {
-	cpmsg('forums_permformula_error', '', 'error', ['frame' => $GLOBALS['multiset']]);
 }
