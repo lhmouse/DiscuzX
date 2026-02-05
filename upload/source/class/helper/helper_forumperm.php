@@ -231,7 +231,7 @@ class helper_forumperm {
 				continue;
 			} elseif(preg_match('/^(or|and)$/', $c)) {
 				$formula[] = str_replace(['or', 'and'], ['||', '&&'], $c);
-			} elseif(preg_match('/^(g|t|v|a|o)-?\d+$/', $c) ||
+			} elseif(preg_match('/^(g|t|v|a)-?\d+$/', $c) ||
 				preg_match('/^(group|tag|verify|account)$/', $c) ||
 				preg_match('/^p_\w+$/', $c) || preg_match('/^plugin_\w+$/', $c)) {
 				$formula[] = !empty($this->formula_cells[$c]) ? 'TRUE' : 'FALSE';

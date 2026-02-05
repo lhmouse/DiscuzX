@@ -65,46 +65,9 @@ foreach($perms as $perm) {
 	}
 
 	if(!empty($_GET['permformula'][$perm])) {
-		$check = true;
-		$p = 0;
-		$permformula = str_replace(['(', ')'], [' ( ', ' ) '], $_GET['permformula'][$perm]);
-		$s = '';
-		foreach(explode(' ', $permformula) as $c) {
-			if(!$c) {
-				continue;
-			} elseif(preg_match('/^(group|tag|verify|account|org|or|and)$/', $c)) {
-				if(in_array($c, ['group', 'tag', 'verify', 'account', 'org'])) {
-					$s .= '$_c[\''.$c.'\'] ';
-				} else {
-					$s .= $c.' ';
-				}
-			} elseif(preg_match('/^(g|t|v|a|o)-?\d+$/', $c)) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif(str_starts_with($c, 'p_') && isset($_G['setting']['plugins']['perm'][substr($c, 2)])) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif(str_starts_with($c, 'plugin_') && in_array(substr($c, 7), $_G['setting']['plugins']['available'])) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif($c == '(') {
-				$s .= '( ';
-				$p++;
-			} elseif($c == ')') {
-				$s .= ') ';
-				$p--;
-			} else {
-				$check = false;
-			}
-		}
-
-		if(!$check || $p != 0) {
+		if(!admin\class_perm::formulaCheck($_GET['permformula'][$perm])) {
 			cpmsg('forums_permformula_error', '', 'error', ['frame' => $multiset]);
 		}
-
-		$_c = [];
-		set_exception_handler(function() {
-			cpmsg('forums_permformula_error', '', 'error', ['frame' => $GLOBALS['multiset']]);
-		});
-		@eval("\$result = ($s) ? TRUE : FALSE;");
-		restore_exception_handler();
 
 		$_GET[''.$perm.'new'] .= '_formula['.$_GET['permformula'][$perm].']'."\t";
 	}

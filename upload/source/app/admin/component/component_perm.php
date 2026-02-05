@@ -148,58 +148,10 @@ formula: 按照权限公式表达式方式显示
 
 	function serialize(&$value) {
 		$s = is_array($value) ? implode(' or ', $value) : $value;
-		$this->_check($s);
+		if(!\admin\class_perm::formulaCheck($s)) {
+			cpmsg('forums_permformula_error', '', 'error');
+		}
 		$value = '_formula['.$s.']';
-	}
-
-	private function _check($s) {
-		if(!$s) {
-			return;
-		}
-		global $_G;
-
-		$check = true;
-		$p = 0;
-		$permformula = str_replace(['(', ')'], [' ( ', ' ) '], $s);
-		$s = '';
-		foreach(explode(' ', $permformula) as $c) {
-			if(!$c) {
-				continue;
-			} elseif(preg_match('/^(group|tag|verify|account|medal|magic|org|or|and)$/', $c)) {
-				if(in_array($c, ['group', 'tag', 'verify', 'account', 'medal', 'magic', 'org'])) {
-					$s .= '$_c[\''.$c.'\'] ';
-				} else {
-					$s .= $c.' ';
-				}
-			} elseif(preg_match('/^(g|t|v|a|m|i|o)-?\d+$/', $c)) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif(preg_match('/^O-?(\d+)\[.*?\]$/', $c)) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif(str_starts_with($c, 'p_') && isset($_G['setting']['plugins']['perm'][substr($c, 2)])) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif(str_starts_with($c, 'plugin_') && in_array(substr($c, 7), $_G['setting']['plugins']['available'])) {
-				$s .= '$_c[\''.$c.'\'] ';
-			} elseif($c == '(') {
-				$s .= '( ';
-				$p++;
-			} elseif($c == ')') {
-				$s .= ') ';
-				$p--;
-			} else {
-				$check = false;
-			}
-		}
-
-		if(!$check || $p != 0) {
-			cpmsg('forums_permformula_error', '', 'error');
-		}
-
-		$_c = [];
-		set_exception_handler(function() {
-			cpmsg('forums_permformula_error', '', 'error');
-		});
-		@eval("\$result = ($s) ? TRUE : FALSE;");
-		restore_exception_handler();
 	}
 
 	private function _gen_group(&$data, $value, $variable, $extra) {
