@@ -70,7 +70,7 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_editor_smrows', 'settingnew[smrows]', $setting['smrows'], 'text');
 
 	showtitle('setting_editor_mode_type_json');
-	showsetting('setting_editor_json_independence', 'settingnew[json_independence]', $setting['json_independence'], 'radio');
+	// showsetting('setting_editor_json_independence', 'settingnew[json_independence]', $setting['json_independence'], 'radio');
 	showsetting('setting_editor_anchorparse', 'settingnew[anchorparse]', $setting['anchorparse'], 'textarea');
 	/*search*/
 
