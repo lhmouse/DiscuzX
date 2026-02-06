@@ -10,41 +10,6 @@ if(!defined('MITFRAME_APP')) {
 	exit('Access Denied');
 }
 
-if(isset($_GET['css'])) {
-	$css = explode('|', $_GET['css']);
-	$string = '';
-	$size = 0;
-	foreach($css as $file) {
-		if(preg_match('/^\w+$/', $file)) {
-			$file = './data/cache/style_'.$file.'.css';
-			$string .= @implode('', file($file));
-		}
-	}
-	ob_start('ob_gzhandler');
-	header('Content-Type: text/css');
-	header('Expires: '.gmdate('D, d M Y H:i:s', time() + 2592000).' GMT');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
-	echo $string;
-	exit;
-}
-if(isset($_GET['js'])) {
-	$js = explode('|', $_GET['js']);
-	$string = '';
-	$size = 0;
-	foreach($js as $file) {
-		$file = substr($file, 0, strpos($file, '.'));
-		if(preg_match('/^\w+$/', $file)) {
-			$file = './data/cache/'.$file.'.js';
-			$string .= @implode('', file($file));
-		}
-	}
-	ob_start('ob_gzhandler');
-	header('Content-Type: text/javascript');
-	header('Expires: '.gmdate('D, d M Y H:i:s', time() + 2592000).' GMT');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
-	echo $string;
-	exit;
-}
 
 const APPTYPEID = 100;
 
