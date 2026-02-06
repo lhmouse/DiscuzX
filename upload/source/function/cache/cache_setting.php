@@ -232,6 +232,7 @@ function build_cache_setting() {
 		unset($data['relatedtag']['status'], $data['relatedtag']['order'], $relatedtag);
 	}
 
+	$data['iconfont'] = $_G['setting']['iconfont'] ?? 'static/js/iconfont.js';
 	$data['domain']['defaultindex'] = isset($data['defaultindex']) && $data['defaultindex'] != '#' ? $data['defaultindex'] : '';
 	$data['domain']['holddomain'] = $data['holddomain'] ?? '';
 	$data['domain']['list'] = [];
