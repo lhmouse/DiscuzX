@@ -80,10 +80,10 @@ class table_common_syscache extends discuz_table {
 		return $data[$cachename] ?? false;
 	}
 
-	public function fetch_all_syscache($cachenames) {
+	public function fetch_all_syscache($cachenames, $force = false) {
 		$data = [];
 		$cachenames = is_array($cachenames) ? $cachenames : [$cachenames];
-		if($this->_allowmem) {
+		if($this->_allowmem && !$force) {
 			$data = memory('get', $cachenames);
 			$newarray = $data !== false ? array_diff($cachenames, array_keys($data)) : $cachenames;
 			if(empty($newarray)) {
