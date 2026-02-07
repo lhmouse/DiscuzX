@@ -1185,7 +1185,7 @@ function runquery($sql, $upgrade = false) {
 			} else {
 				if(!$db->query($query, 'SILENT')) {
 					$err = $db->error();
-					if($upgrade && str_contains($err, 'Duplicate')) {
+					if($upgrade && (str_contains($err, 'Duplicate') || str_contains($err, 'doesn\'t exist'))) {
 						continue;
 					}
 					showjsmessage(lang('failed').': '.$err."\n");
