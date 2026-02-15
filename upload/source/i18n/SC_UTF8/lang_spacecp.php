@@ -293,6 +293,8 @@ $lang = [
 	'task' => '任务',
 	'magic' => '道具',
 	'favorite' => '收藏',
+	'pm' => '私信',
+	'follower' => '关注',
 	'select_the_navigation_position' => '选择{type}导航位置',
 	'close_module' => '关闭{type}功能',
 

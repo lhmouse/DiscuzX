@@ -14,10 +14,10 @@ if($_G['adminid'] != 1) {
 	exit;
 }
 
-$allowfuntype = ['portal', 'forum', 'friend', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite'];
+$allowfuntype = ['portal', 'forum', 'friend', 'follower', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite', 'pm'];
 $type = in_array($_GET['type'], $allowfuntype) ? trim($_GET['type']) : '';
 $do = in_array($_GET['do'], ['open', 'close']) ? $_GET['do'] : 'close';
-if(!submitcheck('funcsubmit')) {
+if(!submitcheck('funcsubmit', true)) {
 	$navtitle = lang('spacecp', $do == 'open' ? 'select_the_navigation_position' : 'close_module', ['type' => lang('spacecp', $type)]);
 	$closeprompt = lang('spacecp', 'close_module', ['type' => lang('spacecp', $type)]);
 	include template('common/header_ajax');

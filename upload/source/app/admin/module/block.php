@@ -17,11 +17,8 @@ shownav('portal', 'block');
 loadcache('blockclass');
 
 if($operation == 'perm') {
-
 	require_once childfile('block/perm');
-
 } else {
-
 	require_once childfile('block/list');
-
 }
+

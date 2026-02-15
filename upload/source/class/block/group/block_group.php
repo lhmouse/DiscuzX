@@ -142,9 +142,9 @@ class block_group extends discuz_block {
 		$sqlban = !empty($bannedids) ? ' AND f.fid NOT IN ('.dimplode($bannedids).')' : '';
 
 		if($fids) {
-			$wheresql = 'f.fid IN (' .dimplode($fids).") AND f.status='3' AND f.type='sub' $sqlban";
+			$wheresql = 'f.fid IN ('.dimplode($fids).") AND f.status='3' AND f.type='sub' $sqlban";
 		} else {
-			$wheresql = !empty($typeids) ? 'f.fup IN (' .dimplode($typeids).") AND f.status='3' AND f.type='sub' $sqlban" : '0';
+			$wheresql = !empty($typeids) ? 'f.fup IN ('.dimplode($typeids).") AND f.status='3' AND f.type='sub' $sqlban" : '0';
 		}
 		$wheresql .= " AND f.level > '0'";
 

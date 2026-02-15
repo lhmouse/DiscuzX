@@ -164,7 +164,7 @@
 						</td>
 					</tr>
 					<!--{/if}-->
-					<!--{if helper_access::check_module('follow')}-->
+					<!--{if helper_access::check_module('follower')}-->
 					<tr>
 						<th>{lang add_follow}</th>
 						<td>

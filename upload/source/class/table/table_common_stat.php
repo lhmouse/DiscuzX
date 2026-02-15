@@ -46,13 +46,13 @@ class table_common_stat extends discuz_table {
 		if(DB::result_first('SELECT COUNT(*) FROM '.DB::table($this->_table)." WHERE `daytime` = '$nowdaytime'")) {
 			DB::query('UPDATE '.DB::table($this->_table)." SET `$type`=`$type`+$num WHERE `daytime` = '$nowdaytime'");
 		} else {
-			DB::query('INSERT INTO ' .DB::table($this->_table)." (`daytime`, `$type`) VALUES ('$nowdaytime', '$num') ON DUPLICATE KEY UPDATE `$type` = `$type` + '$num'");
+			DB::query('INSERT INTO '.DB::table($this->_table)." (`daytime`, `$type`) VALUES ('$nowdaytime', '$num') ON DUPLICATE KEY UPDATE `$type` = `$type` + '$num'");
 			table_common_statuser::t()->clear_by_daytime($nowdaytime);
 		}
 	}
 
 	public function fetch_post_avg() {
-		return DB::result_first('SELECT AVG(post) FROM ' .DB::table($this->_table));
+		return DB::result_first('SELECT AVG(post) FROM '.DB::table($this->_table));
 	}
 
 	public function fetch_all($ids, $force_from_db = false, $null = '*') {

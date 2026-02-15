@@ -307,6 +307,9 @@ if(!submitcheck('topicsubmit', 0, $seccodecheck, $secqaacheck)) {
 	if(!empty($_GET['adddynamic'])) {
 		$afmethods[] = ['class' => 'forum\extend_thread_follow', 'method' => 'after_newthread'];
 	}
+	if(!empty($_GET['adddynamic_doing'])) {
+		$afmethods[] = ['class' => 'forum\extend_thread_doing', 'method' => 'after_newthread'];
+	}
 
 	$modthread->attach_before_methods('newthread', $bfmethods);
 	$modthread->attach_after_methods('newthread', $afmethods);

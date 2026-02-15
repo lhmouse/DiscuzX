@@ -44,7 +44,7 @@ if($overt || $_G['adminid'] == 1 || $thread['authorid'] == $_G['uid']) {
 if(!empty($arrvoterids)) {
 	$count = count($arrvoterids);
 	$multi = $perpage * ($page - 1);
-	$multipage = multi($count, $perpage, $page, "forum.php?mod=misc&action=viewvote&tid={$_G['tid']}&polloptionid=$polloptionid".($_GET['handlekey'] ? '&handlekey=' .$_GET['handlekey'] : ''));
+	$multipage = multi($count, $perpage, $page, "forum.php?mod=misc&action=viewvote&tid={$_G['tid']}&polloptionid=$polloptionid".($_GET['handlekey'] ? '&handlekey='.$_GET['handlekey'] : ''));
 	$arrvoterids = array_slice($arrvoterids, $multi, $perpage);
 }
 $voterlist = $voter = [];

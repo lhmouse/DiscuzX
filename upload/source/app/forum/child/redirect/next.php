@@ -12,7 +12,6 @@ if(!defined('IN_DISCUZ')) {
 
 $lastpost = $_G['thread']['lastpost'];
 
-
 $glue = '<';
 $sort = 'DESC';
 if($_GET['goto'] == 'nextnewset') {

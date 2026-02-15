@@ -16,7 +16,7 @@ if($count) {
 	$list = table_home_follow::t()->fetch_all_following_by_uid($uid, $status, $start, $perpage);
 	$multi = multi($count, $perpage, $page, $theurl);
 }
-if(helper_access::check_module('follow')) {
+if(helper_access::check_module('follower')) {
 	$followerlist = table_home_follow::t()->fetch_all_follower_by_uid($uid, 9);
 }
 $navactives = [$do => ' class="a"'];

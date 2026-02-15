@@ -54,7 +54,7 @@ class table_common_block_style extends discuz_table {
 			}
 		}
 		if(!empty($inserts)) {
-			DB::query('INSERT INTO '.DB::table($this->_table). '(`blockclass`, `name`, `template`, `hash`, `getpic`, `getsummary`, `settarget`, `fields`, `moreurl`) VALUES ' .implode(',', $inserts));
+			DB::query('INSERT INTO '.DB::table($this->_table).'(`blockclass`, `name`, `template`, `hash`, `getpic`, `getsummary`, `settarget`, `fields`, `moreurl`) VALUES '.implode(',', $inserts));
 		}
 	}
 

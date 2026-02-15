@@ -202,10 +202,10 @@ class block_trade extends discuz_block {
 		}
 		$where .= ($uids ? ' AND tr.sellerid IN ('.dimplode($uids).')' : '').$keyword;
 		$where .= ($bannedids ? ' AND tr.pid NOT IN ('.dimplode($bannedids).')' : '');
-		$sqlfrom = ' INNER JOIN `' .DB::table('forum_thread')."` t ON t.tid=tr.tid $sql AND t.displayorder>='0'";
+		$sqlfrom = ' INNER JOIN `'.DB::table('forum_thread')."` t ON t.tid=tr.tid $sql AND t.displayorder>='0'";
 		$joinmethod = empty($tids) ? 'INNER' : 'LEFT';
 		if($recommend) {
-			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend'). '` fc ON fc.tid=tr.tid';
+			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend').'` fc ON fc.tid=tr.tid';
 		}
 		$sqlfield = $highlight ? ', t.highlight' : '';
 		$query = DB::query("SELECT tr.pid, tr.tid, tr.aid, tr.price, tr.credit, tr.subject, tr.totalitems, tr.seller, tr.sellerid, t.posttableid$sqlfield
@@ -247,7 +247,7 @@ class block_trade extends discuz_block {
 		if(!empty($listpids)) {
 			foreach($threadpids as $key => $var) {
 				$posttable = $key == 0 ? 'forum_post' : 'forum_post_'.$key;
-				$query = DB::query('SELECT pid, message FROM ' .DB::table($posttable). ' WHERE pid IN  (' .dimplode($var). ')');
+				$query = DB::query('SELECT pid, message FROM '.DB::table($posttable).' WHERE pid IN  ('.dimplode($var).')');
 				while($result = DB::fetch($query)) {
 					$list[$result['pid']]['summary'] = messagecutstr($result['message'], $summarylength, '');
 				}

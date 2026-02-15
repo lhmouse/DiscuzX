@@ -63,6 +63,7 @@ class discuz_ftp {
 			}
 			return;
 		}
+
 		if(empty($this->config['on']) || empty($this->config['host'])) {
 			$this->set_error(FTP_ERR_CONFIG_OFF);
 		} else {
@@ -90,6 +91,7 @@ class discuz_ftp {
 				return 0;
 			}
 		}
+
 		if($this->error()) {
 			return 0;
 		}
@@ -256,7 +258,7 @@ class discuz_ftp {
 		if($this->config['on'] == 2) {
 			return 1;
 		}
-		return $this->connectid ? @ftp_close($this->connectid) : 0;
+		return @ftp_close($this->connectid);
 	}
 
 	function ftp_delete($path) {
@@ -265,7 +267,7 @@ class discuz_ftp {
 			return $this->ossConnect->deleteFile($path);
 		}
 		$path = discuz_ftp::clear($path);
-		return $this->connectid ? @ftp_delete($this->connectid, $path) : 0;
+		return @ftp_delete($this->connectid, $path);
 	}
 
 	function ftp_get($local_file, $remote_file, $mode, $resumepos = 0) {

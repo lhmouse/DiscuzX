@@ -68,7 +68,7 @@ class table_common_template_block extends discuz_table {
 					$values[] = "('$targettplname','$tpldirectory', '$bid')";
 				}
 			}
-			DB::query('INSERT INTO ' .DB::table($this->_table). ' (targettplname, tpldirectory, bid) VALUES ' .implode(',', $values));
+			DB::query('INSERT INTO '.DB::table($this->_table).' (targettplname, tpldirectory, bid) VALUES '.implode(',', $values));
 		}
 	}
 }

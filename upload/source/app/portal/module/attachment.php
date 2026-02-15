@@ -19,18 +19,13 @@ if(empty($attach)) {
 }
 
 if($operation == 'delete') {
-
 	require_once childfile('delete');
-
 } elseif($operation == 'getattach') {
-
 	require_once childfile('getattach');
-
 } else {
-
 	require_once childfile('output');
-
 }
+
 function getremotefile($file) {
 	global $_G;
 	@set_time_limit(0);

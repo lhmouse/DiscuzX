@@ -86,8 +86,8 @@ class table_common_member_profile extends discuz_table_archive {
 			}
 
 			$query = DB::query('SELECT sf.uid,sf.birthyear,sf.birthmonth,sf.birthday,s.username
-				FROM ' .DB::table('common_member_profile'). ' sf
-				LEFT JOIN ' .DB::table('common_member')." s USING(uid)
+				FROM '.DB::table('common_member_profile').' sf
+				LEFT JOIN '.DB::table('common_member')." s USING(uid)
 				WHERE (sf.uid IN ($uids)) AND ($wheresql)");
 			while($value = DB::fetch($query)) {
 				$value['istoday'] = 0;

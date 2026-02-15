@@ -83,7 +83,7 @@ class table_common_task extends discuz_table {
 			'doing' => "mt.status='0'",
 			'done' => "mt.status='1'",
 			'failed' => "mt.status='-1'",
-			default => "'" . TIMESTAMP . "' > starttime AND (endtime=0 OR endtime>'" . TIMESTAMP . "') AND (mt.taskid IS NULL OR (ABS(mt.status)='1' AND t.period>0))",
+			default => "'".TIMESTAMP."' > starttime AND (endtime=0 OR endtime>'".TIMESTAMP."') AND (mt.taskid IS NULL OR (ABS(mt.status)='1' AND t.period>0))",
 		};
 		return DB::fetch_all("SELECT t.*, mt.csc, mt.dateline FROM %t t
 			LEFT JOIN %t mt ON mt.taskid=t.taskid AND mt.uid=%d

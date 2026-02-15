@@ -29,7 +29,7 @@ class table_common_onlinetime extends discuz_table {
 
 	public function update_onlinetime($uid, $total, $thismonth, $lastupdate) {
 		if(($uid = intval($uid))) {
-			DB::query('UPDATE ' .DB::table('common_onlinetime')."
+			DB::query('UPDATE '.DB::table('common_onlinetime')."
 			SET total=total+'$total', thismonth=thismonth+'$thismonth', lastupdate='".$lastupdate."' WHERE ".DB::field($this->_pk, $uid));
 			return DB::affected_rows();
 		}

@@ -50,7 +50,7 @@ class table_forum_groupuser extends discuz_table {
 		if(empty($uids) || empty($fid)) {
 			return [];
 		}
-		return DB::fetch_all('SELECT * FROM %t WHERE fid=%d AND ' .DB::field('uid', $uids), [$this->_table, $fid]);
+		return DB::fetch_all('SELECT * FROM %t WHERE fid=%d AND '.DB::field('uid', $uids), [$this->_table, $fid]);
 	}
 
 	public function fetch_all_by_fid($fid, $level = 0) {
@@ -63,7 +63,7 @@ class table_forum_groupuser extends discuz_table {
 		} elseif($level == -1) {
 			$levelsql = '';
 		}
-		return DB::fetch_all('SELECT * FROM %t WHERE fid=%d' .$levelsql, [$this->_table, $fid]);
+		return DB::fetch_all('SELECT * FROM %t WHERE fid=%d'.$levelsql, [$this->_table, $fid]);
 	}
 
 	public function fetch_count_by_fid($fid, $level = 0) {
@@ -73,7 +73,7 @@ class table_forum_groupuser extends discuz_table {
 		} elseif($level == -1) {
 			$levelsql = '';
 		}
-		return DB::result_first('SELECT COUNT(*) FROM %t WHERE fid=%d' .$levelsql, [$this->_table, $fid]);
+		return DB::result_first('SELECT COUNT(*) FROM %t WHERE fid=%d'.$levelsql, [$this->_table, $fid]);
 	}
 
 	public function insert($data, $return_insert_id = false, $replace = false, $silent = false, $null1 = 0, $null2 = 0) {
@@ -101,7 +101,7 @@ class table_forum_groupuser extends discuz_table {
 		if(empty($sql)) {
 			return false;
 		}
-		DB::query('UPDATE ' .DB::table('forum_groupuser')." SET $sql, lastupdate='".TIMESTAMP."' WHERE fid=%d AND uid=%d", [$fid, $uid]);
+		DB::query('UPDATE '.DB::table('forum_groupuser')." SET $sql, lastupdate='".TIMESTAMP."' WHERE fid=%d AND uid=%d", [$fid, $uid]);
 	}
 
 	public function delete_by_fid($fids, $uid = 0) {
@@ -111,7 +111,7 @@ class table_forum_groupuser extends discuz_table {
 		if($uid) {
 			$sqladd = ' AND '.DB::field('uid', $uid);
 		}
-		DB::query('DELETE FROM ' .DB::table('forum_groupuser'). ' WHERE %i ' .$sqladd, [DB::field('fid', $fids)]);
+		DB::query('DELETE FROM '.DB::table('forum_groupuser').' WHERE %i '.$sqladd, [DB::field('fid', $fids)]);
 	}
 
 	public function update_for_user($uid, $fid, $threads = null, $replies = null, $level = null) {
@@ -145,7 +145,7 @@ class table_forum_groupuser extends discuz_table {
 				foreach($addwhere as $field => $value) {
 					if(is_array($value)) {
 						$levelwhere = "AND level>'0' ";
-						$sqladd .= "AND $field IN (".dimplode($value). ') ';
+						$sqladd .= "AND $field IN (".dimplode($value).') ';
 					} else {
 						$sqladd .= is_numeric($field) ? "AND $value " : "AND $field='$value' ";
 					}
@@ -183,11 +183,11 @@ class table_forum_groupuser extends discuz_table {
 			$levelsql = ' AND level IN(3,4)';
 		}
 		if($count == 1) {
-			return DB::result_first('SELECT count(*) FROM ' .DB::table('forum_groupuser')." WHERE uid='$uid' $levelsql");
+			return DB::result_first('SELECT count(*) FROM '.DB::table('forum_groupuser')." WHERE uid='$uid' $levelsql");
 		}
 		empty($start) && $start = 0;
 		empty($num) && $num = 100;
-		return DB::fetch_all('SELECT fid, level FROM ' .DB::table('forum_groupuser')." WHERE uid='$uid' $levelsql ORDER BY lastupdate DESC ".DB::limit($start, $num));
+		return DB::fetch_all('SELECT fid, level FROM '.DB::table('forum_groupuser')." WHERE uid='$uid' $levelsql ORDER BY lastupdate DESC ".DB::limit($start, $num));
 	}
 }
 

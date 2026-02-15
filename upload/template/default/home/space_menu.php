@@ -6,7 +6,7 @@
 	<!--{elseif !$space[self]}-->
 	<div class="mn">
 		<ul>
-			<!--{if helper_access::check_module('follow')}-->
+			<!--{if helper_access::check_module('follower')}-->
 			<li class="addflw">
 				<!--{if !ckfollow($space['uid'])}-->
 					<a id="followmod" onclick="showWindow(this.id, this.href, 'get', 0);" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&fuid=$space[uid]">{lang follow_add}TA</a>
@@ -28,7 +28,7 @@
 				<a href="home.php?mod=spacecp&ac=pm&op=showmsg&handlekey=showmsg_$space[uid]&touid=$space[uid]&pmid=0&daterange=2" id="a_sendpm_$space[uid]" onclick="showWindow('showMsgBox', this.href, 'get', 0)" title="{lang send_pm}">{lang send_pm}</a>
 			</li>
 		</ul>
-		<!--{if helper_access::check_module('follow')}-->
+		<!--{if helper_access::check_module('follower')}-->
 		<script type="text/javascript">
 		function succeedhandle_followmod(url, msg, values) {
 			var fObj = $('followmod');

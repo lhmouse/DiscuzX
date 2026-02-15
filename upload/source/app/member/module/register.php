@@ -10,7 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-const NOROBOT = TRUE;
+const NOROBOT = true;
 
 $ctl_obj = new register_ctl();
 $ctl_obj->setting = $_G['setting'];

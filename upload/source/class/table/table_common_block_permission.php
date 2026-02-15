@@ -72,7 +72,7 @@ class table_common_block_permission extends discuz_table {
 	}
 
 	public function fetch_permission_by_uid($uids) {
-		return ($uids = dintval($uids, true)) ? DB::fetch_all('SELECT uid, sum(allowmanage) as allowmanage, sum(allowrecommend) as allowrecommend, sum(needverify) as needverify FROM '.DB::table($this->_table). ' WHERE ' .DB::field('uid', $uids). ' GROUP BY uid', null, 'uid') : [];
+		return ($uids = dintval($uids, true)) ? DB::fetch_all('SELECT uid, sum(allowmanage) as allowmanage, sum(allowrecommend) as allowrecommend, sum(needverify) as needverify FROM '.DB::table($this->_table).' WHERE '.DB::field('uid', $uids).' GROUP BY uid', null, 'uid') : [];
 	}
 
 	public function delete_by_bid_uid_inheritedtplname($bid = false, $uids = false, $inheritedtplname = false) {

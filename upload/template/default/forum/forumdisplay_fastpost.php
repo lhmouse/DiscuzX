@@ -112,7 +112,8 @@ var fid = parseInt('$_G[fid]');
 									<!--{if !empty($swfconfig['maxattachnum'])}-->
 									maxAttachNum: $swfconfig['maxattachnum'],
 									<!--{/if}-->
-									uploadFrom: 'fastpost'
+									uploadFrom: 'fastpost',
+									paste_name: '#fastpostmessage'
 								},
 								debug: false
 							});

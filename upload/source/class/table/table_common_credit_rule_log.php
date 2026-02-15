@@ -68,7 +68,7 @@ class table_common_credit_rule_log extends discuz_table {
 	public function fetch_all_by_uid($uid, $start = 0, $limit = 0) {
 		$data = [];
 
-		$query = DB::query('SELECT * FROM %t WHERE uid=%d ORDER BY dateline DESC ' .DB::limit($start, $limit), [$this->_table, $uid]);
+		$query = DB::query('SELECT * FROM %t WHERE uid=%d ORDER BY dateline DESC '.DB::limit($start, $limit), [$this->_table, $uid]);
 		while($value = DB::fetch($query)) {
 			$data[$value['clid']] = $value;
 			$this->_rids[$value['rid']] = $value['rid'];

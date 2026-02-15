@@ -25,6 +25,7 @@ $lang = [
 	'related_article' => '相关文章',
 	'related_blog' => '相关日志',
 	'related_thread' => '相关帖子',
+	'related_doing' => '相关记录',
 	'replies' => '回复/查看',
 	'price' => '售价',
 	'attach_img' => '图片附件',

@@ -179,6 +179,7 @@ $lang =
 	'menu_tools_javascript' => '数据调用',
 	'menu_tools_relatedtag' => ' 标签聚合',
 	'menu_tools_creditwizard' => '积分策略向导',
+	'menu_tools_iconfont' => 'IconFont预览',
 	'menu_tools_fileperms' => '文件权限检查',
 	'menu_tools_hookcheck' => '嵌入点校验',
 	'menu_tools_filecheck' => '文件校验',
@@ -193,6 +194,7 @@ $lang =
 
 	'menu_article' => '文章管理',
 	'menu_portalcategory' => '频道栏目',
+	'menu_portalattach' => '文章附件管理',
 	'menu_blogcategory' => '日志分类',
 	'menu_albumcategory' => '相册分类',
 	'menu_block' => '模块管理',
@@ -226,7 +228,7 @@ $lang =
 	// 企飞版
 	'header_corp' => '企业',
 	'menu_setting_login' => '第三方登录',
-	'menu_setting_wechat' => '微信',
+	'menu_setting_wechat' => '微信(服务号)',
 	'menu_setting_discuz' => 'Discuz!',
 	'menu_setting_ucenter' => 'UCenter',
 	'menu_founder_restful' => 'RESTful 接口',

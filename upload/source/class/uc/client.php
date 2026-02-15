@@ -399,7 +399,13 @@ function uc_friend_ls($uid, $page = 1, $pagesize = 10, $totalnum = 10, $directio
 	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
 }
 
-function uc_user_register($username, $password, $email = '', $questionid = '', $answer = '', $regip = '', $secmobicc = '', $secmobile = '') {
+function uc_user_register($username, $password, $email = '', $questionid = '', $answer = '', $regip = '', $secmobicc = '', $secmobile = '', $censor = true) {
+	if($censor) {
+		$ret = censor($username, NULL, TRUE, FALSE);
+		if(is_array($ret)) {
+			return -1;
+		}
+	}
 	return call_user_func(UC_API_FUNC, 'user', 'register', ['username' => $username, 'password' => $password, 'email' => $email, 'questionid' => $questionid, 'answer' => $answer, 'regip' => $regip, 'secmobicc' => $secmobicc, 'secmobile' => $secmobile]);
 }
 
@@ -457,7 +463,13 @@ function uc_avatar_path($uid, $size = 'big', $type = '') {
 	return $dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).$typeadd."_avatar_$size.jpg";
 }
 
-function uc_user_checkname($username) {
+function uc_user_checkname($username, $censor = true) {
+	if($censor) {
+		$ret = censor($username, NULL, TRUE, FALSE);
+		if(is_array($ret)) {
+			return -2;
+		}
+	}
 	return call_user_func(UC_API_FUNC, 'user', 'check_username', ['username' => $username]);
 }
 

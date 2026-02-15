@@ -2,7 +2,7 @@
 
 class app_home_switch {
 	public static function getModules() {
-		return ['follow', 'feed', 'blog', 'friend', 'album', 'share', 'doing', 'wall', 'task', 'medal', 'magic', 'favorite'];
+		return ['follow', 'feed', 'blog', 'friend', 'follower', 'album', 'share', 'doing', 'wall', 'task', 'medal', 'magic', 'favorite', 'pm'];
 	}
 
 }
@@ -20,6 +20,23 @@ class app_home_switch_follow {
 
 	public static function getOptions() {
 		return '<a href="'.ADMINSCRIPT.'?action=misc&operation=setnav&do='.(self::getStatus() ? 'close' : 'open').'&type=follow" onclick="showWindow(\'setnav\', this.href, \'get\', 0);return false;">'.(self::getStatus() ? cplang('setting_functions_curscript_close') : cplang('setting_functions_curscript_open')).'</a>';
+	}
+
+}
+
+class app_home_switch_follower {
+
+	const Icon = STATICURL.'image/app/friend.svg';
+	const Name = 'setting_functions_curscript_follower';
+	const Desc = 'setting_functions_curscript_follower_intro';
+	const OrderId = 3;
+
+	public static function getStatus() {
+		return getglobal('setting/followerstatus');
+	}
+
+	public static function getOptions() {
+		return '<a href="'.ADMINSCRIPT.'?action=misc&operation=setnav&do='.(self::getStatus() ? 'close' : 'open').'&type=follower" onclick="showWindow(\'setnav\', this.href, \'get\', 0);return false;">'.(self::getStatus() ? cplang('setting_functions_curscript_close') : cplang('setting_functions_curscript_open')).'</a>';
 	}
 
 }
@@ -207,6 +224,23 @@ class app_home_switch_favorite {
 
 	public static function getOptions() {
 		return '<a href="'.ADMINSCRIPT.'?action=misc&operation=setnav&do='.(self::getStatus() ? 'close' : 'open').'&type=favorite" onclick="showWindow(\'setnav\', this.href, \'get\', 0);return false;">'.(self::getStatus() ? cplang('setting_functions_curscript_close') : cplang('setting_functions_curscript_open')).'</a>';
+	}
+
+}
+
+class app_home_switch_pm {
+
+	const Icon = STATICURL.'image/app/pm.svg';
+	const Name = 'setting_functions_curscript_pm';
+	const Desc = 'setting_functions_curscript_pm_intro';
+	const OrderId = 2;
+
+	public static function getStatus() {
+		return getglobal('setting/pmstatus');
+	}
+
+	public static function getOptions() {
+		return '<a href="'.ADMINSCRIPT.'?action=misc&operation=setnav&do='.(self::getStatus() ? 'close' : 'open').'&type=pm&funcsubmit=yes&formhash='.formhash().'&t='.time().'">'.(self::getStatus() ? cplang('setting_functions_curscript_close') : cplang('setting_functions_curscript_open')).'</a>';
 	}
 
 }

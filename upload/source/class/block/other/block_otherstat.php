@@ -182,7 +182,7 @@ class block_otherstat extends discuz_block {
 			'shares_title' => !empty($parameter['shares_title']) ? $parameter['shares_title'] : lang('block/stat', 'stat_shares'),
 		];
 		if(in_array('posts', $parameter['option']) || in_array('bbsnewposts', $parameter['option'])) {
-			$sql = 'SELECT sum(f.posts) AS posts, sum(f.todayposts) AS todayposts FROM ' .DB::table('forum_forum')." f WHERE f.status='1'";
+			$sql = 'SELECT sum(f.posts) AS posts, sum(f.todayposts) AS todayposts FROM '.DB::table('forum_forum')." f WHERE f.status='1'";
 			$forum = DB::fetch_first($sql);
 		}
 		if(in_array('groups', $parameter['option']) || in_array('groupnewposts', $parameter['option'])) {

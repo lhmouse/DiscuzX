@@ -498,6 +498,9 @@ INSERT INTO pre_common_setting VALUES ('security_verify', 'a:0:{}');
 ALTER TABLE pre_common_smslog ADD INDEX status (`status`, `dateline`, `uid`);
 ALTER TABLE pre_common_smslog ADD INDEX dateline2 (`dateline`);
 
+ALTER TABLE pre_portal_article_content
+	MODIFY COLUMN content mediumtext NOT NULL;
+
 ALTER TABLE pre_forum_thread
 	ADD INDEX displayorder_dateline (fid, displayorder, dateline);
 ALTER TABLE pre_forum_thread
@@ -628,6 +631,10 @@ CREATE TABLE IF NOT EXISTS `pre_home_doing_recomend_log`
 	KEY doid (doid),
 	KEY uid (uid)
 ) ENGINE=InnoDB;
+
+ALTER TABLE `pre_home_doing` ADD `sharetimes` INT UNSIGNED NOT NULL AFTER `recomends`;
+ALTER TABLE `pre_home_doing` ADD `favtimes` INT UNSIGNED NOT NULL AFTER `sharetimes`;
+ALTER TABLE `pre_home_doing` ADD `fields` JSON NOT NULL AFTER `status`;
 
 ALTER TABLE pre_common_member_archive
 	MODIFY username char (50) NOT NULL DEFAULT '';

@@ -5,7 +5,7 @@
 	<td>
 	<!--{if $field[formtype]=='title'}-->
 	<!--{eval $_titlelength = !empty($block['param']['titlelength']) ? $block['param']['titlelength'] : 40;}-->
-	<input type="text" name="title" class="px" value="$itemfields[title]" onkeyup="strLenCalc(this, 'titlechk', $_titlelength);" _maxlength="$_titlelength" />
+	<input type="text" name="title" class="px" value="$itemfields[title]" onkeyup="dstrLenCalc(this, 'titlechk', $_titlelength);" _maxlength="$_titlelength" />
 		<br><span id="titlechk" style="display:none"></span>
 		<div class="ss mtn">
 			<em $showstylearr[title_b] id="span_title_b"  onclick="block_showstyle('title_b')"><b>B</b></em>
@@ -18,7 +18,7 @@
 		</div>
 	<!--{elseif $field[formtype]=='summary'}-->
 	<!--{eval $_summarylength = !empty($block['param']['summarylength']) ? $block['param']['summarylength'] : 80;}-->
-		<textarea name="summary" class="pt" onkeyup="strLenCalc(this, 'summarychk', $_summarylength);" _maxlength="$_summarylength" >$itemfields[summary]</textarea>
+		<textarea name="summary" class="pt" onkeyup="dstrLenCalc(this, 'summarychk', $_summarylength);" _maxlength="$_summarylength" >$itemfields[summary]</textarea>
 		<br><span id="summarychk" style="display:none"></span>
 		<div class="ss mtn">
 			<em $showstylearr[summary_b] id="span_summary_b"  onclick="block_showstyle('summary_b')"><b>B</b></em>

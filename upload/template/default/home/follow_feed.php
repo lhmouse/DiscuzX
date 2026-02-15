@@ -92,7 +92,7 @@
 						<div id="fastpostreturn" style="margin:-5px 0 5px"></div>
 						<div id="flw_post_subject" style="display:none;">
 							<span id="flw_checklen" class="y"><span id="checklen" class="xg1">{$_G['setting']['maxsubjectsize']}</span></span>
-							<input type="text" id="subject" name="subject" onkeyup="strLenCalc(this, 'checklen', $_G['setting']['maxsubjectsize']);" />
+							<input type="text" id="subject" name="subject" onkeyup="dstrLenCalc(this, 'checklen', $_G['setting']['maxsubjectsize']);" />
 						</div>
 
 						<div id="flw_post_extra" class="mtn cl">
@@ -224,7 +224,7 @@
 						display('forumlistdev');
 						var sObj = $('subject');
 						sObj.value = '';
-						strLenCalc(sObj, 'checklen', 80);
+						dstrLenCalc(sObj, 'checklen', 80);
 					}
 					function fastpostvalidateextra() {
 						var sObj = $('subject');
@@ -363,7 +363,7 @@
 							//清空上次的输入
 							var sObj = $('subject');
 							$('attachlist').innerHTML = $('fastpostmessage').value = sObj.value = '';
-							strLenCalc(sObj, 'checklen', 80);
+							dstrLenCalc(sObj, 'checklen', 80);
 							if(values.sechash) {
 								updatesecqaa(values.sechash);
 								updateseccode(values.sechash);
@@ -391,7 +391,7 @@
 						if($('flw_post_subject').style.display== 'none') {
 							var sObj = $('subject');
 							sObj.value = '';
-							strLenCalc(sObj, 'checklen', 80);
+							dstrLenCalc(sObj, 'checklen', 80);
 							obj.innerHTML = '{lang follow_add_title}';
 						} else {
 							obj.innerHTML = '{lang follow_auto_title}';
@@ -449,7 +449,7 @@
 								<li>
 									<a href="home.php?mod=space&uid=$ruid" class="avt" c="1" shref="home.php?mod=space&uid=$ruid"><!--{avatar($ruid, 'small')}--></a>
 									<p><a href="home.php?mod=space&uid=$ruid" style="text-decoration: none !important;">$rusername</a></p>
-									<!--{if helper_access::check_module('follow')}-->
+									<!--{if helper_access::check_module('follower')}-->
 									<span><a id="a_followmod_{$ruid}" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&fuid=$ruid&from=block" onclick="ajaxget(this.href);doane(event);" style="text-decoration: none !important;">{lang follow_add}</a></span>
 									<!--{/if}-->
 								</li>
@@ -580,7 +580,7 @@
 								<!--{if $viewself && $fuser[followuid] != $_G[uid]}-->
 								<span class="pipe">|</span>
 								<a href="home.php?mod=spacecp&ac=follow&op=bkname&fuid=$fuser['followuid']&handlekey=followbkame_$fuser['followuid']" id="fbkname_$fuser['followuid']" onclick="showWindow('followbkame_{$fuser['followuid']}', this.href, 'get', 0);"><!--{if $fuser['bkname']}-->{lang follow_mod_bkname}<!--{else}-->{lang follow_add_bkname}<!--{/if}--></a>
-								<!--{if helper_access::check_module('follow')}-->
+								<!--{if helper_access::check_module('follower')}-->
 								<span class="pipe">|</span>
 								<a id="a_specialfollow_{$fuser['followuid']}" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&special={if $fuser['status'] == 1}2{else}1{/if}&fuid=$fuser['followuid']" onclick="ajaxget(this.href);doane(event);"><!--{if $fuser['status'] == 1}-->{lang follow_del_special_following}<!--{else}-->{lang follow_add_special_following}<!--{/if}--></a>
 								<!--{/if}-->

@@ -40,7 +40,7 @@ class table_common_member_count extends discuz_table_archive {
 			}
 		}
 		if(!empty($sql)) {
-			DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .implode(',', $sql). ' WHERE uid IN (' .dimplode($uids). ')', 'UNBUFFERED');
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE uid IN ('.dimplode($uids).')', 'UNBUFFERED');
 			$this->increase_cache($uids, $creditarr);
 		}
 	}
@@ -56,7 +56,7 @@ class table_common_member_count extends discuz_table_archive {
 			}
 		}
 		if(!empty($sql)) {
-			DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .implode(',', $sql). ' WHERE uid IN (' .dimplode($uids). ')', 'UNBUFFERED');
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE uid IN ('.dimplode($uids).')', 'UNBUFFERED');
 			$this->update_batch_cache($uids, $data);
 		}
 	}
@@ -78,7 +78,7 @@ class table_common_member_count extends discuz_table_archive {
 		if($this->_allowmem) {
 			$uids = DB::fetch_all('SELECT uid FROM '.DB::table($this->_table).' WHERE digestposts<>0', null, $this->_pk);
 		}
-		$data = DB::query('UPDATE ' .DB::table($this->_table). ' SET digestposts=0', 'UNBUFFERED');
+		$data = DB::query('UPDATE '.DB::table($this->_table).' SET digestposts=0', 'UNBUFFERED');
 		if(!empty($uids)) {
 			$this->update_batch_cache(array_keys($uids), ['digestposts' => 0]);
 		}
@@ -90,7 +90,7 @@ class table_common_member_count extends discuz_table_archive {
 		if($this->_allowmem) {
 			$uids = DB::fetch_all('SELECT uid FROM '.DB::table($this->_table).' WHERE todayattachs<>0 OR todayattachsize<>0', null, $this->_pk);
 		}
-		$data = DB::query('UPDATE ' .DB::table($this->_table)." SET todayattachs='0',todayattachsize='0'", 'UNBUFFERED');
+		$data = DB::query('UPDATE '.DB::table($this->_table)." SET todayattachs='0',todayattachsize='0'", 'UNBUFFERED');
 		if(!empty($uids)) {
 			$this->update_batch_cache(array_keys($uids), ['todayattachs' => 0, 'todayattachsize' => 0]);
 		}

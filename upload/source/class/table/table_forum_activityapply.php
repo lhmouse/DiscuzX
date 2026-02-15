@@ -41,7 +41,7 @@ class table_forum_activityapply extends discuz_table {
 
 	public function delete_for_thread($tid, $applyids = []) {
 		if($applyids) {
-			$pksql = ' AND ' .DB::field('applyid', $applyids);
+			$pksql = ' AND '.DB::field('applyid', $applyids);
 		}
 		DB::query("DELETE FROM %t WHERE tid=%d $pksql", [$this->_table, $tid]);
 	}

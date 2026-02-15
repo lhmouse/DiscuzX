@@ -14,10 +14,10 @@
 		<div class="c" id="message_setnav">
 			<!--{if $do == 'open'}-->
 			<ul>
-				<!--{if !in_array($type, array('wall', 'friend', 'medal', 'magic', 'favorite'))}-->
+				<!--{if !in_array($type, array('wall', 'friend', 'follower', 'medal', 'magic', 'favorite'))}-->
 				<li><label><input type="checkbox" name="location[header]" class="pc" value="1" />{lang main_nav}</label></li>
 				<!--{/if}-->
-				<!--{if $type != 'forum'}-->
+				<!--{if  !in_array($type, array('forum', 'follower'))}-->
 				<li><label><input type="checkbox" name="location[quick]" class="pc" value="1" />{lang quick_nav}</label></li>
 				<!--{/if}-->
 			</ul>

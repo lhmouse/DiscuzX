@@ -136,9 +136,9 @@ if($_GET['action'] == 'group') {
 			foreach(table_common_member::t()->fetch_all($uids, false, 0) as $uid => $user) {
 				notification_add($uid, 'blog', 'blog_invite', ['subject' => $blog['subject'], 'uid' => $blog['uid'], 'blogid' => $id, 'from_id' => $id, 'from_idtype' => 'invite_blog']);
 			}
-			showmessage('group_invite_succeed', 'home.php?mod=space&uid=' .$blog['uid']."&do=blog&id=$id");
+			showmessage('group_invite_succeed', 'home.php?mod=space&uid='.$blog['uid']."&do=blog&id=$id");
 		} else {
-			showmessage('group_invite_choose_member', 'home.php?mod=space&uid=' .$blog['uid']."&do=blog&id=$id");
+			showmessage('group_invite_choose_member', 'home.php?mod=space&uid='.$blog['uid']."&do=blog&id=$id");
 		}
 	}
 } elseif($_GET['action'] == 'article') {

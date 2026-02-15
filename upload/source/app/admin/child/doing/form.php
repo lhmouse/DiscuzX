@@ -25,6 +25,7 @@ if($fromumanage) {
 
 shownav('topic', 'nav_doing');
 showsubmenu('nav_doing', [
+	['setting_home_base', 'doing&operation=base', false],
 	['newlist', 'doing', !empty($newlist)],
 	['search', 'doing&search=true', empty($newlist)],
 ]);

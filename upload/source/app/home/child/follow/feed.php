@@ -67,7 +67,7 @@ if($_G['member']['newprompt_num']['follow']) {
 	helper_notification::update_newprompt($_G['uid'], 'follow');
 }
 $recommend = $users = [];
-if(helper_access::check_module('follow')) {
+if(helper_access::check_module('follower')) {
 	loadcache('recommend_follow');
 	if(empty($_G['cache']['recommend_follow']) || !empty($_G['cache']['recommend_follow']) && (empty($_G['cache']['recommend_follow']['users']) || TIMESTAMP - $_G['cache']['recommend_follow']['dateline'] > 86400)) {
 		foreach(table_home_specialuser::t()->fetch_all_by_status(0, 10) as $value) {

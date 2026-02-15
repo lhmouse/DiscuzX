@@ -248,7 +248,7 @@ function uploadAttach(curId, statusid, prefix, sizelimit) {
 		if(statusid == 0) {
 			UPLOADCOMPLETE++;
 		} else {
-			FAILEDATTACHS += '<br />' + mb_cutstr($(prefix + 'attachnew_' + curId).value.substr($(prefix + 'attachnew_' + curId).value.replace(/\\/g, '/').lastIndexOf('/') + 1), 25) + ': ' + STATUSMSG[statusid] + sizelimit;
+			FAILEDATTACHS += '<br />' + dcutstr($(prefix + 'attachnew_' + curId).value.substr($(prefix + 'attachnew_' + curId).value.replace(/\\/g, '/').lastIndexOf('/') + 1), 25) + ': ' + STATUSMSG[statusid] + sizelimit;
 			UPLOADFAILED++;
 		}
 		$(prefix + 'cpdel_' + curId).innerHTML = '<i class="fico' + (statusid == 0 ? 'check_right fc-v' : 'error fc-i') + ' fic4" alt="' + STATUSMSG[statusid] + '"></i>';
@@ -341,7 +341,7 @@ function insertAttach(prefix, id) {
 	var ext = extpos == -1 ? '' : path.substr(extpos + 1, path.length).toLowerCase();
 	var re = new RegExp("(^|\\s|,)" + ext + "($|\\s|,)", "ig");
 	var localfile = $(prefix + 'attachnew_' + id).value.substr($(prefix + 'attachnew_' + id).value.replace(/\\/g, '/').lastIndexOf('/') + 1);
-	var filename = mb_cutstr(localfile, 30);
+	var filename = dcutstr(localfile, 30);
 
 	if(path == '') {
 		return;
@@ -871,3 +871,43 @@ function hideAttachMenu(id) {
 	}
 }
 
+function checkPasteImages(iframeDoc, whitelistDomains) {
+	var htmlContent = iframeDoc.body.innerHTML;
+	var imgMatches = htmlContent.match(/<img[^>]+src=["'][^"']+["']/gi) || [];
+
+	var base64Count = 0;
+	var externalCount = 0;
+	var externalUrls = [];
+
+	imgMatches.forEach(function (imgTag) {
+		var srcMatch = imgTag.match(/src=["']([^"']+)["']/i);
+		if (srcMatch && srcMatch[1]) {
+			var src = srcMatch[1];
+			if (src.startsWith('data:image/')) {
+				base64Count++;
+			} else if (src.startsWith('http://') || src.startsWith('https://')) {
+				var isWhitelisted = whitelistDomains.some(function (domain) {
+					return src.indexOf(domain) === 0;
+				});
+				if (!isWhitelisted) {
+					externalCount++;
+					externalUrls.push(src);
+				}
+
+			}
+		}
+	});
+
+	if (base64Count > 0 || externalCount > 0) {
+		var msg = '';
+		if (base64Count > 0) {
+			msg += $L('post_paste_error_tip') + base64Count + $L('post_paste_error_base64') + '<br>';
+		}
+		if (externalCount > 0) {
+			msg += $L('post_paste_error_tip') + externalCount + $L('post_paste_error_external') + '<br>';
+		}
+		msg += $L('post_paste_error');
+
+		showDialog(msg, 'notice');
+	}
+}

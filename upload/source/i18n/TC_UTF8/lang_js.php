@@ -413,6 +413,10 @@ $lang = [
 	'editor_ie5' => '只支持IE 5.01以上版本',
 	'edit_source' => '編輯源碼',
 	'confirm_to_txt' => '轉換為純文本時將會遺失某些格式。<br />您確定要繼續嗎？',
+	'post_paste_error_tip' => '檢測到',
+	'post_paste_error_external' => '張外鏈圖片。',
+	'post_paste_error_base64' => '張 base64 圖片。',
+	'post_paste_error' => '請注意把圖片上傳後再插入到內容中',
 
 	'json_editor_toolNames_text' => '文本段落',
 	'json_editor_toolNames_Heading' => '標題',

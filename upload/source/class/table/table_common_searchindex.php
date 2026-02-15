@@ -49,8 +49,8 @@ class table_common_searchindex extends discuz_table {
 		return DB::fetch_all("SELECT searchid, dateline,
 			('".$searchctrl."'<>'0' AND ".(empty($uid) ? "useip='$useip'" : "uid='$uid'")." AND $timestamp-dateline<'".$searchctrl."') AS flood,
 			(searchstring='$searchstring' AND expiration>'$timestamp') AS indexvalid
-			FROM ".DB::table($this->_table). '
-			WHERE ' .($srchmod ? "srchmod='$srchmod' AND " : '')."('".$searchctrl."'<>'0' AND ".(empty($uid) ? "useip='$useip'" : "uid='$uid'")." AND $timestamp-dateline<".$searchctrl.") OR (searchstring='$searchstring' AND expiration>'$timestamp')
+			FROM ".DB::table($this->_table).'
+			WHERE '.($srchmod ? "srchmod='$srchmod' AND " : '')."('".$searchctrl."'<>'0' AND ".(empty($uid) ? "useip='$useip'" : "uid='$uid'")." AND $timestamp-dateline<".$searchctrl.") OR (searchstring='$searchstring' AND expiration>'$timestamp')
 			ORDER BY flood");
 	}
 

@@ -34,6 +34,5 @@ if($favfids) {
 		}
 		forum($favforumlist[$id]);
 	}
-
 }
 	

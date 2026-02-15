@@ -22,10 +22,10 @@ $visitstr = $regstr = '';
 foreach($_G['setting']['extcredits'] as $key => $credit) {
 	$creditkey = 'extcredits'.$key;
 	if($visit[$creditkey]) {
-		$visitstr .= $credit['title'].($visit[$creditkey] > 0 ? '+'.$visit[$creditkey] : $visit[$creditkey]). '&nbsp;';
+		$visitstr .= $credit['title'].($visit[$creditkey] > 0 ? '+'.$visit[$creditkey] : $visit[$creditkey]).'&nbsp;';
 	}
 	if($register[$creditkey]) {
-		$regstr .= $credit['title'].($register[$creditkey] > 0 ? '+'.$register[$creditkey] : $register[$creditkey]). '&nbsp;';
+		$regstr .= $credit['title'].($register[$creditkey] > 0 ? '+'.$register[$creditkey] : $register[$creditkey]).'&nbsp;';
 	}
 }
 

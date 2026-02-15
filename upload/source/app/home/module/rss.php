@@ -49,7 +49,7 @@ echo "<?xml version=\"1.0\" encoding=\"".$charset."\"?>\n".
 	"    <description>{$_G['setting']['bbname']}</description>\n".
 	"    <copyright>Copyright(C) {$_G['setting']['bbname']}</copyright>\n".
 	"    <generator>Discuz! Board by Discuz! Team</generator>\n".
-	'    <lastBuildDate>' .gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
+	'    <lastBuildDate>'.gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
 	"    <image>\n".
 	"      <url>{$_G['siteurl']}static/image/common/logo_88_31.gif</url>\n".
 	"      <title>{$_G['setting']['bbname']}</title>\n".
@@ -64,11 +64,11 @@ foreach($data_blog as $curblogid => $value) {
 		$value['message'] .= "<br /><img src=\"{$value['pic']}\">";
 	}
 	echo "    <item>\n".
-		'      <title>' .$value['subject']."</title>\n".
+		'      <title>'.$value['subject']."</title>\n".
 		"      <link>{$_G['siteurl']}home.php?mod=space&amp;uid={$value['uid']}&amp;do=blog&amp;id={$value['blogid']}</link>\n".
-		'      <description><![CDATA[' .dhtmlspecialchars($value['message'])."]]></description>\n".
-		'      <author>' .dhtmlspecialchars($value['username'])."</author>\n".
-		'      <pubDate>' .gmdate('r', $value['dateline'])."</pubDate>\n".
+		'      <description><![CDATA['.dhtmlspecialchars($value['message'])."]]></description>\n".
+		'      <author>'.dhtmlspecialchars($value['username'])."</author>\n".
+		'      <pubDate>'.gmdate('r', $value['dateline'])."</pubDate>\n".
 		"    </item>\n";
 }
 

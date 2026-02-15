@@ -40,7 +40,7 @@ $lang =
 	'magic_present_note' => '送給您一個道具 <a href="{url}" target="_blank">{name}</a>',
 	'friend_add' => '{actor} 和您成為了好友',
 	'friend_request' => '{actor} 請求加您為好友{note}&nbsp;&nbsp;<a onclick="showWindow(this.id, this.href, \'get\', 0);" class="xw1" id="afr_{uid}" href="{url}">批准申請</a>',
-	'doing_reply' => '{actor} 回覆了您的 <a href="{url}" target="_blank">記錄</a>',
+	'doing_reply' => '{actor} 回覆了您的記錄 <a href="{url}" target="_blank">{summery}</a> &nbsp; <a href="{url}" target="_blank" class="lit">查看</a>',
 	'wall_reply' => '{actor} 回覆了您的 <a href="{url}" target="_blank">留言</a>',
 	'pic_comment_reply' => '{actor} 回覆了您的 <a href="{url}" target="_blank">圖片評論</a>',
 	'blog_comment_reply' => '{actor} 回覆了您的 <a href="{url}" target="_blank">日誌評論</a>',

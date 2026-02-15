@@ -75,7 +75,7 @@ class discuz_table_archive extends discuz_table {
 	public function create_relatedtable($relatedtablename) {
 		if(!helper_dbtool::isexisttable($relatedtablename)) {
 			DB::query('SET SQL_QUOTE_SHOW_CREATE=0', 'SILENT');
-			$tableinfo = DB::fetch_first('SHOW CREATE TABLE ' .DB::table($this->_table));
+			$tableinfo = DB::fetch_first('SHOW CREATE TABLE '.DB::table($this->_table));
 			$createsql = $tableinfo['Create Table'];
 			$createsql = str_replace($this->_table, $relatedtablename, $createsql);
 			DB::query($createsql);

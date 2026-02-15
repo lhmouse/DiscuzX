@@ -272,10 +272,10 @@ class block_activity extends discuz_block {
 		if($class) {
 			$where .= " AND a.class='$class'";
 		}
-		$sqlfrom = ' INNER JOIN `' .DB::table('forum_thread')."` t ON t.tid=a.tid $sql AND t.displayorder>='0'";
+		$sqlfrom = ' INNER JOIN `'.DB::table('forum_thread')."` t ON t.tid=a.tid $sql AND t.displayorder>='0'";
 		$joinmethod = empty($tids) ? 'INNER' : 'LEFT';
 		if($recommend) {
-			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend'). '` fc ON fc.tid=tr.tid';
+			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend').'` fc ON fc.tid=tr.tid';
 		}
 		$sqlfield = $highlight ? ', t.highlight' : '';
 		$query = DB::query("SELECT a.*, t.tid, t.subject, t.authorid, t.author, t.posttableid$sqlfield
@@ -327,7 +327,7 @@ class block_activity extends discuz_block {
 		}
 
 		if(!empty($listtids)) {
-			$query = DB::query('SELECT tid,COUNT(*) as sum FROM ' .DB::table('forum_activityapply'). ' WHERE tid IN(' .dimplode($listtids). ') GROUP BY tid');
+			$query = DB::query('SELECT tid,COUNT(*) as sum FROM '.DB::table('forum_activityapply').' WHERE tid IN('.dimplode($listtids).') GROUP BY tid');
 			while($value = DB::fetch($query)) {
 				$list[$value['tid']]['fields']['applynumber'] = $value['sum'];
 			}

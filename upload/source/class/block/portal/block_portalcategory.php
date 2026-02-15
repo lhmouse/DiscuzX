@@ -114,10 +114,10 @@ class block_portalcategory extends discuz_block {
 
 		$wheres = [];
 		if($thecatid) {
-			$wheres[] = 'catid IN (' .dimplode($thecatid). ')';
+			$wheres[] = 'catid IN ('.dimplode($thecatid).')';
 		}
 		if($catid) {
-			$wheres[] = 'upid IN (' .dimplode($catid). ')';
+			$wheres[] = 'upid IN ('.dimplode($catid).')';
 		}
 		$wheresql = $wheres ? implode(' AND ', $wheres) : '1';
 

@@ -60,8 +60,10 @@
 		<!--{if !IS_ROBOT}-->
 			<!--{if $_G['uid'] && !$_G['setting']['bbclosed'] && empty($_G['member']['freeze']) && $_G['member']['groupid'] != 5}-->
 			<ul id="myprompt_menu" class="p_pop" style="display: none;">
-				<li><a href="home.php?mod=space&do=pm" id="pm_ntc" style="background-repeat: no-repeat; background-position: 0 50%;"><em class="prompt_news{if empty($_G[member][newpm])}_0{/if}"></em>{lang pm_center}</a></li>
-				<!--{if $_G['setting']['followstatus']}-->
+				<!--{if !empty($_G['setting']['pmstatus'])}-->
+					<li><a href="home.php?mod=space&do=pm" id="pm_ntc" style="background-repeat: no-repeat; background-position: 0 50%;"><em class="prompt_news{if empty($_G[member][newpm])}_0{/if}"></em>{lang pm_center}</a></li>
+				<!--{/if}-->
+				<!--{if $_G['setting']['followerstatus']}-->
 					<li><a href="home.php?mod=follow&do=follower"><em class="prompt_follower{if empty($_G[member][newprompt_num][follower])}_0{/if}"></em><!--{lang notice_interactive_follower}-->{if $_G[member][newprompt_num][follower]}($_G[member][newprompt_num][follower]){/if}</a></li>
 					<!--{if $_G[member][newprompt] && $_G[member][newprompt_num][follow]}-->
 						<li><a href="home.php?mod=follow"><em class="prompt_concern"></em><!--{lang notice_interactive_follow}-->($_G[member][newprompt_num][follow])</a></li>
@@ -90,6 +92,10 @@
 					<!--{if $_G['setting']['forumstatus']}--><li><a href="home.php?mod=space&do=thread&view=me">{lang mypost}</a></li><!--{/if}-->
 					<!--{if $_G['setting']['favoritestatus']}--><li><a href="home.php?mod=space&do=favorite&view=me">{lang favorite}</a></li><!--{/if}-->
 					<!--{if $_G['setting']['friendstatus']}--><li><a href="home.php?mod=space&do=friend">{lang friends}</a></li><!--{/if}-->
+					<!--{if $_G['setting']['followerstatus']}-->
+						<li><a href="home.php?mod=follow&do=follower">{lang follower}</a></li>
+						<li><a href="home.php?mod=follow&do=following">{lang following}</a></li>
+					<!--{/if}-->
 					<!--{hook/global_myitem_extra}-->
 				</ul>
 			<!--{/if}-->

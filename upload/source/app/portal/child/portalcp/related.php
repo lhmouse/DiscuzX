@@ -57,7 +57,7 @@ if($op == 'manual') {
 	}
 	$searchkey = dhtmlspecialchars($searchkey);
 	if($searchcate) {
-		$wherearr[] = 'catid IN  (' .dimplode($catids). ')';
+		$wherearr[] = 'catid IN  ('.dimplode($catids).')';
 	}
 	$wheresql = implode(' AND ', $wherearr);
 	$count = table_portal_article_title::t()->fetch_all_by_sql($wheresql, '', 0, 0, 1);

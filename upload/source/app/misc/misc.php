@@ -10,7 +10,6 @@ if(!defined('MITFRAME_APP')) {
 	exit('Access Denied');
 }
 
-
 const APPTYPEID = 100;
 
 require './source/class/class_core.php';

@@ -45,7 +45,7 @@ class table_portal_category extends discuz_table {
 			}
 		}
 		if(!empty($sql)) {
-			DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .implode(',', $sql). ' WHERE catid IN (' .dimplode($catids). ')', 'UNBUFFERED');
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE catid IN ('.dimplode($catids).')', 'UNBUFFERED');
 		}
 	}
 

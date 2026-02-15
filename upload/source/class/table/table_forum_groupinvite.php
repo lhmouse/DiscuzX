@@ -35,7 +35,7 @@ class table_forum_groupinvite extends discuz_table {
 		if(empty($fid) || empty($uid) || empty($inviteuids)) {
 			return [];
 		}
-		return DB::fetch_all('SELECT inviteuid FROM %t WHERE fid=%d AND ' .DB::field('inviteuid', $inviteuids). ' AND uid=%d', [$this->_table, $fid, $uid]);
+		return DB::fetch_all('SELECT inviteuid FROM %t WHERE fid=%d AND '.DB::field('inviteuid', $inviteuids).' AND uid=%d', [$this->_table, $fid, $uid]);
 	}
 
 	public function delete_by_inviteuid($fid, $inviteuid) {

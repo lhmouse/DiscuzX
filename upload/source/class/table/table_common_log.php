@@ -37,7 +37,7 @@ class table_common_log_mysql extends table_common_log {
 		$wheresql = ' 1=1 ';
 		if(!empty($conditions)) {
 			foreach($conditions as $ckey => $cvalue) {
-				$wheresql .= ' AND ' .$cvalue[0]. ' ' .$cvalue[1]. ' ' .$cvalue[2]. ' ';
+				$wheresql .= ' AND '.$cvalue[0].' '.$cvalue[1].' '.$cvalue[2].' ';
 			}
 		}
 		$ordersql = '';

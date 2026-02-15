@@ -10,6 +10,7 @@ $lang = [
 	'admincp_tab_addCustom' => '添加常用',
 	'admincp_tab_newWindow' => '全新窗口',
 	'admincp_perm_item_no_data' => '未找到数据',
+	'admincp_perm_add' => '添加',
 
 	'ajax_inner_error' => '内部错误，无法显示此内容',
 	'input_username' => '请输用户名',
@@ -199,7 +200,7 @@ $lang = [
 	],
 	'have_no_upload' => '您有等待上传的附件，确认不上传这些附件吗？',
 	'have_uploading' => '您有正在上传的附件，请稍候，上传完成后帖子将会自动发表……',
-	'readperm_confirm' => '由于您设置了阅读权限或出售帖，您确认还转播给您的听众看吗？',
+	'readperm_confirm' => '由于您设置了阅读权限或出售帖，您确认还转播给您的粉丝看吗？',
 	'attach_type_ban' => '附件类型被禁止',
 	'attach_size_ban' => '不能超过 {1} 字节',
 	'attach_upload_error' => '附件上传完成！成功 {1} 个，失败 {2} 个: {3}',
@@ -413,6 +414,10 @@ $lang = [
 	'editor_ie5' => '只支持IE 5.01以上版本',
 	'edit_source' => '编辑源码',
 	'confirm_to_txt' => '转换为纯文本时将会遗失某些格式。<br />您确定要继续吗？',
+	'post_paste_error_tip' => '检测到',
+	'post_paste_error_external' => '张外链图片。',
+	'post_paste_error_base64' => '张 base64 图片。',
+	'post_paste_error' => '请注意把图片上传后再插入到内容中',
 
 	'json_editor_toolNames_text' => '文本段落',
 	'json_editor_toolNames_Heading' => '标题',

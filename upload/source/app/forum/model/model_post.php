@@ -454,7 +454,7 @@ class model_post extends discuz_model {
 
 			$displayorder = (empty($this->param['save']) || $this->thread['displayorder'] != -4) ? ($this->thread['displayorder'] == -4 ? -4 : $this->thread['displayorder']) : -4;
 			$this->param['typeid'] = isset($this->param['typeid']) && isset($this->forum['threadtypes']['types'][$this->param['typeid']]) && (!$this->forum['threadtypes']['moderators'][$this->param['typeid']] || $this->forum['ismoderator']) ? $this->param['typeid'] : 0;
-			$this->param['sortid'] = $this->param['special'] || !$this->forum['threadsorts']['types'][$this->param['sortid']] ? 0 : $this->param['sortid'];
+			$this->param['sortid'] = !$this->forum['threadsorts']['types'][$this->param['sortid']] ? 0 : $this->param['sortid'];
 
 
 			$this->param['threadupdatearr']['typeid'] = $this->param['typeid'];

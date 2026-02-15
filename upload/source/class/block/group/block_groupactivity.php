@@ -224,7 +224,7 @@ class block_groupactivity extends discuz_block {
 
 		$groups = [];
 		if(empty($fids) && $typeids) {
-			$query = DB::query('SELECT f.fid, f.name, ff.description FROM '.DB::table('forum_forum'). ' f LEFT JOIN ' .DB::table('forum_forumfield'). ' ff ON f.fid = ff.fid WHERE f.fup IN (' .dimplode($typeids).") AND threads > 0$gviewwhere");
+			$query = DB::query('SELECT f.fid, f.name, ff.description FROM '.DB::table('forum_forum').' f LEFT JOIN '.DB::table('forum_forumfield').' ff ON f.fid = ff.fid WHERE f.fup IN ('.dimplode($typeids).") AND threads > 0$gviewwhere");
 			while($value = DB::fetch($query)) {
 				$groups[$value['fid']] = $value;
 				$fids[] = intval($value['fid']);
@@ -286,10 +286,10 @@ class block_groupactivity extends discuz_block {
 			$where .= " AND a.gender='$gender'";
 		}
 		$where = $sql." AND t.displayorder>='0' ".$where;
-		$sqlfrom = ' INNER JOIN `' .DB::table('forum_thread'). '` t ON t.tid=a.tid ';
+		$sqlfrom = ' INNER JOIN `'.DB::table('forum_thread').'` t ON t.tid=a.tid ';
 		$joinmethod = empty($tids) ? 'INNER' : 'LEFT';
 		if($recommend) {
-			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend'). '` fc ON fc.tid=tr.tid';
+			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend').'` fc ON fc.tid=tr.tid';
 		}
 
 		$sqlfield = '';
@@ -349,7 +349,7 @@ class block_groupactivity extends discuz_block {
 		}
 
 		if(!empty($listtids)) {
-			$query = DB::query('SELECT tid,COUNT(*) as sum FROM ' .DB::table('forum_activityapply'). ' WHERE tid IN(' .dimplode($listtids). ') GROUP BY tid');
+			$query = DB::query('SELECT tid,COUNT(*) as sum FROM '.DB::table('forum_activityapply').' WHERE tid IN('.dimplode($listtids).') GROUP BY tid');
 			while($value = DB::fetch($query)) {
 				$list[$value['tid']]['fields']['applynumber'] = $value['sum'];
 			}

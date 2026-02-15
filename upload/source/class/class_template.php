@@ -258,6 +258,7 @@ class template {
 	}
 
 	function languagevar($var) {
+		[$var, $extra] = explode(' ', $var);
 		$vars = explode(':', $var);
 		$isplugin = count($vars) == 2;
 		if(!$isplugin) {
@@ -334,7 +335,12 @@ class template {
 			}
 		}
 
-		return $langvar[$var] ?? '!'.$var.'!';
+		$v = $langvar[$var] ?? '!'.$var.'!';
+		if($extra == 'js') {
+			$v = addcslashes($v, '\'"');
+		}
+
+		return $v;
 	}
 
 	function blocktags($parameter) {

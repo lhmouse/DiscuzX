@@ -830,3 +830,39 @@ function perm_preview(id, value, t) {
 		$(id).innerHTML = value;
 	}
 }
+
+function userselect(srcid, kw) {
+	var kw = !kw ? '' : kw;
+	let id = 'userselect_menu';
+	if (!$(id)) {
+		var div = document.createElement('div');
+		div.id = id;
+		div.style.display = 'none';
+		div.innerHTML = '';
+		$('append_parent').parentNode.appendChild(div);
+		showMenu({'menuid': id, 'duration': 3, 'pos': '00', 'mtype': 'win', 'drag': true});
+	}
+	ajaxget(admincpfilename + '?action=misc&operation=userselect&srcid=' + srcid + '&kw=' + encodeURIComponent(kw), id, null, null, null, function() {
+		$(id).style.left = '400px';
+	});
+}
+
+function userselect_delay(srcid, kw) {
+	clearTimeout(this.timer);
+	this.timer = setTimeout(function () {
+		userselect(srcid, kw);
+	}, 500);
+}
+
+function userselect_click(srcid, value, text) {
+	if($(srcid).querySelectorAll('input[value="' + value + '"]').length > 0) {
+		return;
+	}
+	var obj = document.createElement('span');
+	obj.innerHTML = '<input name="' + srcid + '[]" value="' + value + '" type="hidden"> ' + text + ' <a href="javascript:;" onclick="userselect_del(this)">[' + $L('delete') + ']</a>&nbsp;&nbsp;&nbsp;';
+	$(srcid).appendChild(obj);
+}
+
+function userselect_del(obj) {
+	obj.parentNode.parentNode.removeChild(obj.parentNode);
+}

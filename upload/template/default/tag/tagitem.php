@@ -13,6 +13,9 @@
 		<!--{if $showtype == 'blog'}-->
 			<em>&rsaquo;</em> {lang related_blog}
 		<!--{/if}-->
+		<!--{if $showtype == 'doing'}-->
+		<em>&rsaquo;</em> {lang related_doing}
+		<!--{/if}-->
 	</div>
 </div>
 <div id="ct" class="wp cl">
@@ -205,6 +208,45 @@
 				<!--{/if}-->
 			</div>
 		</div>
+	<!--{/if}-->
+
+	<!--{if helper_access::check_module('doing') && (empty($showtype) || $showtype == 'doing')}-->
+	<div class="bm">
+		<div class="bm_h">
+			<h2>{lang related_doing}</h2>
+		</div>
+		<div class="bm_c">
+			<!--{if $dolist}-->
+			<div class="xld xlda">
+				<!--{loop $dolist $dv}-->
+				<dl class="bbda">
+					<dd class="m">
+						<div class="avt"><a href="home.php?mod=space&uid=$dv[uid]" target="_blank" c="1"><!--{avatar($dv['uid'], 'small')}--></a></div>
+					</dd>
+					<dd>
+						<a href="home.php?mod=space&uid=$dv[uid]" target="_blank">$dv[username]</a> <span class="xg1">$dv[dateline]</span>
+					</dd>
+					<dd class="cl" id="doing_$dv[doid]">
+						$dv[message]
+					</dd>
+					<dd class="xg1">
+						<a href="home.php?mod=space&do=doing&doid=$dv[doid]" target="_blank">{lang focus_show}{lang more}</a>
+					</dd>
+				</dl>
+				<!--{/loop}-->
+			</div>
+			<!--{if empty($showtype)}-->
+			<div class="ptm">
+				<a class="xi2" href="home.php?mod=space&do=doing&tagid=$id">{lang more}...</a>
+			</div>
+			<!--{else}-->
+			<!--{if $multipage}--><div class="pgs mtm cl">$multipage</div><!--{/if}-->
+			<!--{/if}-->
+			<!--{else}-->
+			<p class="emp">{lang no_content}</p>
+			<!--{/if}-->
+		</div>
+	</div>
 	<!--{/if}-->
 </div>
 <!--{else}-->

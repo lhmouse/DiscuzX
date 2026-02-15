@@ -149,7 +149,7 @@ class block_forum extends discuz_block {
 		$wheresql = implode(' AND ', $wheres);
 
 		$ffadd1 = ', ff.icon, ff.description';
-		$ffadd2 = 'LEFT JOIN `' .DB::table('forum_forumfield'). '` ff ON f.`fid`=ff.`fid`';
+		$ffadd2 = 'LEFT JOIN `'.DB::table('forum_forumfield').'` ff ON f.`fid`=ff.`fid`';
 		$query = DB::query("SELECT f.* $ffadd1
 			FROM `".DB::table('forum_forum')."` f $ffadd2
 			WHERE $wheresql

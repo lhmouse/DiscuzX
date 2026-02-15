@@ -69,7 +69,7 @@
 			<a href="home.php?mod=spacecp&ac=avatar" class="xi2">{lang edit_avatar}</a>
 			<a href="home.php?mod=spacecp&ac=profile" class="xi2">{lang update_profile}</a>
 		<!--{else}-->
-			<!--{if helper_access::check_module('follow')}-->
+			<!--{if helper_access::check_module('follower')}-->
 			<a href="home.php?mod=spacecp&ac=follow&op={if !empty($follow)}del{else}add{/if}&hash={FORMHASH}&fuid=$space[uid]" id="card_followmod_$space[uid]" onclick="showWindow(this.id, this.href, 'get', 0)" class="xi2"><!--{if !empty($follow)}-->{lang follow_del}<!--{else}-->{lang follow_add}TA<!--{/if}--></a>
 			<!--{/if}-->
 			<!--{if helper_access::check_module('friend')}-->

@@ -44,6 +44,43 @@ class table_home_docomment extends discuz_table {
 		}
 		return DB::fetch_all('SELECT * FROM %t WHERE '.DB::field('doid', $doids).' ORDER BY dateline', [$this->_table]);
 	}
+	
+	public function count_top_by_doid($doid) {
+		if(empty($doid)) {
+			return 0;
+		}
+		return intval(DB::result_first("SELECT COUNT(*) FROM %t WHERE doid=%d AND upid=0 AND uid>0 AND message!=''", [$this->_table, $doid]));
+	}
+	
+	public function fetch_top_by_doid($doid, $limit = 0) {
+		if(empty($doid)) {
+			return [];
+		}
+		// 将参数转换为整数类型，避免类型不兼容错误
+		$doid = intval($doid);
+		$limit = intval($limit);
+		// 顶级评论按时间倒序，最新的在最前面
+		return DB::fetch_all("SELECT * FROM %t WHERE doid=%d AND upid=0 AND uid>0 AND message!='' ORDER BY dateline DESC ".DB::limit(0, $limit), [$this->_table, $doid]);
+	}
+	
+	public function fetch_all_top_by_doid($doid, $start = 0, $limit = 0) {
+		if(empty($doid)) {
+			return [];
+		}
+		// 将参数转换为整数类型，避免类型不兼容错误
+		$doid = intval($doid);
+		$start = intval($start);
+		$limit = intval($limit);
+		// 顶级评论按时间倒序，最新的在最前面
+		return DB::fetch_all("SELECT * FROM %t WHERE doid=%d AND upid=0 AND uid>0 AND message!='' ORDER BY dateline DESC ".DB::limit($start, $limit), [$this->_table, $doid]);
+	}
+	
+	public function fetch_all_child_by_doid($doid) {
+		if(empty($doid)) {
+			return [];
+		}
+		return DB::fetch_all("SELECT * FROM %t WHERE doid=%d AND upid>0 AND uid>0 AND message!='' ORDER BY dateline", [$this->_table, $doid]);
+	}
 
 }
 

@@ -13,7 +13,7 @@ class helper_access {
 
 	public static function check_module($module) {
 		$status = 0;
-		$allowfuntype = ['portal', 'forum', 'friend', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite'];
+		$allowfuntype = ['portal', 'forum', 'friend', 'follower', 'group', 'follow', 'collection', 'guide', 'feed', 'blog', 'doing', 'album', 'share', 'wall', 'homepage', 'ranklist', 'medal', 'task', 'magic', 'favorite', 'pm'];
 		$module = in_array($module, $allowfuntype) ? trim($module) : '';
 		if(!empty($module)) {
 			$status = getglobal('setting/'.$module.'status');

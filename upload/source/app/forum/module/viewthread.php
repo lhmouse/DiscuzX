@@ -558,7 +558,7 @@ foreach($postarr as $post) {
 					$post['style'] = $styleData;
 				}
 				if(!empty($content['extend']['quote_default'])) {
-					$post['message'] = discuzcode($content['extend']['quote_default']) . $post['message'];
+					$post['message'] = discuzcode($content['extend']['quote_default']).$post['message'];
 				}
 			}
 		}
@@ -601,7 +601,7 @@ foreach($postarr as $post) {
 				}
 			}
 		}
-		if($thread['authorid'] && $post['authorid'] == $thread['authorid'] && $post['first'] !== '1'){
+		if($thread['authorid'] && $post['authorid'] == $thread['authorid'] && $post['first'] !== '1') {
 			$post['authorself'] = true;
 		}
 		$postlist[$post['pid']] = $post;
@@ -716,7 +716,7 @@ if($_G['forum_attachpids'] && !defined('IN_ARCHIVER')) {
 	parseattach($_G['forum_attachpids'], $_G['forum_attachtags'], $postlist, $skipaids);
 }
 // 开始将json编辑器中的图片从未使用列表中移除
-foreach($postlist as $pid => $post){
+foreach($postlist as $pid => $post) {
 	if(!empty($post) && is_valid_non_empty_json($post['content'], true)) {
 		$content = json_decode($post['content'], true);
 		if($content['type'] == 'json' && $content['editor'] == 'jsonEditor' && !empty($content['content'])) {
@@ -727,7 +727,7 @@ foreach($postlist as $pid => $post){
 		}
 	}
 	//支持IP省级地理信息
-	if($_G['setting']['showiplocation']){
+	if($_G['setting']['showiplocation']) {
 		$post['iplocation'] = ip::convert($post['useip'], true);
 		$postlist[$pid] = $post;
 	}

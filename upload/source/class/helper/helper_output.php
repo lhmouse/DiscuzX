@@ -19,7 +19,7 @@ class helper_output {
 		@header('Expires: -1');
 		@header('Cache-Control: no-store, private, post-check=0, pre-check=0, max-age=0', FALSE);
 		@header('Pragma: no-cache');
-		@header('Content-Type: ' .$type. '; charset=' .CHARSET);
+		@header('Content-Type: '.$type.'; charset='.CHARSET);
 	}
 
 	public static function xml($s) {

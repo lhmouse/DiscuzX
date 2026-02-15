@@ -84,7 +84,7 @@ if(!$op || in_array($op, ['list', 'detail'])) {
 
 					$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=article");
 				}
-			} else {
+			}else{
 				showmessage('portal_status_off');
 			}
 		} elseif($type == 'blog') {
@@ -103,6 +103,24 @@ if(!$op || in_array($op, ['list', 'detail'])) {
 				}
 			} else {
 				showmessage('blog_status_off');
+			}
+		} elseif($type == 'doing') {
+			$showtype = 'doing';
+			require_once libfile('function/doing');
+			if(helper_access::check_module('doing')) {
+				$doidarray = $dolist = [];
+				$count = table_common_tagitem::t()->select($id, 0, 'doid', '', '', 0, 0, 0, 1);
+				if($count) {
+					$query = table_common_tagitem::t()->select($id, 0, 'doid', '', '', $start_limit, $tpp);
+					foreach($query as $result) {
+						$doidarray[$result['itemid']] = $result['itemid'];
+					}
+					$dolists = tag::getdoingbyid($doidarray);
+
+					$multipage = multi($count, $tpp, $page, "misc.php?mod=tag&id={$tag['tagid']}&type=doing");
+				}
+			}else{
+				showmessage('doing_status_off');
 			}
 		} else {
 			$shownum = 20;
@@ -130,6 +148,16 @@ if(!$op || in_array($op, ['list', 'detail'])) {
 					$blogidarray[$result['itemid']] = $result['itemid'];
 				}
 				$bloglist = tag::getblogbyid($blogidarray);
+			}
+
+			if(helper_access::check_module('doing')) {
+				require_once libfile('function/doing');
+				$doidarray = $dolist = [];
+				$query = table_common_tagitem::t()->select($id, 0, 'doid', '', '', $shownum);
+				foreach($query as $result) {
+					$doidarray[$result['itemid']] = $result['itemid'];
+				}
+				$dolist = tag::getdoingbyid($doidarray);
 			}
 
 		}

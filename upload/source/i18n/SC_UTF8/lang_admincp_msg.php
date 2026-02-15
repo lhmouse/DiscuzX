@@ -23,7 +23,7 @@ $lang = [
 	'blockstyle_delete_succeed' => '删除模块模板成功 ',
 	'blogcategory_move_category_failed' => '无法移动日志到指定分类',
 	'blogcategory_delete_succeed' => '删除日志分类成功 ',
-	'filecheck_nofound_md5file' => '不存在校验文件，无法进行此操作 {upgradeurl}',
+	'filecheck_nofound_md5file' => '不存在校验文件，无法进行此操作',
 	'replacekey_must_write_config' => 'config_global.php 不可写，无法进行此操作',
 	'replacekey_succeed' => '密钥更新成功，请重新登录站点并更新缓存',
 	'cloudaddons_download_error' => '数据下载错误({ErrorCode})，<a href="https://www.dismall.com/thread-101-1-1.html" target="_blank">点击查看常见问题解决办法</a>',
@@ -305,6 +305,7 @@ $lang = [
 	'forums_edit_sub_notnull' => '存在下级版块，不能修改本版块的上级版块归属',
 	'forums_edit_threadsort_nonexistence' => '没有选择默认的分类信息',
 	'forums_delete_succeed' => '版块删除成功 ',
+	'forums_delete_subadmin_error' => '您无法删除存在帖子的版块',
 	'forums_delete_sub_notnull' => '存在下级版块，请先返回删除本分类或本版块的下级版块',
 	'forums_delete_confirm' => '本操作不可恢复，您确定要删除该版块，清除其中帖子和附件吗？<br />注意: 删除版块并不会更新用户发帖数和积分',
 	'forums_delete_alarm' => '本操作不可恢复，正在删除版块数据...',
@@ -748,6 +749,10 @@ $lang = [
 
 	'widget_update_succeed' => '组件设置更新成功',
 	'widget_reset_succeed' => '组件设置已重置',
+
+	'setting_avatar_upload_fail' => '上传失败，请重新上传',
+	'setting_avatar_upload_must_img' => '上传失败，请上传图片文件',
+	'setting_avatar_upload_must_square' => '上传失败，请上传方形的图片文件',
 
 	'secqaa_click_identifier_error' => '请输入正确的标识',
 	'secqaa_click_upload_error' => '压缩包上传错误',

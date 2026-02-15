@@ -200,6 +200,7 @@ class menu_default {
 			['menu_tools_updatecounters', 'counter'],
 			['menu_logs', 'logs'],
 			['menu_misc_cron', 'misc_cron'],
+			['menu_tools_iconfont', 'misc_iconfont', 0, 'isfounder'],
 			['menu_tools_fileperms', 'tools_fileperms', 0, 'isfounder'],
 			['menu_tools_filecheck', 'checktools_filecheck', 0, 'isfounder'],
 			['menu_tools_hookcheck', 'checktools_hookcheck', 0, 'isfounder'],

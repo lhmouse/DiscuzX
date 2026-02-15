@@ -90,4 +90,3 @@ showtablefooter();
 showformfooter();
 echo '<iframe name="doingframe" style="display:none"></iframe>';
 showtagfooter('div');
-	

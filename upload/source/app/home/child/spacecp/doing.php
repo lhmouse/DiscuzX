@@ -10,6 +10,10 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+use table_common_member;
+use table_home_follow;
+use table_home_friend;
+
 if(!$_G['setting']['doingstatus']) {
 	showmessage('doing_status_off');
 }
@@ -45,44 +49,275 @@ if($_GET['op'] == 'delete') {
 			exit();
 		}
 	}
+} elseif($_GET['op'] == 'docomment') {
+	$doid = intval($_GET['doid']);
+	$docid = intval($_GET['docid']);
+	$key = empty($_GET['key']) ? random(8) : $_GET['key'];
+	$_GET['key'] = $key;
 
+	$updo = [];
+	if($docid) {
+		$updo = table_home_docomment::t()->fetch($docid);
+	} elseif($doid) {
+		$updo = table_home_doing::t()->fetch($doid);
+	}
+	
+	if(empty($updo)) {
+		showmessage('docomment_error');
+	}
+
+	include template('home/spacecp_doing');
+	dexit();
 } elseif($_GET['op'] == 'getcomment') {
+	$key = empty($_GET['key']) ? random(8) : $_GET['key'];
+	$_GET['key'] = $key;
+	$doid = empty($_GET['doid']) ? 0 : intval($_GET['doid']);
+	$doing_info = table_home_doing::t()->fetch($doid);
 
-	$tree = new home\class_tree();
+	$comment_perpage = intval(10);
+	$comment_page = empty($_GET['page_c']) ? 0 : intval($_GET['page_c']);
+	if($comment_page < 1) $comment_page = 1;
+	$comment_start = intval(($comment_page - 1) * $comment_perpage);
 
 	$list = [];
 	$highlight = 0;
 	$count = 0;
+	$has_more = false;
 
 	if(empty($_GET['close'])) {
-		foreach(table_home_docomment::t()->fetch_all_by_doid($doid) as $value) {
-			if(!empty($value['ip'])) {
-				$value['ip'] = ip::to_display($value['ip']);
+		// 获取顶级评论总数
+		$top_comment_count = intval(table_home_docomment::t()->count_top_by_doid($doid));
+		
+		// 1. 获取分页的顶级评论
+		$top_comments = table_home_docomment::t()->fetch_all_top_by_doid($doid, $comment_start, $comment_perpage);
+		$top_ids = array_column($top_comments, 'id');
+		
+		// 检查是否有更多评论（只有在列表页通过AJAX加载时才显示更多链接）
+		// 在单条动态详情页，通过URL参数判断，应该显示分页而不是更多链接
+		// 列表页AJAX请求：不包含page_c参数，显示"更多"链接
+		// 单条动态详情页AJAX请求：包含page_c参数，显示分页，不显示"更多"链接
+		$is_ajax_list = isset($_GET['inlist']);
+		$has_more = $is_ajax_list && $top_comment_count > $comment_perpage;
+		
+		// 2. 获取所有子评论
+		$child_comments = table_home_docomment::t()->fetch_all_child_by_doid($doid);
+		
+		// 3. 合并评论
+		$all_comments = array_merge($top_comments, $child_comments);
+		
+		// 4. 构建评论映射表
+		$comment_map = [];
+		$root_comments = [];
+		
+		foreach($all_comments as $comment) {
+			if(!empty($comment['ip'])) {
+				$comment['ip'] = ip::to_display($comment['ip']);
+				$comment['iplocation'] = $_G['setting']['showiplocation'] ? ip::convert($comment['ip'], true) : '';
 			}
-			$tree->setNode($value['id'], $value['upid'], $value);
+			$comment_map[$comment['id']] = $comment;
+			
+			if($comment['upid'] == 0) {
+				$root_comments[] = $comment;
+			}
+			
 			$count++;
-			if($value['uid'] == $space['uid']) $highlight = $value['id'];
 		}
-	}
-
-	if($count) {
-		$values = $tree->getChilds();
-		foreach($values as $key => $vid) {
-			$one = $tree->getValue($vid);
-			$one['layer'] = $tree->getLayer($vid) * 2;
-			$one['style'] = "padding-left:{$one['layer']}em;";
-			if($one['layer'] > 0) {
-				if($one['layer'] % 3 == 2) {
-					$one['class'] = ' dtls';
-				} else {
-					$one['class'] = ' dtll';
+		
+		// 5. 构建评论树结构
+		$comment_tree = [];
+		foreach($comment_map as $comment_id => $comment) {
+			$parent_id = $comment['upid'];
+			if($parent_id == 0) {
+				// 根评论
+				$comment_tree[$comment_id] = $comment;
+				$comment_tree[$comment_id]['children'] = [];
+			} else {
+				// 子评论，添加到顶级评论的children数组中，形成扁平的二级结构
+				if(isset($comment_map[$parent_id])) {
+					$parent_comment = $comment_map[$parent_id];
+					
+					// 找到顶级父评论
+					$top_parent_id = $parent_id;
+					while($top_parent_id > 0 && isset($comment_map[$top_parent_id]) && $comment_map[$top_parent_id]['upid'] > 0) {
+						$top_parent_id = $comment_map[$top_parent_id]['upid'];
+					}
+					
+					// 只有当顶级父评论是前10条根评论时，才显示当前子评论
+					if(in_array($top_parent_id, $top_ids)) {
+						$comment_tree[$top_parent_id]['children'][] = $comment;
+					}
 				}
 			}
-			if($one['id'] == $highlight && $one['uid'] == $space['uid']) {
-				$one['style'] .= 'color:#F60;';
-			}
-			$list[] = $one;
 		}
+		
+		// 6. 遍历评论树，生成评论列表
+		foreach($comment_tree as $root_id => $root_comment) {
+			
+			// 显示根评论
+			$root_comment['layer'] = 0;
+			$root_comment['style'] = "padding-left:0em;";
+			$root_comment['class'] = '';
+			$root_comment['is_child'] = false;
+			$root_comment['reply_to_user'] = '';
+			$root_comment['reply_uid'] = 0;
+			$root_comment['avatar'] = avatar($root_comment['uid'], 'small', true);
+			$root_comment['dateline_formatted'] = dgmdate($root_comment['dateline'], 'u');
+			// 判断是否可以删除评论
+			$root_comment['can_delete'] = ($root_comment['uid'] == $_G['uid'] || $doing_info['uid'] == $_G['uid'] || checkperm('managedoing'));
+			
+			// 移除高亮逻辑，因为$highlight和$space变量未初始化
+			// if($root_comment['id'] == $highlight && $root_comment['uid'] == $space['uid']) {
+			// 	$root_comment['style'] .= 'color:#F60;';
+			// }
+			
+			$list[] = $root_comment;
+			
+			// 显示子评论，只显示前3条，超过则提供展开/折叠功能
+			if(!empty($root_comment['children'])) {
+				$child_count = count($root_comment['children']);
+				$show_child_count = 3;
+				$show_children = array_slice($root_comment['children'], 0, $show_child_count);
+				$hide_children = array_slice($root_comment['children'], $show_child_count);
+				
+				// 显示前3条子评论
+				foreach($show_children as $child_comment) {
+					$child_comment['layer'] = 2;
+					$child_comment['style'] = "padding-left:4em;";
+					$child_comment['class'] = ' dtll';
+					$child_comment['is_child'] = true;
+					$child_comment['is_hidden'] = false;
+					$child_comment['avatar'] = avatar($child_comment['uid'], 'small', true);
+					$child_comment['dateline_formatted'] = dgmdate($child_comment['dateline'], 'u');
+					// 判断是否可以删除评论
+					$child_comment['can_delete'] = ($child_comment['uid'] == $_G['uid'] || $doing_info['uid'] == $_G['uid'] || checkperm('managedoing'));
+					
+					// 设置回复信息：只有当回复的是其他子评论时，才显示回复信息
+					$child_comment['reply_to_user'] = '';
+					$child_comment['reply_uid'] = 0;
+					
+					if($child_comment['upid'] > 0 && isset($comment_map[$child_comment['upid']])) {
+						$parent_comment = $comment_map[$child_comment['upid']];
+						// 只有当父评论也是子评论时，才显示回复信息
+						if($parent_comment['upid'] > 0) {
+							$child_comment['reply_to_user'] = $parent_comment['username'];
+							$child_comment['reply_uid'] = $parent_comment['uid'];
+						}
+					}
+					
+					$list[] = $child_comment;
+				}
+				
+				// 如果有隐藏的子评论，显示展开按钮
+				if(!empty($hide_children)) {
+					// 添加展开/折叠按钮
+					$toggle_comment = array(
+						'id' => "toggle_{$root_id}",
+						'doid' => $root_comment['doid'],
+						'layer' => 2,
+						'style' => "padding-left:2em;",
+						'class' => ' dtll toggle-comment',
+						'is_child' => true,
+						'is_toggle' => true,
+						'hide_count' => count($hide_children),
+						'root_id' => $root_id,
+						'username' => '',
+						'message' => "",
+						'reply_to_user' => '',
+						'reply_uid' => 0,
+						'is_hidden' => false,
+						'can_delete' => false
+					);
+					$list[] = $toggle_comment;
+					
+					// 添加隐藏的子评论
+					foreach($hide_children as $child_comment) {
+						$child_comment['layer'] = 2;
+						$child_comment['style'] = "padding-left:2em; display: none;";
+						$child_comment['class'] = ' dtll hidden-comment';
+						$child_comment['is_child'] = true;
+						$child_comment['is_hidden'] = true;
+						$child_comment['root_id'] = $root_id;
+						$child_comment['avatar'] = avatar($child_comment['uid'], 'small', true);
+						$child_comment['dateline_formatted'] = dgmdate($child_comment['dateline'], 'u');
+						// 判断是否可以删除评论
+						$child_comment['can_delete'] = ($child_comment['uid'] == $_G['uid'] || $doing_info['uid'] == $_G['uid'] || checkperm('managedoing'));
+						
+						// 设置回复信息：只有当回复的是其他子评论时，才显示回复信息
+						$child_comment['reply_to_user'] = '';
+						$child_comment['reply_uid'] = 0;
+						
+						if($child_comment['upid'] > 0 && isset($comment_map[$child_comment['upid']])) {
+							$parent_comment = $comment_map[$child_comment['upid']];
+							// 只有当父评论也是子评论时，才显示回复信息
+							if($parent_comment['upid'] > 0) {
+								$child_comment['reply_to_user'] = $parent_comment['username'];
+								$child_comment['reply_uid'] = $parent_comment['uid'];
+							}
+						}
+						
+						$list[] = $child_comment;
+					}
+				}
+			}
+		}
+	}
+	
+	// 生成评论分页链接（只有在单条动态详情页AJAX请求时才显示）
+	$comment_multi = array();
+	if (isset($_GET['page_c'])) {
+		if($top_comment_count > $comment_perpage) {
+			// 生成AJAX分页链接，指向当前的getcomment接口
+			$comment_url = "home.php?mod=spacecp&ac=doing&op=getcomment&doid=$doid&key=$key&page_c={page}";
+			$comment_multi[$doid] = multi($top_comment_count, $comment_perpage, $comment_page, $comment_url);
+			
+			// 修改分页链接的onclick事件，使其异步加载
+			// 使用正则表达式匹配并替换每个分页链接，处理包含ajaxtarget属性的情况
+			// 匹配所有分页链接，包括page_c=数字、page_c=空和没有page_c参数的情况
+			preg_match_all('/<a\s+href="([^"]*?)"[^>]*>/', $comment_multi[$doid], $matches);
+			if(!empty($matches[0])) {
+				foreach($matches[0] as $index => $full_match) {
+					$href = $matches[1][$index];
+					// 解析页码，处理不同情况：page_c=数字、page_c=空、没有page_c参数
+					$page_num = 1; // 默认第一页
+					if(preg_match('/page_c=(\d+)/', $href, $page_match)) {
+						// 有明确的页码，如page_c=2
+						$page_num = $page_match[1];
+					} elseif(strpos($href, 'page_c=') !== false) {
+						// page_c后面为空，如page_c=
+						$page_num = 1;
+					}
+					// 生成新的链接，使用javascript:;和onclick事件，移除原有的href和ajaxtarget属性
+					$new_link = '<a href="javascript:;" onclick="docomment_get_page('.$doid.', \''.$key.'\', '.$page_num.');" data-page="'.$page_num.'">';
+					$comment_multi[$doid] = str_replace($full_match, $new_link, $comment_multi[$doid]);
+				}
+			}
+			
+			// 处理当前页的链接（通常是<span>标签）
+			$comment_multi[$doid] = preg_replace('/<span[^>]*>(\d+)<\/span>/', '<span data-page="$1">$1</span>', $comment_multi[$doid]);
+		}
+	}
+	
+	// 检查是否是移动端请求，返回JSON数据
+	if (defined('IN_MOBILE')) {
+		// 返回JSON数据，包含分页信息而非HTML
+		$response = array(
+			'list' => $list,
+			'count' => $count,
+			'has_more' => $has_more,
+			'page' => $comment_page,
+			'perpage' => $comment_perpage,
+			'total_pages' => ceil($top_comment_count / $comment_perpage),
+			'total_comments' => $top_comment_count
+		);
+
+		// 设置响应头为JSON
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($response);
+		dexit();
+	} else {
+		// 输出评论列表
+		include template('home/space_doing_comment_li');
+		dexit();
 	}
 } elseif($_GET['op'] == 'recommend') {
 	// 处理点赞请求
@@ -136,6 +371,131 @@ if($_GET['op'] == 'delete') {
 	exit;
 } elseif($_GET['op'] == 'spacenote') {
 	space_merge($space, 'field_home');
+} elseif($_GET['op'] == 'upload_image') {
+	if(!checkperm('allowdoing')) {
+		showmessage('no_privilege_doing', '', array(), array('login' => 1));
+	}
+
+	if (!empty($_FILES)) {
+		$upload = new upload('doing');
+		$f = $upload->upload();
+		$result = [
+			'status' => 'success',
+			'images' => []
+		];
+
+		$image = null;
+
+		if (!empty($f['Filedata']) && is_array($f['Filedata'])) {
+			$value = $f['Filedata'];
+			if (is_array($value) && $value['attachment']) {
+				if (isset($value['isimage']) && $value['isimage'] == 1) {
+					$temp_doid = 0; 
+					$aid = table_home_doing_attachment::t()->insert_attachment([
+						'doid' => $temp_doid,
+						'uid' => $_G['uid'],
+						'dateline' => TIMESTAMP,
+						'filename' => $value['name'],
+						'filesize' => $value['size'],
+						'attachment' => $value['attachment'],
+						'remote' => $value['remote'] ?? 0,
+						'isimage' => $value['isimage'],
+						'width' => $value['imageinfo'][0] ?? 0,
+						'height' => $value['imageinfo'][1] ?? 0,
+						'displayorder' => 0
+					], true);
+					$image_url = getglobal('setting/attachurl').'doing/'.$value['attachment'];
+					if($value['remote']) {
+						$image_url = getglobal('setting/ftp/attachurl').'doing/'.$value['attachment'];
+					}
+					
+					$image = [
+						'aid' => $aid,
+						'filename' => $value['name'],
+						'url' => $image_url,
+						'width' => $value['imageinfo'][0] ?? 0,
+						'height' => $value['imageinfo'][1] ?? 0,
+						'filesize' => $value['size'],
+						'extension' => $value['ext'] ?? '',
+						'mime_type' => $value['type'] ?? ''
+					];
+				}
+			}
+		}
+
+		// 构建结果
+		if ($image) {
+			$result = [
+				'status' => 'success',
+				'image' => $image
+			];
+		} else {
+			$result = [
+				'status' => 'error',
+				'message' => 'Upload failed or no valid image found',
+				'debug_info' => $f // 仅用于调试，实际部署时应移除
+			];
+			
+			if(defined('IN_RESTFUL')) {
+				showmessage('upload_failed', '', array(), array('result' => $result));
+			} else {
+				header('Content-Type: application/json');
+				echo json_encode($result);
+				exit;
+			}
+		}
+
+		if(defined('IN_RESTFUL')) {
+			echo $result;
+		} else {
+			header('Content-Type: application/json');
+			echo json_encode($result);
+			exit;
+		}
+	} else {
+		$result = [
+			'status' => 'error',
+			'message' => 'No files uploaded'
+		];
+
+		if(defined('IN_RESTFUL')) {
+			echo $result;
+		} else {
+			header('Content-Type: application/json');
+			echo json_encode($result);
+			exit;
+		}
+	}
+} elseif($_GET['op'] == 'delete_image') {
+	$count = 0;
+
+	if(isset($_GET['aids'])) {
+		$_GET['aids'] = (array)$_GET['aids'];
+		foreach($_GET['aids'] as $aid) {
+			$attach = table_home_doing_attachment::t()->fetch_attachment('aid:'.$aid, $aid);
+			if($attach && $attach['uid'] == $_G['uid']) {
+
+				table_home_doing_attachment::t()->delete($aid);
+				pic_delete($attach['attachment'], 'doing', 0, $attach['remote']);
+				if($_G['setting']['ftp']['on'] == 2) {
+					ftpcmd('delete', 'doing/'.$attach['attachment']);
+					ftpcmd('delete', 'doing/'.getimgthumbname($attach['attachment']));
+				}
+
+				$count++;
+			}
+		}
+	}
+
+	if(defined('IN_RESTFUL')) {
+		echo $count;
+		exit();
+	}
+
+	include template('common/header_ajax');
+	echo $count;
+	include template('common/footer_ajax');
+	dexit();
 }else{
 	$type = empty($_GET['type']) ? '' : $_GET['type'];
 	$id = empty($_GET['id']) ? 0 : intval($_GET['id']);
@@ -160,7 +520,7 @@ if($_GET['op'] == 'delete') {
 			}
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b><a href="home.php?mod=space&uid={uid}">{username}</a></b><br>{reside}<br>{spacenote}';
+			$arr['body_template'] = '<h5><a href="home.php?mod=space&uid={uid}" target="_blank">{username}</a></h5><p><a href="home.php?mod=space&uid={uid}" target="_blank">'.lang('spacecp', 'homepage').'</a></p>';
 			$arr['body_data'] = [
 				'uid' => $id,
 				'username' => $tospace['username'],
@@ -170,8 +530,8 @@ if($_GET['op'] == 'delete') {
 
 			loaducenter();
 			$isavatar = uc_check_avatar($id);
-			$arr['body_data']['image'] = $isavatar ? avatar($id, 'middle', true) : $_G['setting']['avatarurl'].'/noavatar.svg';
-			$arr['body_data']['image_link'] = "home.php?mod=space&uid=$id";
+			$arr['image'] = $arr['body_data']['image'] = $isavatar ? avatar($id, 'middle', true) : $_G['setting']['avatarurl'].'/noavatar.svg';
+			$arr['image_link'] = $arr['body_data']['image_link'] = "home.php?mod=space&uid=$id";
 
 			$note_uid = $id;
 			$note_message = 'share_space';
@@ -198,17 +558,19 @@ if($_GET['op'] == 'delete') {
 				showmessage('is_blacklist');
 			}
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b><a href="{url}">{subject}</a></b><br><a href="home.php?mod=space&uid={uid}">{username}</a><br>{message}';
+			$arr['body_template'] = '<h5><a href="{url}" target="_blank">{subject}</a></h5><p><a href="home.php?mod=space&uid={uid}">{username}</a>: {dateline} </p>';
 			$arr['body_data'] = [
 				'url' => "home.php?mod=space&uid=".$blog['uid']."&do=blog&id=".$blog['blogid'],
 				'subject' => $blog['subject'],
 				'uid' => $blog['uid'],
+				'blog' => $blog['blogid'],
 				'username' => $blog['username'],
+				'dateline' => dgmdate($blog['dateline']),
 				'message' => getstr($blog['message'], 150, 0, 0, 0, -1)
 			];
 			if($blog['pic']) {
-				$arr['body_data']['image'] = pic_cover_get($blog['pic'], $blog['picflag']);
-				$arr['body_data']['image_link'] = "home.php?mod=space&uid={$blog['uid']}&do=blog&id={$blog['blogid']}";
+				$arr['image'] = $arr['body_data']['image'] = pic_cover_get($blog['pic'], $blog['picflag']);
+				$arr['image_link'] = $arr['body_data']['image_link'] = "home.php?mod=space&uid={$blog['uid']}&do=blog&id={$blog['blogid']}";
 			}
 			$note_uid = $blog['uid'];
 			$note_message = 'share_blog';
@@ -232,15 +594,17 @@ if($_GET['op'] == 'delete') {
 			}
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b><a href="{url}">{albumname}</a></b><br><a href="home.php?mod=space&uid={uid}">{username}</a>';
+			$arr['body_template'] = '<h5><a href="{url}" target="_blank">{albumname}</a></h5><p><a href="home.php?mod=space&uid={uid}">{username}</a>: {dateline} </p>';
 			$arr['body_data'] = [
 				'url' => "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}",
 				'albumname' => $album['albumname'],
 				'uid' => $album['uid'],
-				'username' => $album['username']
+				'albumid' => $album['albumid'],
+				'username' => $album['username'],
+				'dateline' => dgmdate($album['dateline'])
 			];
-			$arr['body_data']['image'] = pic_cover_get($album['pic'], $album['picflag']);
-			$arr['body_data']['image_link'] = "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}";
+			$arr['image'] = $arr['body_data']['image'] = pic_cover_get($album['pic'], $album['picflag']);
+			$arr['image_link'] = $arr['body_data']['image_link'] = "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}";
 			$note_uid = $album['uid'];
 			$note_message = 'share_album';
 			$note_values = ['url' => "home.php?mod=space&uid={$album['uid']}&do=album&id={$album['albumid']}", 'albumname' => $album['albumname'], 'from_id' => $id, 'from_idtype' => 'albumid'];
@@ -269,16 +633,18 @@ if($_GET['op'] == 'delete') {
 			if(empty($pic['albumname'])) $pic['albumname'] = lang('spacecp', 'default_albumname');
 
 			$arr['itemid'] = $id;
-			$arr['body_template'] = lang('spacecp', 'album').': <b><a href="{url}">{albumname}</b><br><a href="home.php?mod=space&uid={uid}">{username}</a><br>{title}';
+			$arr['body_template'] = '<h5>'.lang('spacecp', 'album').'<a href="{url}" target="_blank">{albumname}</a></h5><p><a href="home.php?mod=space&uid={uid}">{username}</a>: {dateline} </p>';
 			$arr['body_data'] = [
 				'url' => "home.php?mod=space&uid={$pic['uid']}&do=album&picid={$pic['picid']}",
 				'albumname' => $pic['albumname'],
 				'uid' => $pic['uid'],
+				'picid' => $pic['picid'],
 				'username' => $pic['username'],
+				'dateline' => dgmdate($pic['dateline']),
 				'title' => getstr($pic['title'], 100, 0, 0, 0, -1)
 			];
-			$arr['body_data']['image'] = pic_get($pic['filepath'], 'album', $pic['thumb'], $pic['remote']);
-			$arr['body_data']['image_link'] = "home.php?mod=space&uid={$pic['uid']}&do=album&picid={$pic['picid']}";
+			$arr['image'] = $arr['body_data']['image'] = pic_get($pic['filepath'], 'album', $pic['thumb'], $pic['remote']);
+			$arr['image_link'] = $arr['body_data']['image_link'] = "home.php?mod=space&uid={$pic['uid']}&do=album&picid={$pic['picid']}";
 			$note_uid = $pic['uid'];
 			$note_message = 'share_pic';
 			$note_values = ['url' => "home.php?mod=space&uid={$pic['uid']}&do=album&picid={$pic['picid']}", 'albumname' => $pic['albumname'], 'from_id' => $id, 'from_idtype' => 'picid'];
@@ -288,7 +654,7 @@ if($_GET['op'] == 'delete') {
 			break;
 
 		case 'thread':
-
+			//此段如果修改，须对应修改source/app/forum/extend/extend_thread_doing.php
 			$feed_hash_data = "tid{$id}";
 
 			$thread = table_forum_thread::t()->fetch_thread($id);
@@ -297,21 +663,22 @@ if($_GET['op'] == 'delete') {
 			}
 			require_once libfile('function/post');
 			$post = table_forum_post::t()->fetch_threadpost_by_tid_invisible($id);
-			$arr['body_template'] = '<b><a href="{url}">{subject}</a></b><br><a href="home.php?mod=space&uid={authorid}">{author}</a><br>{message}';
-			$attachment = !preg_match('/\[hide=?\d*\](.*?)\[\/hide\]/is', $post['message'], $a) && preg_match('/\[attach\]\d+\[\/attach\]/i', $a[1]);
+			$arr['body_template'] = '<h5><a href="{url}" target="_blank">{subject}</a></h5><p><a href="home.php?mod=space&uid={authorid}">{author}</a>: {dateline} </p>';
 			$post['message'] = threadmessagecutstr($thread, $post['message']);
 			$arr['body_data'] = [
 				'url' => "forum.php?mod=viewthread&tid=$id",
 				'subject' => $thread['subject'],
 				'authorid' => $thread['authorid'],
 				'author' => $thread['author'],
+				'tid' => $id,
+				'dateline' => dgmdate($thread['dateline']),
 				'message' => getstr($post['message'], 150, 0, 0, 0, -1)
 			];
 			$arr['itemid'] = $id;
-			$attachment = $attachment ? table_forum_attachment_n::t()->fetch_max_image('tid:'.$id, 'tid', $id) : false;
+			$attachment = table_forum_attachment_n::t()->fetch_max_image('tid:'.$id, 'tid', $id);
 			if($attachment) {
-				$arr['body_data']['image'] = pic_get($attachment['attachment'], 'forum', $attachment['thumb'], $attachment['remote'], 1);
-				$arr['body_data']['image_link'] = "forum.php?mod=viewthread&tid=$id";
+				$arr['image'] = $arr['body_data']['image'] = pic_get($attachment['attachment'], 'forum', $attachment['thumb'], $attachment['remote'], 1);
+				$arr['image_link'] = $arr['body_data']['image_link'] = "forum.php?mod=viewthread&tid=$id";
 			}
 
 			$note_uid = $thread['authorid'];
@@ -334,29 +701,54 @@ if($_GET['op'] == 'delete') {
 			require_once libfile('function/portal');
 			$article_url = fetch_article_url($article);
 			$arr['itemid'] = $id;
-			$arr['body_template'] = '<b><a href="{url}">{title}</a></b><br><a href="home.php?mod=space&uid={uid}\">{username}</a><br>{summary}';
+			$arr['body_template'] = '<h5><a href="{url}" target="_blank">{title}</a></h5><p><a href="home.php?mod=space&uid={uid}">{username}</a>: {dateline} </p>';
 			$arr['body_data'] = [
 				'url' => $article_url,
 				'title' => $article['title'],
 				'uid' => $article['uid'],
+				'articleid' => $id,
 				'username' => $article['username'],
+				'dateline' => dgmdate($article['dateline']),
 				'summary' => getstr($article['summary'], 150, 0, 0, 0, -1)
 			];
 			if($article['pic']) {
-				$arr['body_data']['image'] = pic_get($article['pic'], 'portal', $article['thumb'], $article['remote'], 1, 1);
-				$arr['body_data']['image_link'] = $article_url;
+				$arr['image'] = $arr['body_data']['image'] = pic_get($article['pic'], 'portal', $article['thumb'], $article['remote'], 1, 1);
+				$arr['image_link'] = $arr['body_data']['image_link'] = $article_url;
 			}
 			$note_uid = $article['uid'];
 			$note_message = 'share_article';
 			$note_values = ['url' => $article_url, 'subject' => $article['title'], 'from_id' => $id, 'from_idtype' => 'aid'];
 
 			break;
+		case 'doing':
+			$feed_hash_data = "doingid{$id}";
+			$sdoing = table_home_doing::t()->fetch($id);
+			if(!$sdoing) {
+				showmessage('doing_does_not_exist');
+			}
+			$arr['itemid'] = $id;
+			$arr['body_template'] = '<p><a href="{url}" target="_blank">{message}</a></p><p><a href="home.php?mod=space&uid={uid}">{username}</a> - {dateline} </p>';
+			$arr['body_data'] = [
+				'url' => "home.php?mod=space&do=doing&doid={$sdoing['doid']}",
+				'message' => getstr($sdoing['message'], 150, 0, 0, 0, -1),
+				'uid' => $sdoing['uid'],
+				'doid' => $sdoing['doid'],
+				'username' => $sdoing['username'],
+				'dateline' => dgmdate($sdoing['dateline']),
+			];
+			// 查询记录对应的附件信息
+			$attachment = table_home_doing_attachment::t()->fetch_max_image(0, 'doid', $id);
+			if($attachment) {
+				$arr['image'] = $arr['body_data']['image'] = getdiscuzimg('doing', $attachment['aid'], 0, 140, 140);
+				$arr['image_link'] = $arr['body_data']['image_link'] = "home.php?mod=space&do=doing&doid={$sdoing['doid']}";
+			}
+			break;
 		default:
 			$arr['itemid'] = 0;
 			$arr['body_template'] = '';
 			break;
 	}
-	$commentcable = ['blog' => 'blogid', 'pic' => 'picid', 'thread' => 'thread', 'article' => 'article'];
+	$commentcable = ['blog' => 'blogid', 'pic' => 'picid', 'thread' => 'thread', 'article' => 'article', 'doing' => 'doid'];
 
 	if(submitcheck('addsubmit')) {
 
@@ -377,15 +769,39 @@ if($_GET['op'] == 'delete') {
 			showmessage('should_write_that');
 		}
 
-		$message = censor($message, NULL, TRUE, TRUE);
+		$message = censor($message, NULL, TRUE, false);
 		if(is_array($message) && $message['message']) {
-			showmessage('do_success', dreferer(), ['message' => $message['message']]);
+			showmessage($message['message'], dreferer(), ['message' => $message['message']]);
 		}
 
 		if(censormod($message) || $_G['group']['allowdoingmod']) {
 			$doing_status = 1;
 		} else {
 			$doing_status = 0;
+		}
+
+		// AT功能处理
+		if($_G['group']['allowat']) {
+			$atlist = parse_at_user($message);
+			if($atlist) {
+				// 处理AT标签，生成链接
+				$atsearch = [];
+				$atreplace = [];
+				foreach($atlist as $atuid => $atusername) {
+					$atsearch[] = '/@'.preg_quote($atusername, '/').' /i';
+					$atreplace[] = '<a href="home.php?mod=space&uid='.$atuid.'" class="atuser" target="_blank" c="1">@'.$atusername.'</a> ';
+
+					// 匹配新格式：@[用户名]（带方括号）
+					$atsearch[] = '/@\['.preg_quote($atusername, '/').'\]/i';
+					$atreplace[] = '<a href="home.php?mod=space&uid='.$atuid.'" class="atuser" target="_blank" c="1">@'.$atusername.'</a> ';
+				}
+				$updated_message = preg_replace($atsearch, $atreplace, $message.' ', 1);
+				$updated_message = substr($updated_message, 0, strlen($updated_message) - 1);
+				
+				// 存储AT信息到fields字段
+				$updatefields['at'] = $atlist;
+				$message = $updated_message;
+			}
 		}
 
 		$arr['body_data'] = serialize($arr['body_data']);
@@ -405,6 +821,30 @@ if($_GET['op'] == 'delete') {
 		];
 		$newdoid = table_home_doing::t()->insert($setarr, 1);
 
+		// 标签提取和处理
+		$class_tag = new tag();
+		$tags = '';
+		// 从消息中提取标签（假设标签格式为#标签名#）
+		preg_match_all('/#([^#]+)#/', $message, $matches);
+		if (!empty($matches[1])) {
+			$tags = implode(',', $matches[1]) . ',';
+			// 添加标签关联
+			if($tags) {
+				$tagsarr = $class_tag->add_tag($tags, $newdoid, 'doid',true);
+			}
+		}
+		if($tagsarr) {
+			$updatefields['tags'] = $tagsarr;
+		}
+		if($atlist) {
+			// 发送通知给被AT的用户
+			foreach($atlist as $atuid => $atusername) {
+				notification_add($atuid, 'at', 'at_doing', array('from_id' => $newdoid, 'from_idtype' => 'at', 'buyerid' => $_G['uid'], 'buyer' => $_G['username'], 'doid' => $newdoid));
+			}
+		}
+		$updatearr['fields'] = !empty($updatefields) ? json_encode($updatefields) : '{}';
+		table_home_doing::t()->update($newdoid, $updatearr);
+
 		$setarr = ['recentnote' => $message, 'spacenote' => $message];
 		$credit = $experience = 0;
 		$extrasql = ['doings' => 1];
@@ -412,7 +852,15 @@ if($_GET['op'] == 'delete') {
 		updatecreditbyaction('doing', 0, $extrasql);
 
 		table_common_member_field_home::t()->update($_G['uid'], $setarr);
-
+		if (!empty($_POST['imageaids'])) {
+			$imageaids = explode(',', $_POST['imageaids']);
+			$imageaids = array_map('intval', $imageaids);
+			$imageaids = array_filter($imageaids); 
+			
+			if (!empty($imageaids)) {
+				table_home_doing_attachment::t()->update_by_aid($imageaids, ['doid' => $newdoid]);
+			}
+		}
 		if (!empty($_FILES)) {
 			$upload = new upload('doing');
 			$f = $upload->upload();
@@ -524,7 +972,6 @@ if($_GET['op'] == 'delete') {
 				}
 
 				$aid = intval($currentid);
-				$message = $message;
 
 				$retmessage = addportalarticlecomment($aid, $message);
 				if($retmessage != 'do_success') {
@@ -554,6 +1001,38 @@ if($_GET['op'] == 'delete') {
 					$magvalues['cid'] = $cidarr['cid'];
 					$magvalues['id'] = $currentid;
 				}
+			} elseif($currenttype == 'doid') {
+				$commentdo = table_home_doing::t()->fetch($currentid);
+				$message = getstr($message, 200, 0, 0, 1);
+				$message = preg_replace('/\<br.*?\>/i', ' ', $message);
+
+				$setarr = [
+					'doid' => $currentid,
+					'upid' => 0,
+					'uid' => $_G['uid'],
+					'username' => $_G['username'],
+					'dateline' => $_G['timestamp'],
+					'message' => $message,
+					'ip' => $_G['clientip'],
+					'port' => $_G['remoteport'],
+					'grade' => 1
+				];
+
+				$newid = table_home_docomment::t()->insert($setarr, true);
+
+				table_home_doing::t()->update_replynum_by_doid(1, $currentid);
+
+				if($commentdo['uid'] != $_G['uid']) {
+					notification_add($commentdo['uid'], 'comment', 'doing_reply', [
+						'url' => "home.php?mod=space&uid={$commentdo['uid']}&do=doing&view=me&doid={$commentdo['doid']}&highlight=$newid",
+						'from_id' => $commentdo['doid'],
+						'from_idtype' => 'doid'
+					]);
+					updatecreditbyaction('comment', 0, [], 'doing'.$commentdo['doid']);
+				}
+
+				include_once libfile('function/stat');
+				updatestat('docomment');
 			}
 			$magvalues['type'] = $commentcable[$type];
 		}
@@ -601,6 +1080,9 @@ if($_GET['op'] == 'delete') {
 					break;
 				case 'article':
 					table_portal_article_count::t()->increase($id, ['sharetimes' => 1]);
+					break;
+				case 'doing':
+					table_home_doing::t()->increase($id, ['sharetimes' => 1]);
 					break;
 			}
 			updatestat('share');
@@ -652,6 +1134,9 @@ if($_GET['op'] == 'delete') {
 		$updo['id'] = intval($updo['id']);
 		$updo['grade'] = intval($updo['grade']);
 
+		$replyUid = $updo['uid'];
+		$replyUsername = $updo['username'];
+		
 		$setarr = [
 			'doid' => $updo['doid'],
 			'upid' => $updo['id'],
@@ -661,22 +1146,22 @@ if($_GET['op'] == 'delete') {
 			'message' => $message,
 			'ip' => $_G['clientip'],
 			'port' => $_G['remoteport'],
-			'grade' => $updo['grade'] + 1
+			'grade' => $updo['upid'] == 0 ? 2 : 2
 		];
-
-		if($updo['grade'] >= 3) {
-			$setarr['upid'] = $updo['upid'];
-		}
 
 		$newid = table_home_docomment::t()->insert($setarr, true);
 
 		table_home_doing::t()->update_replynum_by_doid(1, $updo['doid']);
 
-		if($updo['uid'] != $_G['uid']) {
-			notification_add($updo['uid'], 'comment', 'doing_reply', [
-				'url' => "home.php?mod=space&uid={$updo['uid']}&do=doing&view=me&doid={$updo['doid']}&highlight=$newid",
+		$notifyUid = $updo['uid'];
+		$notifyMessage = getstr($updo['message'], 120, 0, 0, 0);
+
+		if($notifyUid != $_G['uid']) {
+			notification_add($notifyUid, 'comment', 'doing_reply', [
+				'url' => "home.php?mod=space&uid={$notifyUid}&do=doing&view=me&doid={$updo['doid']}&highlight=$newid",
+				'summery' => $notifyMessage,
 				'from_id' => $updo['doid'],
-				'from_idtype' => 'doid'
+				'from_idtype' => 'doid',
 			]);
 			updatecreditbyaction('comment', 0, [], 'doing'.$updo['doid']);
 		}

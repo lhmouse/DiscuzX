@@ -104,6 +104,7 @@ if($attach['remote'] && !$_G['setting']['ftp']['hideurl'] && $isimage) {
 	exit();
 }
 
+//第三方云存储不走服务器
 if($attach['remote'] && !empty($oss)) {
 	$object = $oss_config['oss_rootpath'].'forum/'.$attach['attachment'];
 	$attach['filename'] = str_replace(',', '', $attach['filename']);

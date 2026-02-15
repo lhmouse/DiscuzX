@@ -11,9 +11,11 @@ if(!defined('IN_DISCUZ')) {
 }
 
 if($_GET['action'] == 'pluginnotice') {
+
 	require_once childfile('pluginnotice');
+
 } elseif($_GET['action'] == 'ipnotice') {
+
 	require_once childfile('ipnotice');
+
 }
-
-

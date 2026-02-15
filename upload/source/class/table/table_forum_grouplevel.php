@@ -28,11 +28,11 @@ class table_forum_grouplevel extends discuz_table {
 	}
 
 	public function fetch_all_creditslower_order() {
-		return DB::fetch_all('SELECT * FROM ' .DB::table('forum_grouplevel'). ' WHERE 1 ORDER BY creditslower');
+		return DB::fetch_all('SELECT * FROM '.DB::table('forum_grouplevel').' WHERE 1 ORDER BY creditslower');
 	}
 
 	public function fetch_count() {
-		return DB::result_first('SELECT count(*) FROM ' .DB::table('forum_grouplevel'));
+		return DB::result_first('SELECT count(*) FROM '.DB::table('forum_grouplevel'));
 	}
 
 	public function fetch_by_credits($credits = 0) {

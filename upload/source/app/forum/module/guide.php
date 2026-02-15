@@ -42,10 +42,10 @@ if($_GET['rss'] == 1) {
 		"  <channel>\n".
 		"    <title>{$_G['setting']['bbname']} - {$lang['guide']} - ".$lang['guide_'.$view]."</title>\n".
 		"    <link>{$_G['siteurl']}forum.php?mod=guide&amp;view=$view</link>\n".
-		'    <description>' .$lang['guide_'.$view]."</description>\n".
+		'    <description>'.$lang['guide_'.$view]."</description>\n".
 		"    <copyright>Copyright(C) {$_G['setting']['bbname']}</copyright>\n".
 		"    <generator>Discuz! Board by Discuz! Team</generator>\n".
-		'    <lastBuildDate>' .gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
+		'    <lastBuildDate>'.gmdate('r', TIMESTAMP)."</lastBuildDate>\n".
 		"    <ttl>$ttl</ttl>\n".
 		"    <image>\n".
 		"      <url>{$_G['siteurl']}static/image/common/logo_88_31.gif</url>\n".
@@ -67,13 +67,13 @@ if($_GET['rss'] == 1) {
 			}
 		}
 		echo "    <item>\n".
-			'      <title>' .$thread['subject']."</title>\n".
+			'      <title>'.$thread['subject']."</title>\n".
 			"      <link>{$_G['siteurl']}".($trewriteflag ? rewriteoutput('forum_viewthread', 1, '', $thread['tid']) : "forum.php?mod=viewthread&amp;tid={$thread['tid']}")."</link>\n".
-			'      <description><![CDATA[' .dhtmlspecialchars($thread['description'])."]]></description>\n".
-			'      <category>' .dhtmlspecialchars($thread['forum'])."</category>\n".
-			'      <author>' .dhtmlspecialchars($thread['author'])."</author>\n".
+			'      <description><![CDATA['.dhtmlspecialchars($thread['description'])."]]></description>\n".
+			'      <category>'.dhtmlspecialchars($thread['forum'])."</category>\n".
+			'      <author>'.dhtmlspecialchars($thread['author'])."</author>\n".
 			($attachfile ? '<enclosure url="'.$filename.'" length="'.$attachsize.'" type="image/jpeg" />' : '').
-			'      <pubDate>' .gmdate('r', $thread['dateline'])."</pubDate>\n".
+			'      <pubDate>'.gmdate('r', $thread['dateline'])."</pubDate>\n".
 			"    </item>\n";
 	}
 	echo "  </channel>\n".

@@ -8,16 +8,21 @@
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
-
-if(!$_G['setting']['followstatus']) {
-	showmessage('follow_status_off');
-}
-
 if(!$_G['uid']) {
 	showmessage('login_before_enter_home', null, [], ['showmsg' => true, 'login' => 1]);
 }
 $dos = ['feed', 'follower', 'following', 'view'];
 $do = (!empty($_GET['do']) && in_array($_GET['do'], $dos)) ? $_GET['do'] : (!$_GET['uid'] ? 'feed' : 'view');
+
+if(in_array($do, ['follower', 'following'])){
+	if(!$_G['setting']['followerstatus']) {
+		showmessage('follower_status_off');
+	}
+}else{
+	if(!$_G['setting']['followstatus']) {
+		showmessage('follow_status_off');
+	}
+}
 
 $page = empty($_GET['page']) ? 1 : intval($_GET['page']);
 if($page < 1) $page = 1;

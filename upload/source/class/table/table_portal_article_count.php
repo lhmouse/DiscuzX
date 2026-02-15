@@ -37,13 +37,13 @@ class table_portal_article_count extends discuz_table {
 			}
 		}
 		if(!empty($sql)) {
-			DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .implode(',', $sql). ' WHERE aid IN (' .dimplode($ids). ')', 'UNBUFFERED');
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE aid IN ('.dimplode($ids).')', 'UNBUFFERED');
 		}
 	}
 
 	public function fetch_all_hotarticle($wheresql, $dateline) {
 		if(!empty($wheresql) && ($wheresql = (string)$wheresql) && $dateline = dintval($dateline)) {
-			return DB::fetch_all('SELECT at.* FROM ' .DB::table($this->_table). ' ac, ' .DB::table('portal_article_title')." at WHERE $wheresql AND at.dateline>'$dateline' AND ac.aid=at.aid ORDER BY ac.viewnum DESC LIMIT 10");
+			return DB::fetch_all('SELECT at.* FROM '.DB::table($this->_table).' ac, '.DB::table('portal_article_title')." at WHERE $wheresql AND at.dateline>'$dateline' AND ac.aid=at.aid ORDER BY ac.viewnum DESC LIMIT 10");
 		} else {
 			return [];
 		}

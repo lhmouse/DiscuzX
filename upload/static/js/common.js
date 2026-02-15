@@ -140,72 +140,27 @@ function strlen(str) {
 
 function mb_strlen(str) {
 	var len = 0;
-	for (var i = 0; i < str.length; i++) {
-		len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? (charset == 'utf-8' ? 3 : 2) : 1;
-	}
+	len = dstrlen(str);
 	return len;
 }
 
 function dstrlen(str) {
 	var count = 0;
-	for (var i = 0; i < strlen(str); i++) {
-		value = str.charCodeAt(i);
-		if (value > 127) {
-			count++;
-			if (value >= 55296 && value <= 57343) {
-				i++;
-			}
-		}
-		count++;
-	}
+	var chars = Array.from(str);
+	count = chars.length;
 	return count;
 }
 
-function mb_cutstr(str, maxlen, dot) {
+function dcutstr(str, maxlen, dot) {
 	var len = 0;
 	var ret = '';
 	var dot = !dot ? '...' : dot;
-	maxlen = maxlen - dot.length;
-	for (var i = 0; i < str.length; i++) {
-		len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? (charset == 'utf-8' ? 3 : 2) : 1;
-		if (len > maxlen) {
-			ret += dot;
-			break;
-		}
-		ret += str.substr(i, 1);
-	}
-	return ret;
-}
-
-function dcutstr(str, maxlen) {
-	var len = 0;
-	var ret = '';
-	var dot = arguments.length > 2 && arguments[2] !== undefined && arguments[2] !== false ? arguments[2] : '...';
-	var flag = true;
-	var strmaxlen = maxlen - dot.length;
-	for (var i = 0; i < strlen(str); i++) {
-		value = str.charCodeAt(i);
-		if (value > 127) {
-			len++;
-		}
-		len++;
-		if (flag && len > strmaxlen) {
-			flag = false;
-			ret = str.substr(0, i);
-			ret += dot;
-		}
-		if (len > maxlen) {
-			break;
-		}
-		if (value >= 55296 && value <= 57343) {
-			i++;
-		}
-	}
-	if (len > maxlen) {
-		return ret;
-	} else {
+	var chars = Array.from(str);
+	if (chars.length <= maxlen) {
 		return str;
 	}
+	var ret = chars.slice(0, maxlen - dot.length).join('');
+	return ret + dot;
 }
 
 function preg_replace(search, replace, str, regswitch) {
@@ -343,7 +298,7 @@ function Ajax(recvType, waitId) {
 				}
 			}
 			aj.resultHandle(s, aj);
-			if (s.indexOf('_avt') !== -1) {
+			if (typeof s == 'string' && s.indexOf('_avt') !== -1) {
 				loadAvatar();
 			}
 		}
@@ -1964,36 +1919,16 @@ function navShow(id) {
 	}
 }
 
-function strLenCalc(obj, checklen, maxlen) {
+function dstrLenCalc(obj, checklen, maxlen) {
 	var v = obj.value, charlen = 0, maxlen = !maxlen ? 200 : maxlen, curlen = 0, len = strlen(v);
-	for (var i = 0; i < v.length; i++) {
-		if (v.charCodeAt(i) < 0 || v.charCodeAt(i) > 255) {
-			curlen += 2;
-		} else {
-			curlen += 1;
-		}
-	}
+
+	curlen = Array.from(v).length;
 	if (curlen <= maxlen) {
 		$(checklen).innerHTML = maxlen - curlen;
 		return true;
 	} else {
-		obj.value = mb_cutstr(v, maxlen, 0);
+		obj.value = dcutstr(v, maxlen, 0);
 		return false;
-	}
-}
-
-function dstrLenCalc(obj, checklen, maxlen) {
-	var v = obj.value, charlen = 0, maxlen = !maxlen ? 200 : maxlen, curlen = maxlen, len = strlen(v);
-	for (var i = 0; i < v.length; i++) {
-		value = v.charCodeAt(i);
-		if ((value > 127 && value < 55296) || value > 57343) {
-			curlen--;
-		}
-	}
-	if (curlen >= len) {
-		$(checklen).innerHTML = curlen - len;
-	} else {
-		obj.value = dcutstr(v, maxlen, '');
 	}
 }
 

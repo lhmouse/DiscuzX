@@ -52,7 +52,7 @@ if($view == 'groupthread' || $view == 'mythread') {
 					$attentionthread[$groupid][$thread['tid']]['lastposter'] = $thread['lastposter'];
 					$attentionthread[$groupid][$thread['tid']]['lastpost'] = dgmdate($thread['lastpost'], 'u');
 					$attentionthread[$groupid][$thread['tid']]['folder'] = 'common';
-					if(empty($_G['cookie']['oldtopics']) || !str_contains($_G['cookie']['oldtopics'], 'D' . $thread['tid'] . 'D')) {
+					if(empty($_G['cookie']['oldtopics']) || !str_contains($_G['cookie']['oldtopics'], 'D'.$thread['tid'].'D')) {
 						$attentionthread[$groupid][$thread['tid']]['folder'] = 'new';
 					}
 				}
@@ -106,7 +106,7 @@ if($view == 'groupthread' || $view == 'mythread') {
 				$groupthreadlist[$thread['tid']]['lastposter'] = $thread['lastposter'];
 				$groupthreadlist[$thread['tid']]['lastpost'] = dgmdate($thread['lastpost'], 'u');
 				$groupthreadlist[$thread['tid']]['folder'] = 'common';
-				if(empty($_G['cookie']['oldtopics']) || !str_contains($_G['cookie']['oldtopics'], 'D' . $thread['tid'] . 'D')) {
+				if(empty($_G['cookie']['oldtopics']) || !str_contains($_G['cookie']['oldtopics'], 'D'.$thread['tid'].'D')) {
 					$groupthreadlist[$thread['tid']]['folder'] = 'new';
 				}
 			}

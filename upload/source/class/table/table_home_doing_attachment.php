@@ -202,4 +202,12 @@ class table_home_doing_attachment extends discuz_table
 		}
 		return $attachsize;
 	}
+	public function update_by_aid($aids, $data) 
+	{
+		if (empty($aids) || empty($data)) {
+			return false;
+		}
+		
+		return DB::update($this->_table, $data, DB::field($this->_pk, $aids));
+	}
 }

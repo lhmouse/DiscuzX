@@ -38,7 +38,7 @@ class table_common_member_status extends discuz_table_archive {
 			}
 		}
 		if(!empty($sql)) {
-			DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .implode(',', $sql). ' WHERE uid IN (' .dimplode($uids). ')', 'UNBUFFERED');
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE uid IN ('.dimplode($uids).')', 'UNBUFFERED');
 			$this->increase_cache($uids, $setarr);
 		}
 	}

@@ -374,7 +374,7 @@ class table_forum_forum extends discuz_table {
 		$table = $table != 'forum' ? 'forumfield' : 'forum';
 		$return = [];
 		if(!array_key_exists($fid, $forumlist[$table])) {
-			$forumlist[$table][$fid] = DB::fetch_first('SELECT * FROM '.DB::table('forum_'.$table). ' WHERE fid=%d', [$fid]);
+			$forumlist[$table][$fid] = DB::fetch_first('SELECT * FROM '.DB::table('forum_'.$table).' WHERE fid=%d', [$fid]);
 			if(!is_array($forumlist[$table][$fid])) {
 				$forumlist[$table][$fid] = [];
 			}

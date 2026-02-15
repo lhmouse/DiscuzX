@@ -121,6 +121,7 @@ if(!submitcheck('rulesubmit')) {
 			}
 
 
+
 		}
 	}
 	$settings = [

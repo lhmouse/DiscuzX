@@ -823,6 +823,7 @@ class restfulplugin {
 		}
 	}
 	public static function dolist(&$data, $param) {
+		global $_G;
 		$key = $param[0];
 		if(empty($data[$key])) {
 			return;
@@ -842,15 +843,49 @@ class restfulplugin {
 			if (!empty($v['uid'])) {
 				$data[$key][$k]['authoravatar'] = self::_f_siteurl(avatar($v['uid'], 'middle', 1));
 			}
+			if (!empty($v['body_data'])) {
+				$data[$key][$k]['body_data']['image'] = self::_f_siteurl($v['body_data']['image']);
+			}
 			if (!empty($v['attachments'])) {
 				foreach ($v['attachments'] as $kk => $attachment) {
-					if (!empty($attachment['thumb'])) {
+					if (!empty($attachment['thumb']) && $attachment['isimage']) {
 						$data[$key][$k]['attachments'][$kk]['thumb'] = self::_f_siteurl($attachment['thumb']);
-						$data[$key][$k]['attachments'][$kk]['attachment'] = self::_f_siteurl($attachment['attachment']);
+						if ($attach['remote']) {
+							$data[$key][$k]['attachments'][$kk]['attachment'] = $_G['setting']['ftp']['attachurl']. $attachment['attachment'];
+						}else {
+							$data[$key][$k]['attachments'][$kk]['attachment'] = self::_f_siteurl($_G['setting']['attachurl'].'doing/'.$attachment['attachment']);
+						}
+						
 					}
 				}
 			}
 		}
+	}
+	public static function doingUpload(&$data, $param) {
+		global $_G;
+		
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		if (!empty($data[$key]['image']) && is_array($data[$key]['image'])) {
+			$data[$key]['image']['url'] = self::_f_siteurl($data[$key]['image']['url']);
+		}
+	}
+	public static function shareinfo(&$data, $param) {
+		global $_G;
+		
+		$key = $param[0];
+		if(empty($data[$key])) {
+			return;
+		}
+		if (!empty($data[$key]['body_data']) && is_array($data[$key]['body_data'])) {
+			$data[$key]['body_data']['image'] = self::_f_siteurl($data[$key]['body_data']['image']);
+		}
+		if (!empty($data[$key]['image']) && is_array($data[$key]['image'])) {
+			$data[$key]['image'] = self::_f_siteurl($data[$key]['image']);
+		}
+		
 	}
 	public static function clist(&$data, $param) {
 		$key = $param[0];

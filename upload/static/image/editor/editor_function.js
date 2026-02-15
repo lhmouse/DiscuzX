@@ -215,3 +215,44 @@ function loadimgsize(imgurl, editor, p) {
 	};
 	s.loadCheck();
 }
+
+function checkPasteImages(iframeDoc, whitelistDomains) {
+	var htmlContent = iframeDoc.body.innerHTML;
+	var imgMatches = htmlContent.match(/<img[^>]+src=["'][^"']+["']/gi) || [];
+
+	var base64Count = 0;
+	var externalCount = 0;
+	var externalUrls = [];
+
+	imgMatches.forEach(function (imgTag) {
+		var srcMatch = imgTag.match(/src=["']([^"']+)["']/i);
+		if (srcMatch && srcMatch[1]) {
+			var src = srcMatch[1];
+			if (src.startsWith('data:image/')) {
+				base64Count++;
+			} else if (src.startsWith('http://') || src.startsWith('https://')) {
+				var isWhitelisted = whitelistDomains.some(function (domain) {
+					return src.indexOf(domain) === 0;
+				});
+				if (!isWhitelisted) {
+					externalCount++;
+					externalUrls.push(src);
+				}
+
+			}
+		}
+	});
+
+	if (base64Count > 0 || externalCount > 0) {
+		var msg = '';
+		if (base64Count > 0) {
+			msg += $L('post_paste_error_tip') + base64Count + $L('post_paste_error_base64') + '<br>';
+		}
+		if (externalCount > 0) {
+			msg += $L('post_paste_error_tip') + externalCount + $L('post_paste_error_external') + '<br>';
+		}
+		msg += $L('post_paste_error');
+
+		showDialog(msg, 'notice');
+	}
+}

@@ -12,7 +12,9 @@
 		<!--{hook/global_usernav_extra1}-->
 		<span class="pipe">|</span><!--{hook/global_usernav_extra4}--><a href="javascript:;" id="myitem" class="showmenu" onmouseover="showMenu({'ctrlid':'myitem'});">{lang myitem}</a>
 		<span class="pipe">|</span><a href="home.php?mod=spacecp">{lang setup}</a>
-		<span class="pipe">|</span><a href="home.php?mod=space&do=pm" id="pm_ntc"{if $_G[member][newpm]} class="new"{/if}>{lang pm_center}</a>
+		<!--{if !empty($_G['setting']['pmstatus'])}-->
+			<span class="pipe">|</span><a href="home.php?mod=space&do=pm" id="pm_ntc"{if $_G[member][newpm]} class="new"{/if}>{lang pm_center}</a>
+		<!--{/if}-->
 		<span class="pipe">|</span><a href="home.php?mod=space&do=notice" id="myprompt" class="a showmenu{if $_G[member][newprompt] && !$_G['setting']['bbclosed'] && empty($_G['member']['freeze']) && $_G['member']['groupid'] != 5} new{/if}" onmouseover="showMenu({'ctrlid':'myprompt'});">{lang remind}<!--{if $_G[member][newprompt] && !$_G['setting']['bbclosed'] && empty($_G['member']['freeze']) && $_G['member']['groupid'] != 5}-->($_G[member][newprompt])<!--{/if}--></a><span id="myprompt_check"></span>
 		<!--{if empty($_G['cookie']['ignore_notice']) && !$_G['setting']['bbclosed'] && empty($_G['member']['freeze']) && $_G['member']['groupid'] != 5 && ($_G[member][newpm] || !empty($_G[member][newprompt_num][follower]) || !empty($_G[member][newprompt_num][follow]) || $_G[member][newprompt])}--><script language="javascript">delayShow($('myprompt'), function() {showMenu({'ctrlid':'myprompt','duration':3})});</script><!--{/if}-->
 		<!--{if !empty($_G['setting']['taskstatus']) && !empty($_G['cookie']['taskdoing_'.$_G['uid']])}--><span class="pipe">|</span><a href="home.php?mod=task&item=doing" id="task_ntc" class="new">{lang task_doing}</a><!--{/if}-->

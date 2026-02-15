@@ -48,20 +48,26 @@ class db_driver_pdo extends db_driver_mysqli {
 				$this->config[$serverid]['dbpw'],
 				$this->config[$serverid]['dbcharset'],
 				$this->config[$serverid]['dbname'],
-				$this->config[$serverid]['pconnect']
+				$this->config[$serverid]['pconnect'],
+				$this->config[$serverid]['dbport'],
+				$this->config[$serverid]['compress']
 			);
 		}
 		$this->curlink = $this->link[$serverid];
 
 	}
 
-	function _dbconnect($dbhost, $dbuser, $dbpw, $dbcharset, $dbname, $pconnect, $halt = true) {
+	function _dbconnect($dbhost, $dbuser, $dbpw, $dbcharset, $dbname, $pconnect, $dbport = 3306, $dbcompress = 1, $halt = true) {
 		$option = [];
+		$dsn = 'mysql:host='.$dbhost.';port='.$dbport.';dbname='.$dbname.';charset='.$dbcharset;
 		if(intval($pconnect) === 1) {
 			$option = [PDO::ATTR_PERSISTENT => true];
 		}
+		if(intval($dbcompress) === 1) {
+			$option[PDO::MYSQL_ATTR_COMPRESS] = true;
+		}
 		try {
-			$link = new PDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset='.$dbcharset, $dbuser, $dbpw, $option);
+			$link = new PDO($dsn, $dbuser, $dbpw, $option);
 		} catch (PDOException $e) {
 			$halt && $this->halt($e->getMessage(), $e->getCode());
 		}

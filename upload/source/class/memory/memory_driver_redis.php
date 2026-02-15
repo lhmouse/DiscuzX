@@ -193,12 +193,24 @@ class memory_driver_redis {
 		return $this->obj->blPop($key, $value);
 	}
 
+	function brpop($key, $value) {
+		return $this->obj->brpop($key, $value);
+	}
+
 	function lLen($key) {
 		return $this->obj->lLen($key);
 	}
 
 	function lPop($key) {
 		return $this->obj->lPop($key);
+	}
+
+	function lpush($key, $value) {
+		return $this->obj->lpush($key, $value);
+	}
+
+	function brpoplpush($key, $value, $timeout = 0.1) {
+		return $this->obj->brpoplpush($key, $value, $timeout);
 	}
 
 	function hSet($key, $field, $value) {

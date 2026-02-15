@@ -86,7 +86,7 @@ $postshowavatars = !($_G['setting']['bannedmessages'] & 2 && ($post['memberstatu
 					{eval viewthread_profile_node('left', $post);}
 					<!--{if $post[authorid] != $_G[uid]}-->
 						<ul class="xl xl2 o cl">
-							<!--{if helper_access::check_module('follow')}-->
+							<!--{if helper_access::check_module('follower')}-->
 							<li class="addflw">
 								<a href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&fuid=$post[authorid]" id="followmod_$post[authorid]" title="{lang follow}" class="xi2" onclick="showWindow('followmod', this.href, 'get', 0);">{lang follow}</a>
 							</li>

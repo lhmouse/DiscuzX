@@ -68,7 +68,7 @@ class table_common_word extends discuz_table {
 	public function update_by_type($types, $data) {
 		if(!empty($types) && !empty($data) && is_array($data)) {
 			$types = array_map('intval', (array)$types);
-			return DB::update($this->_table, $data, 'type IN (' .dimplode($types). ')');
+			return DB::update($this->_table, $data, 'type IN ('.dimplode($types).')');
 		}
 		return 0;
 	}

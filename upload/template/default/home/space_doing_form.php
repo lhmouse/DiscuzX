@@ -13,7 +13,11 @@
 		var msgObj = $('message');
 		if (type) {
 			if (msgObj.value == msgstr) {
+				<!--{if $tag['tagname']}-->
+				msgObj.value = '#{$tag['tagname']}# ';
+				<!--{else}-->
 				msgObj.value = '';
+				<!--{/if}-->
 				msgObj.className = 'xg2';
 			}
 			if ($('message_menu')) {
@@ -44,7 +48,7 @@
 			<!--{/if}-->
 			<div class="moodfm_row">
 				<div id="mood_statusinput" class="moodfm_input">
-					<textarea name="message" id="message" class="xg1" onfocus="handlePrompt(1);" onblur="handlePrompt(0);" onkeyup="strLenCalc(this, 'maxlimit')" onkeydown="ctrlEnter(event, 'add');" rows="4">$defaultstr</textarea>
+					<textarea name="message" id="message" class="xg1" onfocus="handlePrompt(1);" onblur="handlePrompt(0);" onkeyup="dstrLenCalc(this, 'maxlimit')" onkeydown="ctrlEnter(event, 'add');" rows="4">$defaultstr</textarea>
 					<div class="moodfm_f">
 						<div id="return_doing" class="xi1 xw1"></div>
 						<span class="y">{lang doing_maxlimit_char}</span>
@@ -69,8 +73,24 @@
 			<div class="moodfm_div">
 				<div class="specialpost s_clear">
 					<!--{if !$type}-->
-					<a href="javascript:;" id="moodfm_emoji" onclick="showFace('moodfm_emoji', 'message', msgstr); return false;"><i class="fico-emojifill fic8 fc-s fnmr vm" ></i></a>
-					<a href="javascript:;" id="moodfm_pic"><i class="fico-image fic8 fc-s fnmr vm" ></i></a>
+						<a href="javascript:;" id="moodfm_emoji" onclick="showFace('moodfm_emoji', 'message', msgstr); return false;" title="{lang insert_emoticons}"><i class="fico-emojifill fic8 fc-s fnmr vm" ></i></a>
+						<a href="javascript:;" id="moodfm_pic" title="{lang upload_new_pic}"><i class="fico-image fic8 fc-s fnmr vm" ></i></a>
+						<a href="javascript:;" id="moodfm_thread" title="{lang follow_new_thread}" onclick="<!--{if $_G['setting']['defaultforumid']}-->showWindow('newthread', 'forum.php?mod=post&action=newthread&fid={$_G['setting']['defaultforumid']}&adddynamic_doing=1');<!--{else}-->showWindow('nav', 'forum.php?mod=misc&action=nav', 'get', 0);<!--{/if}-->"><i class="fico-thread fic8 fc-s fnmr vm" ></i></a>
+						<!--{if $_G['setting']['pollforumid']}-->
+						<a href="forum.php?mod=post&action=newthread&fid={$_G['setting']['pollforumid']}&special=1&adddynamic_doing=1" id="moodfm_poll" title="{lang create_new_poll}"><i class="fico-assessment fic8 fc-s fnmr vm" ></i></a>
+						<!--{/if}-->
+						<!--{if $_G['setting']['tradeforumid']}-->
+						<a href="forum.php?mod=post&action=newthread&fid={$_G['setting']['tradeforumid']}&special=2&adddynamic_doing=1" id="moodfm_trade" title="{lang create_new_trade}"><i class="fico-cart fic8 fc-s fnmr vm" ></i></a>
+						<!--{/if}-->
+						<!--{if $_G['setting']['rewardforumid']}-->
+						<a href="forum.php?mod=post&action=newthread&fid={$_G['setting']['rewardforumid']}&special=3&adddynamic_doing=1" id="moodfm_reward" title="{lang publish_new_reward}"><i class="fico-help fic8 fc-s fnmr vm" ></i></a>
+						<!--{/if}-->
+						<!--{if $_G['setting']['activityforumid']}-->
+						<a href="forum.php?mod=post&action=newthread&fid={$_G['setting']['activityforumid']}&special=4&adddynamic_doing=1" id="moodfm_activity" title="{lang create_new_activity}"><i class="fico-interactive fic8 fc-s fnmr vm" ></i></a>
+						<!--{/if}-->
+						<!--{if $_G['setting']['debateforumid']}-->
+						<a href="forum.php?mod=post&action=newthread&fid={$_G['setting']['debateforumid']}&special=5&adddynamic_doing=1" id="moodfm_debate" title="{lang create_new_debate}"><i class="fico-vs fic8 fc-s fnmr vm" ></i></a>
+						<!--{/if}-->
 					<!--{/if}-->
 					{hook/space_doing_toolbar}
 				</div>
@@ -92,6 +112,8 @@
 </div>
 
 <script type="text/javascript" reload="1">
+	getID('maxlimit').innerHTML = 200;
+
 	listenup();
 	var MultiPicUploaded = 0;
 	var mpimgmax = 12;

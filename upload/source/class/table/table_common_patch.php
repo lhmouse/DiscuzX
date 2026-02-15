@@ -38,23 +38,23 @@ class table_common_patch extends discuz_table {
 	}
 
 	public function fetch_all_patch() {
-		return DB::fetch_all('SELECT * FROM ' .DB::table($this->_table));
+		return DB::fetch_all('SELECT * FROM '.DB::table($this->_table));
 	}
 
 	public function fetch_max_serial() {
-		return DB::result_first('SELECT serial FROM ' .DB::table($this->_table). ' ORDER BY serial DESC LIMIT 1');
+		return DB::result_first('SELECT serial FROM '.DB::table($this->_table).' ORDER BY serial DESC LIMIT 1');
 	}
 
 	public function update_status_by_serial($status, $serial, $condition = '') {
-		return DB::query('UPDATE ' .DB::table($this->_table). ' SET ' .DB::field('status', $status). ' WHERE ' .DB::field('serial', $serial, $condition));
+		return DB::query('UPDATE '.DB::table($this->_table).' SET '.DB::field('status', $status).' WHERE '.DB::field('serial', $serial, $condition));
 	}
 
 	public function fetch_needfix_patch($serials) {
-		return DB::fetch_all('SELECT * FROM ' .DB::table($this->_table). ' WHERE ' .DB::field('serial', $serials). ' AND status<=0');
+		return DB::fetch_all('SELECT * FROM '.DB::table($this->_table).' WHERE '.DB::field('serial', $serials).' AND status<=0');
 	}
 
 	public function fetch_patch_by_status($status) {
-		return DB::fetch_all('SELECT * FROM ' .DB::table($this->_table). ' WHERE ' .DB::field('status', $status));
+		return DB::fetch_all('SELECT * FROM '.DB::table($this->_table).' WHERE '.DB::field('status', $status));
 	}
 }
 

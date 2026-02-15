@@ -153,7 +153,7 @@ class table_common_member_archive extends table_common_member {
 			if($key == 'PRIMARY') {
 				if($value != $oldcols[$key]) {
 					if(!empty($oldcols[$key])) {
-						$usql = 'RENAME TABLE ' .$archivetable. ' TO ' .$archivetable.'_bak';
+						$usql = 'RENAME TABLE '.$archivetable.' TO '.$archivetable.'_bak';
 						if(!DB::query($usql, 'SILENT')) {
 							return $mastertable;
 						}
@@ -179,7 +179,7 @@ class table_common_member_archive extends table_common_member {
 							$updates[] = "ADD UNIQUE INDEX `$subkey` $subvalue";
 						}
 					} else {
-						$usql = 'ALTER TABLE  ' .$archivetable." DROP INDEX `$subkey`";
+						$usql = 'ALTER TABLE  '.$archivetable." DROP INDEX `$subkey`";
 						DB::query($usql, 'SILENT');
 						$updates[] = "ADD UNIQUE INDEX `$subkey` $subvalue";
 					}
@@ -199,7 +199,7 @@ class table_common_member_archive extends table_common_member {
 
 		$ret = true;
 		if(!empty($updates)) {
-			if(!DB::query('ALTER TABLE ' .$archivetable. ' ' .implode(', ', $updates), 'SILENT')) {
+			if(!DB::query('ALTER TABLE '.$archivetable.' '.implode(', ', $updates), 'SILENT')) {
 				$ret = $mastertable;
 			} else {
 			}

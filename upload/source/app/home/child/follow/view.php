@@ -21,7 +21,7 @@ if(empty($list['feed'])) {
 if(!isset($_G['cache']['forums'])) {
 	loadcache('forums');
 }
-if(helper_access::check_module('follow')) {
+if(helper_access::check_module('follower')) {
 	$followerlist = table_home_follow::t()->fetch_all_following_by_uid($uid, 0, 9);
 }
 list($seccodecheck, $secqaacheck) = seccheck('publish');

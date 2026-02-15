@@ -43,6 +43,12 @@
 				<!--{if helper_access::check_module('friend')}-->
 					<a href="home.php?mod=space&uid=$space[uid]&do=friend&view=me&from=space" target="_blank">{lang friends_num} $space[friends]</a>
 				<!--{/if}-->
+				<!--{if helper_access::check_module('follower')}-->
+					<span class="pipe">|</span>
+					<a href="home.php?mod=follow&do=following&uid=$space[uid]" target="_blank">{lang follow_following_num} $space['following']</a>
+					<span class="pipe">|</span>
+					<a href="home.php?mod=follow&do=follower&uid=$space[uid]" target="_blank">{lang follow_follower_num} $space['follower']</a>
+				<!--{/if}-->
 				<!--{if helper_access::check_module('doing')}-->
 					<span class="pipe">|</span>
 					<a href="home.php?mod=space&uid=$space[uid]&do=doing&view=me&from=space" target="_blank">{lang doings_num} $space[doings]</a>

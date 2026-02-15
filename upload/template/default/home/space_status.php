@@ -35,7 +35,7 @@
 			$('mood_mystatus').innerHTML = '<a href="home.php?mod=space&uid=$space[uid]&do=doing&view=me" title="{lang view_all_my_doings}" class="xi2">'+s+'</a>';
 		});
 		$('mood_message').value = '';
-		strLenCalc($('mood_message'), 'maxlimit');
+		dstrLenCalc($('mood_message'), 'maxlimit');
 		handlePrompt(0);
 	}
 </script>
@@ -45,7 +45,7 @@
 		<table cellspacing="0" cellpadding="0" width="100%">
 			<tr>
 				<td id="mood_statusinput" class="moodfm_input">
-					<textarea name="message" id="mood_message" class="xg1" onclick="showFace(this.id, 'mood_message', msgstr);" onfocus="handlePrompt(1);" onblur="handlePrompt(0);" onkeydown="if(ctrlEnter(event, 'addsubmit_btn')){if(event.keyCode == 13 ){ doane(event);}}" onkeyup="strLenCalc(this, 'maxlimit');">$defaultstr</textarea>
+					<textarea name="message" id="mood_message" class="xg1" onclick="showFace(this.id, 'mood_message', msgstr);" onfocus="handlePrompt(1);" onblur="handlePrompt(0);" onkeydown="if(ctrlEnter(event, 'addsubmit_btn')){if(event.keyCode == 13 ){ doane(event);}}" onkeyup="dstrLenCalc(this, 'maxlimit');">$defaultstr</textarea>
 				</td>
 				<td class="moodfm_btn">
 					<button type="submit" name="addsubmit_btn" id="addsubmit_btn" class="pgsbtn">{lang publish}</Button>

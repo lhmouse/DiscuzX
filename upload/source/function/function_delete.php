@@ -468,7 +468,7 @@ function deletethread($tids, $membercount = false, $credit = false, $ponly = fal
 		}
 	}
 
-	foreach (
+	foreach(
 		[
 			'forum_forumrecommend',
 			'forum_polloption',
@@ -697,9 +697,10 @@ function deletedoings($ids) {
 
 	$allowmanage = checkperm('managedoing');
 
-	$doings = $newdoids = $counts = $attachments = [];
+	$doings = $newdoids = $counts = $attachments = $tagids = [];
 	$query = table_home_doing::t()->fetch_all($ids);
 	foreach($query as $value) {
+		$value['fields'] = json_decode($value['fields'], true);
 		if($allowmanage || $value['uid'] == $_G['uid']) {
 			$doings[] = $value;
 			$newdoids[] = $value['doid'];
@@ -708,6 +709,11 @@ function deletedoings($ids) {
 				$counts[$value['uid']]['coef'] -= 1;
 			}
 			$counts[$value['uid']]['doings'] -= 1;
+		}
+		if(!empty($value['fields']['tags']) && is_array($value['fields']['tags'])) {
+			foreach($value['fields']['tags'] as $tagid => $tag) {
+				$tagids[] = $tagid;
+			}
 		}
 	}
 
@@ -719,14 +725,14 @@ function deletedoings($ids) {
 
 	// 分组附件并计算大小
 	$attach_by_doid = [];
-	foreach ($all_attachments as $attach) {
+	foreach($all_attachments as $attach) {
 		$attach_by_doid[$attach['doid']][] = $attach;
 		$attachments[] = $attach;
 	}
 
 	// 删除物理文件
-	foreach ($attachments as $attach) {
-		if ($attach['isimage']) {
+	foreach($attachments as $attach) {
+		if($attach['isimage']) {
 			pic_delete($attach['attachment'], 'doing', 0, $attach['remote']);
 		}
 	}
@@ -739,7 +745,7 @@ function deletedoings($ids) {
 	table_common_moderate::t()->delete_moderate($newdoids, 'doid');
 
 	// 删除点赞记录
-	foreach ($newdoids as $doid) {
+	foreach($newdoids as $doid) {
 		table_home_doing_recomend_log::t()->delete_by_doid($doid);
 	}
 
@@ -751,6 +757,12 @@ function deletedoings($ids) {
 				$setarr = ['recentnote' => $lastdoing[0]['message'], 'spacenote' => $lastdoing[0]['message']];
 				table_common_member_field_home::t()->update($uid, $setarr);
 			}
+		}
+	}
+	table_common_tagitem::t()->delete_tagitem(0, $newdoids, 'doid');
+	if($tagids) {
+		foreach($tagids as $tagid) {
+			table_common_tag::t()->increase($tagid, ['related_count' => -1]);
 		}
 	}
 

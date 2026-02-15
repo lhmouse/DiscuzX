@@ -24,7 +24,7 @@
 					<span id="itemdiv"></span>
 				</div>
 				<div class="area">
-					<textarea rows="2" cols="50" name="postappendmessage" id="postappendmessage" onKeyUp="strLenCalc(this, 'checklen_append')" onKeyDown="seditor_ctlent(event, '$(\'postappendsubmit\').click();')" class="pt" style="overflow: auto"></textarea>
+					<textarea rows="2" cols="50" name="postappendmessage" id="postappendmessage" onKeyUp="dstrLenCalc(this, 'checklen_append')" onKeyDown="seditor_ctlent(event, '$(\'postappendsubmit\').click();')" class="pt" style="overflow: auto"></textarea>
 				</div>
 				<script type="text/javascript" reload="1">
 					$('postappendmessage').focus();

@@ -9,7 +9,7 @@
 		<p>{lang report_reason}</p>
 		<p class="mtn mbn" id="report_reasons"></p>
 		<div id="report_other" style="display:none">
-			<textarea id="report_message" name="message" class="reasonarea pt mtn xg1" onfocus="this.innerHTML='';this.focus=null;this.className='reasonarea pt mtn'" onkeydown="ctrlEnter(event, 'reportsubmit', 1);" onkeyup="strLenCalc(this, 'checklen');" rows="4">{lang report_reason_other}</textarea>		
+			<textarea id="report_message" name="message" class="reasonarea pt mtn xg1" onfocus="this.innerHTML='';this.focus=null;this.className='reasonarea pt mtn'" onkeydown="ctrlEnter(event, 'reportsubmit', 1);" onkeyup="dstrLenCalc(this, 'checklen');" rows="4">{lang report_reason_other}</textarea>
 		</div>
 	</div>
 	<p class="o pns">

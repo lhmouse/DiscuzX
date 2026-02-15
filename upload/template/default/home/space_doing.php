@@ -38,7 +38,6 @@
 			<a href="home.php?mod=space&do=doing">{lang doing}</a>
 		</div>
 	</div>
-
 	<style id="diy_style" type="text/css"></style>
 	<div class="wp">
 		<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
@@ -59,7 +58,12 @@
 					<ul class="tb cl">
 						<li$actives[all]><a href="home.php?mod=space&do=$do&view=all">{lang view_all}</a></li>
 						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
+						<!--{if helper_access::check_module('follower')}-->
+						<li$actives[follow]><a href="home.php?mod=space&do=$do&view=follow"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_follow_doing}</a></li>
+						<!--{/if}-->
+						<!--{if helper_access::check_module('friend')}-->
 						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
+						<!--{/if}-->
 					</ul>
 				</div>
 		<!--{else}-->
@@ -69,7 +73,12 @@
 					<ul>
 						<li$actives[all]><a href="home.php?mod=space&do=$do&view=all">{lang view_all}</a></li>
 						<li$actives[me]><a href="home.php?mod=space&do=$do&view=me"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang doing_view_me}</a></li>
+						<!--{if helper_access::check_module('follower')}-->
+						<li$actives[follow]><a href="home.php?mod=space&do=$do&view=follow"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_follow_doing}</a></li>
+						<!--{/if}-->
+						<!--{if helper_access::check_module('friend')}-->
 						<li$actives[we]><a href="home.php?mod=space&do=$do&view=we"{if !$_G['uid']} onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes&referer='+encodeURIComponent(this.href))"{/if}>{lang me_friend_doing}</a></li>
+						<!--{/if}-->
 					</ul>
 				</div>
 			</div>
@@ -79,81 +88,99 @@
 		<!--{/if}-->
 		
 <!--{/if}-->
-
+		<!--{if $tagname}-->
+				<p class="tbmu">{lang doing_tag_record} <span style="color: red; font-weight: 700;">#{$tag['tagname']}# </span> {lang doing_record_list}</p>
+		<!--{/if}-->
 		<!--{if $searchkey}-->
 			<p class="tbmu">{lang doing_search_record} <span style="color: red; font-weight: 700;">$searchkey</span> {lang doing_record_list}</p>
 		<!--{/if}-->
-		
 		<!--{if $dolist}-->
 			<div class="xld {if empty($diymode)}xlda{/if}">
 			<!--{loop $dolist $dv}-->
 			<!--{eval $doid = $dv['doid'];}-->
 			<!--{eval $_GET['key'] = $key = random(8);}-->
-				<dl id="{$key}dl{$doid}" class="pbn bbda cl">
-					<!--{hook/space_doing_content_top $doid}-->
-					<!--{if empty($diymode)}--><dd class="m avt"><a href="home.php?mod=space&uid=$dv[uid]" c="1"><!--{avatar($dv['uid'], 'small')}--></a></dd><!--{/if}-->
-					<dd class="{if empty($diymode)}ptm{else}ptw{/if} xs2">
-					<!--{if empty($diymode)}--><a href="home.php?mod=space&uid=$dv[uid]">$dv[username]</a><!--{/if}-->
-					</dd>
-					<dd class="xs1">
-						<span class="xg1"><!--{date($dv['dateline'], 'u')}--></span>
-						<!--{if $_G['setting']['showiplocation']}--><span class="pipe">|</span><span class="xg1">$dv['iplocation']</span><!--{/if}-->
-						<!--{if $dv[status] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}-->
-						<!--{if checkperm('managedoing')}-->
-						<span class="pipe">|</span><span class="pipe">IP: $dv[ip]:$dv[port]</span>
-						<!--{/if}-->
-					</dd>
-					<dd class="{if empty($diymode)}ptm{else}ptw{/if} xs2">
-						<span>$dv[message]</span>
-					</dd>
-					<!--{if $dv['attachments']}-->
-					<dd class="ptm">
-						<div class="doing_images">
-							<!--{loop $dv['attachments'] $attach}-->
-							<!--{if $attach['isimage']}-->
-							<div class="doing_image_item">
-								<a href="javascript:;" class="doing_image_link ">
-									<img src="{$attach['thumb']}"
-										zoomfile="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
-										file="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
-										onclick="zoom(this, this.getAttribute('zoomfile'), 0, 0, 0)"
-										alt="" 
-										class="doing_image zoom"
-										id="aimg_$attach[aid]"
-										aid="$attach[aid]" />
-								</a>
-							</div>
-							<!--{/if}-->
-							<!--{/loop}-->
+				<div id="{$key}dl{$doid}" class="doing_list cl">
+					<div class="doing_list_item">
+						<div class="doing_avatar">
+							<a href="home.php?mod=space&uid=$dv[uid]" c="1"><!--{avatar($dv['uid'], 'small')}--></a>
 						</div>
-					</dd>
-					<!--{/if}-->
-					<!--{if $dv['body_template']}-->
-					<div class="ec cl">
-						<div class="d quote">
-							<blockquote id="quote_{$doid}">$dv[body_template]</blockquote>
+						<div class="item_right">
+							<div class="item_author_box">
+								<!--{if empty($diymode)}--><a href="home.php?mod=space&uid=$dv[uid]" class="author_name">$dv[username]</a><!--{/if}-->
+							</div>
+							<div class="item_info_date">
+								<span ><!--{date($dv['dateline'], 'u')}--></span>
+								<!--{if $_G['setting']['showiplocation']}--><span>$dv['iplocation']</span><!--{/if}-->
+								<!--{if $dv[status] == 1}--> <span style="font-weight: bold;">({lang moderate_need})</span><!--{/if}-->
+								<!--{if checkperm('managedoing')}-->
+								<span >IP: $dv[ip]:$dv[port]</span>
+								<!--{/if}-->
+							</div>
+							<div class="item_content">
+								<div class="mbm">
+								$dv[message]
+								</div>
+								<!--{if $dv['attachments']}-->
+									<div class="doing_images">
+										<!--{loop $dv['attachments'] $attach}-->
+										<!--{if $attach['isimage']}-->
+										<div class="doing_image_item">
+											<a href="javascript:;" class="doing_image_link ">
+												<img src="{$attach['thumb']}"
+													zoomfile="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
+													file="{if $attach['remote']}{$_G['setting']['ftp']['attachurl']}{else}{$_G['setting']['attachurl']}{/if}doing/{$attach['attachment']}"
+													onclick="zoom(this, this.getAttribute('zoomfile'), 0, 0, 0)"
+													alt="" 
+													class="doing_image zoom"
+													id="aimg_$attach[aid]"
+													aid="$attach[aid]" />
+											</a>
+										</div>
+										<!--{/if}-->
+										<!--{/loop}-->
+									</div>
+								<!--{/if}-->
+								<!--{if $dv['body_template']}-->
+									<div class="share_card_box mbm {$dv['type']} cl">
+										<!--{if $dv['image']}-->
+										<div class="share_card_img">
+											<a href="$dv[image_link]" target="_blank" style="background: url($dv[image]) 50% 50%;background-size: cover;" ></a>
+										</div>
+										<!--{/if}-->
+										<div class="share_card_imnfo">
+											$dv[body_template]
+										</div>
+									</div>
+								<!--{/if}-->
+								
+							</div>
+							<div class="item_info">
+								<div class="item_info_interactions">
+									<div class="interactions_left">
+										<!--{if $count == 1}-->
+										<a href="javascript:;" class="doing_comment_btn icon_box" onclick="docomment_get($doid, '$key', 1); setTimeout(function(){docomment_form($doid, 0, '$key')}, 100);" data-doid="$doid" data-key="$key" title="{lang reply}"><i class="fico-comment"></i><span><!--{if $dv['replynum']}-->$dv['replynum']<!--{else}-->{lang reply}<!--{/if}--></span></a>
+										<!--{else}-->
+										<a href="javascript:;" class="doing_comment_btn icon_box" onclick="docomment_get($doid, '$key', 1, true); setTimeout(function(){docomment_form($doid, 0, '$key')}, 100);" data-doid="$doid" data-key="$key" title="{lang reply}"><i class="fico-comment"></i><span><!--{if $dv['replynum']}-->$dv['replynum']<!--{else}-->{lang reply}<!--{/if}--></span></a>
+										<!--{/if}-->
+										<a href="javascript:;" class="doing_recommend_btn icon_box" data-doid="{$doid}" data-status="<!--{if $dv['recommendstatus']}-->1<!--{else}-->0<!--{/if}-->">
+											<i class="<!--{if $dv['recommendstatus']}-->fico-thumbup fc-i<!--{else}-->fico-thumbup fc-s<!--{/if}-->"></i> 
+											<span class="recommend_count"><!--{if $dv['recomends']}-->$dv['recomends']<!--{else}-->{$_G['setting']['recommendthread']['addtext']}<!--{/if}--></span>
+										</a>
+										<a href="javascript:;" class="doing_share_btn icon_box" data-doid="$doid" onclick="showWindow('sharedoing', 'home.php?mod=spacecp&ac=doing&type=doing&id={$doid}', 'get', 0);" title="{lang share}">
+											<i class="fico-launch fc-s"></i>
+											<span><!--{if $dv['sharetimes']}-->$dv['sharetimes']<!--{else}-->{lang share}<!--{/if}--></span>
+										</a>
+										<!--{if $dv[uid]==$_G[uid] || checkperm('managedoing')}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid={$doid}&handlekey=doinghk_{$doid}" id="{$key}_doing_delete_{$doid}" onclick="showWindow(this.id, this.href, 'get', 0);" class="icon_box" ><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
+										<!--{hook/space_doing_content_toolbar $doid}-->
+									</div>
+									<div class="interactions_right"></div>
+								</div>
+								<!--{hook/space_doing_content_bottom $doid}-->
+								<dd class=" brm" id="{$key}_$doid" style="display:none;"></dd>
+							</div>
 						</div>
 					</div>
-					<!--{/if}-->
-					<!--{hook/space_doing_content_bottom $doid}-->
-					<!--{eval $list = $clist[$doid];}-->
-					<dd class="cmt brm" id="{$key}_$doid"{if empty($list) || !$showdoinglist[$doid]} style="display:none;"{/if}>
-						<!--{template home/space_doing_li}-->
-						<span id="{$key}_form_{$doid}_0"></span>
-					</dd>
-					<dd class="ptn xg1 doing_bottom">
-						<!--{if $dv[uid]==$_G[uid] || checkperm('managedoing')}--><a href="home.php?mod=spacecp&ac=doing&op=delete&doid=$doid&id=$dv[id]&handlekey=doinghk_{$doid}_$dv[id]" id="{$key}_doing_delete_{$doid}_{$dv[id]}" onclick="showWindow(this.id, this.href, 'get', 0);" class="y"><i class="fico-delete"></i>{lang delete}</a><!--{/if}-->
-						<!--{if helper_access::check_module('doing')}-->
-						<a href="javascript:;" onclick="docomment_form($doid, 0, '$key')"><i class="fico-comment"></i>{lang reply}</a>
-						<!--{/if}-->
-						<!-- 点赞功能 -->
-						<a href="javascript:;" class="doing_recommend_btn" data-doid="$doid" data-status="<!--{if $dv['recommendstatus']}-->1<!--{else}-->0<!--{/if}-->">
-							<i class="<!--{if $dv['recommendstatus']}-->fico-thumbup fc-i<!--{else}-->fico-thumbup fc-s<!--{/if}-->"></i> 
-							<span class="recommend_count">$dv[recomends]</span>
-						</a>
-						<!--{hook/space_doing_content_toolbar $doid}-->
-					</dd>
-				</dl>
+				</div>
 			<!--{/loop}-->
 			<!--{if $pricount}-->
 				<p class="mtm">{lang hide_doing}</p>
@@ -247,6 +274,21 @@
                     });
             });
         }
+        // 单条动态详情页自动加载评论和评论发布框
+        <!--{if $count === 1}-->
+        var commentLinks = document.querySelectorAll('.doing_comment_btn');
+        if (commentLinks.length > 0) {
+            // 获取第一个评论按钮的点击事件中的参数
+                var doid = {$doid};
+                var key = '{$key}';
+                // 自动加载评论列表
+                docomment_get(doid, key);
+                // 自动加载评论发布框
+                setTimeout(function() {
+                    docomment_form(doid, 0, key);
+                }, 100);
+        }
+        <!--{/if}-->
     };
 </script>
 <!--{template common/footer}-->

@@ -43,7 +43,7 @@ class table_common_member_stat_field extends discuz_table {
 			}
 		}
 		if($sql) {
-			DB::query('INSERT INTO '.DB::table($this->_table). '(fieldid, fieldvalue) VALUES ' .implode(', ', $sql));
+			DB::query('INSERT INTO '.DB::table($this->_table).'(fieldid, fieldvalue) VALUES '.implode(', ', $sql));
 		}
 	}
 }

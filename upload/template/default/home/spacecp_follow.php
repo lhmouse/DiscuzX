@@ -47,7 +47,7 @@
 			<!--{if $_G[inajax]}--><input type="hidden" name="handlekey" value="$_GET[handlekey]" /><!--{/if}-->
 			<div class="c">
 				<p>{lang follow_add_note}:</p>
-				<textarea id="note_{$tid}" name="note" cols="50" rows="5" class="pt mtn" style="width: 425px;" onkeydown="ctrlEnter(event, 'relaysubmit_btn')" onkeyup="strLenCalc(this, 'checklen{$tid}', 140);"></textarea>
+				<textarea id="note_{$tid}" name="note" cols="50" rows="5" class="pt mtn" style="width: 425px;" onkeydown="ctrlEnter(event, 'relaysubmit_btn')" onkeyup="dstrLenCalc(this, 'checklen{$tid}', 140);"></textarea>
 				<!--{if $secqaacheck || $seccodecheck}-->
 				<!--{block sectpl}--><sec> <span id="sec<hash>" onclick="showMenu({'ctrlid':this.id,'win':'{$_GET[handlekey]}'})"><sec></span><div id="sec<hash>_menu" class="p_pop p_opt" style="display:none"><sec></div><!--{/block}-->
 				<div class="mtm sec"><!--{subtemplate common/seccheck}--></div>
@@ -81,7 +81,7 @@
 			<table cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="flw_autopt">
-						<textarea id="note_{$tid}" name="note" class="pts" cols="80" rows="4" onkeyup="resizeTx(this);strLenCalc(this, 'checklen{$tid}', 140);" onkeydown="resizeTx(this);" onpropertychange="resizeTx(this);" oninput="resizeTx(this);" style="height:54px">
+						<textarea id="note_{$tid}" name="note" class="pts" cols="80" rows="4" onkeyup="resizeTx(this);dstrLenCalc(this, 'checklen{$tid}', 140);" onkeydown="resizeTx(this);" onpropertychange="resizeTx(this);" oninput="resizeTx(this);" style="height:54px">
 
 
 						</textarea>

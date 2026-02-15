@@ -9,12 +9,14 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-if(!$_G['setting']['followstatus']) {
-	showmessage('follow_status_off');
-}
-
 $ops = ['add', 'del', 'bkname', 'checkfeed', 'relay', 'getfeed', 'delete', 'newthread'];
 $op = in_array($_GET['op'], $ops) ? $_GET['op'] : '';
+
+if(!in_array($op, ['add', 'del', 'bkname'])){
+	if(!$_G['setting']['followstatus']) {
+		showmessage('follow_status_off');
+	}
+}
 
 if($op == 'add') {
 	$_GET['handlekey'] = $_GET['handlekey'] ? $_GET['handlekey'] : 'followmod';

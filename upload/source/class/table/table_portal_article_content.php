@@ -36,7 +36,7 @@ class table_portal_article_content extends discuz_table {
 
 	public function fetch_by_aid_page($aid, $page = 1) {
 		if(($page = dintval($page)) < 1) $page = 1;
-		return $aid ? DB::fetch_first('SELECT * FROM %t WHERE aid=%d ORDER BY pageorder'.DB::LIMIT($page - 1, 1), [$this->_table, $aid]) : false;
+		return $aid ? DB::fetch_first('SELECT * FROM %t WHERE aid=%d ORDER BY pageorder'.DB::limit($page - 1, 1), [$this->_table, $aid]) : false;
 	}
 
 	public function fetch_all($ids, $force_from_db = false) {
@@ -63,7 +63,7 @@ class table_portal_article_content extends discuz_table {
 			$sql[] = "('{$value['aid']}', '".addslashes($value['content'])."', '{$value['pageorder']}', '{$value['dateline']}', '{$value['id']}', '{$value['idtype']}')";
 		}
 		if($sql) {
-			DB::query('INSERT INTO '.DB::table($this->_table). '(`aid`, `content`, `pageorder`, `dateline`, `id`, `idtype`) VALUES ' .implode(', ', $sql));
+			DB::query('INSERT INTO '.DB::table($this->_table).'(`aid`, `content`, `pageorder`, `dateline`, `id`, `idtype`) VALUES '.implode(', ', $sql));
 		}
 	}
 

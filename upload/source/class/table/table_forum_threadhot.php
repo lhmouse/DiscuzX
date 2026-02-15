@@ -49,7 +49,7 @@ class table_forum_threadhot extends discuz_table {
 			}
 		}
 		if($sql) {
-			return DB::query('REPLACE INTO '.DB::table($this->_table). ' (`cid`, `fid`, `tid`) VALUES ' .implode(',', $sql), true);
+			return DB::query('REPLACE INTO '.DB::table($this->_table).' (`cid`, `fid`, `tid`) VALUES '.implode(',', $sql), true);
 		}
 		return false;
 	}

@@ -109,7 +109,7 @@ class table_portal_article_title extends discuz_table {
 	}
 
 	public function fetch_all_for_search($aids, $orderby = '', $ascdesc = '', $start = 0, $limit = 0) {
-		return DB::fetch_all('SELECT at.*,ac.viewnum, ac.commentnum FROM ' .DB::table($this->_table). ' at LEFT JOIN ' .DB::table('portal_article_count'). ' ac ON at.aid=ac.aid WHERE at.' .DB::field('aid', $aids).($orderby ? ' ORDER BY ' .DB::order($orderby, $ascdesc) : ' ').DB::limit($start, $limit));
+		return DB::fetch_all('SELECT at.*,ac.viewnum, ac.commentnum FROM '.DB::table($this->_table).' at LEFT JOIN '.DB::table('portal_article_count').' ac ON at.aid=ac.aid WHERE at.'.DB::field('aid', $aids).($orderby ? ' ORDER BY '.DB::order($orderby, $ascdesc) : ' ').DB::limit($start, $limit));
 	}
 
 

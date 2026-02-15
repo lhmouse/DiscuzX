@@ -36,10 +36,10 @@ class table_common_seccheck extends discuz_table {
 		if($this->_allowmem) {
 			if($ssid) {
 				$ssid = dintval($ssid);
-				memory('rm', $ssid. '_verified', $this->_pre_cache_key);
-				memory('rm', $ssid. '_succeed', $this->_pre_cache_key);
-				memory('rm', $ssid. '_code', $this->_pre_cache_key);
-				memory('rm', $ssid. '_dateline', $this->_pre_cache_key);
+				memory('rm', $ssid.'_verified', $this->_pre_cache_key);
+				memory('rm', $ssid.'_succeed', $this->_pre_cache_key);
+				memory('rm', $ssid.'_code', $this->_pre_cache_key);
+				memory('rm', $ssid.'_dateline', $this->_pre_cache_key);
 			}
 			// 其它情况，由cache自己处理过期
 		} else {
@@ -47,7 +47,7 @@ class table_common_seccheck extends discuz_table {
 				$ssid = dintval($ssid);
 				DB::delete($this->_table, "ssid='$ssid'");
 			}
-			DB::delete($this->_table, TIMESTAMP. '-dateline>600');
+			DB::delete($this->_table, TIMESTAMP.'-dateline>600');
 			DB::delete($this->_table, 'verified>4');
 			DB::delete($this->_table, 'succeed>1');
 		}
@@ -55,7 +55,7 @@ class table_common_seccheck extends discuz_table {
 
 	public function update_verified($ssid) {
 		if($this->_allowmem) {
-			memory('inc', $ssid. '_verified', 1, 0, $this->_pre_cache_key);
+			memory('inc', $ssid.'_verified', 1, 0, $this->_pre_cache_key);
 		} else {
 			DB::query('UPDATE %t SET verified=verified+1 WHERE ssid=%d', [$this->_table, $ssid]);
 		}
@@ -65,8 +65,8 @@ class table_common_seccheck extends discuz_table {
 		if(!$this->_allowmem) {
 			return DB::query('UPDATE %t SET verified=verified+1,succeed=succeed+1 WHERE ssid=%d', [$this->_table, $ssid]);
 		}
-		memory('inc', $ssid. '_verified', 1, 0, $this->_pre_cache_key);
-		memory('inc', $ssid. '_succeed', 1, 0, $this->_pre_cache_key);
+		memory('inc', $ssid.'_verified', 1, 0, $this->_pre_cache_key);
+		memory('inc', $ssid.'_succeed', 1, 0, $this->_pre_cache_key);
 		return 1; // simulate 1 row changed
 	}
 
@@ -89,7 +89,7 @@ class table_common_seccheck extends discuz_table {
 
 		$ssid = memory('inc', 'pk', 1, 0, $this->_pre_cache_key);
 		foreach($data as $key => $value) {
-			memory('set', $ssid. '_' .$key, $value, $this->_cache_ttl, $this->_pre_cache_key);
+			memory('set', $ssid.'_'.$key, $value, $this->_cache_ttl, $this->_pre_cache_key);
 		}
 		if($return_insert_id) {
 			return $ssid;
@@ -104,10 +104,10 @@ class table_common_seccheck extends discuz_table {
 
 		$data = [];
 		$data['ssid'] = $id;
-		$data['code'] = memory('get', $id. '_code', $this->_pre_cache_key);
-		$data['dateline'] = memory('get', $id. '_dateline', $this->_pre_cache_key);
-		$data['succeed'] = memory('get', $id. '_succeed', $this->_pre_cache_key);
-		$data['verified'] = memory('get', $id. '_verified', $this->_pre_cache_key);
+		$data['code'] = memory('get', $id.'_code', $this->_pre_cache_key);
+		$data['dateline'] = memory('get', $id.'_dateline', $this->_pre_cache_key);
+		$data['succeed'] = memory('get', $id.'_succeed', $this->_pre_cache_key);
+		$data['verified'] = memory('get', $id.'_verified', $this->_pre_cache_key);
 		return $data;
 	}
 
@@ -116,10 +116,10 @@ class table_common_seccheck extends discuz_table {
 			return parent::delete($ssid, $force_from_db);
 		}
 		$ssid = dintval($ssid);
-		memory('rm', $ssid. '_verified', $this->_pre_cache_key);
-		memory('rm', $ssid. '_succeed', $this->_pre_cache_key);
-		memory('rm', $ssid. '_code', $this->_pre_cache_key);
-		memory('rm', $ssid. '_dateline', $this->_pre_cache_key);
+		memory('rm', $ssid.'_verified', $this->_pre_cache_key);
+		memory('rm', $ssid.'_succeed', $this->_pre_cache_key);
+		memory('rm', $ssid.'_code', $this->_pre_cache_key);
+		memory('rm', $ssid.'_dateline', $this->_pre_cache_key);
 		return true;
 	}
 

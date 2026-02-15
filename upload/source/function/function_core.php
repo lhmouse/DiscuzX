@@ -1214,6 +1214,9 @@ function childfile($childname, $path = null, $allowplugin = true) {
 		$path = $path.'/';
 	}
 	$v = $path.$childname;
+	if(!empty($_G['setting']['child'][$v])) {
+		return DISCUZ_ROOT.'./source/child/'.$_G['setting']['child'][$v].'.php';
+	}
 	if($allowplugin && $path != 'admin/' && !empty($_G['setting']['plugins']['child'][$v]) &&
 		!empty($_G['setting']['plugins']['available']) && in_array($_G['setting']['plugins']['child'][$v]['plugin'], $_G['setting']['plugins']['available'])) {
 		return DISCUZ_PLUGIN($_G['setting']['plugins']['child'][$v]['plugin']).'/child/'.$_G['setting']['plugins']['child'][$v]['file'].'.php';
@@ -1344,7 +1347,7 @@ function getforumimg($aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
 	return 'forum.php?mod=image&aid='.$aid.'&size='.$w.'x'.$h.'&key='.rawurlencode($key).($nocache ? '&nocache=yes' : '').($type ? '&type='.$type : '');
 }
 
-function getdiscuzimg($module = 'forum', $aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
+function getdiscuzimg($module, $aid, $nocache = 0, $w = 140, $h = 140, $type = '') {
 	global $_G;
 	$key = dsign($module.'|'.$aid.'|'.$w.'|'.$h);
 	return 'misc.php?mod=image&module='.$module.'&aid='.$aid.'&size='.$w.'x'.$h.'&key='.rawurlencode($key).($nocache ? '&nocache=yes' : '').($type ? '&type='.$type : '');
@@ -3107,4 +3110,63 @@ function isAudioUrl($url) {
 		return in_array($extension, $audio_extensions);
 	}
 	return false;
+}
+
+/**
+ * 解析格式@[用户名]的@用户文本（定界符为[]），适配含空格的用户名
+ * @param string $content 帖子/评论原始内容
+ * @return array 匹配到的用户列表 [用户名 => UID]（Discuz需UID关联用户）
+ */
+function parse_at_user($content) {
+	global $_G;
+	$atlist = $allUsernames = [];
+
+	// 如果用户组不允许@功能，直接返回空数组
+	if(!$_G['group']['allowat']) {
+		return $atlist;
+	}
+	// 1. 匹配新格式：@[用户名]（支持含空格的用户名）
+	preg_match_all('/@\[([^\]]+)\]/i', $content, $matches);
+	if (isset($matches[1])) {
+		foreach ($matches[1] as $match) {
+			$username = trim($match);
+			if (!empty($username)) {
+				$allUsernames[] = $username;
+			}
+		}
+	}
+
+	// 2. 匹配旧格式：@用户名（兼容无空格的旧格式）
+	preg_match_all('/@([^\s\@\[\]]+)/i', $content.' ', $oldMatches);
+	if (isset($oldMatches[1])) {
+		foreach ($oldMatches[1] as $oldName) {
+			$allUsernames[] = $oldName;
+		}
+	}
+
+	$uniqueUsernames = array_slice(array_unique($allUsernames), 0, $_G['group']['allowat']);
+	if(!empty($uniqueUsernames)) {
+		if(!$_G['setting']['at_anyone']) {
+			// 先查询关注的人
+			$followList = table_home_follow::t()->fetch_all_by_uid_fusername($_G['uid'], $uniqueUsernames);
+			foreach($followList as $row) {
+				$atlist[$row['followuid']] = $row['fusername'];
+			}
+
+			// 如果关注的人不够，查询好友
+			if(count($atlist) < $_G['group']['allowat']) {
+				$friendList = table_home_friend::t()->fetch_all_by_uid_username($_G['uid'], $uniqueUsernames);
+				foreach($friendList as $row) {
+					$atlist[$row['fuid']] = $row['fusername'];
+				}
+			}
+		} else {
+			// 允许at任何人时，直接查询所有用户
+			$userList = table_common_member::t()->fetch_all_by_username($uniqueUsernames);
+			foreach($userList as $row) {
+				$atlist[$row['uid']] = $row['username'];
+			}
+		}
+	}
+	return $atlist;
 }

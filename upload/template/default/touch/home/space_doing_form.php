@@ -19,7 +19,7 @@
 							<div id="multipic_btn" class="image-list image-upload image-upload-mp">
 								<div class="file_pic"></div>
 								<input name="photos[]" type="file" class="file" id="multipic_sel" multiple="multiple"
-									accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+								       accept=".jpg,.jpeg,.png,image/jpeg,image/png">
 							</div>
 						</div>
 					</div>
@@ -75,7 +75,7 @@
 									MultiPicDel(this);
 								};
 								imgWrapper.prepend(img);
-								imgWrapper.prepend(removeDiv);
+                                imgWrapper.prepend(removeDiv);
 								img.style.width = '100%';
 								img.style.height = '100%';
 								img.style.objectFit = 'cover';
@@ -123,5 +123,5 @@
 		var hlthumb = obj.parentNode.childNodes[0];
 		zoom(hlthumb, hlthumb.src);
 	}
-	<!--{/if}-->
+<!--{/if}-->
 </script>

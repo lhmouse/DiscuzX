@@ -33,6 +33,7 @@ class tag {
 			'articleid' => 1.2,   // 文章
 			'commentid' => 0.5,   // 评论
 			'blogid' => 1.0,     // 日志
+			'doid' => 0.5,     // 记录
 			// 可以添加更多Discuz!内容类型
 		];
 
@@ -49,7 +50,9 @@ class tag {
 	 * @return mixed
 	 */
 	public function add_tag($tags, $itemid, $idtype = 'tid', $returnarray = 0) {
-		if($tags == '' || !in_array($idtype, ['', 'tid', 'blogid', 'articleid', 'uid'])) {
+		global $_G;
+
+		if($tags == '' || !in_array($idtype, ['', 'tid', 'blogid', 'articleid', 'doid', 'uid'])) {
 			return;
 		}
 
@@ -515,5 +518,22 @@ class tag {
 			}
 		}
 		return $bloglist;
+	}
+
+	public static function getdoingbyid($doidarray) {
+		global $_G, $summarylen;
+
+		$dolist = [];
+		if(!empty($doidarray)) {
+			$data_doing = table_home_doing::t()->fetch_all_search(0, 20, 1, [], null, null, 0, 0, 0, 0, $doidarray, '');
+			require_once libfile('function/home');
+			foreach($data_doing as $doid => $result) {
+				$result['dateline'] = dgmdate($result['dateline']);
+				$result['message'] = getstr($result['message'], 120, 0, 0, 0, -1);
+				$result['message'] = preg_replace('/&[a-z]+\;/i', '', $result['message']);
+				$dolist[] = $result;
+			}
+		}
+		return $dolist;
 	}
 }

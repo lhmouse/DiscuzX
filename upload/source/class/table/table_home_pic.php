@@ -82,11 +82,11 @@ class table_home_pic extends discuz_table {
 	}
 
 	public function delete_by_uid($uids) {
-		return DB::query('DELETE FROM %t WHERE ' .DB::field('uid', $uids), [$this->_table]);
+		return DB::query('DELETE FROM %t WHERE '.DB::field('uid', $uids), [$this->_table]);
 	}
 
 	public function delete_by_albumid($albumids) {
-		return DB::query('DELETE FROM %t WHERE ' .DB::field('albumid', $albumids), [$this->_table]);
+		return DB::query('DELETE FROM %t WHERE '.DB::field('albumid', $albumids), [$this->_table]);
 	}
 
 	public function fetch_all_by_sql($where = '1', $orderby = '', $start = 0, $limit = 0, $count = 0, $joinalbum = 1) {
@@ -94,9 +94,9 @@ class table_home_pic extends discuz_table {
 			$where = '1';
 		}
 		if($count) {
-			return DB::result_first('SELECT count(*) FROM ' .DB::table($this->_table). ' p WHERE %i', [$where]);
+			return DB::result_first('SELECT count(*) FROM '.DB::table($this->_table).' p WHERE %i', [$where]);
 		}
-		return DB::fetch_all('SELECT ' .($joinalbum ? 'a.*, ' : ''). 'p.* FROM ' .DB::table($this->_table). ' p ' .($joinalbum ? 'LEFT JOIN ' .DB::table('home_album'). ' a USING(albumid)' : ''). ' WHERE %i ' .($orderby ? "ORDER BY $orderby " : '').DB::limit($start, $limit), [$where]);
+		return DB::fetch_all('SELECT '.($joinalbum ? 'a.*, ' : '').'p.* FROM '.DB::table($this->_table).' p '.($joinalbum ? 'LEFT JOIN '.DB::table('home_album').' a USING(albumid)' : '').' WHERE %i '.($orderby ? "ORDER BY $orderby " : '').DB::limit($start, $limit), [$where]);
 	}
 
 	public function fetch_albumpic($albumid, $uid) {

@@ -70,7 +70,7 @@ class table_portal_category_permission extends discuz_table {
 	}
 
 	public function fetch_permission_by_uid($uids) {
-		return ($uids = dintval($uids, true)) ? DB::fetch_all('SELECT uid, sum(allowpublish) as allowpublish, sum(allowmanage) as allowmanage FROM '.DB::table($this->_table). ' WHERE uid IN (' .dimplode($uids). ') GROUP BY uid', null, 'uid') : [];
+		return ($uids = dintval($uids, true)) ? DB::fetch_all('SELECT uid, sum(allowpublish) as allowpublish, sum(allowmanage) as allowmanage FROM '.DB::table($this->_table).' WHERE uid IN ('.dimplode($uids).') GROUP BY uid', null, 'uid') : [];
 	}
 
 	public function delete_by_catid_uid_inheritedcatid($catid = false, $uids = false, $inheritedcatid = false) {

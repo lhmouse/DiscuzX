@@ -24,7 +24,9 @@
 				<a href="javascript:;" id="myspace" class="showmenu cur1" onmouseover="showMenu(this.id);">{lang my_nav}</a>
 				<!--{hook/global_usernav_extra1}-->
 				<a href="home.php?mod=spacecp">{lang setup}</a>
-				<a href="home.php?mod=space&do=pm" id="pm_ntc" target="_blank"{if $_G[member][newpm]} class="new"{/if}>{lang pm_center}<!--{if $_G[member][newpm]}-->($_G[member][newpm])<!--{/if}--></a>
+				<!--{if !empty($_G['setting']['pmstatus'])}-->
+					<a href="home.php?mod=space&do=pm" id="pm_ntc" target="_blank"{if $_G[member][newpm]} class="new"{/if}>{lang pm_center}<!--{if $_G[member][newpm]}-->($_G[member][newpm])<!--{/if}--></a>
+				<!--{/if}-->
 				<a href="home.php?mod=space&do=notice" id="myprompt" target="_blank"{if $_G[member][newprompt]} class="new"{/if}>{lang remind}<!--{if $_G[member][newprompt]}-->($_G[member][newprompt])<!--{/if}--></a><span id="myprompt_check"></span>
 				<!--{if $_G['group']['allowmanagearticle'] || $_G['group']['allowdiy']|| getstatus($_G['member']['allowadmincp'], 4) || getstatus($_G['member']['allowadmincp'], 2) || getstatus($_G['member']['allowadmincp'], 3) || (is_array($_G['setting']['ext_portalmanager']) && in_array($_G['uid'], $_G['setting']['ext_portalmanager']))}--><a href="portal.php?mod=portalcp">{lang portal_manage}</a><!--{/if}-->
 				<!--{if $_G['uid'] && $_G['group']['radminid'] > 1}--><a href="forum.php?mod=modcp&fid=$_G[fid]" target="_blank">{lang forum_manager}</a><!--{/if}-->

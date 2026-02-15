@@ -24,7 +24,7 @@
 					<span id="itemdiv"></span>
 				</div>
 				<div class="area">
-					<textarea rows="2" cols="50" name="message" id="commentmessage" onKeyUp="strLenCalc(this, 'checklen')" onKeyDown="seditor_ctlent(event, '$(\'commentsubmit\').click();')" class="pt" style="overflow: auto"></textarea>
+					<textarea rows="2" cols="50" name="message" id="commentmessage" onKeyUp="dstrLenCalc(this, 'checklen')" onKeyDown="seditor_ctlent(event, '$(\'commentsubmit\').click();')" class="pt" style="overflow: auto"></textarea>
 				</div>
 				<script type="text/javascript" reload="1">
 				<!--{if $commentitem}-->

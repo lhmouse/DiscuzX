@@ -295,6 +295,8 @@ $lang = [
 	'article_push' => '生成文章',
 	'doing' => '記錄',
 	'friends' => '好友',
+	'follower' => '粉絲',
+	'following' => '關注',
 	'online_member' => '在線成員',
 	'my_space' => '我的中心',
 	'magic' => '道具',
@@ -443,6 +445,7 @@ $lang = [
 	'mypost' => '帖子',
 	'post_tag' => '標籤',
 	'choosetag' => '選擇標籤',
+	'posttag_comment_forbidadd' => '，只能選擇已有標籤',
 	'posttag_comment' => '用逗號或空格隔開多個標籤',
 	'recent_use_tag' => '最近使用標籤:',
 

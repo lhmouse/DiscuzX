@@ -51,11 +51,11 @@ class table_common_advertisement extends discuz_table {
 
 	private function _search_conditions($title, $starttime, $endtime, $type, $target) {
 		$conditions = '';
-		$conditions .= $title ? ' AND ' .DB::field('title', '%'.$title.'%', 'like') : '';
+		$conditions .= $title ? ' AND '.DB::field('title', '%'.$title.'%', 'like') : '';
 		$conditions .= $starttime > 0 ? " AND starttime>='".(TIMESTAMP - intval($starttime))."'" : ($starttime == -1 ? " AND starttime='0'" : '');
 		$conditions .= $endtime > 0 ? " AND endtime>0 AND endtime<'".(TIMESTAMP + intval($endtime))."'" : ($endtime == -1 ? " AND endtime='0'" : '');
-		$conditions .= $type ? ' AND ' .DB::field('type', $type) : '';
-		$conditions .= $target ? ' AND ' .DB::field('targets', '%'.$target.'%', 'like') : '';
+		$conditions .= $type ? ' AND '.DB::field('type', $type) : '';
+		$conditions .= $target ? ' AND '.DB::field('targets', '%'.$target.'%', 'like') : '';
 		return $conditions;
 	}
 
@@ -65,12 +65,12 @@ class table_common_advertisement extends discuz_table {
 		$start_limit = intval($start_limit);
 		$advppp = intval($advppp);
 
-		return DB::fetch_all('SELECT * FROM ' .DB::table('common_advertisement')." WHERE 1 $conditions ORDER BY available DESC, $order_by LIMIT $start_limit, $advppp");
+		return DB::fetch_all('SELECT * FROM '.DB::table('common_advertisement')." WHERE 1 $conditions ORDER BY available DESC, $order_by LIMIT $start_limit, $advppp");
 	}
 
 	public function count_search($title, $starttime, $endtime, $type, $target) {
 		$conditions = $this->_search_conditions($title, $starttime, $endtime, $type, $target);
-		return DB::result_first('SELECT COUNT(*) FROM ' .DB::table('common_advertisement')." WHERE 1 $conditions");
+		return DB::result_first('SELECT COUNT(*) FROM '.DB::table('common_advertisement')." WHERE 1 $conditions");
 	}
 
 }

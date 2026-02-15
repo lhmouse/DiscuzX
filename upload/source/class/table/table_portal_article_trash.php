@@ -35,7 +35,7 @@ class table_portal_article_trash extends discuz_table {
 			}
 		}
 		if($sql) {
-			DB::query('INSERT INTO '.DB::table($this->_table). '(`aid`, `content`) VALUES ' .implode(', ', $sql));
+			DB::query('INSERT INTO '.DB::table($this->_table).'(`aid`, `content`) VALUES '.implode(', ', $sql));
 		}
 	}
 }

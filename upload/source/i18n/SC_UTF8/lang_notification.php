@@ -40,7 +40,7 @@ $lang =
 	'magic_present_note' => '送给您一个道具 <a href="{url}" target="_blank">{name}</a>',
 	'friend_add' => '{actor} 和您成为了好友',
 	'friend_request' => '{actor} 请求加您为好友{note}&nbsp;&nbsp;<a onclick="showWindow(this.id, this.href, \'get\', 0);" class="xw1" id="afr_{uid}" href="{url}">批准申请</a>',
-	'doing_reply' => '{actor} 回复了您的 <a href="{url}" target="_blank">记录</a>',
+	'doing_reply' => '{actor} 回复了您的记录 <a href="{url}" target="_blank">{summery}</a> &nbsp; <a href="{url}" target="_blank" class="lit">查看</a>',
 	'wall_reply' => '{actor} 回复了您的 <a href="{url}" target="_blank">留言</a>',
 	'pic_comment_reply' => '{actor} 回复了您的 <a href="{url}" target="_blank">图片评论</a>',
 	'blog_comment_reply' => '{actor} 回复了您的 <a href="{url}" target="_blank">日志评论</a>',
@@ -197,7 +197,7 @@ $lang =
 	'member_change_credits' => '您已被 {user} 调整积分，积分类型与调整值为 {extcredits} ，并应操作者要求告知您相关变动，操作理由：{reason}',
 
 	'member_follow' => '您关注的人已有{count}条新动态。<a href="home.php?mod=follow">点击查看</a>',
-	'member_follow_add' => '{actor} 收听了您。<a href="home.php?mod=follow&do=follower">点击查看</a>',
+	'member_follow_add' => '{actor} 关注了您。<a href="home.php?mod=follow&do=follower">点击查看</a>',
 
 	'member_moderate_invalidate' => '您的账号未能通过管理员的审核，请<a href="home.php?mod=spacecp&ac=profile">重新提交注册信息</a>。<br />管理员留言: <b>{remark}</b>',
 	'member_moderate_validate' => '您的账号已通过审核。<br />管理员留言: <b>{remark}</b>',
@@ -222,6 +222,7 @@ $lang =
 	'system_adv_expiration' => '您站点的以下广告将于 {day} 天后到期，请及时处理：<br />{advs}',
 	'report_change_credits' => '{actor} 处理了您的举报 {creditchange} {msg}',
 	'at_message' => '<a href="home.php?mod=space&uid={buyerid}" target="_blank">{buyer}</a> 在主题 <a href="forum.php?mod=redirect&goto=findpost&ptid={tid}&pid={pid}" target="_blank">{subject}</a> 中提到了您<div class="quote"><blockquote>{message}</blockquote></div><a href="forum.php?mod=redirect&goto=findpost&ptid={tid}&pid={pid}" target="_blank">现在去看看</a>。',
+	'at_doing' => '<a href="home.php?mod=space&uid={buyerid}" target="_blank">{buyer}</a> 在记录中提到了您<a href="home.php?mod=space&do=doing&doid={doid}" target="_blank">现在去看看</a>。',
 	'new_report' => '有新的来自 {username} 的举报等待处理，<a href="admin.php?action=report" target="_blank">点此进入管理中心处理</a>。',
 	'new_post_report' => '有新的来自 {username} 的举报等待处理，<a href="forum.php?mod=modcp&action=report&fid={fid}" target="_blank">点此进入管理面板</a>。',
 	'magics_receive' => '您收到 {actor} 送给您的道具 {magicname}

@@ -10,7 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class table_common_card_log extends discuz_table_archive {
+class table_common_card_log extends discuz_table {
 	public static function t() {
 		static $_instance;
 		if(!isset($_instance)) {

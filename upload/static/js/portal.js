@@ -326,12 +326,12 @@ function blockFavorite(bid){
 }
 
 function check_itemdata_lentgh(form) {
-	if(form.title && (!strLenCalc(form.title, "titlechk", form.title.getAttribute('_maxlength')) || !form.title.value)) {
+	if(form.title && (!dstrLenCalc(form.title, "titlechk", form.title.getAttribute('_maxlength')) || !form.title.value)) {
 		form.title.focus();
 		showDialog($L('title_length_error'), 'error', null, function(){form.title.select();});
 		return false;
 	}
-	if(form.summary && !strLenCalc(form.summary, "summarychk", form.summary.getAttribute('_maxlength'))) {
+	if(form.summary && !dstrLenCalc(form.summary, "summarychk", form.summary.getAttribute('_maxlength'))) {
 		form.summary.focus();
 		showDialog($L('summary_length_error'), 'error', null, function(){form.summary.select();});
 		return false;

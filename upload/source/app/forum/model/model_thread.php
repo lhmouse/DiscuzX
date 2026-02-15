@@ -7,6 +7,7 @@
  */
 
 namespace forum;
+
 use discuz_model;
 use table_common_member_field_home;
 use table_forum_attachment_n;

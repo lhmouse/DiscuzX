@@ -34,5 +34,9 @@ class table_common_credit_log_field extends discuz_table {
 	public function fetch_last_by_uid($uid) {
 		return DB::fetch_first('SELECT * FROM %t WHERE uid=%d ORDER BY logid DESC LIMIT 1', [$this->_table, $uid]);
 	}
+
+	public function fetch_clear($uid, $cleardate) {
+		return DB::fetch_first('SELECT * FROM %t WHERE uid=%d AND dateline < %d ORDER BY logid DESC LIMIT 1', [$this->_table, $uid, $cleardate]);
+	}
 }
 

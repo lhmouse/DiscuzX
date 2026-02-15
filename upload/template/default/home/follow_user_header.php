@@ -8,6 +8,7 @@
 					<p><a href="home.php?mod=follow&uid=$uid&do=view" class="xi2 xw1">$space['feeds']</a></p>
 					<span><a href="home.php?mod=follow&uid=$uid&do=view" class="xi2">{lang follow}</a></span>
 				</th>
+				<!--{if helper_access::check_module('follower')}-->
 				<th>
 					<p><a href="home.php?mod=follow&do=following&uid=$uid" class="xi2 xw1">$space['following']</a></p>
 					<span><a href="home.php?mod=follow&do=following&uid=$uid" class="xi2">{lang follow_add}</a></span>
@@ -16,6 +17,7 @@
 					<p><a href="home.php?mod=follow&do=follower&uid=$uid" id="followernum_$uid" class="xi2 xw1">$space['follower']</a></p>
 					<span><a href="home.php?mod=follow&do=follower&uid=$uid" id="followernum_$uid" class="xi2">{lang follow_follower}</a></span>
 				</td>
+				<!--{/if}-->
 			</tr>
 		</table>
 	</div>
@@ -23,7 +25,7 @@
 <!--{if !$viewself}-->
 	<div class="mtm o cl">
 		<div id="followflag" {if !isset($flag[$_G['uid']])}style="display: none"{/if}>
-			<!--{if helper_access::check_module('follow')}-->
+			<!--{if helper_access::check_module('follower')}-->
 			<a href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&special={if $flag[$_G['uid']]['status'] == 1}2{else}1{/if}&fuid=$uid&from=head" class="{if $flag[$_G['uid']]['status'] == 1}flw_specialunfo{else}flw_specialfo{/if}" id="specialflag_$uid" onclick="ajaxget(this.href);doane(event);" title="{if $flag[$_G['uid']]['status'] == 1}{lang follow_del_special_following}{else}{lang follow_add_special_following}{/if}"><!--{if $flag[$_G['uid']]['status'] == 1}-->{lang follow_del_special_following}<!--{else}-->{lang follow_add_special_following}<!--{/if}--></a>
 			<!--{/if}-->
 			<!--{if $flag[$_G['uid']]['mutual']}-->
@@ -37,7 +39,7 @@
 			<!--{if isset($flag[$uid])}-->
 			<span class="z flw_status_1">{lang follow_user_followed}</span>
 			<!--{/if}-->
-			<!--{if helper_access::check_module('follow')}-->
+			<!--{if helper_access::check_module('follower')}-->
 			<a id="a_followmod_{$uid}" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&fuid=$uid&from=head" onclick="ajaxget(this.href);doane(event);" class="flw_btn_fo">{lang follow_add}</a>
 			<!--{/if}-->
 		</div>

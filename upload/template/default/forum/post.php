@@ -247,6 +247,9 @@
 				<!--{if helper_access::check_module('follow') && $_GET[action] != 'edit'}-->
 				<span id="adddynamicspan"><label><input type="checkbox" name="adddynamic" id="adddynamic" value="true" class="pc" {if $_G['forum']['allowfeed'] && !$_G[tid] && empty($_G['forum']['viewperm'])}checked="checked"{/if} />{lang post_relay}</label></span>
 				<!--{/if}-->
+				<!--{if helper_access::check_module('doing') && $_G['forum']['allowfeed'] && $_GET[action] != 'edit' && $_GET[action] != 'reply'}-->
+				<span id="adddynamic_doingspan"><label><input type="checkbox" name="adddynamic_doing" id="adddynamic_doing" value="true" class="pc" {if ($_G['forum']['fields']['allowfeed_default'] || $_GET['adddynamic_doing']) && !$_G[tid] && empty($_G['forum']['viewperm'])}checked="checked"{/if} />{lang follow_spread}</label></span>
+				<!--{/if}-->
 				<!--{if !empty($_G['setting']['pluginhooks']['post_sync_method'])}-->
 					<span>
 						{lang post_sync_method}:
@@ -257,7 +260,7 @@
 					<label><input type="checkbox" name="continueadd" value="yes" class="pc" />{lang post_message2}</label>
 				<!--{/if}-->
 				<!--{if helper_access::check_module('group') && $mygroups && $_G['forum']['status'] != 3}-->
-				<span id="adddynamicspan"><label>&nbsp;&nbsp;{lang fromgroup}:<select name="mygroupid"><option value="">{lang selectmygroup}</option><!--{loop $mygroups $mygroupid $mygroupname}--><option value="{$mygroupid}__{$mygroupname}" {if $selectgroupid == $mygroupid} selected{/if}>$mygroupname</option><!--{/loop}--></select></label></span>
+				<span id="mygroupidspan"><label>&nbsp;&nbsp;{lang fromgroup}:<select name="mygroupid"><option value="">{lang selectmygroup}</option><!--{loop $mygroups $mygroupid $mygroupname}--><option value="{$mygroupid}__{$mygroupname}" {if $selectgroupid == $mygroupid} selected{/if}>$mygroupname</option><!--{/loop}--></select></label></span>
 				<!--{/if}-->
 			</div>
 

@@ -37,18 +37,18 @@ class table_forum_forumfield extends discuz_table {
 	}
 
 	public function fetch_all_field_perm() {
-		return DB::fetch_all('SELECT fid, viewperm, postperm, replyperm, getattachperm, postattachperm, postimageperm FROM ' .DB::table($this->_table). ' WHERE founderuid=0');
+		return DB::fetch_all('SELECT fid, viewperm, postperm, replyperm, getattachperm, postattachperm, postimageperm FROM '.DB::table($this->_table).' WHERE founderuid=0');
 	}
 
 	public function fetch_groupnum_by_founderuid($uid) {
 		if(empty($uid)) {
 			return false;
 		}
-		return DB::result_first('SELECT COUNT(*) FROM ' .DB::table($this->_table). ' WHERE founderuid=%d', [$uid]);
+		return DB::result_first('SELECT COUNT(*) FROM '.DB::table($this->_table).' WHERE founderuid=%d', [$uid]);
 	}
 
 	public function update($val, $data, $unbuffered = false, $low_priority = false) {
-		table_forum_forum::t()->clear_cache([$val, $val. '_with_fields']);
+		table_forum_forum::t()->clear_cache([$val, $val.'_with_fields']);
 		return parent::update($val, $data, $unbuffered, $low_priority);
 	}
 
@@ -56,14 +56,14 @@ class table_forum_forumfield extends discuz_table {
 		if(!intval($fid) || !intval($num)) {
 			return false;
 		}
-		DB::query('UPDATE %t SET ' .DB::field('groupnum', $num, '+'). ' WHERE fid=%d', ['forum_forumfield', $fid]);
+		DB::query('UPDATE %t SET '.DB::field('groupnum', $num, '+').' WHERE fid=%d', ['forum_forumfield', $fid]);
 	}
 
 	public function update_membernum($fid, $num = 1) {
 		if(!intval($fid) || !intval($num)) {
 			return false;
 		}
-		DB::query('UPDATE %t SET ' .DB::field('membernum', $num, '+'). ' WHERE fid=%d', ['forum_forumfield', $fid]);
+		DB::query('UPDATE %t SET '.DB::field('membernum', $num, '+').' WHERE fid=%d', ['forum_forumfield', $fid]);
 	}
 
 	public function fetch_info_for_attach($fid, $uid) {
@@ -76,12 +76,12 @@ class table_forum_forumfield extends discuz_table {
 		}
 		if($accessmasks) {
 			$accessadd1 = ', a.allowview, a.allowpost, a.allowreply, a.allowgetattach, a.allowgetimage, a.allowpostattach';
-			$accessadd2 = 'LEFT JOIN ' .DB::table('forum_access'). ' a ON a.' .DB::field('uid', $uid). ' AND a.' .DB::field('fid', $fid);
+			$accessadd2 = 'LEFT JOIN '.DB::table('forum_access').' a ON a.'.DB::field('uid', $uid).' AND a.'.DB::field('fid', $fid);
 		}
 		return DB::fetch_first("SELECT ff.postperm, m.uid AS istargetmod $accessadd1
 				FROM ".DB::table($this->_table)." ff
 				$accessadd2
-				LEFT JOIN ".DB::table('forum_moderator'). ' m ON m.fid=%d AND m.uid=%d
+				LEFT JOIN ".DB::table('forum_moderator').' m ON m.fid=%d AND m.uid=%d
 				WHERE ff.fid=%d', [$fid, $uid, $fid]);
 	}
 }

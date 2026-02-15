@@ -69,17 +69,24 @@ class db_driver_mysqli {
 			$this->config[$serverid]['dbpw'],
 			$this->config[$serverid]['dbcharset'],
 			$this->config[$serverid]['dbname'],
-			$this->config[$serverid]['pconnect']
+			$this->config[$serverid]['pconnect'],
+			$this->config[$serverid]['dbport'],
+			$this->config[$serverid]['compress'],
 		);
 		$this->curlink = $this->link[$serverid];
 
 	}
 
-	function _dbconnect($dbhost, $dbuser, $dbpw, $dbcharset, $dbname, $pconnect, $halt = true) {
+	function _dbconnect($dbhost, $dbuser, $dbpw, $dbcharset, $dbname, $pconnect, $dbport = 3306, $dbcompress = 1, $halt = true) {
 		mysqli_report(MYSQLI_REPORT_OFF);
 		if(intval($pconnect) === 1) $dbhost = 'p:'.$dbhost; // 前面加p:，表示persistent connection
 		$link = new mysqli();
-		if(!$link->real_connect($dbhost, $dbuser, $dbpw, $dbname, null, null, MYSQLI_CLIENT_COMPRESS)) {
+		if(intval($dbcompress) === 1) {
+			$compress = MYSQLI_CLIENT_COMPRESS;
+		}else{
+			$compress = 0;
+		}
+		if(!$link->real_connect($dbhost, $dbuser, $dbpw, $dbname, $dbport, null, $compress)) {
 			$halt && $this->halt(mysqli_connect_error(), mysqli_connect_errno());
 		} else {
 			$this->curlink = $link;

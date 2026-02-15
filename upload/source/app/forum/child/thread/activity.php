@@ -72,7 +72,7 @@ foreach($query as $activityapplies) {
 	if($activityapplies['verified'] == 1) {
 		$activityapplies['ufielddata'] = dunserialize($activityapplies['ufielddata']);
 		if(count($applylist) < $_G['setting']['activitypp']) {
-			$activityapplies['message'] = preg_replace('/(' .lang('forum/misc', 'contact'). '.*)/', '', $activityapplies['message']);
+			$activityapplies['message'] = preg_replace('/('.lang('forum/misc', 'contact').'.*)/', '', $activityapplies['message']);
 			$applylist[] = $activityapplies;
 		}
 	} else {

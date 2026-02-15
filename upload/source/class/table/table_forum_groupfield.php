@@ -28,7 +28,7 @@ class table_forum_groupfield extends discuz_table {
 	}
 
 	public function truncate() {
-		DB::query('TRUNCATE ' .DB::table('forum_groupfield'));
+		DB::query('TRUNCATE '.DB::table('forum_groupfield'));
 	}
 
 	public function delete_by_type($types, $fid = 0) {
@@ -36,12 +36,12 @@ class table_forum_groupfield extends discuz_table {
 			return false;
 		}
 		$addfid = $fid ? " AND fid='".intval($fid)."'" : '';
-		DB::query('DELETE FROM ' .DB::table('forum_groupfield'). ' WHERE ' .DB::field('type', $types).$addfid);
+		DB::query('DELETE FROM '.DB::table('forum_groupfield').' WHERE '.DB::field('type', $types).$addfid);
 	}
 
 	public function fetch_all_group_cache($fid, $types = [], $privacy = 0) {
-		$typeadd = $types && is_array($types) ? 'AND ' .DB::field('type', $types) : '';
-		return DB::fetch_all('SELECT fid, dateline, type, data FROM ' .DB::table('forum_groupfield')." WHERE fid=%d AND privacy=%d $typeadd", [$fid, $privacy]);
+		$typeadd = $types && is_array($types) ? 'AND '.DB::field('type', $types) : '';
+		return DB::fetch_all('SELECT fid, dateline, type, data FROM '.DB::table('forum_groupfield')." WHERE fid=%d AND privacy=%d $typeadd", [$fid, $privacy]);
 	}
 }
 

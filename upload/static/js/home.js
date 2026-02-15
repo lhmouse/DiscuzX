@@ -709,12 +709,32 @@ function resend_mail(mid) {
 	}
 }
 
-function docomment_get(doid, key) {
+var current_comment_pages = {};
+function docomment_get(doid, key, page, inlist) {
 	var showid = key + '_' + doid;
 	var opid = key + '_do_a_op_'+doid;
-	$(showid).style.display = '';
-	$(showid).className = 'cmt brm';
-	ajaxget('home.php?mod=spacecp&ac=doing&op=getcomment&handlekey=msg_'+doid+'&doid='+doid+'&key='+key, showid);
+
+	var url = 'home.php?mod=spacecp&ac=doing&op=getcomment&handlekey=msg_'+doid+'&doid='+doid+'&key='+key;
+
+	var current_page = page || current_comment_pages[doid] || 1;
+	current_comment_pages[doid] = current_page;
+
+	var currentUrl = window.location.href;
+	if (currentUrl.indexOf('doid=') > -1 || typeof current_comment_pages[doid] !== 'undefined') {
+		url += '&page_c=' + current_page;
+	}
+	if(inlist) {
+		url += '&inlist=1';
+	}
+
+	var showElem = $(showid);
+	if(showElem) {
+		showElem.style.display = '';
+		showElem.className = 'doingreply_box';
+	}
+	
+	ajaxget(url, showid);
+
 	if($(opid)) {
 		$(opid).innerHTML = $L('fold');
 		$(opid).onclick = function() {
@@ -728,12 +748,18 @@ function docomment_colse(doid, key) {
 	var showid = key + '_' + doid;
 	var opid = key + '_do_a_op_'+doid;
 
-	$(showid).style.display = 'none';
-	$(showid).style.className = '';
+	var showElem = $(showid);
+	if(showElem) {
+		showElem.style.display = 'none';
+		showElem.className = '';
+	}
 
-	$(opid).innerHTML = $L('reply');
-	$(opid).onclick = function() {
-		docomment_get(doid, key);
+	var opElem = $(opid);
+	if(opElem) {
+		opElem.innerHTML = $L('reply');
+		opElem.onclick = function() {
+			docomment_get(doid, key);
+		}
 	}
 }
 
@@ -743,26 +769,40 @@ function docomment_form(doid, id, key) {
 	var url = 'home.php?mod=spacecp&ac=doing&op=docomment&handlekey=msg_'+id+'&doid='+doid+'&docid='+id+'&key='+key;
 	if(parseInt(discuz_uid)) {
 		ajaxget(url, showid);
-		if($(divid)) {
-			$(divid).style.display = '';
+		var divElem = $(divid);
+		if(divElem) {
+			divElem.style.display = '';
 		}
 	} else {
-		showWindow(divid, url);
+		if($(divid)) {
+			showWindow(divid, url);
+		}
 	}
 }
 
 function docomment_form_close(doid, id, key) {
 	var showid = key + '_form_' + doid + '_' + id;
 	var opid = key + '_do_a_op_' + doid;
-	$(showid).innerHTML = '';
-	$(showid).style.display = 'none';
-	var liObj = $(key+'_'+doid).getElementsByTagName('li');
-	if(!liObj.length) {
-		$(key+'_'+doid).style.display = 'none';
-		if($(opid)) {
-			$(opid).innerHTML = $L('reply');
-			$(opid).onclick = function () {
-				docomment_get(doid, key);
+	var containerId = key + '_' + doid;
+
+	var showElem = $(showid);
+	if(showElem) {
+		showElem.innerHTML = '';
+		showElem.style.display = 'none';
+	}
+
+	var containerElem = $(containerId);
+	if(containerElem) {
+		var liObj = containerElem.getElementsByTagName('li');
+		if(!liObj.length) {
+			containerElem.style.display = 'none';
+
+			var opElem = $(opid);
+			if(opElem) {
+				opElem.innerHTML = $L('reply');
+				opElem.onclick = function () {
+					docomment_get(doid, key);
+				}
 			}
 		}
 	}

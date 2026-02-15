@@ -75,7 +75,7 @@ class table_common_session extends discuz_table {
 
 	public function count($type = 0) {
 		$condition = $type == 1 ? ' WHERE uid>0 ' : ($type == 2 ? ' WHERE uid=0 ' : '');
-		return DB::result_first('SELECT count(*) FROM ' .DB::table($this->_table).$condition);
+		return DB::result_first('SELECT count(*) FROM '.DB::table($this->_table).$condition);
 
 	}
 
@@ -134,7 +134,7 @@ class table_common_session extends discuz_table {
 	public function count_by_ip($ip) {
 		$count = 0;
 		if(!empty($ip)) {
-			$count = DB::result_first('SELECT COUNT(*) FROM '.DB::table('common_session'). ' WHERE ' .DB::field('ip', $ip));
+			$count = DB::result_first('SELECT COUNT(*) FROM '.DB::table('common_session').' WHERE '.DB::field('ip', $ip));
 		}
 		return $count;
 	}

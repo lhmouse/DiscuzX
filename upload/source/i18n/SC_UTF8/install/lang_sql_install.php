@@ -1572,7 +1572,7 @@ CREATE TABLE pre_common_syscache
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_common_tag;
-CREATE TABLE `pre_common_tag` 
+CREATE TABLE `pre_common_tag`
 (
   `tagid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `tagname` char(50) NOT NULL DEFAULT '',
@@ -1588,7 +1588,7 @@ CREATE TABLE `pre_common_tag`
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS pre_common_tagitem;
-CREATE TABLE `pre_common_tagitem` 
+CREATE TABLE `pre_common_tagitem`
 (
   `tagid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `itemid` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -3835,7 +3835,10 @@ CREATE TABLE pre_home_doing
 	`port`   smallint(6) unsigned  NOT NULL DEFAULT '0',
 	replynum int(10) unsigned      NOT NULL DEFAULT '0',
 	`recomends` int(10) unsigned   NOT NULL DEFAULT '0',
+	`sharetimes` int unsigned      NOT NULL DEFAULT '0',
+	`favtimes` int unsigned        NOT NULL DEFAULT '0',
 	`status` tinyint(3) unsigned   NOT NULL DEFAULT '0',
+	fields json,
 	PRIMARY KEY (doid),
 	KEY uid (uid, dateline),
 	KEY dateline (dateline),
@@ -4208,7 +4211,7 @@ CREATE TABLE pre_portal_article_content
 	id        int(10) unsigned      NOT NULL DEFAULT '0',
 	idtype    varchar(255)          NOT NULL DEFAULT '',
 	title     varchar(255)          NOT NULL DEFAULT '',
-	content   text                  NOT NULL,
+	content   mediumtext            NOT NULL,
 	pageorder smallint(6) unsigned  NOT NULL DEFAULT '0',
 	dateline  int(10) unsigned      NOT NULL DEFAULT '0',
 	PRIMARY KEY (cid),

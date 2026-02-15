@@ -190,7 +190,7 @@ class block_grouptrade extends discuz_block {
 
 		$groups = [];
 		if(empty($fids) && $typeids) {
-			$query = DB::query('SELECT f.fid, f.name, ff.description FROM '.DB::table('forum_forum'). ' f LEFT JOIN ' .DB::table('forum_forumfield'). ' ff ON f.fid = ff.fid WHERE f.fup IN (' .dimplode($typeids).") AND threads > 0$gviewwhere");
+			$query = DB::query('SELECT f.fid, f.name, ff.description FROM '.DB::table('forum_forum').' f LEFT JOIN '.DB::table('forum_forumfield').' ff ON f.fid = ff.fid WHERE f.fup IN ('.dimplode($typeids).") AND threads > 0$gviewwhere");
 			while($value = DB::fetch($query)) {
 				$groups[$value['fid']] = $value;
 				$fids[] = intval($value['fid']);
@@ -239,10 +239,10 @@ class block_grouptrade extends discuz_block {
 		$where .= ($uids ? ' AND tr.sellerid IN ('.dimplode($uids).')' : '').$keyword;
 		$where .= ($bannedids ? ' AND tr.pid NOT IN ('.dimplode($bannedids).')' : '');
 		$where = "$sql AND t.displayorder>='0' $where";
-		$sqlfrom = ' INNER JOIN `' .DB::table('forum_thread'). '` t ON t.tid=tr.tid ';
+		$sqlfrom = ' INNER JOIN `'.DB::table('forum_thread').'` t ON t.tid=tr.tid ';
 		$joinmethod = empty($tids) ? 'INNER' : 'LEFT';
 		if($recommend) {
-			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend'). '` fc ON fc.tid=tr.tid';
+			$sqlfrom .= " $joinmethod JOIN `".DB::table('forum_forumrecommend').'` fc ON fc.tid=tr.tid';
 		}
 
 		$sqlfield = '';
@@ -292,7 +292,7 @@ class block_grouptrade extends discuz_block {
 		if(!empty($listpids)) {
 			foreach($threadpids as $key => $var) {
 				$posttable = $key == 0 ? 'forum_post' : 'forum_post_'.$key;
-				$query = DB::query('SELECT pid, message FROM ' .DB::table($posttable). ' WHERE pid IN  (' .dimplode($var). ')');
+				$query = DB::query('SELECT pid, message FROM '.DB::table($posttable).' WHERE pid IN  ('.dimplode($var).')');
 				while($result = DB::fetch($query)) {
 					$list[$result['pid']]['summary'] = messagecutstr($result['message'], $summarylength, '');
 				}

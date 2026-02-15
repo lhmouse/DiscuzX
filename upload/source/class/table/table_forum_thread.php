@@ -224,7 +224,7 @@ class table_forum_thread extends discuz_table {
 		return $data;
 	}
 
-	public function fetch_all_by_tid_fid_displayorder($tids, $fids = null, $displayorder = null, $order = 'dateline', $start = 0, $limit = 0, $glue = '>=', $sort = 'DESC', $tableid = 0) {
+	public function fetch_all_by_tid_fid_displayorder($tids, $fids = null, $displayorder = null, $order = 'dateline', $start = 0, $limit = 0, $glue = '>=', $sort = 'DESC', $tableid = 0, $isgroup = null) {
 		$parameter = [$this->get_table_name($tableid)];
 		$wherearr = [];
 		if(!empty($tids)) {
@@ -243,8 +243,14 @@ class table_forum_thread extends discuz_table {
 			$glue = helper_util::check_glue($glue);
 			$wherearr[] = "displayorder{$glue}%d";
 		}
+		if($isgroup !== null) {
+			$parameter[] = $isgroup;
+			$wherearr[] = 'isgroup=%d';
+		}
 		if($order) {
 			$order = 'ORDER BY '.DB::order($order, $sort);
+		} elseif(!empty($tids)) {
+			$order = 'ORDER BY FIELD(`tid`, '.implode(',', $tids).')';
 		}
 		if(!empty($wherearr)) {
 			$wheresql = !empty($wherearr) && is_array($wherearr) ? ' WHERE '.implode(' AND ', $wherearr) : '';
@@ -460,7 +466,7 @@ class table_forum_thread extends discuz_table {
 		return DB::fetch_all("SELECT t.tid, t.subject, t.views, t.author, t.authorid, t.replies, t.heats, t.sharetimes, t.favtimes, act.aid, act.starttimefrom, act.starttimeto, act.place, act.class, act.applynumber, act.expiration FROM %t t LEFT JOIN %t act ON act.tid=t.tid $wheresql $ordersql ".DB::limit($start, $limit), $parameter, $this->_pk);
 	}
 
-	public function fetch_all_by_recyclebine($fid = 0, $isgroup = 0, $author = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '', $start = 0, $limit = 0) {
+	public function fetch_all_by_recyclebine($fid = 0, $isgroup = null, $author = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '', $start = 0, $limit = 0) {
 		$sql = $this->recyclebine_where($fid, $isgroup, $author, $username, $pstarttime, $pendtime, $mstarttime, $mendtime, $keywords);
 		return DB::fetch_all('SELECT f.name AS forumname, f.allowsmilies, f.allowhtml, f.allowbbcode, f.allowimgcode,
 				t.tid, t.fid, t.authorid, t.author, t.subject, t.views, t.replies, t.dateline, t.posttableid,
@@ -469,8 +475,14 @@ class table_forum_thread extends discuz_table {
 				LEFT JOIN '.DB::table('forum_forum').' f ON f.fid=t.fid '.$sql[0].' ORDER BY t.dateline DESC '.DB::limit($start, $limit), $sql[1]);
 	}
 
-	public function fetch_all_recyclebin_by_dateline($dateline, $start = 0, $limit = 0) {
-		return DB::fetch_all('SELECT tid FROM %t WHERE displayorder=-1 AND dateline<%d'.DB::limit($start, $limit), [$this->_table, $dateline]);
+	public function fetch_all_recyclebin_by_dateline($dateline, $start = 0, $limit = 0, $isgroup = null) {
+		$sql = 'SELECT tid FROM %t WHERE displayorder=-1 AND dateline<%d';
+		$parameter = [$this->_table, $dateline];
+		if($isgroup !== null) {
+			$parameter[] = $isgroup;
+			$sql .= ' AND isgroup=%d';
+		}
+		return DB::fetch_all($sql.DB::limit($start, $limit), $parameter);
 	}
 
 	public function fetch_all_moderate($fid = 0, $displayorder = null, $isgroup = null, $dateline = null, $author = null, $subject = null) {
@@ -515,16 +527,16 @@ class table_forum_thread extends discuz_table {
 		$data = [];
 		$tlkey = !empty($conditions['inforum']) && !is_array($conditions['inforum']) ? $conditions['inforum'] : '';
 		$firstpage = false;
-		$defult = count($conditions) < 5;
+		$default = empty($conditions['intids']) && count($conditions) < 5;
 		if(count($conditions) < 5) {
 			foreach(array_keys($conditions) as $key) {
 				if(!in_array($key, ['inforum', 'sticky', 'displayorder', 'intids'])) {
-					$defult = false;
+					$default = false;
 					break;
 				}
 			}
 		}
-		if(!defined('IN_MOBILE') && $defult && $conditions['sticky'] == 4 && $start == 0 && $limit && strtolower(preg_replace('/\s?/is', '', $order)) == 'displayorderdesc,lastpostdesc' && empty($sort)) {
+		if(!defined('IN_MOBILE') && $default && $conditions['sticky'] == 4 && $start == 0 && $limit && strtolower(preg_replace('/\s?/is', '', $order)) == 'displayorderdesc,lastpostdesc' && empty($sort)) {
 			foreach($conditions['displayorder'] as $id) {
 				if($id < 2) {
 					$firstpage = true;
@@ -689,6 +701,10 @@ class table_forum_thread extends discuz_table {
 			$wherearr[] = $prefix.DB::field('tid', $conditions['tidmax'], '<=');
 			$this->_urlparam[] = "tidmax={$conditions['tidmax']}";
 		}
+		if(!empty($conditions['intype']) && $conditions['intype'] != 'all') {
+			$wherearr[] = $prefix.DB::field('typeid', $conditions['intype']);
+			$this->_urlparam[] = "intype={$conditions['intype']}";
+		}
 		if(isset($conditions['sticky'])) {
 			if($conditions['sticky'] == 1) {
 				$wherearr[] = $prefix.DB::field('displayorder', 0, '>');
@@ -723,10 +739,6 @@ class table_forum_thread extends discuz_table {
 			$this->_urlparam[] = "lastpostmore={$conditions['lastpostmore']}";
 		}
 
-		if(!empty($conditions['intype']) && $conditions['intype'] != 'all') {
-			$wherearr[] = $prefix.DB::field('typeid', $conditions['intype']);
-			$this->_urlparam[] = "intype={$conditions['intype']}";
-		}
 		if(!empty($conditions['insort']) && $conditions['insort'] != 'all') {
 			$wherearr[] = $prefix.DB::field('sortid', $conditions['insort']);
 			$this->_urlparam[] = "insort={$conditions['insort']}";
@@ -1010,8 +1022,14 @@ class table_forum_thread extends discuz_table {
 		return DB::result_first('SELECT COUNT(*) FROM %t WHERE fid=%d', [$this->get_table_name($tableid), $fid]);
 	}
 
-	public function count_by_displayorder($displayorder) {
-		return DB::result_first('SELECT COUNT(*) FROM %t WHERE displayorder=%d', [$this->get_table_name(), $displayorder]);
+	public function count_by_displayorder($displayorder, $isgroup = null) {
+		$sql = 'SELECT COUNT(*) FROM %t WHERE displayorder=%d';
+		$parameter = [$this->get_table_name(), $displayorder];
+		if($isgroup !== null) {
+			$parameter[] = $isgroup;
+			$sql .= ' AND isgroup=%d';
+		}
+		return DB::result_first($sql, $parameter);
 	}
 
 	public function count_by_replies($number, $glue = '>') {
@@ -1102,7 +1120,7 @@ class table_forum_thread extends discuz_table {
 		return DB::fetch_all('SELECT special, count(*) AS spcount FROM %t GROUP BY special', [$this->get_table_name()]);
 	}
 
-	public function count_by_recyclebine($fid = 0, $isgroup = 0, $author = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '') {
+	public function count_by_recyclebine($fid = 0, $isgroup = null, $author = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '') {
 		$sql = $this->recyclebine_where($fid, $isgroup, $author, $username, $pstarttime, $pendtime, $mstarttime, $mendtime, $keywords);
 		return DB::result_first('SELECT COUNT(*) FROM '.DB::table('forum_thread').' t LEFT JOIN '.DB::table('forum_threadmod').' tm ON tm.tid=t.tid '.$sql[0], $sql[1]);
 	}
@@ -1213,7 +1231,7 @@ class table_forum_thread extends discuz_table {
 		return $table_info;
 	}
 
-	private function recyclebine_where($fid = 0, $isgroup = 0, $authors = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '') {
+	private function recyclebine_where($fid = 0, $isgroup = null, $authors = [], $username = [], $pstarttime = 0, $pendtime = 0, $mstarttime = 0, $mendtime = 0, $keywords = '') {
 		$parameter = [];
 		$wherearr = ['t.displayorder=-1', 'tm.action=\'DEL\''];
 		if($fid) {
@@ -1221,8 +1239,9 @@ class table_forum_thread extends discuz_table {
 			$parameter[] = $fid;
 			$wherearr[] = is_array($fid) ? 't.fid IN(%n)' : 't.fid=%d';
 		}
-		if($isgroup) {
-			$wherearr[] = 't.isgroup=1';
+		if($isgroup !== null) {
+			$parameter[] = $isgroup;
+			$wherearr[] = 't.isgroup=%d';
 		}
 		if(!empty($authors)) {
 			$parameter[] = $authors;
@@ -1299,5 +1318,6 @@ class table_forum_thread extends discuz_table {
 			default => false,
 		};
 	}
+
 }
 

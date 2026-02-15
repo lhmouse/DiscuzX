@@ -113,7 +113,7 @@ function getblockhtml($blockname, $parameters = []) {
 				$showmagicgift = true;
 				$magicinfo = !empty($space['magicgift']) ? dunserialize($space['magicgift']) : [];
 			}
-			if(helper_access::check_module('follow')) {
+			if(helper_access::check_module('follower')) {
 				$html .= '<li class="ul_broadcast"><a href="home.php?mod=space&uid='.$uid.'">'.lang('space', 'block_profile_follow').'</a></li>';
 			}
 			if($space['self']) {
@@ -131,7 +131,7 @@ function getblockhtml($blockname, $parameters = []) {
 					$html .= '</div></li>';
 				}
 			} else {
-				if(helper_access::check_module('follow')) {
+				if(helper_access::check_module('follower')) {
 					$follow = table_home_follow::t()->fetch_by_uid_followuid($_G['uid'], $uid);
 					if($follow) {
 						$html .= "<li class='ul_flw'><a href=\"home.php?mod=spacecp&ac=follow&op=del&fuid={$space['uid']}\" id=\"followmod\" onclick=\"showWindow(this.id, this.href, 'get', 0);\">".lang('space', 'follow_cancle_follow').'</a></li>';

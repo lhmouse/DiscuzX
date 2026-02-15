@@ -156,7 +156,7 @@ class table_forum_postcomment extends discuz_table {
 	}
 
 	public function fetch_postcomment_by_pid($pids, $postcache, $commentcount, $totalcomment, $commentnumber) {
-		$query = DB::query('SELECT * FROM ' .DB::table('forum_postcomment'). ' WHERE pid IN (' .dimplode($pids).') ORDER BY dateline DESC');
+		$query = DB::query('SELECT * FROM '.DB::table('forum_postcomment').' WHERE pid IN ('.dimplode($pids).') ORDER BY dateline DESC');
 		$commentcount = $comments = [];
 		while($comment = DB::fetch($query)) {
 			if($comment['authorid'] > '-1') {

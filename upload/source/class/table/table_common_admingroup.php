@@ -37,7 +37,7 @@ class table_common_admingroup extends discuz_table {
 	}
 
 	public function fetch_all_order() {
-		return DB::fetch_all('SELECT u.radminid, u.groupid, u.grouptitle FROM ' .DB::table('common_admingroup'). ' a LEFT JOIN ' .DB::table('common_usergroup'). ' u ON u.groupid=a.admingid ORDER BY u.radminid, a.admingid');
+		return DB::fetch_all('SELECT u.radminid, u.groupid, u.grouptitle FROM '.DB::table('common_admingroup').' a LEFT JOIN '.DB::table('common_usergroup').' u ON u.groupid=a.admingid ORDER BY u.radminid, a.admingid');
 	}
 }
 

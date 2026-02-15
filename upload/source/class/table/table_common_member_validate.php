@@ -33,7 +33,7 @@ class table_common_member_validate extends discuz_table {
 		$sql .= $regdate ? ' AND m.regdate<'.(TIMESTAMP - intval($regdate) * 86400) : '';
 		$sql .= $moddate ? ' AND v.moddate<'.(TIMESTAMP - intval($moddate) * 86400) : '';
 		$sql .= ($regip = stripsearchkey(addslashes((string)$regip))) ? " AND m.regip LIKE '".$regip."%'" : '';
-		return DB::fetch_all('SELECT v.uid FROM ' .DB::table('common_member_validate'). ' v, ' .DB::table('common_member')." m
+		return DB::fetch_all('SELECT v.uid FROM '.DB::table('common_member_validate').' v, '.DB::table('common_member')." m
 			WHERE $sql AND m.uid=v.uid", null, 'uid');
 	}
 
@@ -50,7 +50,7 @@ class table_common_member_validate extends discuz_table {
 
 	public function fetch_all_status_by_count() {
 		$count = [];
-		$query = DB::query('SELECT status, COUNT(*) AS count FROM ' .DB::table('common_member_validate'). ' GROUP BY status');
+		$query = DB::query('SELECT status, COUNT(*) AS count FROM '.DB::table('common_member_validate').' GROUP BY status');
 		while($num = DB::fetch($query)) {
 			$count[$num['status']] = $num['count'];
 		}

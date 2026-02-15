@@ -14,6 +14,9 @@ if(!$_G['setting']['doingstatus']) {
 	showmessage('doing_status_off');
 }
 
+
+
+require_once libfile('function/doing');
 $perpage = 20;
 $perpage = mob_perpage($perpage);
 
@@ -21,12 +24,18 @@ $page = empty($_GET['page']) ? 0 : intval($_GET['page']);
 if($page < 1) $page = 1;
 $start = ($page - 1) * $perpage;
 
+// 评论分页参数
+$comment_perpage = 10;
+$comment_page = empty($_GET['page_c']) ? 0 : intval($_GET['page_c']);
+if($comment_page < 1) $comment_page = 1;
+$comment_start = ($comment_page - 1) * $comment_perpage;
+
 ckstart($start, $perpage);
 
 $dolist = [];
 $count = 0;
 
-$_GET['view'] = in_array($_GET['view'], ['we', 'me', 'all']) ? $_GET['view'] : 'all';
+$_GET['view'] = in_array($_GET['view'], ['follow', 'we', 'me', 'all']) ? $_GET['view'] : 'all';
 
 $gets = [
 	'mod' => 'space',
@@ -34,7 +43,8 @@ $gets = [
 	'do' => 'doing',
 	'view' => $_GET['view'],
 	'searchkey' => $_GET['searchkey'],
-	'from' => $_GET['from']
+	'from' => $_GET['from'],
+	'tagid' => $_GET['tagid'],
 ];
 $theurl = 'home.php?'.url_implode($gets);
 
@@ -53,7 +63,16 @@ if($_GET['view'] == 'all') {
 	} else {
 		$uids = [$space['uid']];
 	}
-
+} elseif($_GET['view'] == 'follow') {
+	$uids[] = $space['uid'];
+	if($_GET['viewtype'] == 'special') {
+		$followusers = table_home_follow::t()->fetch_all_following_by_uid($space['uid'], 1);
+	} else {
+		$followusers = table_home_follow::t()->fetch_all_following_by_uid($space['uid']);
+	}
+	foreach($followusers as $followuser) {
+		$uids[] = $followuser['followuid'];
+	}
 } else {
 
 	if($_GET['from'] == 'space') $diymode = 1;
@@ -62,13 +81,31 @@ if($_GET['view'] == 'all') {
 }
 $actives = [$_GET['view'] => ' class="a"'];
 
+$tagid = empty($_GET['tagid']) ? 0 : intval($_GET['tagid']);
 $doid = empty($_GET['doid']) ? 0 : intval($_GET['doid']);
-$doids = $clist = $newdoids = [];
+$all_doids = $clist = $newdoids = [];
 $pricount = 0;
 if($doid) {
+	$op = 'view';
 	$count = 1;
 	$f_index = '';
 	$theurl .= "&doid=$doid";
+}
+if($tagid) {
+	$doid = [];
+	$tag = table_common_tag::t()->fetch_info($tagid);
+	if(empty($tag['tagid'])) {
+		showmessage('article_does_not_exist');
+	}
+	if($tag['status'] == 1) {
+		showmessage('tag_closed');
+	}
+	$tagname = $tag['tagname'];
+	$count = table_common_tagitem::t()->select($tagid, 0, 'doid', '', '', 0, 0, 0, 1);
+	$query = table_common_tagitem::t()->select($tagid, 0, 'doid', '', '', $start, $perpage);
+	foreach($query as $result) {
+		$doid[] = $result['itemid'];
+	}
 }
 
 if($searchkey = stripsearchkey($_GET['searchkey'])) {
@@ -78,64 +115,30 @@ if($searchkey = stripsearchkey($_GET['searchkey'])) {
 if(empty($count)) {
 	$count = table_home_doing::t()->fetch_all_search($start, $perpage, 3, $uids, '', $searchkey, '', '', '', 1, $doid, $f_index);
 }
+
 if($count) {
 	$query = table_home_doing::t()->fetch_all_search($start, $perpage, 1, $uids, '', $searchkey, '', '', '', 1, $doid, $f_index);
+	// 收集所有动态ID
 	foreach($query as $value) {
-		if(!empty($value['ip'])) {
-			$value['ip'] = ip::to_display($value['ip']);
-			$value['iplocation'] = $_G['setting']['showiplocation'] ? ip::convert($value['ip'], true) : '';
-		}
-
-		// 处理记录内容，确保链接和媒体正确显示
-		require_once libfile('function/discuzcode');
-		$value['message'] = preg_replace_callback('/http[s]?:\/\/[a-zA-Z0-9\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+/', function($matches) {
-			$url = $matches[0];
-			// 移除URL末尾的HTML实体（如&nbsp;）
-			$url = preg_replace('/(&nbsp;)+$/', '', $url);
-			// 也处理可能存在的空格后跟HTML实体的情况
-			$url = trim($url);
-			//var_dump(parseflv($url));
-			// 检查是否为支持的媒体域名，只对支持的域名进行解析
-			if(isVideoUrl($url) || parseflv($url)) {
-				// 媒体内容单独一行显示
-				$media = parsemedia('x,500,373', $url);
-				return '<br />'.$media.'<br />';
-			} elseif(isAudioUrl($url)) {
-				// 音频内容单独一行显示
-				$audio = parseaudio($url);
-				return '<br />'.$audio.'<br />';
-			} else {
-				// 普通链接，转换为可点击链接
-				return '<a href="'.dhtmlspecialchars($url).'" target="_blank" rel="nofollow">'.dhtmlspecialchars($url).'</a>';
-			}
-		}, $value['message']);
-		$value['body_data'] = dunserialize($value['body_data']);
-		$searchs = $replaces = [];
-		if($value['body_data']) {
-			foreach(array_keys($value['body_data']) as $key) {
-				$searchs[] = '{'.$key.'}';
-				$replaces[] = $value['body_data'][$key];
-			}
-		}
-		$value['body_template'] = str_replace($searchs, $replaces, $value['body_template']);
-
-		// 查询点赞状态和点赞数
-		$value['recomends'] = $value['recomends'] ? $value['recomends'] : 0;
-		if($_G['uid']) {
-			$value['recommendstatus'] = table_home_doing_recomend_log::t()->fetch_by_doid_uid($value['doid'], $_G['uid']) ? 1 : 0;
-		} else {
-			$value['recommendstatus'] = 0;
-		}
-
 		if($value['status'] == 0 || $value['uid'] == $_G['uid'] || $_G['adminid'] == 1) {
-			$doids[] = $value['doid'];
-			$dolist[] = $value;
+			$all_doids[] = $value['doid'];
 		} else {
 			$pricount++;
 		}
 	}
+	// 批量查询点赞状态
+	$recommend_status = array();
+	if($_G['uid'] && !empty($all_doids)) {
+		$recommend_status = table_home_doing_recomend_log::t()->fetch_all_by_doids_uid($all_doids, $_G['uid']);
+	}
+	foreach($query as $value) {
+		$value = domessageformat($value, $recommend_status);
+		if($value['status'] == 0 || $value['uid'] == $_G['uid'] || $_G['adminid'] == 1) {
+			$dolist[] = $value;
+		}
+	}
 }
-if($doid) {
+if($doid && is_numeric($doid)) {
 	$dovalue = empty($dolist) ? [] : $dolist[0];
 	if($dovalue) {
 		if($dovalue['uid'] == $_G['uid']) {
@@ -147,63 +150,41 @@ if($doid) {
 }
 
 
-if($doids) {
-
-	$tree = new home\class_tree();
-
-	$values = [];
-	foreach(table_home_docomment::t()->fetch_all_by_doid($doids) as $value) {
-		$newdoids[$value['doid']] = $value['doid'];
-		if(empty($value['upid'])) {
-			$value['upid'] = "do{$value['doid']}";
-		}
-		if(!empty($value['ip'])) {
-			$value['ip'] = ip::to_display($value['ip']);
-		}
-		$tree->setNode($value['id'], $value['upid'], $value);
+// 查询记录对应的附件信息
+$attachments = [];
+if (!empty($all_doids)) {
+	$attach_list = table_home_doing_attachment::t()->fetch_all_by_id(0, 'doid', $all_doids);
+	foreach ($attach_list as $attach) {
+		$attach['thumb'] = getdiscuzimg('doing', $attach['aid'], 0, 140, 140);
+		$attachments[$attach['doid']][] = $attach;
 	}
-
-	// 查询记录对应的附件信息
-	$attachments = [];
-	if (!empty($doids)) {
-		$attach_list = table_home_doing_attachment::t()->fetch_all_by_id(0, 'doid', $doids);
-		foreach ($attach_list as $attach) {
-			$attach['thumb'] = getdiscuzimg('doing', $attach['aid'], 0, 140, 140);
-			$attachments[$attach['doid']][] = $attach;
-		}
-	}
-
-	// 将附件信息添加到记录数据中
-	foreach ($dolist as &$dv) {
-		$dv['attachments'] = isset($attachments[$dv['doid']]) ? $attachments[$dv['doid']] : [];
-	}
-	unset($dv);
 }
+// 将附件信息添加到记录数据中
+foreach ($dolist as &$dv) {
+	$dv['attachments'] = isset($attachments[$dv['doid']]) ? $attachments[$dv['doid']] : [];
+}
+unset($dv);
 
+// 处理评论
+$clist = [];
 $showdoinglist = [];
-foreach($newdoids as $cdoid) {
-	$values = $tree->getChilds("do$cdoid");
-	$show = false;
-	foreach($values as $key => $id) {
-		$one = $tree->getValue($id);
-		$one['layer'] = $tree->getLayer($id) * 2 - 2;
-		$one['style'] = "padding-left:{$one['layer']}em;";
-		if($_GET['highlight'] && $one['id'] == $_GET['highlight']) {
-			$one['style'] .= 'color:#F60;';
-		}
-		if($one['layer'] > 0) {
-			if($one['layer'] % 3 == 2) {
-				$one['class'] = ' dtls';
-			} else {
-				$one['class'] = ' dtll';
-			}
-		}
-		if(!$show && $one['uid']) {
-			$show = true;
-		}
-		$clist[$cdoid][] = $one;
+$comment_multi = [];
+
+// 无论是单条动态还是多条动态列表，都初始化空的评论数组，点击按钮时异步加载
+$clist = [];
+$showdoinglist = [];
+$comment_multi = [];
+
+// 单条动态查看时，为分页链接做准备
+if($doid && is_numeric($doid)) {
+	// 只获取评论总数用于生成分页链接，评论数据通过ajax异步加载
+	$top_comment_count = intval(table_home_docomment::t()->count_top_by_doid($doid));
+	
+	// 生成评论分页链接
+	if($top_comment_count > $comment_perpage) {
+		$comment_url = "home.php?mod=space&do=doing&doid=$doid&page_c={page}";
+		$comment_multi[$doid] = multi($top_comment_count, $comment_perpage, $comment_page, $comment_url);
 	}
-	$showdoinglist[$cdoid] = $show;
 }
 
 $multi = multi($count, $perpage, $page, $theurl);
@@ -221,8 +202,11 @@ if($_G['uid']) {
 } else {
 	$navtitle = lang('core', 'title_newest_doing');
 }
+if($tagid){
+	$navtitle = $tagname.' - '.$navtitle;
+}
 
-if($space['username']) {
+if($_G['uid'] != $space['uid'] && $space['username']) {
 	$navtitle = lang('space', 'sb_doing', ['who' => $space['username']]);
 }
 $metakeywords = $navtitle;

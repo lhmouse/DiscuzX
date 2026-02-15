@@ -181,4 +181,17 @@ class table_home_doing extends discuz_table {
 		return DB::result_first('SELECT COUNT(*) FROM %t '.$wheresql, $parameter);
 	}
 
+	public function increase($ids, $data) {
+		$ids = array_map('intval', (array)$ids);
+		$sql = [];
+		$allowkey = ['replynum', 'recomends', 'favtimes', 'sharetimes'];
+		foreach($data as $key => $value) {
+			if(($value = intval($value)) && in_array($key, $allowkey)) {
+				$sql[] = "`$key`=`$key`+'$value'";
+			}
+		}
+		if(!empty($sql)) {
+			DB::query('UPDATE '.DB::table($this->_table).' SET '.implode(',', $sql).' WHERE doid IN ('.dimplode($ids).')', 'UNBUFFERED');
+		}
+	}
 }

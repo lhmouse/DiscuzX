@@ -26,7 +26,6 @@ $threads = $posts = $todayposts = $announcepm = 0;
 $postdata = $_G['cache']['historyposts'] ? explode("\t", $_G['cache']['historyposts']) : [0, 0];
 $postdata[0] = intval($postdata[0]);
 $postdata[1] = intval($postdata[1]);
-
 list($navtitle, $metadescription, $metakeywords) = get_seosetting('forum');
 if(!$navtitle) {
 	$navtitle = $_G['setting']['navs'][2]['navname'];
@@ -79,7 +78,6 @@ if(!$gid && (!defined('FORUM_INDEX_PAGE_MEMORY') || !FORUM_INDEX_PAGE_MEMORY)) {
 } else {
 	require_once childfile('category');
 }
-
 
 if(defined('IN_ARCHIVER')) {
 	include loadarchiver('forum/discuz');

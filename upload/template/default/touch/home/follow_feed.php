@@ -132,7 +132,7 @@
 							<li>
 								<span class="mimg"><a href="home.php?mod=space&uid=$ruid" class="avt" c="1" shref="home.php?mod=space&uid=$ruid"><!--{avatar($ruid, 'small')}--></a></span>
 								<p class="mtit">{$rusername}</p>
-								<!--{if helper_access::check_module('follow')}-->
+								<!--{if helper_access::check_module('follower')}-->
 								<a class="mico z" id="a_followmod_{$ruid}" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&fuid=$ruid&from=block" onclick="ajaxget(this.href);doane(event);" style="text-decoration: none !important;">{lang follow_add}</a>
 								<!--{/if}-->
 							</li>
@@ -170,7 +170,7 @@
 						<!--{if $viewself && $fuser[followuid] != $_G['uid']}-->
 						<span class="pipe">|</span>
 						<a href="home.php?mod=spacecp&ac=follow&op=bkname&fuid=$fuser['followuid']&handlekey=followbkame_$fuser['followuid']" id="fbkname_$fuser['followuid']" class="dialog"><!--{if $fuser['bkname']}-->{lang follow_mod_bkname}<!--{else}-->{lang follow_add_bkname}<!--{/if}--></a>
-						<!--{if helper_access::check_module('follow')}-->
+						<!--{if helper_access::check_module('follower')}-->
 						<span class="pipe">|</span>
 						<a id="a_specialfollow_{$fuser['followuid']}" href="home.php?mod=spacecp&ac=follow&op=add&hash={FORMHASH}&special={if $fuser['status'] == 1}2{else}1{/if}&fuid=$fuser['followuid']" class="dialog"><!--{if $fuser['status'] == 1}-->{lang follow_del_special_following}<!--{else}-->{lang follow_add_special_following}<!--{/if}--></a>
 						<!--{/if}-->

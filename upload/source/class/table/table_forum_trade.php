@@ -53,7 +53,7 @@ class table_forum_trade extends discuz_table {
 			$tidsql = DB::field('tid', $tid).' AND ';
 		}
 		if($orderby) {
-			$ordersql = ' ORDER BY ' .DB::order($orderby, $ascdesc);
+			$ordersql = ' ORDER BY '.DB::order($orderby, $ascdesc);
 		}
 		return DB::fetch_first("SELECT * FROM %t WHERE $tidsql ".DB::field('pid', $pid).$ordersql.DB::limit($start, $limit), [$this->_table]);
 	}
@@ -63,10 +63,10 @@ class table_forum_trade extends discuz_table {
 			return [];
 		}
 		return DB::fetch_all('SELECT subject, tid, pid, seller, sellerid, SUM(%s) as %s
-		FROM ' .DB::table('forum_trade'). '
+		FROM '.DB::table('forum_trade').'
 		WHERE %s>0
 		GROUP BY sellerid
-		ORDER BY %s DESC ' .DB::limit($limit), [$fieldname, $fieldname, $fieldname]);
+		ORDER BY %s DESC '.DB::limit($limit), [$fieldname, $fieldname, $fieldname]);
 	}
 
 	public function update_closed($expiration) {
@@ -105,7 +105,7 @@ class table_forum_trade extends discuz_table {
 	}
 
 	public function fetch_all_for_search($digestltd, $fids, $topltd, $sqlsrch, $start = 0, $limit = 0) {
-		return DB::fetch_all('SELECT tr.tid, tr.pid, t.closed FROM ' .DB::table('forum_trade'). ' tr INNER JOIN ' .DB::table('forum_thread')." t ON tr.tid=t.tid AND $digestltd t.".DB::field('fid', $fids)." $topltd WHERE$sqlsrch ORDER BY tr.pid DESC".DB::limit($start, $limit));
+		return DB::fetch_all('SELECT tr.tid, tr.pid, t.closed FROM '.DB::table('forum_trade').' tr INNER JOIN '.DB::table('forum_thread')." t ON tr.tid=t.tid AND $digestltd t.".DB::field('fid', $fids)." $topltd WHERE$sqlsrch ORDER BY tr.pid DESC".DB::limit($start, $limit));
 	}
 
 	public function fetch_all_for_space($wheresql, $ordersql, $count = 0, $start = 0, $limit = 0) {
@@ -113,13 +113,13 @@ class table_forum_trade extends discuz_table {
 			return [];
 		}
 		if($count) {
-			return DB::result_first('SELECT COUNT(*) FROM ' .DB::table('forum_trade')." t WHERE $wheresql");
+			return DB::result_first('SELECT COUNT(*) FROM '.DB::table('forum_trade')." t WHERE $wheresql");
 		}
 		if($ordersql && is_string($ordersql)) {
 			$ordersql = ' ORDER BY '.$ordersql;
 		}
-		return DB::fetch_all('SELECT t.* FROM ' .DB::table('forum_trade'). ' t
-				INNER JOIN ' .DB::table('forum_thread')." th ON t.tid=th.tid AND th.displayorder>='0'
+		return DB::fetch_all('SELECT t.* FROM '.DB::table('forum_trade').' t
+				INNER JOIN '.DB::table('forum_thread')." th ON t.tid=th.tid AND th.displayorder>='0'
 				WHERE $wheresql $ordersql ".DB::limit($start, $limit));
 	}
 }

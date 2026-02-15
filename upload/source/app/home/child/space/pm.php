@@ -10,6 +10,10 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
+if(!$_G['setting']['pmstatus']) {
+	showmessage('pm_status_off');
+}
+
 loaducenter();
 
 $list = [];

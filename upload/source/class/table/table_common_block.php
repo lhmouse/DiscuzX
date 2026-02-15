@@ -88,7 +88,7 @@ class table_common_block extends discuz_table {
 
 
 	public function count_by_where($wheresql, $leftjoin = '') {
-		return DB::result_first('SELECT COUNT(*) FROM ' .DB::table($this->_table).' b'." $leftjoin $wheresql");
+		return DB::result_first('SELECT COUNT(*) FROM '.DB::table($this->_table).' b'." $leftjoin $wheresql");
 	}
 
 	public function fetch_all_by_where($wheresql, $start = 0, $limit = 0, $leftjoin = '', $fields = '') {

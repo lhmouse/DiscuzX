@@ -45,7 +45,7 @@ class table_home_blog_category extends discuz_table {
 			$sql = ' AND num>0';
 			$args[] = $numlimit;
 		}
-		return DB::query('UPDATE %t SET num=' .(($numplus) ? 'num+' : '')."%d WHERE catid=%d {$sql}", $args);
+		return DB::query('UPDATE %t SET num='.(($numplus) ? 'num+' : '')."%d WHERE catid=%d {$sql}", $args);
 	}
 
 	public function fetch_catname_by_catid($catid) {

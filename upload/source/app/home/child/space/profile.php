@@ -14,6 +14,7 @@ if(!$_G['uid'] && getglobal('setting/privacy/view/profile')) {
 }
 
 require_once libfile('function/spacecp');
+require_once libfile('function/credit');
 
 $inarchive = isset($space['_inarchive']) && $space['_inarchive'];
 space_merge($space, 'count', $inarchive);
@@ -189,7 +190,7 @@ if(!getglobal('privacy')) {
 		include_once template('home/space_profile');
 	} else {
 		$_GET['do'] = 'card';
-		if(helper_access::check_module('follow')) {
+		if(helper_access::check_module('follower')) {
 			$follow = table_home_follow::t()->fetch_by_uid_followuid($_G['uid'], $space['uid']);//是否收听对方
 		}
 		include_once template('home/space_card');

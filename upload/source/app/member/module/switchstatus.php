@@ -10,7 +10,7 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-const NOROBOT = TRUE;
+const NOROBOT = true;
 
 if($_G['uid']) {
 

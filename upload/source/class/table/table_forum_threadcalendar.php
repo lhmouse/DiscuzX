@@ -86,7 +86,7 @@ class table_forum_threadcalendar extends discuz_table {
 			}
 		}
 		if($sql) {
-			return DB::query('INSERT INTO '.DB::table($this->_table). ' (`fid`, `dateline`, `hotnum`) VALUES ' .implode(',', $sql), true);
+			return DB::query('INSERT INTO '.DB::table($this->_table).' (`fid`, `dateline`, `hotnum`) VALUES '.implode(',', $sql), true);
 		}
 		return false;
 	}

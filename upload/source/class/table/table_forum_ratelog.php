@@ -75,7 +75,7 @@ class table_forum_ratelog extends discuz_table {
 
 	public function fetch_postrate_by_pid($pids, $postlist, $postcache, $ratelogrecord) {
 		$pids = array_map('intval', (array)$pids);
-		$query = DB::query('SELECT * FROM ' .DB::table('forum_ratelog'). ' WHERE pid IN (' .dimplode($pids). ') ORDER BY dateline DESC');
+		$query = DB::query('SELECT * FROM '.DB::table('forum_ratelog').' WHERE pid IN ('.dimplode($pids).') ORDER BY dateline DESC');
 		$ratelogs = [];
 		while($ratelog = DB::fetch($query)) {
 			if(!is_array($postlist[$ratelog['pid']]['ratelog']) || count($postlist[$ratelog['pid']]['ratelog']) < $ratelogrecord) {
