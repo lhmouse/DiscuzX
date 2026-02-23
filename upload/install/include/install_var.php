@@ -19,9 +19,8 @@ $lockfile = ROOT_PATH.'./data/install.lock';
 
 @include ROOT_PATH.CONFIG;
 
-$sqlfile = 'lang_sql_install';
-$upgrade_sqlfile = 'lang_sql_upgrade';
-$data_sqlfile = 'lang_sql_data';
+$install_sqlfile = 'sql_install';
+$upgrade_sqlfile = 'sql_upgrade';
 
 define('CHARSET', 'utf-8');
 define('DBCHARSET', 'utf8mb4');

@@ -393,7 +393,7 @@ if($method == 'show_license') {
 		install_uc_sql();
 	}
 
-	$sql = read_sql($sqlfile);
+	$sql = read_sql($install_sqlfile);
 	if(!runquery($sql)) {
 		sse_output(lang('failed'));
 	}
@@ -401,10 +401,7 @@ if($method == 'show_license') {
 
 	sleep(2);
 
-	$sql = read_sql($data_sqlfile);
-	if(!runquery($sql)) {
-		exit();
-	}
+	rundatasql('lang_'.$install_sqlfile);
 
 	!VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
 
@@ -495,6 +492,7 @@ if($method == 'show_license') {
 
 	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
 } elseif($method == 'do_db_upgrade') {
+	$upgrade_sqlfile .= '_3.5';
 	include ROOT_PATH.CONFIG;
 	$_config['memory']['redis']['server'] = '';
 	$_config['lang'] = $_COOKIE['LANG'];
@@ -513,6 +511,11 @@ if($method == 'show_license') {
 	if(!runquery($sql, true)) {
 		exit();
 	}
+
+	sleep(2);
+
+	rundatasql('lang_'.$upgrade_sqlfile, true);
+
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
 
 	$db->query("TRUNCATE TABLE {$tablepre}common_syscache");

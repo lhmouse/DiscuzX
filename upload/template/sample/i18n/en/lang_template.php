@@ -1,5 +1,0 @@
-<?php
-
-$lang = [
-	'nice' => 'nice!',
-];

@@ -1155,7 +1155,7 @@ function runquery($sql, $upgrade = false) {
 	foreach($ret as $query) {
 		$query = trim($query);
 		if($query) {
-			if(substr($query, 0, 12) == 'CREATE TABLE') {
+			if(str_starts_with($query, 'CREATE TABLE')) {
 				$name = preg_replace("/CREATE TABLE\s+[\`]?([a-z0-9_]+)[\`]?\s*\(.*/is", "\\1", $query);
 				if($db->query(createtable($query, $db->version()), 'SILENT')) {
 					showjsmessage(lang('create_table').' '.$name.'  ... '.lang('succeed')."\n");
@@ -1165,7 +1165,7 @@ function runquery($sql, $upgrade = false) {
 						return false;
 					}
 				}
-			} elseif(substr($query, 0, 6) == 'INSERT') {
+			} elseif(str_starts_with($query, 'INSERT')) {
 				$name = preg_replace("/INSERT\s+INTO\s+[\`]?([a-z0-9_]+)[\`]? .*/is", "\\1", $query);
 				if($db->query($query, 'SILENT')) {
 					if($oldtablename != $name) {
@@ -1247,6 +1247,46 @@ function runucquery($sql, $tablepre) {
 	return true;
 }
 
+function rundatasql($f, $upgrade = false) {
+	global $tablepre, $db;
+
+	$dir = ROOT_PATH.'./source/i18n/'.INSTALL_LANG.'/install/'.$f;
+	$oldtablename = '';
+	foreach(glob($dir.'/*.php') as $file) {
+		$table = basename($file, '.php');
+		$table = str_replace('table_', '', $table);
+		$name = $tablepre.$table;
+		$sql = 'INSERT INTO `'.$name.'` SET ';
+		$data = [];
+		require_once $file;
+		foreach($data as $row) {
+			$fields = [];
+			foreach($row as $field => $value) {
+				if(is_array($value)) {
+					$value = serialize($value);
+				}
+				$value = addcslashes($value, '\'');
+				$fields[] = "`{$field}`='{$value}'";
+			}
+			$sqlline = $sql.implode(', ', $fields);
+
+			file_put_contents(ROOT_PATH.'./data/sql.log', $sqlline."\n", FILE_APPEND);//todo
+
+			if($db->query($sqlline, 'SILENT')) {
+				if($oldtablename != $name) {
+					showjsmessage(lang('init_table_data').' '.$name.'  ... '.lang('succeed')."\n");
+					$oldtablename = $name;
+				}
+			} else {
+				$err = $db->error();
+				if($upgrade && str_contains($err, 'Duplicate')) {
+					continue;
+				}
+				showjsmessage(lang('init_table_data').' '.$name.'  ... '.lang('failed').': '.$err."\n");
+			}
+		}
+	}
+}
 
 function charcovert($string) {
 	return str_replace('\'', '\\\'', $string);
@@ -1704,7 +1744,7 @@ function _generate_key($length = 32) {
 function install_uc_sql() {
 	global $db, $dbhost, $dbuser, $dbpw, $dbname, $tablepre, $username, $password, $email, $dzucstl, $myisam2innodb;
 
-	$ucsql = read_sql('lang_sql_uc');
+	$ucsql = read_sql('sql_uc');
 	$uctablepre = $tablepre.'ucenter_';
 	$ucsql = str_replace(' uc_', ' '.$uctablepre, $ucsql);
 	if($ucsql) {
@@ -2209,7 +2249,7 @@ function format_space($space) {
 }
 
 function read_sql($f) {
-	if(!file_exists($file = ROOT_PATH.'./source/i18n/'.INSTALL_LANG.'/install/'.$f.'.php')) {
+	if(!file_exists($file = ROOT_PATH.'./install/sql/'.$f.'.php')) {
 		return '';
 	}
 	$s = file_get_contents($file);

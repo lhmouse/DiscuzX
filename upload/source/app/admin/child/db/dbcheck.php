@@ -13,7 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 if(!table_common_setting::t()->fetch_all_field()) {
 	cpmsg('dbcheck_permissions_invalid', '', 'error');
 }
-$installSqlPath = DISCUZ_ROOT.'./source/i18n/'.$_G['config']['lang'].'/install/lang_install.php';
+$installSqlPath = DISCUZ_ROOT.'./install/sql/sql_install.php';
 $step = max(1, intval($_GET['step']));
 if($step == 3) {
 

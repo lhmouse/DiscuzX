@@ -334,7 +334,7 @@ Created & Modified by Alice, Monkey, Lushnis, Pony, Dfox & DragonLee.
 		#newspecial_menu .poll:before, #sti .poll:before { content: "\f13b"; }
 		#newspecial_menu .trade:before, #sti .trade:before { content: "\f13f"; }
 		#newspecial_menu .reward:before, #sti .reward:before { content: "\f13c"; }
-		#newspecial_menu .activity:before, #sti .activity:before { content: "\f13e"; }
+		#newspecial_menu .activity:before, #sti .activity:before { content: "\f113"; }
 		#newspecial_menu .debate:before, #sti .debate:before { content: "\f13d"; }
 		#newspecial_menu a { display: inline-block; padding: 0; height: 24px; line-height: 24px; white-space: normal; vertical-align: middle; }
 			#newspecial_menu a:hover { background: none; color: {HIGHLIGHTLINK}; text-shadow: none; text-decoration: underline; }

@@ -39,6 +39,10 @@ if($_GET['ajax']) {
 		table_forum_moderator::t()->delete_by_fid($fid);
 		table_common_member_forum_buylog::t()->delete_by_fid($fid);
 		table_forum_access::t()->delete_by_fid($fid);
+
+		$forumkeys = table_common_setting::t()->fetch_setting('forumkeys', true);
+		unset($forumkeys[$fid]);
+		table_common_setting::t()->update_setting('forumkeys', $forumkeys);
 		echo 'TRUE';
 		exit;
 	}
