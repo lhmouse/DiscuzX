@@ -75,12 +75,12 @@ class check {
 		$this->checkfiles('./', '', 0);
 		$this->checkfiles('api/', '\.php|\.htm|\.pem');
 		$this->checkfiles('archiver/', '\.php', 0);
+		$this->checkfiles('avatar/', '\.php', 0);
 		$this->checkfiles('config/', '\.php|\.htm', 1, 'config_global.php,config_ucenter.php');
 		$this->checkfiles('data/', '\.xml|\.htm', 0);
 		$this->checkfiles('data/avatar/', '\.htm', 0);
 		$this->checkfiles('data/log/', '\.htm', 0);
 		$this->checkfiles('data/cache/', '\.htm', 0);
-		$this->checkfiles('data/ipdata/', '\.htm|\.dat', 0);
 		$this->checkfiles('data/template/', '\.htm', 0);
 		$this->checkfiles('data/plugindata/', '\.htm', 0);
 		$this->checkfiles('data/threadcache/', '\.htm', 0);
@@ -94,8 +94,6 @@ class check {
 		$this->checkfiles('source/child/', '\.php|\.htm');
 		$this->checkfiles('source/class/', '\.php|\.htm');
 		$this->checkfiles('source/function/', '\.php|\.htm');
-		$this->checkfiles('source/include/', '\.php|\.htm');
-		$this->checkfiles('source/language/', '\.php|\.htm');
 		$this->checkfiles('static/', '\.js|\.png|\.json|\.css|\.jpg|\.gif|\.txt|\.htm|\.ico|\.swf|\.ttf|\.mp3|\.xml|\.svg|\.woff|\.woff2|\.map|\.eot');
 		$this->checkfiles('template/', '\.php|\.htm|\.css|\.jpg|\.xml|\.json|\.gif|\.png|\.eot|\.svg|\.ttf|\.woff|\.woff2|\.js');
 		$this->checkfiles('/', '\.php', 1);
