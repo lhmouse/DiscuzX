@@ -1270,8 +1270,6 @@ function rundatasql($f, $upgrade = false) {
 			}
 			$sqlline = $sql.implode(', ', $fields);
 
-			file_put_contents(ROOT_PATH.'./data/sql.log', $sqlline."\n", FILE_APPEND);//todo
-
 			if($db->query($sqlline, 'SILENT')) {
 				if($oldtablename != $name) {
 					showjsmessage(lang('init_table_data').' '.$name.'  ... '.lang('succeed')."\n");
