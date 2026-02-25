@@ -96,7 +96,6 @@ class check {
 		$this->checkfiles('source/function/', '\.php|\.htm');
 		$this->checkfiles('static/', '\.js|\.png|\.json|\.css|\.jpg|\.gif|\.txt|\.htm|\.ico|\.swf|\.ttf|\.mp3|\.xml|\.svg|\.woff|\.woff2|\.map|\.eot');
 		$this->checkfiles('template/', '\.php|\.htm|\.css|\.jpg|\.xml|\.json|\.gif|\.png|\.eot|\.svg|\.ttf|\.woff|\.woff2|\.js');
-		$this->checkfiles('/', '\.php', 1);
 
 		$md5data = &$this->md5data;
 
