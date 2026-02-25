@@ -6654,7 +6654,7 @@ URL转换绝对网址：<pre>
 	'hookcheck_start' => '开 始',
 	'hookcheck_verifying' => '正在进行嵌入点校验，请稍候......',
 	'hookcheck_tips_step1' => '嵌入点校验是针对 Discuz! 官方发布的文件为基础进行核对，点击下面按钮开始进行校验{template}',
-	'hookcheck_tips' => '<li>“<font color="red">嵌入点</font>”是模板文件中的“&lt;!--{hook/xxx}--&gt;”代码,模板文件丢失嵌入点代码会造成云服务（如QQ群、腾讯分析等）等插件无法正常使用</li><li>缺失“<font color="red">嵌入点</font>”的模板文件需要使用对比工具,对比原始文件和服务器上对应的模板文件进行对比,将丢失的嵌入点代码补充好</li>',
+	'hookcheck_tips' => '<li>“<font color="red">嵌入点</font>”是模板文件中的“&lt;!--{hook/xxx}--&gt;”代码,模板文件丢失嵌入点代码会造成插件无法正常使用</li><li>缺失“<font color="red">嵌入点</font>”的模板文件需要使用对比工具,对比原始文件和服务器上对应的模板文件进行对比,将丢失的嵌入点代码补充好</li><li>如缺失的<font color="red">嵌入点</font>被发现在其他模板文件中,会在括号中进行备注</li>',
 	'hookcheck_completed' => '校验结果',
 	'hookcheck_delete' => '丢失嵌入点的文件',
 	'hookcheck_discuzhook' => '源文件嵌入点',

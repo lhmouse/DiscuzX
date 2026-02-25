@@ -52,7 +52,7 @@ if($step == 1) {
 		}
 	}
 
-	$diffhooklist = $difffilelist = [];
+	$diffhooklist = $difffilelist = $inotherfilelist = [];
 	$diffnum = 0;
 	foreach($discuzhookdata as $file => $hook) {
 		$dir = dirname($file);
@@ -74,6 +74,21 @@ if($step == 1) {
 		}
 	}
 
+	foreach($diffhooklist as $file => $hooks) {
+		foreach($hooks as $hook) {
+			$exists = false;
+			foreach($hookdata as $_file => $hookarr) {
+				if(isset($hookarr[$hook])) {
+					$exists = $_file;
+					break;
+				}
+			}
+			if($exists) {
+				$inotherfilelist[$hook][] = $exists;
+			}
+		}
+	}
+
 	foreach($difffilelist as $dir => $files) {
 		$dir = str_replace('template/default/', substr($style['directory'], 2).'/', $dir);
 		$result .= '<tbody><tr><td class="td30"><a href="javascript:;" onclick="toggle_group(\'dir_'.$dir.'\')" id="a_dir_'.$dir.'">[-]</a></td><td colspan="3"><div class="ofolder">'.$dir.'</div></td></tr></tbody>';
@@ -85,7 +100,11 @@ if($step == 1) {
 			}
 			$result .= '</td><td>';
 			foreach($diffhooklist[$file] as $hook) {
-				$result .= '<p>'.dhtmlspecialchars($hook).'</p>';
+				$result .= '<p>'.dhtmlspecialchars($hook);
+				if(!empty($inotherfilelist[$hook])) {
+					$result .= '<span class="xg1">('.str_replace(substr($style['directory'], 2), '', implode(', ', $inotherfilelist[$hook])).')</span>';
+				}
+				$result .= '</p>';
 			}
 			$result .= '</td></tr>';
 		}
