@@ -48,7 +48,7 @@
 		<div class="z">
 			<a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a> <em>&rsaquo;</em>
 			<!--{if $_G[setting][homestyle] && isset($_G[setting][navs][4])}--><a href="home.php">$_G[setting][navs][4][navname]</a> <em>&rsaquo;</em> <!--{/if}-->
-			<a href="home.php?mod=space&do=blog">{lang thread}</a>
+			<a href="home.php?mod=space&do=thread&view=me">{lang thread}</a>
 		</div>
 	</div>
 	<style id="diy_style" type="text/css"></style>
