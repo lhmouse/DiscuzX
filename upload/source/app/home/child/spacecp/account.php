@@ -493,8 +493,8 @@ function chgpassword($param, $tmp_load = false) {
 		uc_user_edit(addslashes($_G['member']['loginname']), $newpassword, $newpassword, '', 1, 0);
 		$password = md5(random(10));
 
-		if(isset($member['_inarchive'])) {
-			table_common_member_archive::t()->move_to_master($member['uid']);
+		if(isset($_G['member']['_inarchive'])) {
+			table_common_member_archive::t()->move_to_master($_G['uid']);
 		}
 
 		$data = ['password' => $password];
