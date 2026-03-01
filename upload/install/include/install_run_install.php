@@ -520,6 +520,8 @@ if($method == 'show_license') {
 
 	$db->query("TRUNCATE TABLE {$tablepre}common_syscache");
 
+	unmark_system_plugin();
+
 	!VIEW_OFF && showjsmessage(lang('initdbdataresult_succ')."\n");
 } elseif($method == 'do_db_data_init') {
 	$allinfo = getgpc('allinfo');

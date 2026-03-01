@@ -1075,7 +1075,7 @@ function show_db_install($upgrade = false) {
 
 		function refresh_progress() {
 			// 进度条的总数，需要跟进实际安装情况修改
-			var total = <?php echo !$upgrade ? 339 : 146; ?>;
+			var total = <?php echo !$upgrade ? 339 : 102; ?>;
 			var percent = document.querySelectorAll('#notice>p').length * 95 / total;
 			percent = (percent > 95) ? 95 : percent;
 			document.getElementById('pgb').style.width = percent + '%';
@@ -2380,4 +2380,16 @@ function checkcachefiles($currentdir) {
 	}
 
 	return [$showlist, $modifylist, $addlist];
+}
+
+function unmark_system_plugin() {
+	global $tablepre, $db;
+
+	$result = [];
+	$db->fetch_all("SELECT * FROM {$tablepre}common_plugin WHERE modules LIKE '%s:6:\"system\";i:2;%'", $result);
+	foreach($result as $row) {
+		$modules = dunserialize($row['modules']);
+		unset($modules['system']);
+		$db->query("UPDATE {$tablepre}common_plugin SET modules='".addslashes(serialize($modules))."' WHERE pluginid='".$row['pluginid']."'");
+	}
 }
