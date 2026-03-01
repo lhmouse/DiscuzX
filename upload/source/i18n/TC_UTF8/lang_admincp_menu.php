@@ -229,6 +229,7 @@ $lang =
 	'header_corp' => '企業',
 	'menu_setting_login' => '第三方登錄',
 	'menu_setting_wechat' => '微信(服務號)',
+	'menu_setting_qq' => 'QQ',
 	'menu_setting_discuz' => 'Discuz!',
 	'menu_setting_ucenter' => 'UCenter',
 	'menu_founder_restful' => 'RESTful 接口',
