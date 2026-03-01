@@ -75,7 +75,7 @@
 									MultiPicDel(this);
 								};
 								imgWrapper.prepend(img);
-                                imgWrapper.prepend(removeDiv);
+								imgWrapper.prepend(removeDiv);
 								img.style.width = '100%';
 								img.style.height = '100%';
 								img.style.objectFit = 'cover';
@@ -123,5 +123,5 @@
 		var hlthumb = obj.parentNode.childNodes[0];
 		zoom(hlthumb, hlthumb.src);
 	}
-<!--{/if}-->
+	<!--{/if}-->
 </script>
