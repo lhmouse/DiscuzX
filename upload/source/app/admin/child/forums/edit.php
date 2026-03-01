@@ -560,6 +560,7 @@ if(!submitcheck('detailsubmit') && !submitcheck('multijssubmit')) {
 			showtagfooter('tbody');
 			showsetting('forums_edit_posts_attach_ext', 'attachextensionsnew', $forum['attachextensions'], 'text');
 			showsetting('forums_edit_posts_allowfeed', 'allowfeednew', $forum['allowfeed'], 'radio');
+			showsetting('forums_edit_posts_allowfeed_default', 'fieldsnew[allowfeed_default]', $forum['fields']['allowfeed_default'], 'radio');
 			showsetting('forums_edit_posts_commentitem', 'commentitemnew', $forum['commentitem'], 'textarea');
 			showsetting('forums_edit_posts_noantitheft', 'noantitheftnew', $forum['noantitheft'], 'radio');
 			showsetting('forums_edit_posts_noforumhidewater', 'noforumhidewaternew', $forum['noforumhidewater'], 'radio');
