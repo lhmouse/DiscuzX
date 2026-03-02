@@ -108,6 +108,19 @@ $shownotice
 				</div>
 			</div>
 		</div>
+		<div id="footerbars">
+				<span>
+					<a href="https://code.dismall.com/" class="lightlink2" target="_blank">$lang['discuz_git']</a>
+					<i>|</i>
+					<a href="https://www.discuz.vip/" class="lightlink2" target="_blank">$lang['discussion_area']</a>
+					<i>|</i>
+					<a href="https://www.dismall.com/" class="lightlink2" target="_blank">$lang['app_discussion']</a>
+					<i>|</i>
+					<a href="javascript:;" onmouseover="showMenu({'ctrlid':this.id});" id="qr">$lang['discuz_qrcode']</a>
+				</span>
+			<p>Powered by <a href="https://www.discuz.vip/" target="_blank" class="lightlink2">Discuz! {DISCUZ_VERSION}</a> {lang copyright}</p>
+		</div>
+		<div id="qr_menu" style="display: none;"><img src="static/image/admincp/discuz_qr.jpg" width="120" /></div>
 		<div id="favbars" style="display: none">
 			<a id="op_back" title="{lang back}"></a><a id="op_refresh" title="{lang refresh}"></a><span>|</span>
 			<div id="favbar_list">

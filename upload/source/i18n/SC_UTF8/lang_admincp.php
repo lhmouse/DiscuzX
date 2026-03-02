@@ -7833,12 +7833,12 @@ url.rewrite-once = (
 	'download_latest' => '最新版本下载',
 	'org_name' => '腾讯云计算（北京）有限责任公司',
 	'dev_manager' => '戴志康 (Kevin \'Crossday\' Day)',
-	'app_discussion' => 'Discuz! 交流社区',
+	'app_discussion' => '交流社区',
 	'org_site' => '公司网站',
 	'purchase_service' => '购买授权',
-	'discussion_area' => 'Discuz! 官方网站',
-	'app_center' => 'Discuz! 应用中心',
-	'discuz_git' => 'Discuz! 项目地址',
+	'discussion_area' => '官方网站',
+	'discuz_git' => '项目地址',
+	'discuz_qrcode' => '官方公众号',
 
 	// 企飞版
 	'setting_attach_remote_ftp' => 'FTP',

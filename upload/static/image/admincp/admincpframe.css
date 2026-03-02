@@ -310,9 +310,11 @@ button::-moz-focus-inner { border: none; padding: 0; }
     #navbtn { display: flex;padding-left: 10px; }
     .currentloca { padding: 0;}
     #cpplatform{display: none;}
+    #footerbars { display: none !important; }
 }
 @media (max-width: 767px) {
     .mainhd form>* { display: none; }
+    #footerbars { display: none !important; }
 }
 @media (max-width: 575px) {
     .mainhd { justify-content: space-between; }
@@ -323,6 +325,7 @@ button::-moz-focus-inner { border: none; padding: 0; }
     .mainhd.toggle #frameuinfo>p { display: block; }
     .mainhd.toggle .uinfo { box-shadow: -5px 0 5px rgba(0, 0, 0, .2); }
     .mainhd.toggle #frameuinfo:before { content: ""; display: block; color: #155BD5; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 5px solid; border-right: 0; transform: translate(-5px, 0); }
+    #footerbars { display: none !important; }
 }
 
 /* 日夜模式 */
@@ -416,3 +419,10 @@ button::-moz-focus-inner { border: none; padding: 0; }
 #menuupdate { line-height: 14px; background-color: var(--admincp-fd);padding: 5px;margin-bottom: 5px;color: #333;font-size: 12px; }
    #menuupdate a { color: #333;text-decoration: none; }
    #menuupdate .close:before { color: #333;float:right; font-family: dzicon; content: "\e723"; font-size: 14px; font-style: normal; margin-right: 5px;  border: 0; }
+
+#footerbars { width: calc(100% - 200px); font-size: 12px; color: var(--admincp-fc); position: fixed; bottom: 0; background: var(--admincp-bgf); display: flex; border-top: 1px solid var(--admincp-bordera); line-height: 28px; vertical-align: middle; padding: 0 10px; }
+    #footerbars a { color: var(--admincp-fc); text-decoration: none; }
+    #footerbars p { margin-left: auto;margin-right: 20px; }
+    #footerbars span { margin-right: auto; }
+    #footerbars i { font-style: normal;margin: 0 5px; color: var(--admincp-fd); }
+#qr_menu { border: 1px solid var(--admincp-bordera); }

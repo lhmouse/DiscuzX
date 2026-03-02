@@ -7834,12 +7834,12 @@ url.rewrite-once = (
 	'download_latest' => '最新版本下載',
 	'org_name' => '騰訊雲計算（北京）有限責任公司',
 	'dev_manager' => '戴志康 (Kevin \'Crossday\' Day)',
-	'app_discussion' => 'Discuz! 交流社區',
+	'app_discussion' => '交流社區',
 	'org_site' => '公司網站',
 	'purchase_service' => '購買授權',
-	'discussion_area' => 'Discuz! 官方網站',
-	'app_center' => 'Discuz! 應用中心',
-	'discuz_git' => 'Discuz! 項目地址',
+	'discussion_area' => '官方網站',
+	'discuz_git' => '項目地址',
+	'discuz_qrcode' => '官方公眾號',
 
 	// 企飛版
 	'setting_attach_remote_ftp' => 'FTP',

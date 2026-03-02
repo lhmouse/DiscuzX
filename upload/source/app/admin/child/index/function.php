@@ -508,7 +508,6 @@ function show_forever_thanks() {
 	}
 
 	showboxheader('home_dev', 'listbox fixpadding', 'id="home_dev"');
-	echo '<img src="static/image/admincp/discuz_qr.jpg" />';
 	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team"'], [$copyRightMessage[0], '<span class="bold">'.$copyRightMessage[1].', '.$copyRightMessage[2].'</span>']);
 	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team"'], [cplang('contributors'), $gitTeamStr]);
 	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team"'], [cplang('home_forever'), '<a href="javascript:display(\'history\')">点击查看</a>']);
@@ -518,11 +517,6 @@ function show_forever_thanks() {
 	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team"'], [cplang('home_dev_skins'), $devSkinsStr]);
 	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team"'], [cplang('home_dev_thanks'), $devThanksStr]);
 	showtagfooter('div');
-	showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol lineheight team tm"'], [cplang('home_dev_links'), '
-	<a href="https://code.dismall.com/" class="lightlink2" target="_blank">'.cplang('discuz_git').'</a>,&nbsp;
-	<a href="https://www.discuz.vip/" class="lightlink2" target="_blank">'.cplang('discussion_area').'</a>, &nbsp;
-	<a href="https://www.dismall.com/" class="lightlink2" target="_blank">'.cplang('app_discussion').'</a>,&nbsp;
-	<a href="'.ADMINSCRIPT.'?action=cloudaddons" class="lightlink2" target="_blank">'.cplang('app_center').'</a>']);
 	showboxfooter();
 }
 
