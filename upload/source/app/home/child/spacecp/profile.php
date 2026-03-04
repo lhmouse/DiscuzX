@@ -623,7 +623,7 @@ if($operation == 'password') {
 	$htmls = $settings = [];
 	foreach($allowitems as $fieldid) {
 		if(!in_array($fieldid, ['sightml', 'customstatus', 'timeoffset'])) {
-			$html = profile_setting($fieldid, $space, !$vid);
+			$html = profile_setting($fieldid, $space, true);
 			if($html) {
 				$settings[$fieldid] = $_G['cache']['profilesetting'][$fieldid];
 				$htmls[$fieldid] = $html;
