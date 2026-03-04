@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * [Discuz!] (C)2001-2099 Discuz! Team
+ * This is NOT a freeware, use is subject to license terms
+ * https://license.discuz.vip
+ */
 //Discuz! IPDB Create on 20260201
 $lang = [
     0 => '内网',

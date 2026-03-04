@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * [Discuz!] (C)2001-2099 Discuz! Team
+ * This is NOT a freeware, use is subject to license terms
+ * https://license.discuz.vip
+ */
+
 class app_home_switch {
 	public static function getModules() {
 		return ['follow', 'feed', 'blog', 'friend', 'follower', 'album', 'share', 'doing', 'wall', 'task', 'medal', 'magic', 'favorite', 'pm'];
