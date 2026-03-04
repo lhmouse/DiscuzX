@@ -3801,21 +3801,39 @@ CREATE TABLE pre_home_comment_moderate
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_home_docomment;
-CREATE TABLE pre_home_docomment
-(
-	id       int(10) unsigned      NOT NULL AUTO_INCREMENT,
-	upid     int(10) unsigned      NOT NULL DEFAULT '0',
-	doid     mediumint(8) unsigned NOT NULL DEFAULT '0',
-	uid      mediumint(8) unsigned NOT NULL DEFAULT '0',
-	username varchar(50)           NOT NULL DEFAULT '',
-	dateline int(10) unsigned      NOT NULL DEFAULT '0',
-	message  text                  NOT NULL,
-	ip       varchar(45)           NOT NULL DEFAULT '',
-	`port`   smallint(6) unsigned  NOT NULL DEFAULT '0',
-	grade    smallint(6) unsigned  NOT NULL DEFAULT '0',
+CREATE TABLE `pre_home_docomment` (
+	`id` int unsigned NOT NULL AUTO_INCREMENT,
+	`upid` int unsigned NOT NULL DEFAULT '0',
+	`doid` mediumint unsigned NOT NULL DEFAULT '0',
+	`uid` mediumint unsigned NOT NULL DEFAULT '0',
+	`username` varchar(50) NOT NULL DEFAULT '',
+	`dateline` int unsigned NOT NULL DEFAULT '0',
+	`message` text  NOT NULL,
+	`ip` varchar(45)  NOT NULL DEFAULT '',
+	`port` smallint unsigned NOT NULL DEFAULT '0',
+	`grade` smallint unsigned NOT NULL DEFAULT '0',
+	`replynum` int unsigned NOT NULL,
+	`recomends` int unsigned NOT NULL,
+	`status` tinyint NOT NULL,
+	`fields` json NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `doid` (`doid`,`dateline`),
+	KEY `dateline` (`dateline`),
+	KEY `status` (`status`)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS pre_home_docomment_recomend_log;
+CREATE TABLE `pre_home_docomment_recomend_log` (
+	id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	doid int(10) unsigned NOT NULL DEFAULT '0',
+	docid int(10) unsigned NOT NULL DEFAULT '0',
+	uid int(10) unsigned NOT NULL DEFAULT '0',
+	dateline int(10) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (id),
-	KEY doid (doid, dateline),
-	KEY dateline (dateline)
+	UNIQUE KEY docid_uid (docid,uid),
+	KEY doid (doid),
+	KEY docid (docid),
+	KEY uid (uid)
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS pre_home_doing;
