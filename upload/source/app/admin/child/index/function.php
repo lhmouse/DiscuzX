@@ -359,6 +359,9 @@ function show_news() {
 		}
 
 		$tips .= cplang('download_latest').': <a href="https://gitee.com/Discuz/DiscuzX/attach_files" target="_blank"'.($newver ? ' style="font-weight: bold;color:red"' : '').'>Discuz! '.$newversion['newversion']['version'].' '.$newversion['newversion']['release'].'</a>';
+		if($newver && isfounder()) {
+			$tips .= '&#x3001;<a style="font-weight: bold;color:red" href="'.ADMINSCRIPT.'?action=founder&operation=upgrade">'.cplang('menu_upgrade').'</a>';
+		}
 		if(!empty($downlist)) {
 			$tips .= '&#x3001;'.implode('&#x3001;', $downlist);
 		}
