@@ -13,6 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 showsubmenu('setting_sec_seccode');
 
 $setting['seccodedata'] = dunserialize($setting['seccodedata']);
+$setting['secqaa'] = dunserialize($setting['secqaa']);
 
 if(submitcheck('settingsubmit')) {
 
@@ -49,7 +50,7 @@ if(submitcheck('settingsubmit')) {
 	if(!is_numeric($settingnew['seccodedata']['type']) && !preg_match('/^[\w\_]+:[\w\_]+$/', $settingnew['seccodedata']['type'])) {
 		$settingnew['seccodedata']['type'] = 0;
 	}
-	$settingnew['seccodestatus'] = $settingnew['seccodedata']['rule']['register']['allow'] || $settingnew['seccodedata']['rule']['login']['allow'] || $settingnew['seccodedata']['rule']['post']['allow'] || $settingnew['seccodedata']['rule']['password']['allow'] || $settingnew['seccodedata']['rule']['card']['allow'] ? 1 : 0;
+	$settingnew['seccodestatus'] = !empty($setting['secqaa']['statuses']) ? 1 : 0;
 
 } else {
 
