@@ -47,7 +47,9 @@ if(submitcheck('settingsubmit')) {
 				$settingnew['ftp']['host'] = $settingnew['oss']['oss_url'];
 			}
 		} elseif($settingnew['ftp']['on'] == 0) {
-			$settingnew['attachurl'] = 'data/attachment';
+			if($_G['setting']['ftp']['on'] == 2) {
+				$settingnew['attachurl'] = 'data/attachment';
+			}
 		}
 	}
 
