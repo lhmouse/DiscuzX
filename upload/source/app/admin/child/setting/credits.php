@@ -42,7 +42,7 @@ if(submitcheck('settingsubmit')) {
 	unset($settingnew['lowerlimit']);
 
 	if(isset($settingnew['creditsformula']) && isset($settingnew['extcredits']) && isset($settingnew['initcredits']) && isset($settingnew['creditstrans']) && isset($settingnew['creditstax'])) {
-		if(!checkformulacredits($settingnew['creditsformula'])) {
+		if(empty($settingnew['creditsformula']) || !checkformulacredits($settingnew['creditsformula'])) {
 			cpmsg('setting_creditsformula_invalid', '', 'error');
 		}
 
