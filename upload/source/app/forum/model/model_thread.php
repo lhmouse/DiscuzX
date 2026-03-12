@@ -142,7 +142,12 @@ class model_thread extends discuz_model {
 				}
 			}
 			$summary = str_replace(["\r", "\n"], '', messagecutstr(strip_tags($summary), 200));
+			$sppos = strpos($this->param['message'], chr(0).chr(0).chr(0));
+			$specialextra = substr($this->param['message'], $sppos + 3);
 			$this->param['message'] = $summary;
+			if($sppos !== false) {
+				$this->param['message'] .= chr(0).chr(0).chr(0).$specialextra;
+			}
 		} elseif(!empty($this->param['message'])) {
 			$summary = str_replace(["\r", "\n"], '', messagecutstr(strip_tags(preg_replace('/(\[(.+?)\](.+?)\[\/(.+?)\])/is', '$1', $this->param['message'])), 200));
 		} else {

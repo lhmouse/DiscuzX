@@ -544,10 +544,12 @@ foreach($postarr as $post) {
 				if($_G['setting']['editor_global_css']) {
 					$styleData .= $_G['setting']['editor_global_css'];
 				}
+				$sppos = strpos($post['message'], chr(0).chr(0).chr(0));
+				$specialextra = substr($post['message'], $sppos + 3);
 				if(!defined('IN_RESTFUL')) {
-					$post['message'] = $parserData.$styleData;
+					$post['message'] = $parserData.$styleData.($sppos !== false ? chr(0).chr(0).chr(0).$specialextra : '');
 				} else {
-					$post['message'] = $parserData;
+					$post['message'] = $parserData.($sppos !== false ? chr(0).chr(0).chr(0).$specialextra : '');
 					if($_REQUEST['removestyle']) {
 						$pattern = '/\<style(\s+.*?)?\>/s';
 						$styleData = preg_replace($pattern, '', $styleData);
