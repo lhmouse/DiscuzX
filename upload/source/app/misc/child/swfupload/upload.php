@@ -9,10 +9,11 @@
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
-
 if(empty($_GET['simple'])) {
 	$_FILES['Filedata']['name'] = diconv(urldecode($_FILES['Filedata']['name']), 'UTF-8');
 	$_FILES['Filedata']['type'] = $_GET['filetype'];
+}else{
+	$_FILES['Filedata']['name'] = urldecode($_FILES['Filedata']['name']);
 }
 $forumattachextensions = '';
 $fid = intval($_GET['fid']);
