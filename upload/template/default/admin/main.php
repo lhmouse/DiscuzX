@@ -112,7 +112,7 @@ $shownotice
 				<i>|</i>
 				<a href="javascript:;" onmouseover="showMenu({'ctrlid':this.id});" id="qr">$lang['discuz_qrcode']</a>
 			</span>
-			<p>Powered by <a href="https://www.discuz.vip/" target="_blank" class="lightlink2">Discuz! {DISCUZ_VERSION}</a> {lang copyright}</p>
+			<p>Powered by <a href="https://www.discuz.vip/" target="_blank" class="lightlink2">Discuz! $_G['setting']['version']</a> {lang copyright}</p>
 		</div>
 		<div id="qr_menu" style="display: none;"><img src="static/image/admincp/discuz_qr.jpg" width="120" /></div>
 		<div id="favbars" style="display: none">
