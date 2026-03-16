@@ -419,7 +419,7 @@ $lang = [
 	<li>將舊版本的配置文件 config/config_global.php、config/config_ucenter.php 複製到當前新版本的 config/ 目錄中；</li>
 	<li>點擊“下一步”開始升級；</li>
 	<li>升級完成後可以將舊版本中 source/plugin/ 目錄下的插件文件挑選後複製到新版本的對應目錄下、將 template/ 目錄下的模板文件挑選後複製到新版本的對應目錄下（不要複製 template/default/ 目錄）；</li>
-	<li>如舊版本應用涉及其他目錄中的文件，請自行諮詢相關開發者複製；</li>
+	<li>升級完成後 data/attachment/ 目錄以及 data/ 目錄下其他目錄請酌情複製；如舊版本應用涉及其他目錄中的文件，請自行諮詢相關開發者複製；</li>
 	</ul>
 	',
 	'upgrade_version_error' => '無法升級，舊版本的 Discuz! 必須是 '.UPGRADE_FROM_VERSION.' 版本',
