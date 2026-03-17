@@ -622,21 +622,21 @@ ALTER TABLE pre_common_member_profile_archive
 
 DROP TABLE IF EXISTS pre_home_docomment_recomend_log;
 CREATE TABLE IF NOT EXISTS `pre_home_docomment_recomend_log` (
-id int(10) unsigned NOT NULL AUTO_INCREMENT,
-doid int(10) unsigned NOT NULL DEFAULT '0',
-docid int(10) unsigned NOT NULL DEFAULT '0',
-uid int(10) unsigned NOT NULL DEFAULT '0',
-dateline int(10) unsigned NOT NULL DEFAULT '0',
-PRIMARY KEY (id),
-UNIQUE KEY docid_uid (docid,uid),
-KEY doid (doid),
-KEY docid (docid),
-KEY uid (uid)
+	id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	doid int(10) unsigned NOT NULL DEFAULT '0',
+	docid int(10) unsigned NOT NULL DEFAULT '0',
+	uid int(10) unsigned NOT NULL DEFAULT '0',
+	dateline int(10) unsigned NOT NULL DEFAULT '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY docid_uid (docid,uid),
+	KEY doid (doid),
+	KEY docid (docid),
+	KEY uid (uid)
 ) ENGINE=InnoDB;
 
 ALTER TABLE `pre_home_docomment`
-ADD COLUMN `replynum` int UNSIGNED NOT NULL AFTER `grade`,
-ADD COLUMN `recomends` int UNSIGNED NOT NULL AFTER `replynum`,
-ADD COLUMN `status` tinyint NOT NULL AFTER `recomends`,
-ADD COLUMN `fields` json NOT NULL AFTER `status`,
-ADD INDEX `status`(`status`) USING BTREE;
+	ADD COLUMN `replynum` int UNSIGNED NOT NULL AFTER `grade`,
+	ADD COLUMN `recomends` int UNSIGNED NOT NULL AFTER `replynum`,
+	ADD COLUMN `status` tinyint NOT NULL AFTER `recomends`,
+	ADD COLUMN `fields` json NOT NULL AFTER `status`,
+	ADD INDEX `status`(`status`) USING BTREE;
