@@ -55,6 +55,7 @@ C::memory()->clear();
 sse_output('Done');
 
 function sse_output($message, $close = false) {
+	ob_end_clean();
 	echo "data:{$message}\n\n";
 	ob_flush();
 	flush();
