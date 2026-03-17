@@ -26,7 +26,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '2',
     'parentid' => '0',
     'name' => '論壇',
@@ -46,7 +46,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '3',
     'parentid' => '0',
     'name' => '圈子',
@@ -66,7 +66,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '4',
     'parentid' => '0',
     'name' => '動態',
@@ -86,7 +86,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '5',
     'parentid' => '0',
     'name' => '插件',
@@ -106,7 +106,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '6',
     'parentid' => '0',
     'name' => '幫助',
@@ -126,7 +126,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '7',
     'parentid' => '0',
     'name' => '排行榜',
@@ -146,7 +146,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '8',
     'parentid' => '0',
     'name' => '廣播',
@@ -166,7 +166,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '9',
     'parentid' => '0',
     'name' => '導讀',
@@ -186,7 +186,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '10',
     'parentid' => '0',
     'name' => '淘帖',
@@ -206,7 +206,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '11',
     'parentid' => '0',
     'name' => '日誌',
@@ -226,7 +226,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '12',
     'parentid' => '0',
     'name' => '相冊',
@@ -246,7 +246,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '13',
     'parentid' => '0',
     'name' => '分享',
@@ -266,7 +266,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '14',
     'parentid' => '0',
     'name' => '記錄',
@@ -286,7 +286,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '15',
     'parentid' => '0',
     'name' => '首頁',
@@ -306,7 +306,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '0',
     'logo' => '',
-  ],[
+], [
     'id' => '16',
     'parentid' => '0',
     'name' => '站點統計',
@@ -326,7 +326,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '1',
     'logo' => '',
-  ],[
+], [
     'id' => '17',
     'parentid' => '0',
     'name' => '舉報',
@@ -346,7 +346,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '1',
     'logo' => '',
-  ],[
+], [
     'id' => '18',
     'parentid' => '0',
     'name' => 'Archiver',
@@ -366,7 +366,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '1',
     'logo' => '',
-  ],[
+], [
     'id' => '19',
     'parentid' => '0',
     'name' => '手機版',
@@ -386,7 +386,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '1',
     'logo' => '',
-  ],[
+], [
     'id' => '20',
     'parentid' => '0',
     'name' => '小黑屋',
@@ -406,7 +406,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '1',
     'logo' => '',
-  ],[
+], [
     'id' => '21',
     'parentid' => '0',
     'name' => '好友',
@@ -426,7 +426,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '22',
     'parentid' => '0',
     'name' => '帖子',
@@ -446,7 +446,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '23',
     'parentid' => '0',
     'name' => '收藏',
@@ -466,7 +466,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '24',
     'parentid' => '0',
     'name' => '道具',
@@ -486,7 +486,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '25',
     'parentid' => '0',
     'name' => '勳章',
@@ -506,7 +506,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '26',
     'parentid' => '0',
     'name' => '任務',
@@ -526,7 +526,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '27',
     'parentid' => '0',
     'name' => '淘帖',
@@ -546,7 +546,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '28',
     'parentid' => '0',
     'name' => '動態',
@@ -566,7 +566,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '29',
     'parentid' => '0',
     'name' => '日誌',
@@ -586,7 +586,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '30',
     'parentid' => '0',
     'name' => '相冊',
@@ -606,7 +606,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '31',
     'parentid' => '0',
     'name' => '分享',
@@ -626,7 +626,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '32',
     'parentid' => '0',
     'name' => '記錄',
@@ -646,7 +646,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '33',
     'parentid' => '0',
     'name' => '留言板',
@@ -666,7 +666,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '34',
     'parentid' => '0',
     'name' => '廣播',
@@ -686,7 +686,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '35',
     'parentid' => '0',
     'name' => '圈子',
@@ -706,7 +706,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '36',
     'parentid' => '0',
     'name' => '門户',
@@ -726,7 +726,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '37',
     'parentid' => '0',
     'name' => '導讀',
@@ -746,7 +746,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '38',
     'parentid' => '0',
     'name' => '排行榜',
@@ -766,7 +766,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '3',
     'logo' => '',
-  ],[
+], [
     'id' => '41',
     'parentid' => '0',
     'name' => '搜索',
@@ -786,7 +786,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '42',
     'parentid' => '0',
     'name' => '公告',
@@ -806,7 +806,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '43',
     'parentid' => '0',
     'name' => '導讀',
@@ -826,7 +826,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '44',
     'parentid' => '0',
     'name' => '資訊',
@@ -846,7 +846,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '45',
     'parentid' => '0',
     'name' => '日誌',
@@ -866,7 +866,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '46',
     'parentid' => '0',
     'name' => '分享',
@@ -886,7 +886,7 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],[
+], [
     'id' => '47',
     'parentid' => '0',
     'name' => '排行榜',
@@ -906,5 +906,105 @@ $data = [[
     'suburl' => '',
     'navtype' => '5',
     'logo' => '',
-  ],
+], [
+    'id' => '48',
+    'parentid' => '0',
+    'name' => '首頁',
+    'title' => '',
+    'url' => 'index.php',
+    'identifier' => '',
+    'target' => '0',
+    'type' => '1',
+    'available' => '1',
+    'displayorder' => '1',
+    'highlight' => '0',
+    'level' => '0',
+    'subtype' => '0',
+    'subcols' => '0',
+    'icon' => '/static/image/mobile/touch/home.svg',
+    'subname' => '',
+    'suburl' => '',
+    'navtype' => '6',
+    'logo' => '',
+], [
+    'id' => '49',
+    'parentid' => '0',
+    'name' => '論壇',
+    'title' => '',
+    'url' => 'forum.php',
+    'identifier' => '',
+    'target' => '0',
+    'type' => '1',
+    'available' => '1',
+    'displayorder' => '2',
+    'highlight' => '0',
+    'level' => '0',
+    'subtype' => '0',
+    'subcols' => '0',
+    'icon' => '/static/image/mobile/touch/forum.svg',
+    'subname' => '',
+    'suburl' => '',
+    'navtype' => '6',
+    'logo' => '',
+], [
+    'id' => '50',
+    'parentid' => '0',
+    'name' => '發布',
+    'title' => '',
+    'url' => 'forum.php?mod=misc&action=nav',
+    'identifier' => 'post',
+    'target' => '0',
+    'type' => '1',
+    'available' => '1',
+    'displayorder' => '3',
+    'highlight' => '0',
+    'level' => '0',
+    'subtype' => '0',
+    'subcols' => '0',
+    'icon' => '/static/image/mobile/touch/plus_btn.svg',
+    'subname' => '',
+    'suburl' => '',
+    'navtype' => '6',
+    'logo' => '',
+], [
+    'id' => '51',
+    'parentid' => '0',
+    'name' => '發現',
+    'title' => '',
+    'url' => 'forum.php?mod=find',
+    'identifier' => '',
+    'target' => '0',
+    'type' => '1',
+    'available' => '1',
+    'displayorder' => '4',
+    'highlight' => '0',
+    'level' => '0',
+    'subtype' => '0',
+    'subcols' => '0',
+    'icon' => '/static/image/mobile/touch/explore.svg',
+    'subname' => '',
+    'suburl' => '',
+    'navtype' => '6',
+    'logo' => '',
+], [
+    'id' => '52',
+    'parentid' => '0',
+    'name' => '我的',
+    'title' => '',
+    'url' => 'home.php?mod=space',
+    'identifier' => '',
+    'target' => '0',
+    'type' => '1',
+    'available' => '1',
+    'displayorder' => '5',
+    'highlight' => '0',
+    'level' => '0',
+    'subtype' => '0',
+    'subcols' => '0',
+    'icon' => '/static/image/mobile/touch/space.svg',
+    'subname' => '',
+    'suburl' => '',
+    'navtype' => '6',
+    'logo' => '',
+],
 ];

@@ -3585,6 +3585,8 @@ $lang =
 	'nav_nav_mynav' => '快捷導航',
 	'nav_nav_topnav' => '頂部導航',
 	'nav_nav_mfindnav' => '手機發現頁導航',
+	'nav_nav_mnav' => '手機底部導航',
+	'nav_mnav_add' => '添加手機底部導航',
 	'nav_mfindnav_add' => '添加發現頁導航',
 	'nav_topnav_add' => '添加頂部導航',
 	'nav_footernav_add' => '添加底部導航',
@@ -3595,6 +3597,7 @@ $lang =
 	'nav_spacenav_userpanelarea2' => '{navname}區域2',
 	'nav_mynav_add' => '添加快捷導航',
 	'nav_spacenav_tips' => '<li>以下導航鏈接在“家園展示風格”中啓用“以SNS模塊風格展示”時有效</li>',
+	'nav_mnav_is_post' => '發布按鈕',
 
 	'styles' => '模板',
 	'styles_admin' => '模板管理',

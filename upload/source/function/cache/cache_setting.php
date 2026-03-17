@@ -361,6 +361,7 @@ function build_cache_setting() {
 	$data['topnavs'] = get_cachedata_topnav();
 	$data['profilenode'] = get_cachedata_threadprofile();
 	$data['mfindnavs'] = get_cachedata_mfindnav();
+	$data['mnavs'] = get_cachedata_mnav();
 
 	loaducenter();
 	$ucapparray = uc_app_ls();
@@ -1203,6 +1204,24 @@ function get_cachedata_topnav() {
 		$data['topnavs'][$nav['subtype']][$id] = ['data' => $_nav, 'available' => $nav['available'], 'navname' => $nav['name'], 'code' => $nav['code'], 'type' => $nav['type'], 'level' => $nav['level'], 'id' => $nav['identifier']];
 	}
 	return $data['topnavs'];
+}
+
+function get_cachedata_mnav() {
+	global $_G;
+
+	$data['mnavs'] = [];
+	foreach(table_common_nav::t()->fetch_all_by_navtype(6) as $nav) {
+		$_nav = $nav;
+		$id = $nav['type'] == 0 ? $nav['identifier'] : 100 + $nav['id'];
+		if(strpos($nav['icon'], 'http://') === 0 || strpos($nav['icon'], 'https://') === 0 || strpos($nav['icon'], './') === 0 || strpos($nav['icon'], '../') === 0 || strpos($nav['icon'], '/') === 0) {
+			if(strpos($nav['icon'], 'http://') !== 0 && strpos($nav['icon'], 'https://') !== 0) {
+				$nav['icon'] = $_G['siteurl'].$nav['icon'];
+			}
+			$nav['icon'] = '<img src="'.$nav['icon'].'" alt="'.$nav['name'].'" />';
+		}
+		$data['mnavs'][$id] = ['data' => $_nav, 'available' => $nav['available'], 'navname' => $nav['name'], 'url' => $nav['url'], 'name' => $nav['name'], 'type' => $nav['type'], 'level' => $nav['level'], 'id' => $nav['identifier'], 'icon' => $nav['icon'], 'is_post' => $nav['identifier'] == 'post'];
+	}
+	return $data['mnavs'];
 }
 
 function get_cachedata_threadprofile() {

@@ -16,7 +16,7 @@ if(!$operation) {
 	$operation = 'headernav';
 }
 
-$navs = ['headernav', 'topnav', 'footernav', 'mynav', 'spacenav', 'mfindnav'];
+$navs = ['headernav', 'topnav', 'footernav', 'mynav', 'mnav', 'mfindnav'];
 $navdata = [];
 foreach($navs as $nav) {
 	$navdata[] = ['nav_nav_'.$nav, 'nav&operation='.$nav, $nav == $operation];
