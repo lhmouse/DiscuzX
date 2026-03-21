@@ -547,6 +547,9 @@ ALTER TABLE pre_common_credit_log_field
 ALTER TABLE pre_forum_forum
 	ADD COLUMN editormode tinyint(1) NOT NULL DEFAULT '-1';
 
+DELETE FROM pre_common_credit_log
+	WHERE dateline < UNIX_TIMESTAMP(NOW() - INTERVAL 1 YEAR);
+
 UPDATE pre_common_credit_log_field f
 	JOIN pre_common_credit_log l ON f.logid = l.logid
 	SET f.dateline = l.dateline;
