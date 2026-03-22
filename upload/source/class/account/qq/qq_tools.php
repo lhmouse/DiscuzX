@@ -75,8 +75,6 @@ class qq_tools {
 		if($error = curl_error($ch)) {
 			die($error);
 		}
-		// 关闭CURL
-		curl_close($ch);
 
 		return json_decode($result, TRUE);
 	}
@@ -129,8 +127,6 @@ class qq_tools {
 		if($error = curl_error($ch)) {
 			die($error);
 		}
-		// 关闭CURL
-		curl_close($ch);
 
 		return json_decode($result, TRUE);
 	}
@@ -141,9 +137,7 @@ class qq_tools {
 	public function uploadFileByPost($url, $data) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -152,7 +146,6 @@ class qq_tools {
 		if($error = curl_error($ch)) {
 			die($error);
 		}
-		curl_close($ch);
 
 		return json_decode($result, TRUE);
 	}
@@ -186,7 +179,6 @@ class qq_tools {
 		if(curl_errno($curl)) {
 			return curl_error($curl);
 		}
-		curl_close($curl);
 		if($returnCookie) {
 			list($header, $body) = explode("\r\n\r\n", $data, 2);
 			preg_match_all('/Set\-Cookie:([^;]*);/', $header, $matches);
