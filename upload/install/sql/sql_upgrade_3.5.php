@@ -232,6 +232,14 @@ UPDATE `pre_common_member` SET `loginname`=`username`;
 ALTER TABLE `pre_common_member`
 	ADD UNIQUE INDEX loginname (loginname);
 
+ALTER TABLE `pre_common_member_archive`
+    ADD COLUMN loginname char(50) NOT NULL DEFAULT '' AFTER `email`;
+
+UPDATE `pre_common_member_archive` SET `loginname`=`username`;
+
+ALTER TABLE `pre_common_member_archive`
+    ADD UNIQUE INDEX loginname (loginname);
+
 DROP TABLE IF EXISTS pre_common_member_username_history;
 CREATE TABLE pre_common_member_username_history
 (
