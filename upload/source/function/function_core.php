@@ -900,6 +900,7 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 
 	if(str_starts_with($tpldir, 'source/app/')) {
 		$tplfile = DISCUZ_ROOT.$tpldir.'/'.$file.'.php';
+		$inApp = true;
 	} else {
 		if(!$tpldir) {
 			$tpldir = './template/default';
@@ -925,7 +926,8 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 			}
 		}
 		empty($mobiletplfile) && $mobiletplfile = $file.'.htm';
-		if(strpos($tpldir, 'plugin') && (tplfile::file_exists(DISCUZ_TEMPLATE($mobiletplfile)) || tplfile::file_exists(substr(DISCUZ_TEMPLATE($mobiletplfile), 0, -4).'.php'))) {
+		if(!empty($inApp)) {
+		} elseif(strpos($tpldir, 'plugin') && (tplfile::file_exists(DISCUZ_TEMPLATE($mobiletplfile)) || tplfile::file_exists(substr(DISCUZ_TEMPLATE($mobiletplfile), 0, -4).'.php'))) {
 			$tplfile = $mobiletplfile;
 		} elseif(!$clonefile && !tplfile::file_exists(DISCUZ_TEMPLATE($tpldir.'/'.$mobiletplfile)) &&
 			!tplfile::file_exists(substr(DISCUZ_TEMPLATE($tpldir.'/'.$mobiletplfile), 0, -4).'.php') &&
