@@ -62,9 +62,6 @@ if(submitcheck('settingsubmit')) {
 	showsetting('setting_permissions_editperdel', 'settingnew[editperdel]', $setting['editperdel'], 'radio');
 	showsetting('setting_permissions_editby', 'settingnew[editedby]', $setting['editedby'], 'radio');
 
-	showtitle('nav_portal');
-	showsetting('setting_permissions_maxportalsize', 'settingnew[maxportalsize]', $setting['maxportalsize'], 'text');
-
 	showtitle('nav_setting_rate');
 	showsetting('setting_permissions_karmaratelimit', 'settingnew[karmaratelimit]', $setting['karmaratelimit'], 'text');
 	showsetting('setting_permissions_modratelimit', 'settingnew[modratelimit]', $setting['modratelimit'], 'radio');

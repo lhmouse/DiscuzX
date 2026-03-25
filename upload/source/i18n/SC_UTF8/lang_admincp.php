@@ -2073,6 +2073,7 @@ $lang =
 	'setting_permissions_nsprofiles_comment' => '启用后个人空间内将不展现个人信息',
 	'setting_permissions_modasban' => '不忽略审核关键词',
 	'setting_permissions_modasban_comment' => '启用后在不支持审核关键词的模块内发现此类关键词将拒绝提交，关闭则允许提交',
+	'setting_permissions_editpost' => '帖子编辑',
 
 	'setting_credits' => '积分设置',
 	'setting_credits_base' => '基本设置',

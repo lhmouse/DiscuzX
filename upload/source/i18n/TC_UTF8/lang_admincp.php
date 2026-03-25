@@ -2073,6 +2073,7 @@ $lang =
 	'setting_permissions_nsprofiles_comment' => '啓用後個人空間內將不展現個人資訊',
 	'setting_permissions_modasban' => '不忽略審核關鍵詞',
 	'setting_permissions_modasban_comment' => '啓用後在不支持審核關鍵詞的模塊內發現此類關鍵詞將拒絕提交，關閉則允許提交',
+	'setting_permissions_editpost' => '帖子編輯',
 
 	'setting_credits' => '積分設置',
 	'setting_credits_base' => '基本設置',
