@@ -134,6 +134,7 @@ class forum_upload {
 				$thumb = $image->Thumb($upload->attach['target'], '', $_G['setting']['sourcewidth'], $_G['setting']['sourceheight'], 1, 1) ? 1 : 0;
 				$width = $image->imginfo['width'];
 				$height = $image->imginfo['height'];
+				$needupdate = true;
 				$upload->attach['size'] = $image->imginfo['size'];
 			}
 			if($_G['setting']['thumbstatus']) {
@@ -143,6 +144,14 @@ class forum_upload {
 			}
 			if($_G['setting']['thumbsource'] || !$_G['setting']['thumbstatus']) {
 				list($width, $height) = @getimagesize($upload->attach['target']);
+			}
+			if($_G['setting']['watermarkstatus'] && empty($_G['forum']['disablewatermark'])) {
+				$image->Watermark($upload->attach['target'], '', 'forum');
+				$needupdate = true;
+				$upload->attach['size'] = $image->imginfo['size'];
+			}
+			if($needupdate) {
+				$upload->ftpupload();
 			}
 		}
 		if($thumbBase64 != '' && preg_match('/^(data:\s*image\/(\w+);base64,)/', $thumbBase64, $_r)) {
