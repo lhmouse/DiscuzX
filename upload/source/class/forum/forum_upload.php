@@ -188,6 +188,12 @@ class forum_upload {
 		if($upload->attach['isimage'] && $_G['setting']['showexif']) {
 			table_forum_attachment_exif::t()->insert_exif($aid, $exif);
 		}
+		if($_G['setting']['ftp']['on'] == 2) {
+			@unlink($upload->attach['target']);
+			if($thumb) {
+				@unlink(getglobal('setting/attachdir').'forum/'.getimgthumbname($upload->attach['attachment']));
+			}
+		}
 		return $this->uploadmsg(0);
 	}
 

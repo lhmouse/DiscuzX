@@ -765,6 +765,7 @@ function upload_icon_banner(&$data, $file, $type) {
 	}
 	if($_G['setting']['ftp']['on'] == 2) {
 		ftpcmd('upload', $uploadtype.'/'.$upload->attach['attachment']);
+		@unlink($upload->attach['target']);
 	}
 	return $upload->attach['attachment'];
 }
