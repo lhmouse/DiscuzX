@@ -1702,14 +1702,10 @@ function checklowerlimit($action, $uid = 0, $coef = 1, $fid = 0, $returnonly = 0
 }
 
 function batchupdatecredit($action, $uids = 0, $extrasql = [], $coef = 1, $fid = 0) {
-
-	$credit = &credit::instance();
-	if($extrasql) {
-		$credit->extrasql = $extrasql;
+	foreach((array)$uids as $uid) {
+		updatecreditbyaction($action, $uid, $extrasql, '', $coef, 1, $fid);
 	}
-	return $credit->updatecreditbyrule($action, $uids, $coef, $fid);
 }
-
 
 function updatemembercount($uids, $dataarr = [], $checkgroup = true, $operation = '', $relatedid = 0, $ruletxt = '', $customtitle = '', $custommemo = '') {
 	if(!empty($uids) && (is_array($dataarr) && $dataarr)) {
