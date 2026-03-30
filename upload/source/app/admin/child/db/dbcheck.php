@@ -200,15 +200,19 @@ if($step == 3) {
 					$tempvalue = str_replace('mediumtext', 'text', $value);
 					$discuzdbnew[$dbtable][$key] = str_replace('mediumtext', 'text', $discuzdbnew[$dbtable][$key]);
 					if($tempvalue != $discuzdbnew[$dbtable][$key]) {
-						// MySQL 8.0.17 开始不再支持除tinyint(1)以外的任何int类数据类型的显示宽度，检测到此行为则移除数值。
-						if((str_contains($tempvalue['Type'], 'int(')) && !empty($discuzdbnew[$dbtable][$key]['Type']) && (!str_contains($discuzdbnew[$dbtable][$key]['Type'], '('))) {
-							$tempvalue['Type'] = preg_replace('/\(\d+\)/', '', $tempvalue['Type']);
-							if($tempvalue != $discuzdbnew[$dbtable][$key]) {
-								$modifylist[] = $value;
+						if(str_contains($tempvalue['Type'], 'int') && !empty($discuzdbnew[$dbtable][$key]['Type']) && str_contains($discuzdbnew[$dbtable][$key]['Type'], '(')) {
+							$discuzdbnew[$dbtable][$key]['Type'] = preg_replace('/\(\d+\)/', '', $discuzdbnew[$dbtable][$key]['Type']);
+							if($tempvalue == $discuzdbnew[$dbtable][$key]) {
+								continue;
 							}
-						} else {
-							$modifylist[] = $value;
 						}
+						if(str_contains($tempvalue['Extra'], 'DEFAULT_GENERATED')) {
+							$tempvalue['Extra'] = str_replace('DEFAULT_GENERATED ', '', $tempvalue['Extra']);
+							if($tempvalue == $discuzdbnew[$dbtable][$key]) {
+								continue;
+							}
+						}
+						$modifylist[] = $value;
 					}
 				}
 			}
