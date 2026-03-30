@@ -126,7 +126,7 @@ class forum_upload {
 				require_once libfile('function/attachment');
 				$exif = getattachexif(0, $upload->attach['target']);
 			}
-			if($_G['setting']['thumbsource'] || $_G['setting']['thumbstatus']) {
+			if($_G['setting']['thumbsource'] || $_G['setting']['thumbstatus'] || $_G['setting']['watermarkstatus']) {
 				require_once libfile('class/image');
 				$image = new image;
 			}
