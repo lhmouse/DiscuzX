@@ -125,7 +125,7 @@ if(!submitcheck('editsubmit')) {
 
 	shownav('template', 'styles_edit');
 
-	showchildmenu([['styles_admin', 'styles']], $style['name'], $submenuitem, $id == 1 ? '<a href="'.ADMINSCRIPT.'?action=tplfile&id='.$id.'" target="_blank">'.$lang['styles_edit_file'].'</a>' : '', true);
+	showchildmenu([['styles_admin', 'styles']], $style['name'], $submenuitem, '', true);
 
 	?>
 	<script type="text/JavaScript">
