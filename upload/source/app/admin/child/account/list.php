@@ -43,6 +43,7 @@ if(!submitcheck('submit')) {
 		'class="l t"',
 		'class="t"',
 		'class="l t"',
+		'class="l t"',
 		'class="t"',
 		'class="t"',
 		'class="l t"',
