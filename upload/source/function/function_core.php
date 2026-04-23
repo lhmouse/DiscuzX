@@ -784,10 +784,13 @@ function checktplrefresh($maintpl, $subtpl, $timecompare, $templateid, $cachefil
 	return FALSE;
 }
 
-function _checkDiyTpl($diypath, $file) {
+function _checkDiyTpl($diypath, $file, &$diytemplatename) {
 	global $_G;
 	if(defined('IN_MOBILE') && constant('IN_MOBILE') == 2) {
 		$file = $_G['mobiletpl'][IN_MOBILE].'/'.$file;
+	}
+	if(!isset($diytemplatename[$file])) {
+		return false;
 	}
 	if(file_exists($diypath.$file.'.htm')) {
 		static $tplrefresh;
@@ -859,7 +862,7 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 				$diytemplatename = &$_G['cache']['diytemplatename'];
 			}
 			$tplsavemod = 0;
-			if(isset($diytemplatename[$file]) && _checkDiyTpl($diypath, $file) && ($tplsavemod = 1) || empty($_G['forum']['styleid']) && ($file = $primaltpl ? $primaltpl : $oldfile) && isset($diytemplatename[$file]) && _checkDiyTpl($diypath, $file)) {
+			if(_checkDiyTpl($diypath, $file, $diytemplatename) && ($tplsavemod = 1) || empty($_G['forum']['styleid']) && ($file = $primaltpl ? $primaltpl : $oldfile) && _checkDiyTpl($diypath, $file, $diytemplatename)) {
 				$tpldir = 'data/diy/'.$_G['style']['tpldirectory'].'/';
 				!$gettplfile && $_G['style']['tplsavemod'] = $tplsavemod;
 				$curtplname = $file;
