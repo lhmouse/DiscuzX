@@ -42,7 +42,7 @@ class ip_v6system {
 	 */
 	public function __construct() {
 		$sys_lang = getglobal('i18n');
-		if(empty($sys_lang)) {
+		if(empty($sys_lang) || $sys_lang == 'default') {
 			$sys_lang = currentlang();
 		}
 		$this->loadData(DISCUZ_ROOT.'./source/data/ip/ipv6db.dat', DISCUZ_ROOT.'./source/i18n/'.$sys_lang.'/lang_ipdb.php');
