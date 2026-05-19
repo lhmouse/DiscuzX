@@ -210,7 +210,7 @@ class account_base {
 		if($image->Thumb($tmpavatar, $tmpavatarbig, 200, 250, 1) <= 0) {
 			return false;
 		}
-		if($image->Thumb($tmpavatar, $tmpavatarmiddle, 120, 120, 1) <= 0) {
+		if($image->Thumb($tmpavatar, $tmpavatarmiddle, 120, 120, 2) <= 0) {
 			return false;
 		}
 		if($image->Thumb($tmpavatar, $tmpavatarsmall, 48, 48, 2) <= 0) {
