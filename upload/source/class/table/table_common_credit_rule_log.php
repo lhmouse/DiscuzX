@@ -50,13 +50,8 @@ class table_common_credit_rule_log extends discuz_table {
 	public function fetch_rule_log($rid, $uid, $fid = 0) {
 		$log = [];
 		if($rid && $uid) {
-			$sql = '';
-			$para = [$this->_table, $uid, $rid];
-			if($fid) {
-				$sql = ' AND fid=%d';
-				$para[] = $fid;
-			}
-			$log = DB::fetch_first('SELECT * FROM %t WHERE uid=%d AND rid=%d'.$sql, $para);
+			$para = [$this->_table, $uid, $rid, $fid];
+			$log = DB::fetch_first('SELECT * FROM %t WHERE uid=%d AND rid=%d AND fid=%d', $para);
 		}
 		return $log;
 	}
