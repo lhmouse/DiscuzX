@@ -54,6 +54,10 @@ class class_core {
 		global $_G;
 
 		if($_G['config']['admincp']['validate']['method'] == 'default') {
+			if (empty($_SERVER['HTTP_USER_AGENT']) || empty($_G['config']['admincp']['validate']['user']) || empty($_G['config']['admincp']['validate']['user'])) {
+				header('HTTP/1.1 401 Unauthorized');
+				exit;
+			}
 			$realm = 'Discuz! Admincp';
 			$nonce = authcode(md5($_SERVER['HTTP_USER_AGENT'].$_G['cookie']['saltkey']),
 				'ENCODE', $_G['cookie']['saltkey'].substr(time(), 0, 6), 0, 0);
