@@ -244,26 +244,39 @@ if(!submitcheck('editsubmit')) {
 	showformheader("plugins&operation=edit&type=vars&pluginid=$pluginid", '', 'varsform');
 	showtableheader('plugins_edit_vars');
 	showsubtitle(['', 'display_order', 'plugins_vars_title', 'plugins_vars_variable', 'plugins_vars_type', '']);
+	$specials = [];
 	foreach(table_common_pluginvar::t()->fetch_all_by_pluginid($plugin['pluginid']) as $var) {
 		$var['typename'] = admin\class_component::get_name($var['type']);
 		$var['title'] .= isset($lang[$var['title']]) ? '<br />'.$lang[$var['title']] : '';
 		if($var['type'] == 'stylePage') {
 			$trstyle = 'class="header"';
-		}elseif($var['type'] == 'styleTitle') {
+		} elseif($var['type'] == 'styleTitle') {
 			$trstyle = 'class="header"';
 			$var['title'] = '<div class="board">'.$var['title'].'</div>';
-		}else{
+		} else {
 			$trstyle = '';
 			$var['title'] = '<div class="childboard">'.$var['title'].'</div>';
 		}
-		showtablerow($trstyle, ['class="td25"', 'class="td28"'], [
+		$row = showtablerow($trstyle, ['class="td25"', 'class="td28"'], [
 			"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$var['pluginvarid']}\">",
 			"<input type=\"text\" class=\"txt\" size=\"2\" name=\"displayordernew[{$var['pluginvarid']}]\" value=\"{$var['displayorder']}\">",
 			$var['title'],
 			$var['variable'],
 			$var['typename'],
 			"<a href=\"".ADMINSCRIPT."?action=plugins&operation=vars&pluginid={$plugin['pluginid']}&pluginvarid={$var['pluginvarid']}\" class=\"act\">{$lang['detail']}</a>"
-		]);
+		], true);
+		if(in_array($s = substr($var['type'], 0, 6), ['group_', 'forum_'])) {
+			$specials[$s][] = $row;
+		} else {
+			echo $row;
+		}
+	}
+	foreach(['group_' => cplang('usergroups'), 'forum_' => cplang('forums')] as $s => $_lang) {
+		if(!isset($specials[$s])) {
+			continue;
+		}
+		showsubtitle(['', $_lang]);
+		echo implode('', $specials[$s]);
 	}
 	showtablerow('', ['class="td25"', 'class="td28"'], [
 		cplang('add_new'),

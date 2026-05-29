@@ -34,27 +34,40 @@ if(!$stylevarid) {
 		showformheader("styles&operation=editvar&id=$id");
 		showtableheader('styles_vars');
 		showsubtitle(['', 'display_order', 'plugins_vars_title', 'plugins_vars_variable', 'plugins_vars_type', '']);
+		$specials = [];
 		foreach(table_common_stylevar_extra::t()->fetch_all_by_styleid($id) as $var) {
 			$newdisplayorder = max($var['displayorder'], $newdisplayorder ?? 0);
 			$var['typename'] = admin\class_component::get_name($var['type']);
 			$var['title'] .= isset($lang[$var['title']]) ? '<br />'.$lang[$var['title']] : '';
 			if($var['type'] == 'stylePage') {
 				$trstyle = 'class="header"';
-			}elseif($var['type'] == 'styleTitle') {
+			} elseif($var['type'] == 'styleTitle') {
 				$trstyle = 'class="header"';
 				$var['title'] = '<div class="board">'.$var['title'].'</div>';
-			}else{
+			} else {
 				$trstyle = '';
 				$var['title'] = '<div class="childboard">'.$var['title'].'</div>';
 			}
-			showtablerow($trstyle, ['class="td25"', 'class="td28"'], [
+			$row = showtablerow($trstyle, ['class="td25"', 'class="td28"'], [
 				"<input class=\"checkbox\" type=\"checkbox\" name=\"delete[]\" value=\"{$var['stylevarid']}\">",
 				"<input type=\"text\" class=\"txt\" size=\"2\" name=\"displayordernew[{$var['stylevarid']}]\" value=\"{$var['displayorder']}\">",
 				$var['title'],
 				$var['variable'],
 				$var['typename'],
 				"<a href=\"".ADMINSCRIPT."?action=styles&operation=editvar&id=$id&stylevarid={$var['stylevarid']}\" class=\"act\">{$lang['detail']}</a>"
-			]);
+			], true);
+			if(in_array($s = substr($var['type'], 0, 6), ['group_', 'forum_'])) {
+				$specials[$s][] = $row;
+			} else {
+				echo $row;
+			}
+		}
+		foreach(['group_' => cplang('usergroups'), 'forum_' => cplang('forums')] as $s => $_lang) {
+			if(!isset($specials[$s])) {
+				continue;
+			}
+			showsubtitle(['', $_lang]);
+			echo implode('', $specials[$s]);
 		}
 		showtablerow('', ['class="td25"', 'class="td28"'], [
 			cplang('add_new'),
@@ -116,8 +129,6 @@ if(!$stylevarid) {
 
 		showchildmenu([['styles_admin', 'styles'], [$style['name'].' ', ''],
 			[cplang('plugins_editlink'), 'styles&operation=editvar&id='.$id]], $stylevar['title']);
-
-
 
 		$typeselect = '<select name="typenew" onchange="if(this.value.indexOf(\'select\') != -1) $(\'extra\').style.display=\'\'; else $(\'extra\').style.display=\'none\';">';
 		$typeselect .= !str_starts_with($stylevar['type'], 'style') ? admin\class_component::get_optgroup($stylevar['type']) : '<option value="'.$stylevar['type'].'" selected>'.cplang('plugins_edit_vars_type_'.$stylevar['type']).'</option>';
