@@ -344,7 +344,7 @@ if($filter && $filter != 'hot') {
 			if($issort) {
 				$sfilterfield = array_merge(['filter', 'sortid', 'orderby', 'fid'], $filterfield);
 				foreach($geturl as $soption => $value) {
-					$forumdisplayadd[$soption] .= !in_array($soption, $sfilterfield) ? '&'.rawurlencode($soption).'='.rawurlencode($value) : '';
+					$forumdisplayadd[$soption] .= !in_array($soption, $sfilterfield) ? '&'.buildParamStr($soption, $value) : '';
 				}
 				unset($sfilterfield);
 			}
@@ -352,14 +352,14 @@ if($filter && $filter != 'hot') {
 				foreach($quicksearchlist as $option) {
 					$identifier = $option['identifier'];
 					foreach($geturl as $option => $value) {
-						$sorturladdarray[$identifier] .= !in_array($option, ['filter', 'sortid', 'orderby', 'fid', 'searchsort', $identifier]) ? '&amp;'.rawurlencode($option).'='.rawurlencode($value) : '';
+						$sorturladdarray[$identifier] .= !in_array($option, ['filter', 'sortid', 'orderby', 'fid', 'searchsort', $identifier]) ? '&'.buildParamStr($option, $value) : '';
 					}
 				}
 			}
 
 			foreach($geturl as $field => $value) {
 				if($field != 'page' && $field != 'fid' && $field != 'searchoption' && $field != 't') {
-					$multiadd[] = rawurlencode($field).'='.rawurlencode($value);
+					$multiadd[] = buildParamStr($field, $value);
 					if(in_array($field, $filterfield)) {
 						if($field == 'digest') {
 							$filterarr['digest'] = 1;
@@ -927,3 +927,18 @@ function forumdisplay_verify_author($ids) {
 	return $verify;
 }
 
+function buildParamStr($topKey, $data) {
+	$parts = [];
+	$recursion = function($val, string $path) use (&$recursion, &$parts) {
+		if(is_array($val)) {
+			foreach($val as $k => $v) {
+				$newPath = $path.'['.$k.']';
+				$recursion($v, $newPath);
+			}
+		} else {
+			$parts[] = $path.'='.rawurlencode($val);
+		}
+	};
+	$recursion($data, $topKey);
+	return implode('&', $parts);
+}
