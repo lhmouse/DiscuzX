@@ -246,7 +246,7 @@ if($action == 'index') {
 			}
 		} elseif($_G['forum']['jointype'] == 2) {
 			$modmember = !empty($groupmanagers[$inviteuid]) || $_G['adminid'] == 1 ? 4 : 0;
-			!empty($groupmanagers[$inviteuid]) && $showmessage = 'group_join_apply_succeed';
+			!empty($groupmanagers[$inviteuid]) && $modmember == 0 && $showmessage = 'group_join_apply_succeed';
 		}
 
 		if($confirmjoin) {
