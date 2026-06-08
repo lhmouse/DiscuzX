@@ -524,7 +524,13 @@ if($method == 'show_license') {
 
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
 
+	$backupCaches = [];
+	$db->fetch_all("SELECT * FROM {$tablepre}common_syscache WHERE `cname` LIKE 'pluginlanguage%'", $backupCaches);
 	$db->query("TRUNCATE TABLE {$tablepre}common_syscache");
+	foreach($backupCaches as $cache) {
+		$cache['data'] = '0x'.bin2hex($cache['data']);
+		$db->query("INSERT INTO {$tablepre}common_syscache VALUES ('{$cache['cname']}', '{$cache['ctype']}', '{$cache['dateline']}', {$cache['data']})");
+	}
 
 	unmark_system_plugin();
 
