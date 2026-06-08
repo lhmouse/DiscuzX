@@ -109,7 +109,7 @@ function loadThreadtypeTemplate($data) {
 	}
 	[$pluginid, $tpl] = explode(':', $r[1]);
 	if(!$tpl) {
-		if(!preg_match('/^[\\/\w+$/', $pluginid)) {
+		if(!preg_match('/^[\\/\w]+$/', $pluginid)) {
 			return addcslashes($data, '",\\');
 		}
 		$tpls = [
