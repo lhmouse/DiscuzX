@@ -686,10 +686,7 @@ function checkprimaltpl($template) {
 		return 'diy_template_extension_invalid';
 	}
 	if(!is_file($primaltplname)) {
-		$tplfile = table_common_template_file::t()->get_file(1, '/'.$template.'.htm');
-		if(!$tplfile) {
-			return 'diy_template_noexist';
-		}
+		return 'diy_template_noexist';
 	}
 	return true;
 }
