@@ -97,7 +97,7 @@
 <!--{if $multipage && $filter != 'hot'}-->
 	<!--{if !($_G['forum']['picstyle'] && !$_G['cookie']['forumdefstyle'])}-->
 		<a class="bm_h" href="javascript:;" rel="$multipage_more" curpage="$page" id="autopbn" totalpage="$maxpage" picstyle="$_G['forum']['picstyle']" forumdefstyle="$_G['cookie']['forumdefstyle']">{lang next_page_extra}</a>
-		<script type="text/javascript" src="{$_G[setting][jspath]}autoloadpage.js?{VERHASH}"></script>
+		<script type="text/javascript" src="$_G['style']['styleimgdir']/js/autoloadpage.js?{VERHASH}"></script>
 	<!--{else}-->
 		<div id="pgbtn" class="pgbtn"><a href="$multipage_more" hidefocus="true">{lang next_page_extra}</a></div>
 	<!--{/if}-->
