@@ -390,6 +390,8 @@ if($method == 'show_license') {
 	$allinfo_arr = unserialize(base64_decode($allinfo));
 	extract($allinfo_arr);
 
+	set_exception_handler('sse_exception_handler');
+
 	sse_header();
 
 	$db = new dbstuff;
@@ -507,6 +509,8 @@ if($method == 'show_license') {
 	$allinfo = getgpc('allinfo');
 	$allinfo_arr = unserialize(base64_decode($allinfo));
 	extract($allinfo_arr);
+
+	set_exception_handler('sse_exception_handler');
 
 	sse_header();
 

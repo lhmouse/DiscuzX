@@ -74,12 +74,8 @@ $env_items = array
 	'php' => array('c' => 'PHP_VERSION', 'r' => '8.0+', 'b' => '8.2'),
 	'mysql' => array('r' => 'MySQL 5.7+/MariaDB 10.2', 'b' => 'MySQL 8.0'),
 	'attachmentupload' => array('r' => 'notset', 'b' => '2M'),
-	'gdversion' => array('r' => '1.0', 'b' => '2.0'),
-	'curl' => array('r' => 'notset', 'b' => 'enable'),
-	'opcache' => array('r' => 'notset', 'b' => 'enable'),
-	'redis' => array('r' => 'notset', 'b' => 'enable'),
-	'imagick' => array('r' => 'notset', 'b' => 'enable'),
 	'diskspace' => array('r' => 40 * 1048576, 'b' => 'notset'),
+	'extensions' => array('r' => 'notset', 'b' => 'enable'),
 );
 
 $dirfile_items = array

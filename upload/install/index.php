@@ -25,6 +25,7 @@ require ROOT_PATH.'./source/mitframe_version.php';
 require ROOT_PATH.'./install/include/install_var.php';
 require ROOT_PATH.'./install/include/install_mysqli.php';
 require ROOT_PATH.'./install/include/install_function.php';
+require ROOT_PATH.'./source/class/class_check.php';
 set_lang();
 if(!file_exists($_langfile = ROOT_PATH.'./source/i18n/'.INSTALL_LANG.'/install/lang_install.php')) {
 	exit('language undefined');

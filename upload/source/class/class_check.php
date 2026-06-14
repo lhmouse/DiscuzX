@@ -161,4 +161,45 @@ class check {
 
 		return $v;
 	}
+
+	const EXTENSIONS = [
+		'mysqli' => ['mysqli_connect', 'mysqli_query'],
+		'json' => ['json_encode', 'json_decode'],
+		'mbstring' => ['mb_convert_encoding'],
+		'curl' => ['curl_init', 'curl_setopt'],
+		'openssl' => ['openssl_random_pseudo_bytes', 'openssl_sign'],
+		'xml' => ['xml_parser_create'],
+		'filter' => ['filter_var'],
+		'ctype' => ['ctype_alnum'],
+		'spl' => ['spl_autoload_register'],
+	];
+
+	private static function _extensionCheck($extension, $testFunctions = []) {
+		if($extension && !extension_loaded($extension)) {
+			return ['extension', $extension];
+		}
+
+		if(!empty($testFunctions)) {
+			foreach($testFunctions as $func) {
+				if(!function_exists($func) && !class_exists($func)) {
+					return ['function', $func.'()'];
+				}
+			}
+		}
+
+		return ['', ''];
+	}
+
+	public static function extensions() {
+		$must = [];
+		$extensions = self::EXTENSIONS;
+		foreach($extensions as $ext => $funcs) {
+			list($type, $name) = self::_extensionCheck($ext, $funcs);
+			if(!empty($type)) {
+				$must[$type][] = $name;
+			}
+		}
+
+		return $must;
+	}
 }

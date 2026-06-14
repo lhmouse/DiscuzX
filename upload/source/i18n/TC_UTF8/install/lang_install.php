@@ -491,6 +491,9 @@ $lang = [
 	'database_waiting_link' => '瀏覽器會自動跳轉頁面，無需手動操作。除非您的瀏覽器長時間未自動跳轉，請點擊此處',
 	'database_confirm' => '確定',
 	'database_cancel' => '取消',
+
+	'ext_missing' => '請安裝 PHP 擴展',
+	'func_missing' => '函數/類 無法使用',
 ];
 
 $msglang = array(

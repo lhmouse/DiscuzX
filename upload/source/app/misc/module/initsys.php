@@ -24,6 +24,10 @@ header('Connection: keep-alive');
 header('Access-Control-Allow-Origin: *');
 ob_start();
 
+set_exception_handler(function($exception) {
+	sse_output(nl2br(strip_tags($exception->getMessage())));
+});
+
 if(!defined('IN_DISCUZ')) {
 	sse_output('Access Denied');
 }
