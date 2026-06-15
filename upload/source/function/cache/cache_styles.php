@@ -114,6 +114,7 @@ function build_cache_styles() {
 			savecache('style_default', $data);
 		}
 		writetocsscache($data);
+		writetocsscache($data, true);
 	}
 
 }
@@ -142,22 +143,23 @@ function setcssbackground(&$data, $code) {
 	return $css ? 'background: '.$css : '';
 }
 
-function writetocsscache($data) {
+function writetocsscache($data, $touch = false) {
 	global $_G;
-	$dir = DISCUZ_TEMPLATE('./template/default/common/');
+	$touch = $touch ? 'touch/' : '';
+	$dir = DISCUZ_TEMPLATE('./template/default/'.$touch.'common/');
 	$dh = opendir($dir);
 	$data['staticurl'] = STATICURL;
 	while(($entry = readdir($dh)) !== false) {
 		if(fileext($entry) == 'css') {
-			$cssfile = DISCUZ_TEMPLATE('./'.$data['tpldir'].'/common/'.$entry);
+			$cssfile = DISCUZ_TEMPLATE('./'.$data['tpldir'].'/'.$touch.'common/'.$entry);
 			!tplfile::file_exists($cssfile) && $cssfile = $dir.$entry;
 			$cssdata = tplfile::file_get_contents($cssfile);
-			if(tplfile::file_exists($cssfile = DISCUZ_TEMPLATE('./'.$data['tpldir'].'/common/extend_'.$entry))) {
+			if(tplfile::file_exists($cssfile = DISCUZ_TEMPLATE('./'.$data['tpldir'].'/'.$touch.'common/extend_'.$entry))) {
 				$cssdata .= tplfile::file_get_contents($cssfile);
 			}
 			if(is_array($_G['setting']['plugins']['available']) && $_G['setting']['plugins']['available']) {
 				foreach($_G['setting']['plugins']['available'] as $plugin) {
-					if(file_exists($cssfile = DISCUZ_PLUGIN($plugin).'/template/extend_'.$entry)) {
+					if(file_exists($cssfile = DISCUZ_PLUGIN($plugin).'/template/'.$touch.'extend_'.$entry)) {
 						$cssdata .= @implode('', file($cssfile));
 					}
 				}
@@ -177,6 +179,9 @@ function writetocsscache($data) {
 			$cachedir = DISCUZ_DATA.'./cache/';
 			if(!is_dir($cachedir)) {
 				dmkdir($cachedir);
+			}
+			if($touch) {
+				$entry = 'touch_'.$entry;
 			}
 			if(file_put_contents($cachedir.'style_'.$data['styleid'].'_'.$entry, $cssdata, LOCK_EX) === false) {
 				exit('Can not write to cache files, please check directory ./data/ and ./data/cache/ .');

@@ -482,35 +482,36 @@ class template {
 
 	function loadcsstemplate() {
 		global $_G;
-		$cssFile = DISCUZ_DATA.'./cache/style_'.STYLEID.'_module.css';
-		$file = file($cssFile);
-		if(!$file && $_G['setting']['ftp']['on'] == 2) {
-			$data = file_get_contents($_G['setting']['attachurl'].'cache/style_'.STYLEID.'_module.css');
-			if($data) {
-				file_put_contents($cssFile, $data);
-				$file = file($cssFile);
+		$touch = defined('IN_MOBILE') ? '_touch' : '';
+		$cssFile = DISCUZ_DATA.'./cache/style_'.STYLEID.$touch.'_module.css';
+		$file = [];
+		if(file_exists($cssFile)) {
+			$file = file($cssFile);
+			if(!$file && $_G['setting']['ftp']['on'] == 2) {
+				$data = file_get_contents($_G['setting']['attachurl'].'cache/style_'.STYLEID.$touch.'_module.css');
+				if($data) {
+					file_put_contents($cssFile, $data);
+					$file = file($cssFile);
+				}
 			}
 		}
-		$scripts = [STYLEID.'_common'];
+		$scripts = [STYLEID.$touch.'_common'];
 		$content = $this->csscurmodules = '';
 		$content = implode('', is_array($file) ? $file : []);
 		$content = preg_replace_callback('/\[(.+?)\](.*?)\[end\]/is', [$this, 'loadcsstemplate_callback_cssvtags_12'], $content);
 		if($this->csscurmodules) {
 			$this->csscurmodules = preg_replace(['/\s*([,;:\{\}])\s*/', '/[\t\n\r]/', '/\/\*.+?\*\//'], ['\\1', '', ''], $this->csscurmodules);
-			if(file_put_contents(DISCUZ_DATA.'./cache/style_'.STYLEID.'_'.$_G['basescript'].'_'.CURMODULE.'.css', $this->csscurmodules, LOCK_EX) === false) {
+			if(file_put_contents(DISCUZ_DATA.'./cache/style_'.STYLEID.$touch.'_'.$_G['basescript'].'_'.CURMODULE.'.css', $this->csscurmodules, LOCK_EX) === false) {
 				exit('Can not write to cache files, please check directory ./data/ and ./data/cache/ .');
 			}
-			oss::writeCache('style_'.STYLEID.'_'.$_G['basescript'].'_'.CURMODULE.'.css');
-			$scripts[] = STYLEID.'_'.$_G['basescript'].'_'.CURMODULE;
+			oss::writeCache('style_'.STYLEID.$touch.'_'.$_G['basescript'].'_'.CURMODULE.'.css');
+			$scripts[] = STYLEID.$touch.'_'.$_G['basescript'].'_'.CURMODULE;
 		}
 		$scriptcss = '';
 		foreach($scripts as $css) {
 			$scriptcss .= '<link rel="stylesheet" type="text/css" href="{$_G[\'setting\'][\'csspath\']}'.$css.'.css?{VERHASH}" />';
 		}
 		$scriptcss .= '{if $_G[\'uid\'] && isset($_G[\'cookie\'][\'extstyle\']) && strpos($_G[\'cookie\'][\'extstyle\'], TPLDIR) !== false}<link rel="stylesheet" id="css_extstyle" type="text/css" href="{$_G[\'cookie\'][\'extstyle\']}/style.css?{VERHASH}" />{elseif $_G[\'style\'][\'defaultextstyle\']}<link rel="stylesheet" id="css_extstyle" type="text/css" href="{$_G[\'style\'][\'defaultextstyle\']}/style.css?{VERHASH}" />{/if}';
-		if(isset($_G['config']['output']['css4legacyie']) && $_G['config']['output']['css4legacyie']) {
-			$scriptcss .= '<!--[if IE]><link rel="stylesheet" type="text/css" href="'.$_G['setting']['csspath'].STYLEID.'_iefix'.'.css?{VERHASH}" /><![endif]-->';
-		}
 		return $scriptcss;
 	}
 
