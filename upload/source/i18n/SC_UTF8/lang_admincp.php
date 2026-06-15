@@ -752,6 +752,13 @@ $lang =
 	'home_diy' => '首页 DIY',
 	'home_welcome' => '{bbname} 管理中心',
 	'home_welcome_txt' => '欢迎回来，',
+	'sitestatus_issue_nofounder' => '未设置站点创始人，建议修改 config/config_global.php 添加创始人',
+	'sitestatus_issue_checkip' => '管理员IP验证已关闭，建议开启以防止非法登录',
+	'sitestatus_issue_runquery' => '运行SQL语句功能已开启，建议关闭以降低安全风险',
+	'sitestatus_issue_backup' => '超过30天未进行数据备份，建议立即备份',
+	'sitestatus_issue_disk' => '磁盘空间使用率超过90%，建议清理或扩容',
+	'sitestatus_issue_memory' => '内存使用率超过90%，建议优化或扩容',
+
 	'home_security_tips' => '安全提示',
 	'home_security_founder' => '<li>您可以制定多种团队职务分配给您网站管理团队的各个成员，让他们管理网站的不同事务<li>“<strong>副站长</strong>”拥有除“创始人(站长)”专有权限以外的所有后台权限，仅次于“创始人(站长)”</li>',
 	'home_security_nofounder' => '<li>您尚未设置 <u>站点创始人</u>，所有在管理员用户组的用户均可以登录管理中心。请修改 config/config_global.php 添加创始人，以有效控制管理团队成员的权限范围',
