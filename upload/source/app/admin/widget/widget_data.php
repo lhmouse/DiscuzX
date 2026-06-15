@@ -8,14 +8,15 @@ class widget_data {
 		'left' => [
 			'show_charts',
 			'show_sysinfo',
+			'show_hotthreads',
 			'show_news',
 			'show_forever_thanks',
 		],
 		'right' => [
+			'show_sitestatus',
 			'show_todo',
 			'show_onlines',
 			'show_note',
-			'show_hotthreads',
 			'show_filecheck',
 		]
 	];

@@ -13,6 +13,7 @@ use table_common_admincp_perm;
 use table_common_admincp_session;
 use table_common_plugin;
 use table_common_member;
+use table_common_member_profile;
 
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
@@ -54,7 +55,7 @@ class class_core {
 		global $_G;
 
 		if($_G['config']['admincp']['validate']['method'] == 'default') {
-			if (empty($_SERVER['HTTP_USER_AGENT']) || empty($_G['config']['admincp']['validate']['user']) || empty($_G['config']['admincp']['validate']['user'])) {
+			if(empty($_SERVER['HTTP_USER_AGENT']) || empty($_G['config']['admincp']['validate']['user']) || empty($_G['config']['admincp']['validate']['user'])) {
 				header('HTTP/1.1 401 Unauthorized');
 				exit;
 			}
@@ -124,6 +125,8 @@ class class_core {
 		$this->core->var['setting']['jscachepath'] = $this->core->var['setting']['jspath'];
 		$this->core->var['setting']['jspath'] = 'static/js/';
 
+		$this->getAdminColor();
+
 		if(!empty($_GET['qrcodeReturnCode']) && empty($this->core->var['setting']['admin_qrlogin_close'])) {
 			$this->qrcodelogin();
 		}
@@ -138,6 +141,12 @@ class class_core {
 			$this->writecplog();
 		} catch (Exception $e) {
 		}
+	}
+
+	function getAdminColor() {
+		$profile = table_common_member_profile::t()->fetch($this->core->var['member']['uid']);
+		$fields = json_decode($profile['fields'], true);
+		$this->core->var['adminColor'] = $fields['admincolor'] ?? [];
 	}
 
 	function writecplog() {
@@ -323,7 +332,7 @@ class class_core {
 			return $this->perms['all'];
 		}
 
-		if(!empty($_POST) && !array_key_exists('_allowpost', $this->perms) && $action.'_'.$operation != 'misc_custommenu') {
+		if(!empty($_POST) && !array_key_exists('_allowpost', $this->perms) && !in_array($action.'_'.$operation, ['misc_custommenu', 'misc_ajax_widget'])) {
 			return false;
 		}
 		$this->perms['misc_custommenu'] = 1;

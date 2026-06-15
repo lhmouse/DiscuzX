@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'mitframeicon';
-    src: url('../mitframe/mitframe.woff2?') format('woff2'),
-    url('../mitframe/mitframe.woff') format('woff'),
-    url('../mitframe/mitframe.ttf') format('truetype');
+    src: url('../mitframe/mitframe.woff2?v3') format('woff2'),
+    url('../mitframe/mitframe.woff?v3') format('woff'),
+    url('../mitframe/mitframe.ttf?v3') format('truetype');
 }
 
 html,
@@ -104,7 +104,7 @@ body.st-d {
 }
 
 .darkmode ul li.current {
-    background: #155BD5;
+    background: rgb(247, 206, 158);
     color: #fff;
 }
 
@@ -143,7 +143,7 @@ body.st-d {
 }
 
 .intro h3 {
-    font-size: 26px;
+    font-size: 24px;
     padding-bottom: 15px;
     margin-bottom: 15px;
     background-image: linear-gradient(to bottom, #e8a833, #ebc874, #ae7222);
@@ -254,15 +254,14 @@ body.st-d {
     position: relative;
     top: -35px;
     left: -25px;
-    color: #fff;
+    color: #CCC;
     font-size: 20px;
-    filter: invert(1);
 }
 
 .qrcodeswitch a.qrcode:before {
     font-style: normal;
     font-family: mitframeicon;
-    content: "\e619";
+    content: "\e621";
 }
 
 .qrcodeswitch a.pwd:before {
@@ -324,8 +323,8 @@ select:focus,
 button:focus,
 a.btn:focus {
     outline: none;
-    border-color: #155BD5;
-    box-shadow: 0 0 3px 2px rgba(43, 122, 205, 0.4);
+    border-color: rgb(184, 134, 11);
+    box-shadow: 0 0 3px 2px rgba(184, 134, 11, 0.4);
 }
 
 .st-d input:focus,
@@ -335,6 +334,21 @@ a.btn:focus {
     border-color: #666;
     box-shadow: none;
 }
+
+.sslcert {
+    cursor: pointer;
+    height: 38px;
+    padding: 6px 11px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.st-d .sslcert {
+    border-color: #666;
+    color: #777;
+}
+input[type="file"] { display: none; }
 
 button,
 a.btn {
@@ -382,6 +396,7 @@ a.btn {
 
     .darkmode {
         position: absolute;
+        z-index: 100;
     }
 
     .st-a .darkmode {

@@ -156,7 +156,7 @@ class check {
 		table_common_cache::t()->insert([
 			'cachekey' => 'checktools_filecheck_result',
 			'cachevalue' => serialize($v),
-			'dateline' => $_G['timestamp'],
+			'dateline' => TIMESTAMP,
 		], false, true);
 
 		return $v;

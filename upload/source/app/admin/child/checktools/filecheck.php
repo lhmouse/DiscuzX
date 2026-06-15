@@ -46,11 +46,40 @@ if($step == 1) {
 
 	if($homecheck) {
 		ajaxshowheader();
-		echo "<div><em class=\"".($modifiedfiles ? 'edited' : 'correct')."\">{$lang['filecheck_modify']}<span class=\"bignum\">$modifiedfiles</span></em>".
-			"<em class=\"".($deletedfiles ? 'del' : 'correct')."\">{$lang['filecheck_delete']}<span class=\"bignum\">$deletedfiles</span></em>".
-			"<em class=\"unknown\">{$lang['filecheck_unknown']}<span class=\"bignum\">$unknownfiles</span></em>".
-			"<em class=\"unknown\">{$lang['filecheck_doubt']}<span class=\"bignum\">$doubt</span></em></div><p>".
-			$lang['filecheck_last_homecheck'].': '.dgmdate(TIMESTAMP, 'u').' <a href="'.ADMINSCRIPT.'?action=checktools&operation=filecheck&step=3">['.$lang['filecheck_view_list'].']</a></p>';
+		echo '<div class="fc-grid">'.
+			'<div class="fc-item '.($modifiedfiles ? 'fc-warning' : 'fc-ok').'">'.
+				'<div class="fc-icon"><i class="dzicon '.($modifiedfiles ? 'fc-i-warning' : 'fc-i-ok').'"></i></div>'.
+				'<div class="fc-detail">'.
+					'<div class="fc-label">'.$lang['filecheck_modify'].'</div>'.
+					'<div class="fc-num">'.$modifiedfiles.'</div>'.
+				'</div>'.
+			'</div>'.
+			'<div class="fc-item '.($deletedfiles ? 'fc-danger' : 'fc-ok').'">'.
+				'<div class="fc-icon"><i class="dzicon '.($deletedfiles ? 'fc-i-danger' : 'fc-i-ok').'"></i></div>'.
+				'<div class="fc-detail">'.
+					'<div class="fc-label">'.$lang['filecheck_delete'].'</div>'.
+					'<div class="fc-num">'.$deletedfiles.'</div>'.
+				'</div>'.
+			'</div>'.
+			'<div class="fc-item '.($unknownfiles ? 'fc-info' : 'fc-ok').'">'.
+				'<div class="fc-icon"><i class="dzicon '.($unknownfiles ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+				'<div class="fc-detail">'.
+					'<div class="fc-label">'.$lang['filecheck_unknown'].'</div>'.
+					'<div class="fc-num">'.$unknownfiles.'</div>'.
+				'</div>'.
+			'</div>'.
+			'<div class="fc-item '.($doubt ? 'fc-info' : 'fc-ok').'">'.
+				'<div class="fc-icon"><i class="dzicon '.($doubt ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+				'<div class="fc-detail">'.
+					'<div class="fc-label">'.$lang['filecheck_doubt'].'</div>'.
+					'<div class="fc-num">'.$doubt.'</div>'.
+				'</div>'.
+			'</div>'.
+		'</div>'.
+		'<div class="fc-footer">'.
+			'<span class="fc-time">'.$lang['filecheck_last_homecheck'].': '.dgmdate(TIMESTAMP, 'u').'</span>'.
+			'<a class="fc-link" href="'.ADMINSCRIPT.'?action=checktools&operation=filecheck&step=3">'.$lang['filecheck_view_list'].' <em>&rsaquo;</em></a>'.
+		'</div>';
 		ajaxshowfooter();
 	}
 

@@ -8,11 +8,12 @@
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="color-scheme" content="light dark">
+	{template admin/rootcolor}
 	<link href="{$staticurl}image/admincp/minireset.css?{$_G['style']['verhash']}" rel="stylesheet" />
 	<link href="{$staticurl}image/admincp/admincppage.css?{$_G['style']['verhash']}" rel="stylesheet" />
 	$pagecss
 </head>
-<body>
+<body{if $_G['cookie']['darkmode'] == 'd'} class="st-d"{/if}>
 <script type="text/JavaScript">
 	var admincpfilename = '$basescript', IMGDIR = '$IMGDIR', STYLEID = '$STYLEID', VERHASH = '$VERHASH', IN_ADMINCP = true, ISFRAME = $frame, STATICURL='static/', SITEURL = '{$_G['siteurl']}', JSCACHEPATH = '{$_G['setting']['jscachepath']}', JSPATH = '{$_G['setting']['jspath']}', cookiepre = '{$_G['config']['cookie']['cookiepre']}', cookiedomain = '{$_G['config']['cookie']['cookiedomain']}', cookiepath = '{$_G['config']['cookie']['cookiepath']}', DEFAULTAVATAR = '$_G[setting][defaultavatar]', disallowfloat = '{$_G[setting][disallowfloat]}';
 </script>

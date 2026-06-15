@@ -8,17 +8,19 @@
 	<meta name="color-scheme" content="light dark">
 	<title>{$menuData['title']}</title>
 	<meta content="Discuz! Team" name="Copyright" />
+	{template admin/rootcolor}
 	<link rel="stylesheet" href="{$staticurl}image/admincp/minireset.css?{$_G['style']['verhash']}" type="text/css" media="all" />
 	<link rel="stylesheet" href="{$staticurl}image/admincp/admincpframe.css?{$_G['style']['verhash']}" type="text/css" media="all" />
 	$framecss
 	<script type="text/JavaScript">
 		var VERHASH = '$VERHASH', IN_ADMINCP = true, SITEURL = '{$_G['siteurl']}', JSPATH = '{$_G['setting']['jspath']}', JSCACHEPATH = '{$_G['setting']['jscachepath']}', cookiepre = '{$_G['config']['cookie']['cookiepre']}', cookiedomain = '{$_G['config']['cookie']['cookiedomain']}', cookiepath = '{$_G['config']['cookie']['cookiepath']}', DEFAULTAVATAR = '$_G[setting][defaultavatar]';
 		var headers = new Array($headers), admincpfilename = '$basescript', admincpextra = '$extra';
+		var ADMIN_COLOR_VARS = ['--root-base-value'];
 	</script>
 	<script src="{$_G['setting']['jspath']}common.js?{$_G['style']['verhash']}" type="text/javascript"></script>
 </head>
 <body>
-<div id="append_parent"></div>
+<div id="append_parent"></div><div id="ajaxwaitid" style="display:none"></div>
 $shownotice
 <div id="bdcontainer"$oldlayout>
 	<div id="navcontainer" class="navcontainer">
@@ -50,7 +52,7 @@ $shownotice
 				</ul>
 				<div class="frameuinfo" >
 					<!--{if $sitevip}-->
-						<div id="_siteVip"></div>
+						<div id="_siteVip">&nbsp;</div>
 						<script>
 							_attachEvent(window, 'load', function () {
 								var _as = document.createElement("script");
@@ -60,6 +62,7 @@ $shownotice
 							}, document);
 						</script>
 					<!--{/if}-->
+					<p class="coloricon" id="adminColor" title="{lang admincolor}" onclick="showMenu({'ctrlid':this.id, 'pos':'00', 'duration': 3, 'mtype': 'win'});"></p>
 					<div id="frameuinfo" onmouseover="showMenu({'ctrlid':this.id, 'pos':'34'});" >
 						<p class="greet"><em>{$_G['member']['username']}</em><br />$cpadmingroup</p>
 						{$useravt}
@@ -77,6 +80,12 @@ $shownotice
 							</div>
 						</p>
 					</div>
+				</div>
+
+				<div id="adminColor_menu" style="display: none">
+					<a onclick="display('adminColor_menu')" class="close">Χ</a>
+					{template admin/admincolor}
+					<iframe id="adminColor_target" name="adminColor_target" style="display: none"></iframe>
 				</div>
 
 				<div id="frameuinfo_menu" class="frameuinfo_menu" disautofocus="1" style="display: none">

@@ -707,4 +707,22 @@ function reloadmenu(selector) {
 	});
 };
 
+function switchColor() {
+	const form = new FormData(document.querySelector('#adminColor_form'));
+	const value = Object.fromEntries(new FormData(document.querySelector('#adminColor_form')));
+	if(!ADMIN_COLOR_VARS) {
+		return;
+	}
+	for(var v in ADMIN_COLOR_VARS) {
+		var _v = ADMIN_COLOR_VARS[v];
+		if(!value[_v]) {
+			continue;
+		}
+		document.documentElement.style.setProperty(_v, value[_v]);
+		document.querySelectorAll('.ifmcontainer .mainframe').forEach(function (iframe) {
+			iframe.contentWindow.document.documentElement.style.setProperty(_v, value[_v]);
+		});
+	}
+}
+
 _framemenu;

@@ -13,7 +13,7 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 function show_user_bar() {
 	global $_G;
 
-	showsubmenu('home_welcome', [], '', ['bbname' => $_G['setting']['bbname']]);
+	showsubmenu('home_welcome', [], isfounder() ? '<div id="user_bar">DIY</div>' : '', ['bbname' => $_G['setting']['bbname']]);
 }
 
 function show_todo() {
@@ -63,7 +63,198 @@ function show_todo() {
 		return;
 	}
 
+	// 计算各类待办总数
+	$contentmod = $threadsmod + $postsmod + $blogsmod + $doingsmod + $picturesmod + $sharesmod + $commentsmod + $articlesmod + $articlecommentsmod + $topiccommentsmod;
+	$othermod = $medalsmod + $groupmod + $reportcount + $threadsdel + ($verify ? array_sum(array_column($verify, 1)) : 0) + $errcredits;
+	$totalcount = $membersmod + $contentmod + $othermod;
+
 	require_once template('admin/index_todo');
+}
+
+function show_sitestatus() {
+	global $_G, $lang;
+
+	// 仅创始人可见
+	if(!isfounder()) {
+		return;
+	}
+
+	// 获取服务器资源信息
+	$sitestatus = [];
+
+	// 检测 shell_exec 是否可用
+	$shellExecEnabled = function_exists('shell_exec') && !in_array('shell_exec', array_map('trim', explode(',', ini_get('disable_functions'))));
+	$sitestatus['shell_exec_enabled'] = $shellExecEnabled;
+
+	// CPU 使用率
+	$sitestatus['cpu'] = 0;
+	$sitestatus['cpu_supported'] = false;
+	if(!str_starts_with(PHP_OS, 'WIN')) {
+		// 读取 /proc/stat 的辅助函数：优先 file_get_contents，受 open_basedir 限制时回退 shell_exec
+		$readCpuStat = function() use ($shellExecEnabled) {
+			$line = '';
+			$line = @file_get_contents('/proc/stat');
+			if(!$line && $shellExecEnabled) {
+				$line = @shell_exec('cat /proc/stat 2>/dev/null');
+			}
+			if($line && preg_match('/^cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/m', $line, $m)) {
+				return ['user' => (int)$m[1], 'nice' => (int)$m[2], 'system' => (int)$m[3], 'idle' => (int)$m[4], 'iowait' => (int)$m[5], 'irq' => (int)$m[6], 'softirq' => (int)$m[7]];
+			}
+			return null;
+		};
+		$stat1 = $readCpuStat();
+		if($stat1) {
+			usleep(1000000); // 1秒采样间隔
+			$stat2 = $readCpuStat();
+			if($stat2) {
+				$total1 = array_sum($stat1);
+				$total2 = array_sum($stat2);
+				$idle1 = $stat1['idle'] + $stat1['iowait'];
+				$idle2 = $stat2['idle'] + $stat2['iowait'];
+				$totalDelta = $total2 - $total1;
+				if($totalDelta > 0) {
+					$sitestatus['cpu'] = round((1 - ($idle2 - $idle1) / $totalDelta) * 100, 1);
+					$sitestatus['cpu_supported'] = true;
+				}
+			}
+		}
+
+		// 内存使用率
+		$sitestatus['memory'] = 0;
+		$sitestatus['memory_total'] = 0;
+		$sitestatus['memory_used'] = 0;
+		$sitestatus['memory_supported'] = false;
+
+		// 优先 file_get_contents，受 open_basedir 限制时回退 shell_exec
+		$meminfo = @file_get_contents('/proc/meminfo');
+		if(!$meminfo && $shellExecEnabled) {
+			$meminfo = @shell_exec('cat /proc/meminfo 2>/dev/null');
+		}
+		if($meminfo && preg_match('/MemTotal:\s+(\d+)\s+kB/', $meminfo, $total) && preg_match('/MemAvailable:\s+(\d+)\s+kB/', $meminfo, $avail)) {
+			$sitestatus['memory'] = round((($total[1] - $avail[1]) / $total[1]) * 100, 1);
+			$sitestatus['memory_total'] = round($total[1] / 1048576, 1);
+			$sitestatus['memory_used'] = round(($total[1] - $avail[1]) / 1048576, 1);
+			$sitestatus['memory_supported'] = true;
+		} elseif($meminfo && preg_match('/MemTotal:\s+(\d+)\s+kB/', $meminfo, $total) && preg_match('/MemFree:\s+(\d+)\s+kB/', $meminfo, $free) && preg_match('/Buffers:\s+(\d+)\s+kB/', $meminfo, $buffers) && preg_match('/Cached:\s+(\d+)\s+kB/', $meminfo, $cached)) {
+			$used = $total[1] - $free[1] - $buffers[1] - $cached[1];
+			$sitestatus['memory'] = round(($used / $total[1]) * 100, 1);
+			$sitestatus['memory_total'] = round($total[1] / 1048576, 1);
+			$sitestatus['memory_used'] = round($used / 1048576, 1);
+			$sitestatus['memory_supported'] = true;
+		}
+	}
+
+	// 磁盘使用率
+	$diskTotal = disk_total_space(DISCUZ_ROOT);
+	$diskFree = disk_free_space(DISCUZ_ROOT);
+	if($diskTotal && $diskFree) {
+		$sitestatus['disk'] = round((($diskTotal - $diskFree) / $diskTotal) * 100, 1);
+		$sitestatus['disk_total'] = round($diskTotal / 1073741824, 1);
+		$sitestatus['disk_used'] = round(($diskTotal - $diskFree) / 1073741824, 1);
+	} else {
+		$sitestatus['disk'] = 0;
+		$sitestatus['disk_total'] = 0;
+		$sitestatus['disk_used'] = 0;
+	}
+
+	// 数据库尺寸 - 懒加载，点击链接后才计算
+	if(isset($_GET['dbsize']) && FORMHASH == $_GET['formhash']) {
+		$dbsize = helper_dbtool::dbsize();
+		$sitestatus['dbsize'] = $dbsize ? sizecount($dbsize) : $lang['unknown'];
+	} else {
+		$append = isset($_GET['attachsize']) ? '&attachsize' : '';
+		$sitestatus['dbsize'] = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&dbsize'.$append.'">'.$lang['detail'].'</a>';
+	}
+
+	// 附件尺寸 - 懒加载，点击链接后才计算
+	if(isset($_GET['attachsize']) && FORMHASH == $_GET['formhash']) {
+		$attachsize = table_forum_attachment_n::t()->get_total_filesize();
+		$sitestatus['attachsize'] = is_numeric($attachsize) ? sizecount($attachsize) : $lang['unknown'];
+	} else {
+		$append = isset($_GET['dbsize']) ? '&dbsize' : '';
+		$sitestatus['attachsize'] = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&attachsize'.$append.'">'.$lang['detail'].'</a>';
+	}
+
+	// MySQL 状态
+	try {
+		$dbStatus = DB::fetch_first("SHOW STATUS LIKE 'Threads_connected'");
+		$sitestatus['mysql_threads'] = $dbStatus['Value'] ?? 0;
+		$dbStatus = DB::fetch_first("SHOW STATUS LIKE 'Queries'");
+		$sitestatus['mysql_queries'] = $dbStatus['Value'] ?? 0;
+		$sitestatus['mysql_status'] = 'running';
+	} catch (Exception $e) {
+		$sitestatus['mysql_status'] = 'error';
+		$sitestatus['mysql_threads'] = 0;
+		$sitestatus['mysql_queries'] = 0;
+	}
+
+	// Redis 状态
+	$sitestatus['redis_status'] = 'none';
+	if(function_exists('redis') || class_exists('Redis')) {
+		try {
+			$redis = new Redis();
+			if($redis->connect('127.0.0.1', 6379, 1)) {
+				$sitestatus['redis_status'] = 'running';
+				$info = $redis->info();
+				$sitestatus['redis_keys'] = $info['db0']['keys'] ?? 0;
+				$redis->close();
+			} else {
+				$sitestatus['redis_status'] = 'stopped';
+			}
+		} catch (Exception $e) {
+			$sitestatus['redis_status'] = 'error';
+		}
+	}
+
+	// 备份状态
+	$backupDir = DISCUZ_ROOT.'data/backup_';
+	$backups = glob($backupDir.'*', GLOB_ONLYDIR);
+	if($backups) {
+		usort($backups, function($a, $b) {
+			return filemtime($b) - filemtime($a);
+		});
+		$sitestatus['backup_last'] = dgmdate(filemtime($backups[0]), 'dt');
+		$sitestatus['backup_status'] = (TIMESTAMP - filemtime($backups[0]) < 86400 * 30) ? 'normal' : 'warning';
+	} else {
+		$sitestatus['backup_last'] = cplang('none');
+		$sitestatus['backup_status'] = 'warning';
+	}
+
+	// 安全评分计算
+	$securityScore = 100;
+	$securityIssues = [];
+
+	// 检查关键配置 - 使用纯文本提示，避免HTML标签
+	if(empty($_G['config']['admincp']['founder'])) {
+		$securityScore -= 15;
+		$securityIssues[] = cplang('sitestatus_issue_nofounder');
+	}
+	if(empty($_G['config']['admincp']['checkip'])) {
+		$securityScore -= 10;
+		$securityIssues[] = cplang('sitestatus_issue_checkip');
+	}
+	if(!empty($_G['config']['admincp']['runquery'])) {
+		$securityScore -= 10;
+		$securityIssues[] = cplang('sitestatus_issue_runquery');
+	}
+	if($sitestatus['backup_status'] == 'warning') {
+		$securityScore -= 10;
+		$securityIssues[] = cplang('sitestatus_issue_backup');
+	}
+	if($sitestatus['disk'] > 90) {
+		$securityScore -= 15;
+		$securityIssues[] = cplang('sitestatus_issue_disk');
+	}
+	if($sitestatus['memory_supported'] && $sitestatus['memory'] > 90) {
+		$securityScore -= 10;
+		$securityIssues[] = cplang('sitestatus_issue_memory');
+	}
+
+	$sitestatus['security_score'] = max(0, $securityScore);
+	$sitestatus['security_level'] = $securityScore >= 80 ? 'good' : ($securityScore >= 60 ? 'warning' : 'danger');
+	$sitestatus['security_issues'] = $securityIssues;
+
+	require_once template('admin/index_sitestatus');
 }
 
 function show_edittips() {
@@ -110,12 +301,19 @@ function show_releasetips() {
 		updatecache('setting');
 	}
 
-	$tips = '';
-	if($sitereleasetips) {
-		$tips .= lang('admincp', 'version_tips_msg', ['ADMINSCRIPT' => ADMINSCRIPT, 'version' => constant('DISCUZ_VERSION').' '.$reldisp]);
-	}
+	$tips = $lang['home_security_business'];
 
 	if(isfounder()) {
+		$musts = check::extensions();
+		if($musts) {
+			if($musts['extension']) {
+				$tips .= cplang('home_func_must_extension', ['exts' => implode(', ', $musts['extension'])]);
+			}
+			if($musts['function']) {
+				$tips .= cplang('home_func_must_function', ['func' => implode(', ', $musts['function'])]);
+			}
+		}
+
 		$tips .= !$_G['config']['admincp']['founder'] ? $lang['home_security_nofounder'] : '';
 		$tips .= !$_G['config']['admincp']['checkip'] ? $lang['home_security_checkip'] : '';
 		$tips .= $_G['config']['admincp']['runquery'] ? $lang['home_security_runquery'] : '';
@@ -155,19 +353,38 @@ function show_note() {
 			$note['adminenc'] = rawurlencode($note['admin']);
 			$note['expiration'] = ceil(($note['expiration'] - $note['dateline']) / 86400);
 			$note['dateline'] = dgmdate($note['dateline'], 'dt');
-			$notemsghtml .= '<div class="dcol"><div class="adminnote">'.'<a'.(isfounder() || $_G['member']['username'] == $note['admin'] ? ' href="'.ADMINSCRIPT.'?action=index&notesubmit=yes&noteid='.$note['id'].'" title="'.cplang('delete').'" class="ndel"' : '').'></a>'.
-				("<div><p><span class=\"bold\"><a href=\"home.php?mod=space&username={$note['adminenc']}\" target=\"_blank\">{$note['admin']}</a></span></p><p>{$note['dateline']}</p><p class=\"marginbot\">(".cplang('home_notes_add').cplang('validity').": {$note['expiration']} ".cplang('days').")</p><p>{$note['message']}</p>").'</div></div></div>';
+			$firstchar = dhtmlspecialchars(mb_strtoupper(mb_substr($note['admin'], 0, 1)));
+			$delhtml = '';
+			if(isfounder() || $_G['member']['username'] == $note['admin']) {
+				$delhtml = '<a href="'.ADMINSCRIPT.'?action=index&notesubmit=yes&noteid='.$note['id'].'" title="'.cplang('delete').'" class="ndel">×</a>';
+			}
+			$notemsghtml .= '<div class="dcol">'.
+				'<div class="adminnote">'.$delhtml.'<div class="note-body">'.
+				'<div class="note-header">'.
+				'<div class="note-avatar">'.$firstchar.'</div>'.
+				'<div><div class="note-author"><a href="home.php?mod=space&username='.$note['adminenc'].'" target="_blank">'.dhtmlspecialchars($note['admin']).'</a></div>'.
+				'<div class="note-date">'.$note['dateline'].'</div></div></div>'.
+				'<div class="note-message">'.$note['message'].'</div>'.
+				'<div class="note-expire">'.cplang('home_notes_add').cplang('validity').': '.$note['expiration'].' '.cplang('days').'</div>'.
+				'</div></div></div>';
 		}
 	}
 
 	if($notemsghtml) {
-		echo '<div class="drow">'.$notemsghtml.'</div></div><div class="boxbody">';
+		echo '<div class="drow">'.$notemsghtml.'</div>';
 	}
+	echo '</div><div class="boxbody adminnote-form">';
 
-	showboxrow('style="align-items: center"', ['class="dcol lineheight"', 'class="dcol lineheight"'], [
-		cplang('home_notes_add'),
-		'<input type="text" class="txt" name="newmessage" value="" style="width:300px;" />'.cplang('validity').': <input type="text" class="txt" name="newexpiration" value="30" style="width:60px;" />'.cplang('days').'&nbsp;<input name="notesubmit" value="'.cplang('submit').'" type="submit" class="btn" />'
-	]);
+	echo '<div class="note-form-row">'.
+		'<textarea name="newmessage" class="txt" rows="2" placeholder="'.cplang('home_notes_add').'..."></textarea>'.
+		'<div class="note-form-meta">'.
+		'<span class="meta-label">'.cplang('validity').'</span>'.
+		'<input type="text" class="txt" name="newexpiration" value="30" />'.
+		'<span class="meta-unit">'.cplang('days').'</span>'.
+		'<input name="notesubmit" value="'.cplang('submit').'" type="submit" class="btn" />'.
+		'</div>'.
+		'</div>';
+
 	showboxfooter();
 	showformfooter();
 }
@@ -180,21 +397,57 @@ function show_filecheck() {
 	}
 
 	$filecheck = table_common_cache::t()->fetch('checktools_filecheck_result');
+	$lastcheck = '';
 	if($filecheck) {
 		list($modifiedfiles, $deletedfiles, $unknownfiles, $doubt) = dunserialize($filecheck['cachevalue']);
-		$filecheckresult = "<div><em class=\"".($modifiedfiles ? 'edited' : 'correct')."\">{$lang['filecheck_modify']}<span class=\"bignum\">$modifiedfiles</span></em>".
-			"<em class=\"".($deletedfiles ? 'del' : 'correct')."\">{$lang['filecheck_delete']}<span class=\"bignum\">$deletedfiles</span></em>".
-			"<em class=\"unknown\">{$lang['filecheck_unknown']}<span class=\"bignum\">$unknownfiles</span></em>".
-			"<em class=\"unknown\">{$lang['filecheck_doubt']}<span class=\"bignum\">$doubt</span></em></div><p>".
-			$lang['filecheck_last_homecheck'].': '.dgmdate($filecheck['dateline'], 'u').' <a href="'.ADMINSCRIPT.'?action=checktools&operation=filecheck&step=3">['.$lang['filecheck_view_list'].']</a></p>';
+		$lastcheck = dgmdate($filecheck['dateline'], 'u');
 	} else {
-		$filecheckresult = '';
+		$modifiedfiles = $deletedfiles = $unknownfiles = $doubt = 0;
 	}
 
-	showboxheader($lang['nav_filecheck'].' <a href="javascript:;" onclick="ajaxget(\''.ADMINSCRIPT.'?action=checktools&operation=filecheck&homecheck=yes\', \'filecheck_div\')">['.$lang['filecheck_check_now'].']</a>', 'nobottom fixpadding', 'id="filecheck"');
-	echo '<div id="filecheck_div">'.$filecheckresult.'</div>';
+	showboxheader($lang['nav_filecheck'].' <a href="javascript:;" style="float:right;" onclick="ajaxget(\''.ADMINSCRIPT.'?action=checktools&operation=filecheck&homecheck=yes\', \'filecheck_div\')">['.$lang['filecheck_check_now'].']</a>', 'nobottom fixpadding', 'id="filecheck"');
+
+	echo '<div id="filecheck_div">';
+	echo '<div class="fc-grid">'.
+		'<div class="fc-item '.($modifiedfiles ? 'fc-warning' : 'fc-ok').'">'.
+			'<div class="fc-icon"><i class="dzicon '.($modifiedfiles ? 'fc-i-warning' : 'fc-i-ok').'"></i></div>'.
+			'<div class="fc-detail">'.
+				'<div class="fc-label">'.$lang['filecheck_modify'].'</div>'.
+				'<div class="fc-num">'.$modifiedfiles.'</div>'.
+			'</div>'.
+		'</div>'.
+		'<div class="fc-item '.($deletedfiles ? 'fc-danger' : 'fc-ok').'">'.
+			'<div class="fc-icon"><i class="dzicon '.($deletedfiles ? 'fc-i-danger' : 'fc-i-ok').'"></i></div>'.
+			'<div class="fc-detail">'.
+				'<div class="fc-label">'.$lang['filecheck_delete'].'</div>'.
+				'<div class="fc-num">'.$deletedfiles.'</div>'.
+			'</div>'.
+		'</div>'.
+		'<div class="fc-item '.($unknownfiles ? 'fc-info' : 'fc-ok').'">'.
+			'<div class="fc-icon"><i class="dzicon '.($unknownfiles ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+			'<div class="fc-detail">'.
+				'<div class="fc-label">'.$lang['filecheck_unknown'].'</div>'.
+				'<div class="fc-num">'.$unknownfiles.'</div>'.
+			'</div>'.
+		'</div>'.
+		'<div class="fc-item '.($doubt ? 'fc-info' : 'fc-ok').'">'.
+			'<div class="fc-icon"><i class="dzicon '.($doubt ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+			'<div class="fc-detail">'.
+				'<div class="fc-label">'.$lang['filecheck_doubt'].'</div>'.
+				'<div class="fc-num">'.$doubt.'</div>'.
+			'</div>'.
+		'</div>'.
+	'</div>';
+	if($lastcheck) {
+		echo '<div class="fc-footer">'.
+			'<span class="fc-time">'.$lang['filecheck_last_homecheck'].': '.$lastcheck.'</span>'.
+			'<a class="fc-link" href="'.ADMINSCRIPT.'?action=checktools&operation=filecheck&step=3">'.$lang['filecheck_view_list'].' <em>&rsaquo;</em></a>'.
+		'</div>';
+	}
+	echo '</div>';
+
 	showboxfooter();
-	if(TIMESTAMP - $filecheck['dateline'] > 86400 * 7) {
+	if($filecheck && TIMESTAMP - $filecheck['dateline'] > 86400 * 7) {
 		echo '<script>ajaxget(\''.ADMINSCRIPT.'?action=checktools&operation=filecheck&homecheck=yes\', \'filecheck_div\');</script>';
 	}
 }
@@ -215,99 +468,71 @@ function show_sysinfo() {
 
 	$newversion['newversion'] = !empty($newversion['newversion']) ? $newversion['newversion'] : [];
 	$reldisp_addon = is_numeric($newversion['newversion']['release']) ? ('Release '.$newversion['newversion']['release']) : $newversion['newversion']['release'];
+	$hc = 'class="sysinfo-header"';
+	$dc = ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'];
 
 	showboxheader('home_sys_info', 'listbox', 'id="home_sys_info"');
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+
+	// ── Software Versions ──
+	showboxrow($hc, ['class="dcol"'], ['<span class="sysinfo-label">'.cplang('home_version').'</span>']);
+	showboxrow('', $dc, [
 		cplang('home_discuz_version'),
 		'<i class="dzlogo"></i> '.DISCUZ_VERSION_NAME.' / Discuz! '.DISCUZ_VERSION.DISCUZ_SUBVERSION.' '.$reldisp.
 		((strlen(DISCUZ_RELEASE) == 8) ? '' : cplang('home_git_version')).
 		(!empty($downlist) ? implode('&#x3001;', $downlist) : '')
 	]);
-
 	if(!UC_STANDALONE) {
-		showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+		showboxrow('', $dc, [
 			cplang('home_ucclient_version'),
 			'<i class="uclogo"></i> UCenter '.UC_CLIENT_VERSION.' Release '.UC_CLIENT_RELEASE
 		]);
 	}
-
 	require_once DISCUZ_ROOT.'./source/mitframe_version.php';
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_mitframe_version'),
 		'<i class="mitframe_gray"></i> '.MITFRAME_VERSION_NAME.' '.MITFRAME_VERSION,
 	]);
-
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_sys_lang'),
 		'<i class="i18n_ico"></i> '._getSysLang(),
 	]);
 
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	// ── Server Environment ──
+	showboxrow($hc, ['class="dcol"'], ['<span class="sysinfo-label">'.cplang('home_serversoftware').'</span>']);
+	showboxrow('', $dc, [
 		cplang('home_os'),
 		'<i class="sysicon sy '.get_sysicon().'"></i> '.PHP_OS.' / '.php_uname()
 	]);
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_serversoftware'),
 		'<i class="sysicon '.get_webicon().'"></i> '.$_SERVER['SERVER_SOFTWARE']
 	]);
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_environment'),
 		'<i class="sysicon sy sys_php"></i> PHP '.PHP_VERSION.(PHP_ZTS ? ' TS' : '').(PHP_DEBUG ? ' DEBUG' : '').' , '.PHP_SAPI
 	]);
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_database'),
 		'<i class="sysicon sy sys_mysql"></i> MySQL '.helper_dbtool::dbversion().' , '.$_G['mysql_driver']
 	]);
 	$meminfo = memory('check');
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_memory'),
 		'<i class="sysicon sy '.get_memicon().'"></i> '.get_meminfo()
 	]);
 
-	if(@ini_get('file_uploads')) {
-		require_once libfile('function/upload');
-		$fileupload = getmaxupload();
-	} else {
-		$fileupload = '<font color="red">'.$lang['no'].'</font>';
-	}
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
-		cplang('home_upload_perm'),
-		$fileupload
-	]);
-	if(isset($_GET['dbsize']) && FORMHASH == $_GET['formhash']) {
-		$dbsize = helper_dbtool::dbsize();
-		$dbsize = $dbsize ? sizecount($dbsize) : $lang['unknown'];
-	} else {
-		$append = (isset($_GET['attachsize']) ? '&attachsize' : '').(isset($_GET['benchmark']) ? '&benchmark' : '');
-		$dbsize = '<a href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&dbsize'.$append.'">[ '.$lang['detail'].' ]</a>';
-	}
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
-		cplang('home_database_size'),
-		$dbsize
-	]);
-	if(isset($_GET['attachsize']) && FORMHASH == $_GET['formhash']) {
-		$attachsize = table_forum_attachment_n::t()->get_total_filesize();
-		$attachsize = is_numeric($attachsize) ? sizecount($attachsize) : $lang['unknown'];
-	} else {
-		$append = (isset($_GET['dbsize']) ? '&dbsize' : '').(isset($_GET['benchmark']) ? '&benchmark' : '');
-		$attachsize = '<a href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&attachsize'.$append.'">[ '.$lang['detail'].' ]</a>';
-	}
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
-		cplang('home_attach_size'),
-		$attachsize
-	]);
-	$advice = $msg = '';
-	if(function_exists('opcache_get_status')) {
-		$msg = 'OPcache: On';
+	// ── Performance ──
+	showboxrow($hc, ['class="dcol"'], ['<span class="sysinfo-label">'.cplang('home_benchmark').'</span>']);
+	$opcache_on = function_exists('opcache_get_status');
+	$opcache_msg = '';
+	if($opcache_on) {
+		$opcache_msg = 'OPcache: On';
 		$value = opcache_get_status();
-		if(!empty($value['jit']['enabled'])) {
-			$msg .= ' , JIT: On';
-		} else {
-			$msg .= ' , JIT: Off';
-		}
+		$opcache_msg .= !empty($value['jit']['enabled']) ? ' , JIT: On' : ' , JIT: Off';
 	} else {
-		$msg = 'OPcache: Off';
+		$opcache_msg = 'OPcache: Off';
 	}
+	$opcache_display = ' <span style="color:'.($opcache_on ? '#059669' : '#dc2626').'">('.$opcache_msg.')</span>';
 	if(isset($_GET['benchmark']) && FORMHASH == $_GET['formhash']) {
 		$times = 3;
 		$r = 0;
@@ -315,18 +540,15 @@ function show_sysinfo() {
 			$r += get_benchmark();
 		}
 		$benchmark = sprintf('%1.6f', $r / $times);
-		if($benchmark > 2) {
-			$advice = ' '.cplang('home_benchmark_advice');
-		}
+		$advice = $benchmark > 2 ? ' '.cplang('home_benchmark_advice') : '';
 		$benchmark .= 's';
 	} else {
-		$append = (isset($_GET['attachsize']) ? '&attachsize' : '').(isset($_GET['dbsize']) ? '&dbsize' : '');
-		$benchmark = '<a href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&benchmark'.$append.'">[ '.$lang['home_benchmark_run'].' ]</a>';
+		$benchmark = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&benchmark">'.$lang['home_benchmark_run'].'</a>';
+		$advice = '';
 	}
-	$meminfo = memory('check');
-	showboxrow('', ['class="dcol lineheight d-14"', 'class="dcol lineheight d-1"'], [
+	showboxrow('', $dc, [
 		cplang('home_benchmark'),
-		$benchmark.$advice.' <span class="xg1">('.$msg.')</span>'
+		$benchmark.$advice.$opcache_display
 	]);
 	showboxfooter();
 }
@@ -343,7 +565,7 @@ function show_news() {
 			$downlist[] = '<a href="'.diconv($value['url'], 'utf-8', CHARSET).'" target="_blank">'.discuzcode(strip_tags(diconv($value['title'], 'utf-8', CHARSET)), 1, 0).'</a>';
 		}
 
-		$tips .= cplang('download_latest').': <a href="https://gitee.com/Discuz/DiscuzX/attach_files" target="_blank"'.($newver ? ' style="font-weight: bold;color:red"' : '').'>Discuz! '.$newversion['newversion']['version'].' '.$newversion['newversion']['release'].'</a>';
+		$tips = cplang('download_latest').': <a href="https://gitee.com/Discuz/DiscuzX/attach_files" target="_blank"'.($newver ? ' style="font-weight: bold;color:red"' : '').'>Discuz! '.$newversion['newversion']['version'].' '.$newversion['newversion']['release'].'</a>';
 		if($newver && isfounder()) {
 			$tips .= '&#x3001;<a style="font-weight: bold;color:red" href="'.ADMINSCRIPT.'?action=founder&operation=upgrade">'.cplang('menu_upgrade').'</a>';
 		}
@@ -354,40 +576,29 @@ function show_news() {
 		if(empty($newversion['newversion']['qqqun'])) {
 			$newversion['newversion']['qqqun'] = '73'.'210'.'36'.'90';
 		}
-		$tips .= cplang('qq_group').': '.$newversion['newversion']['qqqun'];
-		showboxrow('', ['class="dcol d-1 lineheight"'], [
-			$tips,
-		]);
+		$tips .= '<span style="margin-left:12px;color:var(--admincp-fc)">'.cplang('qq_group').': '.$newversion['newversion']['qqqun'].'</span>';
+		echo '<div class="news-tips">'.$tips.'</div>';
 	}
 
+	echo '<div class="news-list">';
 	if(!empty($newversion['news'])) {
 		$newversion['news'] = dhtmlspecialchars($newversion['news']);
 		foreach($newversion['news'] as $v) {
-			showboxrow('', ['class="dcol d-1 lineheight"', 'class="dcol"'], [
-				'<a href="'.$v['url'].'" target="_blank">'.discuzcode(strip_tags(diconv($v['title'], 'utf-8', CHARSET)), 1, 0).'</a>',
-				discuzcode(strip_tags($v['date']), 1, 0),
-			]);
+			$date = discuzcode(strip_tags($v['date']), 1, 0);
+			$title = discuzcode(strip_tags(diconv($v['title'], 'utf-8', CHARSET)), 1, 0);
+			echo '<div class="news-item"><span class="news-date">'.$date.'</span><a class="news-title" href="'.$v['url'].'" target="_blank">'.$title.'</a></div>';
 		}
 	} else {
-		showboxrow('', ['class="dcol d-1"', 'class="dcol td21" style="text-align:right;"'], [
-			'<a href="https://www.dismall.com/" target="_blank">'.cplang('log_in_to_update').'</a>',
-			'',
-		]);
-		showboxrow('', ['class="dcol d-1"', 'class="dcol td21" style="text-align:right;"'], [
-			'<a href="https://gitee.com/3dming/DiscuzL/attach_files" target="_blank">'.cplang('download_latest').'</a>',
-			'',
-		]);
+		echo '<div class="news-item"><a class="news-title" href="https://www.dismall.com/" target="_blank">'.cplang('log_in_to_update').'</a></div>';
+		echo '<div class="news-item"><a class="news-title" href="https://gitee.com/3dming/DiscuzL/attach_files" target="_blank">'.cplang('download_latest').'</a></div>';
 	}
+	echo '</div>';
 
 	showboxfooter();
 }
 
 function show_widgets($type) {
-	if(!empty($_GET['edit'])) {
-		admin\widget_edit::output($type);
-	} else {
-		admin\widget_view::output($type);
-	}
+	admin\widget_view::output($type);
 }
 
 function show_charts() {
@@ -414,6 +625,8 @@ function show_hotthreads() {
 	if(!$threadlist) {
 		return;
 	}
+
+	$threadlist = array_slice($threadlist, 0, 10);
 
 	require_once template('admin/index_hotthreads');
 }

@@ -94,8 +94,16 @@ if(submitcheck('settingsubmit')) {
 	showformheader('setting&edit=yes', 'enctype');
 	showhiddenfields(['operation' => $operation]);
 
+	if(@ini_get('file_uploads')) {
+		require_once libfile('function/upload');
+		$fileupload = getmaxupload();
+	} else {
+		$fileupload = cplang('no');
+	}
+
 	/*search={"setting_attach":"action=setting&operation=attach","setting_attach_basic":"action=setting&operation=attach&anchor=basic"}*/
 	showtableheader('', '', 'id="basic"'.($_GET['anchor'] != 'basic' ? ' style="display: none"' : ''));
+	showsetting('setting_attach_maxupload', '', '', $fileupload);
 	showsetting('setting_attach_basic_dir', 'settingnew[attachdir]', $setting['attachdir'], 'text');
 	showsetting('setting_attach_basic_url', 'settingnew[attachurl]', $setting['attachurl'], 'text');
 	showsetting('setting_attach_image_lib', ['settingnew[imagelib]', [

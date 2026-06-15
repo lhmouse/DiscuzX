@@ -4,16 +4,14 @@
 		<a href="misc.php?mod=ranklist&type=thread&view=replies&orderby=thisweek" target="_blank" style="float: right">{lang stats_more}</a>
 		{lang ranklist_hotthread}
 	</div>
-	<table class="tb tb2 hotthread">
+	<div class="boxbody hotthreads-list">
 		<!--{loop $threadlist $thread}-->
-		<tr>
-			<td style="padding-left: 10px;">
-				<em class="ico"></em><a href="forum.php?mod=viewthread&tid=$thread['tid']" target="_blank">{$thread['subject']}</a>
-			</td>
-			<td class="td24">
-				{$thread['dateline']}
-			</td>
-		</tr>
+		<div class="ht-item">
+			<span class="ht-rank<!--{if $thread['rank'] <= 3}--> top<!--{/if}-->">$thread['rank']</span>
+			<a class="ht-subject" href="forum.php?mod=viewthread&tid=$thread['tid']" target="_blank">{$thread['subject']}</a>
+			<!--{if $thread['forum']}--><span class="ht-forum">{$thread['forum']}</span><!--{/if}-->
+			<span class="ht-replies">$thread['replies']</span>
+		</div>
 		<!--{/loop}-->
-	</table>
+	</div>
 </div>

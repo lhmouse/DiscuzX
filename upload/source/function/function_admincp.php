@@ -361,7 +361,7 @@ function cpmsg($message, $url = '', $type = 'error', $values = [], $extra = '', 
 		$message = "<form method=\"post\" action=\"$url\" id=\"loadingform\"><input type=\"hidden\" name=\"formhash\" value=\"".FORMHASH."\"><br />$message$extra<img src=\"".STATICURL."image/admincp/ajax_loader.gif\" class=\"marginbot\" /><br />".
 			'<p class="marginbot"><a href="###" onclick="$(\'loadingform\').submit();" class="lightlink">'.cplang('message_redirect').'</a></p></form><br /><script type="text/JavaScript">setTimeout("$(\'loadingform\').submit();", 2000);</script>';
 	} else {
-		$message .= $extra.($type == 'loading' ? '<img src="'.STATICURL.'image/admincp/ajax_loader.gif" class="marginbot" />' : '');
+		$message .= $extra.($type == 'loading' ? '<div class="loading-wrap"><div class="loading-inner"></div></div>' : '');
 		if($url) {
 			if($type == 'button') {
 				$message = "<br />$message<br /><p class=\"margintop\"><input type=\"submit\" class=\"btn\" name=\"submit\" value=\"".cplang('start')."\" onclick=\"location.href='$url'\" />";
