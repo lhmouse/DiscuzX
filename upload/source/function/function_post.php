@@ -151,7 +151,7 @@ function updateattach($modnewthreads, $tid, $pid, $attachnew, $attachupdate = []
 			}
 			$attach['uid'] = $uid;
 			$newattach[$attach['aid']] = daddslashes($attach);
-			if($attach['isimage']) {
+			if(abs($attach['isimage']) == 1) {
 				$newattachfile[$attach['aid']] = $attach['attachment'];
 			}
 		}
@@ -461,7 +461,7 @@ function updatethreadcount($tid, $updateattach = 0) {
 	$data = ['replies' => $replycount, 'lastposter' => $lastpost['author'], 'lastpost' => $lastpost['dateline']];
 	if($updateattach) {
 		$attach = table_forum_post::t()->fetch_attachment_by_tid($tid);
-		$data['attachment'] = $attach ? 1 : 0;
+		$data['attachment'] = $attach ? $attach : 0;
 	}
 	table_forum_thread::t()->update($tid, $data);
 }

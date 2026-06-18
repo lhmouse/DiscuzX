@@ -179,7 +179,7 @@ class table_forum_post extends discuz_table {
 	}
 
 	public function fetch_attachment_by_tid($tid) {
-		return DB::result_first('SELECT attachment FROM %t WHERE tid=%d AND invisible=0 AND attachment>0 LIMIT 1', [self::get_tablename('tid:'.$tid), $tid]);
+		return DB::result_first('SELECT attachment FROM %t WHERE tid=%d AND invisible=0 AND attachment>0 ORDER BY attachment DESC LIMIT 1', [self::get_tablename('tid:'.$tid), $tid]);
 	}
 
 	public function fetch_maxid($tableid) {
