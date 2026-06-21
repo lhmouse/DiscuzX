@@ -842,7 +842,7 @@ function userselect(srcid, kw) {
 		$('append_parent').parentNode.appendChild(div);
 		showMenu({'menuid': id, 'duration': 3, 'pos': '00', 'mtype': 'win', 'drag': true});
 	}
-	ajaxget(admincpfilename + '?action=misc&operation=userselect&srcid=' + srcid + '&kw=' + encodeURIComponent(kw), id, null, null, null, function() {
+	ajaxget(admincpfilename + '?action=misc&operation=userselect&srcid=' + srcid + '&kw=' + encodeURIComponent(kw), id, null, null, null, function () {
 		$(id).style.left = '400px';
 	});
 }
@@ -855,7 +855,7 @@ function userselect_delay(srcid, kw) {
 }
 
 function userselect_click(srcid, value, text) {
-	if($(srcid).querySelectorAll('input[value="' + value + '"]').length > 0) {
+	if ($(srcid).querySelectorAll('input[value="' + value + '"]').length > 0) {
 		return;
 	}
 	var obj = document.createElement('span');
@@ -865,4 +865,56 @@ function userselect_click(srcid, value, text) {
 
 function userselect_del(obj) {
 	obj.parentNode.parentNode.removeChild(obj.parentNode);
+}
+
+function benchmark(url, event) {
+	let timer = null;
+	let x = new Ajax();
+	x.get(url + '&inajax=yes', function (s, x) {
+		clearInterval(timer);
+		$('benchmarkMsg').innerHTML = s;
+	});
+	doane(event);
+
+	var formatTime = function (ms) {
+		const allSeconds = Math.floor(ms / 1000);
+		const secs = allSeconds % 60;
+		const msecs = ms % 1000;
+		const fsecs = n => String(n).padStart(3, '0');
+		return `${secs}.${fsecs(msecs)}`;
+	}
+
+	let totalMs = 0;
+	timer = setInterval(() => {
+		totalMs += 10;
+		$('benchmarkMsg').innerText = formatTime(totalMs) + 's';
+	}, 10);
+}
+
+function dbsize(url, event) {
+	let x = new Ajax();
+	x.get(url + '&inajax=yes', function (s, x) {
+		$('dbsizeMsg').innerHTML = s;
+	});
+	doane(event);
+
+	$('dbsizeMsg').innerHTML = '...';
+}
+
+function attachsize(url, event) {
+	let x = new Ajax();
+	x.get(url + '&inajax=yes', function (s, x) {
+		$('attachsizeMsg').innerHTML = s;
+	});
+	doane(event);
+
+	$('attachsizeMsg').innerHTML = '...';
+}
+
+function notedel(obj, event) {
+	let x = new Ajax();
+	x.get(obj.href + '&inajax=yes', function (s, x) {
+		obj.parentNode.parentNode.remove();
+	});
+	doane(event);
 }

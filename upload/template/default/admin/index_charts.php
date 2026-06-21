@@ -62,7 +62,7 @@
 			<script src="{$_G['setting']['jspath']}stat.js"></script>
 			<div id="statchart"></div>
 			<script type="text/javascript">
-				drawstatchart('{ADMINSCRIPT}?action=index&chart=yes', 300);
+				drawstatchart('{ADMINSCRIPT}?action=index&operation=chart', 300);
 			</script>
 		</div>
 	</div>

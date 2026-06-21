@@ -157,23 +157,8 @@ function show_sitestatus() {
 		$sitestatus['disk_used'] = 0;
 	}
 
-	// 数据库尺寸 - 懒加载，点击链接后才计算
-	if(isset($_GET['dbsize']) && FORMHASH == $_GET['formhash']) {
-		$dbsize = helper_dbtool::dbsize();
-		$sitestatus['dbsize'] = $dbsize ? sizecount($dbsize) : $lang['unknown'];
-	} else {
-		$append = isset($_GET['attachsize']) ? '&attachsize' : '';
-		$sitestatus['dbsize'] = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&dbsize'.$append.'">'.$lang['detail'].'</a>';
-	}
-
-	// 附件尺寸 - 懒加载，点击链接后才计算
-	if(isset($_GET['attachsize']) && FORMHASH == $_GET['formhash']) {
-		$attachsize = table_forum_attachment_n::t()->get_total_filesize();
-		$sitestatus['attachsize'] = is_numeric($attachsize) ? sizecount($attachsize) : $lang['unknown'];
-	} else {
-		$append = isset($_GET['dbsize']) ? '&dbsize' : '';
-		$sitestatus['attachsize'] = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&attachsize'.$append.'">'.$lang['detail'].'</a>';
-	}
+	$sitestatus['dbsize'] = '<span id="dbsizeMsg"><a class="sysinfo-detail" onclick="dbsize(this.href, event)" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&operation=dbsize">'.$lang['detail'].'</a></span>';
+	$sitestatus['attachsize'] = '<span id="attachsizeMsg"><a class="sysinfo-detail" onclick="attachsize(this.href, event)" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&operation=attachsize">'.$lang['detail'].'</a></span>';
 
 	// MySQL 状态
 	try {
@@ -342,8 +327,10 @@ function show_onlines() {
 function show_note() {
 	global $_G;
 
-	showformheader('index');
-	showboxheader('home_notes', '', 'id="home_notes"');
+	if(!$_G['inajax']) {
+		showformheader('index&operation=note&notesubmit=yes', 'onsubmit="ajaxpost(this.id, \'home_notes\');return false;"');
+		showboxheader('home_notes');
+	}
 
 	$notemsghtml = '';
 	foreach(table_common_adminnote::t()->fetch_all_by_access(0) as $note) {
@@ -356,7 +343,7 @@ function show_note() {
 			$firstchar = dhtmlspecialchars(mb_strtoupper(mb_substr($note['admin'], 0, 1)));
 			$delhtml = '';
 			if(isfounder() || $_G['member']['username'] == $note['admin']) {
-				$delhtml = '<a href="'.ADMINSCRIPT.'?action=index&notesubmit=yes&noteid='.$note['id'].'" title="'.cplang('delete').'" class="ndel">×</a>';
+				$delhtml = '<a onclick="notedel(this, event)" href="'.ADMINSCRIPT.'?action=index&operation=notedel&noteid='.$note['id'].'&formhash='.$_G['formhash'].'" title="'.cplang('delete').'" class="ndel">×</a>';
 			}
 			$notemsghtml .= '<div class="dcol">'.
 				'<div class="adminnote">'.$delhtml.'<div class="note-body">'.
@@ -370,23 +357,31 @@ function show_note() {
 		}
 	}
 
-	if($notemsghtml) {
+	if(!$_G['inajax']) {
+		echo '<div id="home_notes">';
+		if($notemsghtml) {
+			echo '<div class="drow">'.$notemsghtml.'</div>';
+		}
+		echo '</div></div><div class="boxbody adminnote-form">';
+
+		echo '<div class="note-form-row">'.
+			'<textarea name="newmessage" class="txt" rows="2" placeholder="'.cplang('home_notes_add').'..."></textarea>'.
+			'<div class="note-form-meta">'.
+			'<span class="meta-label">'.cplang('validity').'</span>'.
+			'<input type="text" class="txt" name="newexpiration" value="30" />'.
+			'<span class="meta-unit">'.cplang('days').'</span>'.
+			'<input name="notesubmit" value="'.cplang('submit').'" type="submit" class="btn" />'.
+			'</div>'.
+			'</div>';
+
+		showboxfooter();
+		showformfooter();
+	} else {
+		include template('common/header');
 		echo '<div class="drow">'.$notemsghtml.'</div>';
+		echo '<script reload="1">$(\'cpform\').newmessage.value=\'\';</script>';
+		include template('common/footer');
 	}
-	echo '</div><div class="boxbody adminnote-form">';
-
-	echo '<div class="note-form-row">'.
-		'<textarea name="newmessage" class="txt" rows="2" placeholder="'.cplang('home_notes_add').'..."></textarea>'.
-		'<div class="note-form-meta">'.
-		'<span class="meta-label">'.cplang('validity').'</span>'.
-		'<input type="text" class="txt" name="newexpiration" value="30" />'.
-		'<span class="meta-unit">'.cplang('days').'</span>'.
-		'<input name="notesubmit" value="'.cplang('submit').'" type="submit" class="btn" />'.
-		'</div>'.
-		'</div>';
-
-	showboxfooter();
-	showformfooter();
 }
 
 function show_filecheck() {
@@ -533,19 +528,8 @@ function show_sysinfo() {
 		$opcache_msg = 'OPcache: Off';
 	}
 	$opcache_display = ' <span style="color:'.($opcache_on ? '#059669' : '#dc2626').'">('.$opcache_msg.')</span>';
-	if(isset($_GET['benchmark']) && FORMHASH == $_GET['formhash']) {
-		$times = 3;
-		$r = 0;
-		for($i = 0; $i < $times; $i++) {
-			$r += get_benchmark();
-		}
-		$benchmark = sprintf('%1.6f', $r / $times);
-		$advice = $benchmark > 2 ? ' '.cplang('home_benchmark_advice') : '';
-		$benchmark .= 's';
-	} else {
-		$benchmark = '<a class="sysinfo-detail" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&benchmark">'.$lang['home_benchmark_run'].'</a>';
-		$advice = '';
-	}
+	$benchmark = '<span id="benchmarkMsg"><a class="sysinfo-detail" onclick="benchmark(this.href, event);" href="'.ADMINSCRIPT.'?action=index&formhash='.FORMHASH.'&operation=benchmark">'.$lang['home_benchmark_run'].'</a></span>';
+	$advice = '';
 	showboxrow('', $dc, [
 		cplang('home_benchmark'),
 		$benchmark.$advice.$opcache_display
