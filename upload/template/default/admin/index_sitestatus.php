@@ -50,7 +50,7 @@
 				<div class="ss-resource-item">
 					<div class="ss-resource-info">
 						<span class="ss-resource-name">{lang sitestatus_memory}</span>
-						<span class="ss-resource-value">$sitestatus[memory]% <small>($sitestatus[memory_used] / $sitestatus[memory_total] GB)</small></span>
+						<span class="ss-resource-value">$sitestatus[memory]% <small>($sitestatus[memory_used] / $sitestatus[memory_total])</small></span>
 					</div>
 					<div class="ss-progress-bar">
 						<div class="ss-progress-fill ss-progress-memory" style="width: $sitestatus[memory]%"></div>
@@ -61,7 +61,7 @@
 				<div class="ss-resource-item">
 					<div class="ss-resource-info">
 						<span class="ss-resource-name">{lang sitestatus_disk}</span>
-						<span class="ss-resource-value">$sitestatus[disk]% <small>($sitestatus[disk_used] / $sitestatus[disk_total] GB)</small></span>
+						<span class="ss-resource-value">$sitestatus[disk]% <small>($sitestatus[disk_used] / $sitestatus[disk_total])</small></span>
 					</div>
 					<div class="ss-progress-bar">
 						<div class="ss-progress-fill ss-progress-disk" style="width: $sitestatus[disk]%"></div>
@@ -116,7 +116,7 @@
 						<span class="ss-service-name">Redis</span>
 						<span class="ss-service-detail">
 							<!--{if $sitestatus['redis_status'] == 'running'}-->
-							{lang sitestatus_running}
+							{lang sitestatus_threads}: $sitestatus[redis_threads], {lang sitestatus_memory}: $sitestatus[used_memory]
 							<!--{elseif $sitestatus['redis_status'] == 'none'}-->
 							{lang sitestatus_not_installed}
 							<!--{else}-->

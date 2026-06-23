@@ -95,6 +95,7 @@ $lang = [
 	'sitestatus_attach_size' => '当前附件尺寸',
 	'sitestatus_services' => '服务状态',
 	'sitestatus_threads' => '连接数',
+	'sitestatus_memory' => '内存',
 	'sitestatus_error' => '异常',
 	'sitestatus_running' => '运行中',
 	'sitestatus_stopped' => '已停止',

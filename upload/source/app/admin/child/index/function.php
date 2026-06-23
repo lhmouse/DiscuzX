@@ -132,14 +132,14 @@ function show_sitestatus() {
 		}
 		if($meminfo && preg_match('/MemTotal:\s+(\d+)\s+kB/', $meminfo, $total) && preg_match('/MemAvailable:\s+(\d+)\s+kB/', $meminfo, $avail)) {
 			$sitestatus['memory'] = round((($total[1] - $avail[1]) / $total[1]) * 100, 1);
-			$sitestatus['memory_total'] = round($total[1] / 1048576, 1);
-			$sitestatus['memory_used'] = round(($total[1] - $avail[1]) / 1048576, 1);
+			$sitestatus['memory_total'] = sizecount($total[1] * 1024);
+			$sitestatus['memory_used'] = sizecount(($total[1] - $avail[1]) * 1024);
 			$sitestatus['memory_supported'] = true;
 		} elseif($meminfo && preg_match('/MemTotal:\s+(\d+)\s+kB/', $meminfo, $total) && preg_match('/MemFree:\s+(\d+)\s+kB/', $meminfo, $free) && preg_match('/Buffers:\s+(\d+)\s+kB/', $meminfo, $buffers) && preg_match('/Cached:\s+(\d+)\s+kB/', $meminfo, $cached)) {
 			$used = $total[1] - $free[1] - $buffers[1] - $cached[1];
 			$sitestatus['memory'] = round(($used / $total[1]) * 100, 1);
-			$sitestatus['memory_total'] = round($total[1] / 1048576, 1);
-			$sitestatus['memory_used'] = round($used / 1048576, 1);
+			$sitestatus['memory_total'] = sizecount($total[1] * 1024);
+			$sitestatus['memory_used'] = sizecount($used * 1024);
 			$sitestatus['memory_supported'] = true;
 		}
 	}
@@ -149,8 +149,8 @@ function show_sitestatus() {
 	$diskFree = disk_free_space(DISCUZ_ROOT);
 	if($diskTotal && $diskFree) {
 		$sitestatus['disk'] = round((($diskTotal - $diskFree) / $diskTotal) * 100, 1);
-		$sitestatus['disk_total'] = round($diskTotal / 1073741824, 1);
-		$sitestatus['disk_used'] = round(($diskTotal - $diskFree) / 1073741824, 1);
+		$sitestatus['disk_total'] = sizecount($diskTotal);
+		$sitestatus['disk_used'] = sizecount($diskTotal - $diskFree);
 	} else {
 		$sitestatus['disk'] = 0;
 		$sitestatus['disk_total'] = 0;
@@ -164,25 +164,24 @@ function show_sitestatus() {
 	try {
 		$dbStatus = DB::fetch_first("SHOW STATUS LIKE 'Threads_connected'");
 		$sitestatus['mysql_threads'] = $dbStatus['Value'] ?? 0;
-		$dbStatus = DB::fetch_first("SHOW STATUS LIKE 'Queries'");
-		$sitestatus['mysql_queries'] = $dbStatus['Value'] ?? 0;
 		$sitestatus['mysql_status'] = 'running';
 	} catch (Exception $e) {
 		$sitestatus['mysql_status'] = 'error';
 		$sitestatus['mysql_threads'] = 0;
-		$sitestatus['mysql_queries'] = 0;
 	}
 
 	// Redis 状态
 	$sitestatus['redis_status'] = 'none';
 	if(function_exists('redis') || class_exists('Redis')) {
 		try {
-			$redis = new Redis();
-			if($redis->connect('127.0.0.1', 6379, 1)) {
+			$m = new memory_driver_redis();
+			$m->init($_G['config']['memory']['redis']);
+			if($m->enable) {
 				$sitestatus['redis_status'] = 'running';
-				$info = $redis->info();
-				$sitestatus['redis_keys'] = $info['db0']['keys'] ?? 0;
-				$redis->close();
+				$info = $m->info('clients');
+				$sitestatus['redis_threads'] = $info['connected_clients'] ?? 0;
+				$memory = $m->info('memory');
+				$sitestatus['used_memory'] = $memory['used_memory'] ? sizecount($memory['used_memory']) : 0;
 			} else {
 				$sitestatus['redis_status'] = 'stopped';
 			}
@@ -473,7 +472,7 @@ function show_sysinfo() {
 		loadcache('newver');
 		if(empty($_G['cache']['newver']) || TIMESTAMP - $_G['cache']['newver']['t'] > 86400 * 5) {
 			$u = new admin\class_upgrade();
-			[, $remote, $new] = $u->getVersion();
+			[, $remote, $new] = $u->getVersion(true);
 			savecache('newver', [
 				't' => TIMESTAMP,
 				'remote' => $remote,

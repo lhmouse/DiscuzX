@@ -28,14 +28,14 @@ class class_upgrade {
 
 	public $readmeUrl = '';
 
-	public function getVersion() {
+	public function getVersion($silent = false) {
 		$current = $this->getCurrentData(true);
-		$remote = $this->getRemoteData(true);
+		$remote = $this->getRemoteData(true, $silent);
 		$currentd = substr($current['ver'], 1).'0'.sprintf('%02d', intval(substr($current['subver'], 1))).$current['release'];
-		$remoted = substr($remote['ver'], 1).'0'.sprintf('%02d', intval(substr($remote['subver'], 1))).$remote['release'];
+		$remoted = !empty($remote['ver']) ? substr($remote['ver'], 1).'0'.sprintf('%02d', intval(substr($remote['subver'], 1))).$remote['release'] : 0;
 		return [
 			$current['ver'].$current['subver'].' Release '.$current['release'],
-			$remote['ver'].$remote['subver'].' Release '.$remote['release'],
+			!empty($remote['ver']) ? $remote['ver'].$remote['subver'].' Release '.$remote['release'] : '',
 			$currentd < $remoted,
 		];
 	}
@@ -119,7 +119,7 @@ class class_upgrade {
 		$zip->close();
 	}
 
-	private function _getApiData() {
+	private function _getApiData($silent = false) {
 		$c = new filesock_curl();
 		$c->unsafe = true;
 		$c->returnbody = true;
@@ -127,10 +127,14 @@ class class_upgrade {
 		$c->timeout = 10;
 		$c->request(['url' => self::ApiUrl]);
 		if($c->curlstatus['http_code'] != 200) {
-			cpmsg('upgrade_remote_get_failed', '', 'error');
+			if(!$silent) {
+				cpmsg('upgrade_remote_get_failed', '', 'error');
+			} else {
+				return false;
+			}
 		}
 		$data = json_decode($c->filesockbody, true);
-		return !empty($data['ver']) && !empty($data['release']) && !empty($data['url']) && !empty($data['md5']) ? $data : false;
+		return !empty($data['ver']) && !empty($data['release']) && !empty($data['url']) && !empty($data['md5']) ? $data : ['code' => 0];
 	}
 
 	private function _zip(&$zip, $path, $basePathLen) {
@@ -189,10 +193,14 @@ class class_upgrade {
 		return $diffData;
 	}
 
-	public function getRemoteData($verOnly = false) {
+	public function getRemoteData($verOnly = false, $silent = false) {
 		set_time_limit(0);
-		if(!$apiData = $this->_getApiData()) {
-			cpmsg('upgrade_remote_get_failed', extra: 'api error');
+		if(!($apiData = $this->_getApiData($silent))) {
+			if(!$silent) {
+				cpmsg('upgrade_remote_get_failed', extra: 'api error');
+			} else {
+				return [];
+			}
 		}
 		if(!empty($apiData['readmeUrl'])) {
 			$this->readmeUrl = $apiData['readmeUrl'];
