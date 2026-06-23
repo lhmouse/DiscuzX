@@ -405,39 +405,39 @@ function show_filecheck() {
 	echo '<div id="filecheck_div">';
 	echo '<div class="fc-grid">'.
 		'<div class="fc-item '.($modifiedfiles ? 'fc-warning' : 'fc-ok').'">'.
-			'<div class="fc-icon"><i class="dzicon '.($modifiedfiles ? 'fc-i-warning' : 'fc-i-ok').'"></i></div>'.
-			'<div class="fc-detail">'.
-				'<div class="fc-label">'.$lang['filecheck_modify'].'</div>'.
-				'<div class="fc-num">'.$modifiedfiles.'</div>'.
-			'</div>'.
+		'<div class="fc-icon"><i class="dzicon '.($modifiedfiles ? 'fc-i-warning' : 'fc-i-ok').'"></i></div>'.
+		'<div class="fc-detail">'.
+		'<div class="fc-label">'.$lang['filecheck_modify'].'</div>'.
+		'<div class="fc-num">'.$modifiedfiles.'</div>'.
+		'</div>'.
 		'</div>'.
 		'<div class="fc-item '.($deletedfiles ? 'fc-danger' : 'fc-ok').'">'.
-			'<div class="fc-icon"><i class="dzicon '.($deletedfiles ? 'fc-i-danger' : 'fc-i-ok').'"></i></div>'.
-			'<div class="fc-detail">'.
-				'<div class="fc-label">'.$lang['filecheck_delete'].'</div>'.
-				'<div class="fc-num">'.$deletedfiles.'</div>'.
-			'</div>'.
+		'<div class="fc-icon"><i class="dzicon '.($deletedfiles ? 'fc-i-danger' : 'fc-i-ok').'"></i></div>'.
+		'<div class="fc-detail">'.
+		'<div class="fc-label">'.$lang['filecheck_delete'].'</div>'.
+		'<div class="fc-num">'.$deletedfiles.'</div>'.
+		'</div>'.
 		'</div>'.
 		'<div class="fc-item '.($unknownfiles ? 'fc-info' : 'fc-ok').'">'.
-			'<div class="fc-icon"><i class="dzicon '.($unknownfiles ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
-			'<div class="fc-detail">'.
-				'<div class="fc-label">'.$lang['filecheck_unknown'].'</div>'.
-				'<div class="fc-num">'.$unknownfiles.'</div>'.
-			'</div>'.
+		'<div class="fc-icon"><i class="dzicon '.($unknownfiles ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+		'<div class="fc-detail">'.
+		'<div class="fc-label">'.$lang['filecheck_unknown'].'</div>'.
+		'<div class="fc-num">'.$unknownfiles.'</div>'.
+		'</div>'.
 		'</div>'.
 		'<div class="fc-item '.($doubt ? 'fc-info' : 'fc-ok').'">'.
-			'<div class="fc-icon"><i class="dzicon '.($doubt ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
-			'<div class="fc-detail">'.
-				'<div class="fc-label">'.$lang['filecheck_doubt'].'</div>'.
-				'<div class="fc-num">'.$doubt.'</div>'.
-			'</div>'.
+		'<div class="fc-icon"><i class="dzicon '.($doubt ? 'fc-i-info' : 'fc-i-ok').'"></i></div>'.
+		'<div class="fc-detail">'.
+		'<div class="fc-label">'.$lang['filecheck_doubt'].'</div>'.
+		'<div class="fc-num">'.$doubt.'</div>'.
 		'</div>'.
-	'</div>';
+		'</div>'.
+		'</div>';
 	if($lastcheck) {
 		echo '<div class="fc-footer">'.
 			'<span class="fc-time">'.$lang['filecheck_last_homecheck'].': '.$lastcheck.'</span>'.
 			'<a class="fc-link" href="'.ADMINSCRIPT.'?action=checktools&operation=filecheck&step=3">'.$lang['filecheck_view_list'].' <em>&rsaquo;</em></a>'.
-		'</div>';
+			'</div>';
 	}
 	echo '</div>';
 
@@ -468,13 +468,33 @@ function show_sysinfo() {
 
 	showboxheader('home_sys_info', 'listbox', 'id="home_sys_info"');
 
+	$newver = '';
+	if(isfounder()) {
+		loadcache('newver');
+		if(empty($_G['cache']['newver']) || TIMESTAMP - $_G['cache']['newver']['t'] > 86400 * 5) {
+			$u = new admin\class_upgrade();
+			[, $remote, $new] = $u->getVersion();
+			savecache('newver', [
+				't' => TIMESTAMP,
+				'remote' => $remote,
+				'new' => $new,
+			]);
+		} else {
+			$remote = $_G['cache']['newver']['remote'];
+			$new = $_G['cache']['newver']['new'];
+		}
+		if($new) {
+			$newver = ' &raquo; <a class="newver" href="'.ADMINSCRIPT.'?action=founder&operation=upgrade">'.$remote.'</a>';
+		}
+	}
+
 	// ── Software Versions ──
 	showboxrow($hc, ['class="dcol"'], ['<span class="sysinfo-label">'.cplang('home_version').'</span>']);
 	showboxrow('', $dc, [
 		cplang('home_discuz_version'),
-		'<i class="dzlogo"></i> '.DISCUZ_VERSION_NAME.' / Discuz! '.DISCUZ_VERSION.DISCUZ_SUBVERSION.' '.$reldisp.
+		'<i class="dzlogo"></i> '.DISCUZ_VERSION_NAME.' '.DISCUZ_VERSION.DISCUZ_SUBVERSION.' '.$reldisp.
 		((strlen(DISCUZ_RELEASE) == 8) ? '' : cplang('home_git_version')).
-		(!empty($downlist) ? implode('&#x3001;', $downlist) : '')
+		$newver
 	]);
 	if(!UC_STANDALONE) {
 		showboxrow('', $dc, [
@@ -543,25 +563,20 @@ function show_news() {
 	showboxheader('discuz_news', 'listbox', 'id="discuz_news"');
 
 	if(!empty($newversion['newversion'])) {
-		$newver = $newversion['newversion']['release'] != DISCUZ_RELEASE;
 		$downlist = [];
 		foreach($newversion['newversion']['downlist'] as $key => $value) {
 			$downlist[] = '<a href="'.diconv($value['url'], 'utf-8', CHARSET).'" target="_blank">'.discuzcode(strip_tags(diconv($value['title'], 'utf-8', CHARSET)), 1, 0).'</a>';
 		}
 
-		$tips = cplang('download_latest').': <a href="https://gitee.com/Discuz/DiscuzX/attach_files" target="_blank"'.($newver ? ' style="font-weight: bold;color:red"' : '').'>Discuz! '.$newversion['newversion']['version'].' '.$newversion['newversion']['release'].'</a>';
-		if($newver && isfounder()) {
-			$tips .= '&#x3001;<a style="font-weight: bold;color:red" href="'.ADMINSCRIPT.'?action=founder&operation=upgrade">'.cplang('menu_upgrade').'</a>';
-		}
+		$tips = '';
 		if(!empty($downlist)) {
-			$tips .= '&#x3001;'.implode('&#x3001;', $downlist);
+			$tips = implode('&#x3001;', $downlist);
 		}
 
 		if(empty($newversion['newversion']['qqqun'])) {
 			$newversion['newversion']['qqqun'] = '73'.'210'.'36'.'90';
 		}
-		$tips .= '<span style="margin-left:12px;color:var(--admincp-fc)">'.cplang('qq_group').': '.$newversion['newversion']['qqqun'].'</span>';
-		echo '<div class="news-tips">'.$tips.'</div>';
+		$tips .= '<span style="color:var(--admincp-fc)">'.cplang('qq_group').': '.$newversion['newversion']['qqqun'].'</span>';
 	}
 
 	echo '<div class="news-list">';
@@ -576,6 +591,7 @@ function show_news() {
 		echo '<div class="news-item"><a class="news-title" href="https://www.dismall.com/" target="_blank">'.cplang('log_in_to_update').'</a></div>';
 		echo '<div class="news-item"><a class="news-title" href="https://gitee.com/3dming/DiscuzL/attach_files" target="_blank">'.cplang('download_latest').'</a></div>';
 	}
+	echo '<div class="news-item">'.$tips.'</div>';
 	echo '</div>';
 
 	showboxfooter();

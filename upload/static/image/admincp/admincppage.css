@@ -230,6 +230,7 @@ textarea {font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 .drow.clp { margin-left: 0; margin-right: 0; }
 .drow .dcol { padding-left: 10px; padding-right: 10px; min-width: 0;}
 #home_sys_info .drow .dcol {width: 60%;}
+#home_sys_info .newver { text-decoration: none; color: var(--admincp-f60);}
 .drow.clp .dcol { padding-left: 0; padding-right: 0; }
 .d-1 { flex-grow: 1; }
 .d-2 { flex-grow: 2; }
@@ -958,8 +959,7 @@ div.todo>em { width: 25%; }
 .ht-replies::before { content: "\e665"; font-family: dzicon; font-size: 12px; margin-right: 3px; vertical-align: -1px; }
 
 /* News Widget */
-.news-tips { padding: 12px 16px; background: var(--admincp-bgc); border-bottom: 1px solid var(--admincp-borderd); font-size: 12px; line-height: 1.8; color: var(--admincp-fa); }
-.news-list { padding: 4px 0; }
+.news-list { padding: 0 !important; }
 .news-item { display: flex; align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--admincp-borderd); transition: background .15s; min-width: 0; }
 .news-item:last-child { border-bottom: none; }
 .news-item:hover { background: var(--admincp-bgf2); }
