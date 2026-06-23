@@ -196,6 +196,7 @@ $lang =
 	'pics' => '图片',
 	'import' => '导入',
 	'export' => '导出',
+	'exportold' => '导出XML',
 	'download' => '下载',
 	'edit' => '编辑',
 	'detail' => '详情',

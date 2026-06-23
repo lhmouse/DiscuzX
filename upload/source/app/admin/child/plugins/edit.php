@@ -49,6 +49,7 @@ if(!submitcheck('editsubmit')) {
 		['plugins_config_module', 'modules', $anchor == 'modules'],
 		['plugins_config_vars', 'vars', $anchor == 'vars'],
 		['export', 'plugins&operation=export&pluginid='.$plugin['pluginid'], 0, 1],
+		['exportold', 'plugins&operation=export&old=yes&pluginid='.$plugin['pluginid'], 0, 1],
 	], '', true);
 
 	showtips('plugins_edit_tips');

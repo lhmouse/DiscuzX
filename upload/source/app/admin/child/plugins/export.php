@@ -46,6 +46,24 @@ if($modules['extra']['langexists'] && file_exists($file = DISCUZ_DATA.'./plugind
 		$pluginarray['language']['systemlang'] = $systemlang[$pluginarray['plugin']['identifier']];
 	}
 }
+if($_GET['old'] == 'yes' && empty($scriptlang[$pluginarray['plugin']['identifier']])){
+	if($modules['extra']['langexists'] && file_exists($file = DISCUZ_PLUGIN($pluginarray['plugin']['directory']).'./i18n/SC_UTF8/lang_plugin.php')) {
+		include $file;
+		if(!empty($scriptlang[$pluginarray['plugin']['identifier']])) {
+			$pluginarray['language']['scriptlang'] = $scriptlang[$pluginarray['plugin']['identifier']];
+		}
+		if(!empty($templatelang[$pluginarray['plugin']['identifier']])) {
+			$pluginarray['language']['templatelang'] = $templatelang[$pluginarray['plugin']['identifier']];
+		}
+		if(!empty($installlang[$pluginarray['plugin']['identifier']])) {
+			$pluginarray['language']['installlang'] = $installlang[$pluginarray['plugin']['identifier']];
+		}
+		if(!empty($systemlang[$pluginarray['plugin']['identifier']])) {
+			$pluginarray['language']['systemlang'] = $systemlang[$pluginarray['plugin']['identifier']];
+		}
+	}
+}
+
 unset($modules['extra']);
 $pluginarray['plugin']['modules'] = serialize($modules);
 $plugindir = DISCUZ_PLUGIN($pluginarray['plugin']['directory']);
@@ -67,6 +85,8 @@ if(file_exists($plugindir.'/enable.php')) {
 if(file_exists($plugindir.'/disable.php')) {
 	$pluginarray['disablefile'] = 'disable.php';
 }
-
-exportdata('Discuz! Plugin', $plugin['identifier'], $pluginarray);
-	
+if($_GET['old'] == 'yes'){
+	exportxmldata('Discuz! Plugin', $plugin['identifier'], $pluginarray);
+}else {
+	exportdata('Discuz! Plugin', $plugin['identifier'], $pluginarray);
+}
