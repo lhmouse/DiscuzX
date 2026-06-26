@@ -208,7 +208,7 @@ input:focus, textarea:focus, select:focus {
 .forumlist .subforumshow {
 	animation:dz-slide-down 0.3s ease-out;
 }
-* {word-wrap:break-word}
+* {word-break:break-all;overflow-wrap:break-word}
 ul, ol, li, span, p, form, h1, h2, h3, h4, h5, h6, dl, dt, dd {margin:0;padding:0;border:0;z-index:inherit}
 img, a img {border:0;margin:0;padding:0}
 ul, ol, li {list-style:none}

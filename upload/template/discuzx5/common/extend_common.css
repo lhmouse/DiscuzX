@@ -40,7 +40,7 @@
     }
 
 
-
+* {word-break:break-all;overflow-wrap:break-word}
 html{overflow-y:scroll}
 body {background:var(--dz-bodybg)}
 body, input, button, select, textarea {color:var(--dz-fa)}

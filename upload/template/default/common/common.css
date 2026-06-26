@@ -87,7 +87,7 @@ CSS 写作注意事项：
 	Explain:		重定义浏览器默认样式
 	Last Modify:	Pony
 */
-	* { word-wrap: break-word; }
+	* { word-break: break-all; overflow-wrap: break-word; }
 	body { {BGCODE}; min-width: 1200px; }
 	body, input, button, select, textarea { font: {FONTSIZE} {FONT}; color: {TABLETEXT}; }
 		textarea { resize: none; }
@@ -1812,7 +1812,7 @@ DIY图片幻灯片未加载时隐藏,模块标识隐藏
 .media { display: block; margin-bottom: 20px; }
 	.media_container { display: block; width: 100%; height: 100%; min-height: 20px; background: url("{IMGDIR}/img_loader.gif") no-repeat center; }
 		.media_container a { text-decoration: none !important; }
-	.media_tips { display: block; margin: 10px 0; text-align: center; }
+	.media_tips { display: block; text-align: center; }
 		.media_tips a { font-size: 12px !important; color: #999 !important; text-decoration: none !important; }
 			.media_tips a:hover { text-decoration: underline !important; }
 
