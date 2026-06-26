@@ -23,7 +23,7 @@ class table_forum_threaddisablepos extends discuz_table {
 		$this->_table = 'forum_threaddisablepos';
 		$this->_pk = 'tid';
 		$this->_pre_cache_key = 'forum_threaddisablepos_';
-		$this->_cache_ttl = 604800;
+		$this->_cache_ttl = 86400;
 		parent::__construct();
 	}
 

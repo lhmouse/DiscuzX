@@ -13,7 +13,7 @@ if(!defined('IN_DISCUZ')) {
 class memory_common_session {
 	private $_pre_cache_key;
 
-	const DEFAULT_TTL = 86400;
+	const DEFAULT_TTL = 43200;
 
 	// 一段公用LUA代码，用于基于sids array，逐个加载数据，并返回
 	const LUA_RETURN_DATA = <<<LUA
