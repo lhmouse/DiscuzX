@@ -25,7 +25,13 @@ class template {
 	function parse_template($tplfile, $templateid = 1, $tpldir = '', $file = '', $cachefile = '', $postparse = null) {
 		$f = $tplfile;
 		$basefile = basename($f, '.'.$this->filetype);
-		$file == 'common/header' && defined('CURMODULE') && CURMODULE && $file = 'common/header_'.CURMODULE;
+		if(defined('CURMODULE') && CURMODULE) {
+			if($file == 'common/header') {
+				$file = 'common/header_'.CURMODULE;
+			} elseif($file == 'touch/common/header') {
+				$file = 'touch/common/header_'.CURMODULE;
+			}
+		}
 		$this->file = $file;
 
 		if(tplfile::file_exists($tplfile)) {

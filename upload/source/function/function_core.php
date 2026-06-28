@@ -915,8 +915,6 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 		}
 	}
 
-	$file == 'common/header' && defined('CURMODULE') && CURMODULE && $file = 'common/header_'.$_G['basescript'].'_'.CURMODULE;
-
 	if((constant('HOOKTYPE') == 'hookscriptmobile' && defined('IN_MOBILE') && !defined('TPL_DEFAULT')) || defined('IN_PREVIEW')) {
 		if(strpos($tpldir, 'plugin')) {
 			if(!tplfile::file_exists($tpldir.'/'.$file.'.htm') && !tplfile::file_exists($tpldir.'/'.$file.'.php')) {
@@ -965,7 +963,11 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 		}
 	}
 	$i18n = $_G['i18n'] ? '_'.$_G['i18n'] : '';
-	$cachefile = './template/'.(defined('STYLEID') ? STYLEID.'_' : '_').$templateid.'_'.str_replace('/', '_', $file).$i18n.'.tpl.php';
+	$append = '';
+	if(defined('CURMODULE') && CURMODULE && ($file == 'common/header' || $file == 'touch/common/header')) {
+		$append = '_'.$_G['basescript'].'_'.CURMODULE;
+	}
+	$cachefile = './template/'.(defined('STYLEID') ? STYLEID.'_' : '_').$templateid.'_'.str_replace('/', '_', $file).$i18n.$append.'.tpl.php';
 	if($templateid != 1 && !tplfile::file_exists($tplfile) && !tplfile::file_exists(substr($tplfile, 0, -4).'.php')
 		&& !tplfile::file_exists(($tplfile = $tpldir.'/'.$filebak.'.htm'))) {
 		$tplfile = DISCUZ_TEMPLATE('./template/default/'.$filebak.'.php');
