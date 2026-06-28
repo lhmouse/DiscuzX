@@ -1,6 +1,9 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
 <script type="text/javascript" src="{STATICURL}js/mobile/buildfileupload.js?{VERHASH}"></script>
+<script type="text/javascript">
+	jqueryProperty();
+</script>
 <div class="header cl">
 	<div class="mz"><a href="javascript:history.back();"><i class="dm-c-left"></i></a></div>
 	<h2>
@@ -21,7 +24,7 @@
 					<li class="swiper-slide"><a href="home.php?mod=spacecp&ac=album&op=editpic&albumid=$albumid">{lang edit_pic}</a></li>
 					<!--{/if}-->
 					<li class="swiper-slide mon"><a href="home.php?mod=spacecp&ac=upload&albumid=$albumid">{lang common_upload}</a></li>
-					<li class="swiper-slide"><a id="a_doodle" href="home.php?mod=magic&mid=doodle&showid=album_doodle&target=album_message&from=album" class="dialog">{$_G[setting][magics][doodle]}</a></li>
+					<!--{if $_G['setting']['magics']['doodle']}--><li class="swiper-slide"><a id="a_doodle" href="home.php?mod=magic&mid=doodle&showid=album_doodle&target=album_message&from=album" class="dialog">{$_G['setting']['magics']['doodle']}</a></li><!--{/if}-->
 					<li class="swiper-slide"><a href="home.php?mod=space&uid=$space[uid]&do=album&view=me">{lang back_to_my_album}</a></li>
 				</ul>
 			</div>

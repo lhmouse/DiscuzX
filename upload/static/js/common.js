@@ -486,7 +486,10 @@ function appendscript(src, text, reload, charset, recall) {
 	var id = hash(src + text);
 	if (!reload && in_array(id, evalscripts)) return;
 	if (reload && $(id)) {
-		$(id).parentNode.removeChild($(id));
+		var element = $(id);
+		if (element && element.parentNode) {
+			element.parentNode.removeChild(element);
+		}
 	}
 
 	evalscripts.push(id);
@@ -633,7 +636,7 @@ function showMenu(v) {
 	var ctrlid = isUndefined(v['ctrlid']) ? v : v['ctrlid'];
 	var showid = isUndefined(v['showid']) ? ctrlid : v['showid'];
 	var menuid = isUndefined(v['menuid']) ? showid + '_menu' : v['menuid'];
-	var ctrlObj = $(ctrlid);
+	var ctrlObj = typeof ctrlid == 'string' ? $(ctrlid) : null;
 	var menuObj = $(menuid);
 	if (!menuObj) return;
 	var mtype = isUndefined(v['mtype']) ? 'menu' : v['mtype'];
@@ -920,7 +923,7 @@ function dragMenu(menuObj, e, op) {
 }
 
 function setMenuPosition(showid, menuid, pos) {
-	var showObj = $(showid);
+	var showObj = typeof showid == 'string' ? $(showid) : null;
 	var menuObj = menuid ? $(menuid) : $(showid + '_menu');
 	if (isUndefined(pos) || !pos) pos = '43';
 	var basePoint = parseInt(pos.substr(0, 1));
@@ -1341,11 +1344,11 @@ function hideWindow(k, all, clear) {
 function AC_FL_RunContent() {
 	var str = '';
 	var ret = AC_GetArgs(arguments, "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000", "application/x-shockwave-flash");
-		str += '<embed ';
-		for (var i in ret.embedAttrs) {
-			str += i + '="' + ret.embedAttrs[i] + '" ';
-		}
-		str += '></embed>';
+	str += '<embed ';
+	for (var i in ret.embedAttrs) {
+		str += i + '="' + ret.embedAttrs[i] + '" ';
+	}
+	str += '></embed>';
 	return str;
 }
 
@@ -2321,20 +2324,21 @@ function initZoom() {
 }
 
 var currentAlbumObj = null;
+
 function openAlbumWindow(obj) {
 	currentAlbumObj = obj;
-	if(typeof currentAlbumObj == 'object') {
+	if (typeof currentAlbumObj == 'object') {
 		currentAlbumObj.focus();
 	}
-	if(!$('fwin_albumWin')) {
+	if (!$('fwin_albumWin')) {
 		showWindow('albumWin', 'forum.php?mod=misc&action=albumlist&handlekey=albumlist');
 	}
 }
 
 function albumWinCallback(obj, value, name) {
-	if(typeof(obj) == 'function') {
+	if (typeof (obj) == 'function') {
 		obj(value, name);
-	} else if(typeof(obj) == 'object') {
+	} else if (typeof (obj) == 'object') {
 		obj.value = value;
 	}
 }
@@ -2463,7 +2467,6 @@ if (typeof IN_ADMINCP == 'undefined') {
 		_attachEvent(window, 'load', cardInit, document);
 	}
 }
-
 
 
 document.addEventListener('DOMContentLoaded', loadAvatar);

@@ -53,6 +53,7 @@
 <script type="text/javascript" src="{STATICURL}js/mobile/ajaxfileupload.js?{VERHASH}"></script>
 <script type="text/javascript" src="{STATICURL}js/mobile/buildfileupload.js?{VERHASH}"></script>
 <script type="text/javascript">
+	jqueryProperty();
 	var imgexts = typeof imgexts == 'undefined' ? 'jpg, jpeg, gif, png' : imgexts;
 	var STATUSMSG = {
 		'-1' : '{lang uploadstatusmsgnag1}',
