@@ -532,7 +532,7 @@ select {-moz-appearance:none;}
 .profile-form .form-field {flex:1;min-width:0;}
 .profile-form .form-field .px {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;}
 .profile-form .form-field .px:focus {border-color:var(--dz-BG-color);box-shadow:0 0 0 2px rgba(0,122,255,0.08);}
-.profile-form .form-field select {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
+.profile-form .form-field select {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('{STATICURL}image/mobile/touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
 .profile-form .form-field textarea.pt {width:100%;min-height:80px;padding:8px 10px;font-size:14px;line-height:1.6;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;resize:vertical;}
 .profile-form .form-field textarea.pt:focus {border-color:var(--dz-BG-color);box-shadow:0 0 0 2px rgba(0,122,255,0.08);}
 .profile-form .form-field .d {margin-top:4px;font-size:12px;color:var(--dz-FC-999);line-height:1.5;}
@@ -563,7 +563,7 @@ select {-moz-appearance:none;}
 
 /*----- 地区联动选择器 -----*/
 .profile-form .district-box, .profile-form #birthdistrictbox, .profile-form #residedistrictbox {display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;}
-.profile-form .district-box select, .profile-form #birthdistrictbox select, .profile-form #residedistrictbox select {flex:1;min-width:80px;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
+.profile-form .district-box select, .profile-form #birthdistrictbox select, .profile-form #residedistrictbox select {flex:1;min-width:80px;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('{STATICURL}image/mobile/touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
 .profile-form .district-box select:first-child, .profile-form #birthdistrictbox select:first-child, .profile-form #residedistrictbox select:first-child {flex:0 0 100%;}
 .profile-form .district-box select:nth-child(2), .profile-form #birthdistrictbox select:nth-child(2), .profile-form #residedistrictbox select:nth-child(2) {flex:1;}
 .profile-form .district-box select:nth-child(3), .profile-form #birthdistrictbox select:nth-child(3), .profile-form #residedistrictbox select:nth-child(3) {flex:1;}
@@ -1174,9 +1174,9 @@ body.pg_logging, body.pg_register, body.pg_lostpasswd_mobile, body.pg_lostpasswd
 .post_box li.mtit {height:20px;line-height:20px;font-size:12px;padding-top:10px;color:var(--dz-FC-999)}
 .post_box li.mtext {height:auto;line-height:30px;padding:10px 15px;font-size:16px;border-bottom:1px solid var(--dz-BOR-ed);overflow:hidden}
 .post_box li.mli .input-append {position:absolute;right:15px;color:#495057;font-size:1rem;}
-.post_box .sort_sel {width:100%;background:url('touch/arrow.svg') no-repeat right center;background-size:16px 16px;padding-left:14px;height:30px;line-height:30px;font-size:16px;border:none;color:graytext;appearance:none;-moz-appearance:none;-webkit-appearance:none;overflow:hidden}
+.post_box .sort_sel {width:100%;background:url('{STATICURL}image/mobile/touch/arrow.svg') no-repeat right center;background-size:16px 16px;padding-left:14px;height:30px;line-height:30px;font-size:16px;border:none;color:graytext;appearance:none;-moz-appearance:none;-webkit-appearance:none;overflow:hidden}
 .post_box .attqx .sort_sel {font-size:14px;}
-.post_box .multisel .sort_sel {background: url('touch/arrow.svg') no-repeat right center;background-size: 14px 14px;padding-right: 16px;font-size: 14px;border: none;color: graytext;appearance: none;-moz-appearance: none;-webkit-appearance: none;overflow: hidden;width:auto;}
+.post_box .multisel .sort_sel {background: url('{STATICURL}image/mobile/touch/arrow.svg') no-repeat right center;background-size: 14px 14px;padding-right: 16px;font-size: 14px;border: none;color: graytext;appearance: none;-moz-appearance: none;-webkit-appearance: none;overflow: hidden;width:auto;}
 .post_btn {padding:15px}
 .post_box .sec_code {padding:5px 15px;border-bottom:1px solid var(--dz-BOR-ed)}
 .post_box .sec_txt {padding:5px 15px;font-size:16px;color: var(--dz-FC-999) }
@@ -1429,7 +1429,7 @@ body.pg_logging, body.pg_register, body.pg_lostpasswd_mobile, body.pg_lostpasswd
 .tfm .pcl .pc { margin-right: 5px; padding: 0; }
 .tfm .l th, .tfm .l td { padding-top: 0; padding-bottom: 0; }
 .bn .tfm caption, .bn .tfm th, .bn .tfm td { padding-top: 5px; padding-bottom: 5px; }
-.tfm select {background:url('touch/arrow.svg') no-repeat right center;background-size:14px 14px;padding-right:16px;font-size:14px;border:none;color:graytext;appearance:none;-moz-appearance:none;-webkit-appearance:none;overflow:hidden}
+.tfm select {background:url('{STATICURL}image/mobile/touch/arrow.svg') no-repeat right center;background-size:14px 14px;padding-right:16px;font-size:14px;border:none;color:graytext;appearance:none;-moz-appearance:none;-webkit-appearance:none;overflow:hidden}
 
 .xl li { margin: 2px 0; }
 .xl em { float: right; padding-left: 5px; }
