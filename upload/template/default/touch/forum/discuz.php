@@ -168,7 +168,7 @@
 				<i class="{if !$_G['setting']['mobile']['forum']['forumview']}dm-minus-c{else}dm-plus-c{/if}"></i>
 				<h2><a href="javascript:;">$cat['name']</a></h2>
 			</div>
-			<div id="sub-forum_$cat['fid']" class="sub-forum mlist<!--{if $cat['forumcolumns'] == 3}-->3<!--{elseif $cat['forumcolumns'] == 2}-->2<!--{elseif $cat['forumcolumns'] == 1 || $cat['forumcolumns'] == 0}-->1<!--{else}-->4<!--{/if}--> cl">
+			<div id="sub-forum_$cat['fid']" class="sub-forum mlist<!--{if $cat['forumcolumns'] == 3}-->3<!--{elseif $cat['forumcolumns'] == 2}-->2<!--{elseif $cat['forumcolumns'] == 1 || $cat['forumcolumns'] == 0}-->1<!--{else}-->4<!--{/if}--><!--{if $cat['forumcolumns'] >= 3 && $_G['setting']['mobile']['forum']['mlistwrap']}-->-wrap<!--{/if}--> cl">
 				<ul>
 					<!--{loop $cat['forums'] $forumid}-->
 					<!--{eval $forum=$forumlist[$forumid];}-->

@@ -709,6 +709,15 @@ select {-moz-appearance:none;}
 .forumlist .mlist3 li .micon, .forumlist .mlist4 li .micon {float:none;display:block;margin:0 auto;text-align: center;}
 .forumlist .mlist3 li .mtit {margin-top:6px;text-align:center}
 .forumlist .mlist4 li .mtit {font-size:13px;margin-top:5px;text-align:center}
+/* 换行版本：一行3个/4个，不滚动 */
+.forumlist .mlist3-wrap ul,.forumlist .mlist4-wrap ul {display:flex;flex-wrap:wrap;overflow-x:visible}
+.forumlist .mlist3-wrap li {float:left;width:33.333%;box-sizing:border-box;padding:13px 5px 10px;overflow:hidden;border-bottom:1px solid var(--dz-BOR-ed);border-right:1px solid var(--dz-BOR-ed);flex-shrink:0}
+.forumlist .mlist4-wrap li {float:left;width:25%;box-sizing:border-box;padding:13px 5px 10px;overflow:hidden;border-bottom:1px solid var(--dz-BOR-ed);border-right:1px solid var(--dz-BOR-ed);flex-shrink:0}
+.forumlist .mlist3-wrap li:nth-child(3n),.forumlist .mlist4-wrap li:nth-child(4n) {border-right:none}
+.forumlist .mlist3-wrap li a.murl,.forumlist .mlist4-wrap li a.murl {height:auto}
+.forumlist .mlist3-wrap li .micon,.forumlist .mlist4-wrap li .micon {float:none;display:block;margin:0 auto;text-align:center}
+.forumlist .mlist3-wrap li .mtit {margin-top:6px;text-align:center}
+.forumlist .mlist4-wrap li .mtit {font-size:13px;margin-top:5px;text-align:center}
 
 /*----- 提示转跳相关 -----*/
 .jump_c {padding:100px 15px;background-color:var(--dz-BG-0);border-top:1px solid var(--dz-BOR-ed);border-bottom:1px solid var(--dz-BOR-ed);margin-top:10px;font-size:15px}

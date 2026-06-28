@@ -3,7 +3,7 @@
 	<div class="subforumshow cl">
 		<h2><a href="javascript:;"><em></em>{lang forum_subforums}</a></h2>
 	</div>
-	<div id="sub-forum_$_G['forum']['fid']" class="sub-forum mlist4 cl">
+	<div id="sub-forum_$_G['forum']['fid']" class="sub-forum mlist4<!--{if $_G['setting']['mobile']['forum']['mlistwrap']}-->-wrap<!--{/if}--> cl">
 		<ul>
 			<!--{loop $sublist $sub}-->
 			<!--{eval $forumurl = !empty($sub['domain']) && !empty($_G['setting']['domain']['root']['forum']) ? $_G['scheme'].'://'.$sub['domain'].'.'.$_G['setting']['domain']['root']['forum'] : 'forum.php?mod=forumdisplay&fid='.$sub['fid'];}-->
