@@ -238,26 +238,45 @@
 		}
 
 		<!--{if (!empty($_G['setting']['editormodetype']) && $_GET['action'] != 'edit') || ($_GET['action'] == 'edit' && $isJsonContent)}-->
-		if (typeof saveJsonContent === 'function') {
-			saveJsonContent();
-		}
 		var _needsubject = document.getElementById('needsubject');
 		var _content = document.getElementById('content');
 		var post_content = '';
 		<!--{if $_GET['action'] == 'edit' && $isJsonContent}-->
 		post_content = `{$postinfo['content']}`;
 		<!--{/if}-->
-		if (_content && _content.value) {
-			post_content = _content.value;
-		}
-		<!--{if $postinfo['first']}-->
-		if (!_needsubject || $.trim(_needsubject.value) === '' || $.trim(post_content) === '') {
-			popup.open('{lang post_sm_isnull}', 'alert');
-			return false;
-		}
-		<!--{/if}-->
-		<!--{/if}-->
 
+		// 异步保存编辑器内容，等待完成后再继续提交
+		var savePromise = (typeof saveJsonContent === 'function')
+			? saveJsonContent()
+			: Promise.resolve();
+
+		savePromise.then(function(savedData) {
+			if (_content && _content.value) {
+				post_content = _content.value;
+			}
+			//console.log('post_content after save:', post_content);
+
+			<!--{if $postinfo['first']}-->
+			if (!_needsubject || $.trim(_needsubject.value) === '' || $.trim(post_content) === '') {
+				popup.open('{lang post_sm_isnull}', 'alert');
+				return false;
+			}
+			<!--{/if}-->
+
+			continueSubmit();
+		}).catch(function(error) {
+			console.error('保存编辑器内容失败:', error);
+			popup.open('{lang networkerror}', 'alert');
+			return false;
+		});
+
+		return false; // 阻止同步继续执行，等待 Promise 完成
+		<!--{else}-->
+		continueSubmit();
+		<!--{/if}-->
+	});
+
+	function continueSubmit() {
 		state.submitting = true;
 		updateButton();
 		popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
@@ -310,7 +329,7 @@
 		});
 
 		return false;
-	});
+	}
 })(jQuery);
 </script>
 <!--{eval $nofooter = true;}-->
