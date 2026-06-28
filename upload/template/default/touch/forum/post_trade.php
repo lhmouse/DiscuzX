@@ -76,7 +76,7 @@
 	</li>
 	<li class="flex-box mli">
 		<div class="flex pl5"><span class="z xg1">{lang valid_before}</span></div>
-		<div class="flex-3"><input type="text" name="item_expiration" id="item_expiration" class="px" autocomplete="off" value="$trade['expiration']" /></div>
+		<div class="flex-3"><input type="text" name="item_expiration" id="item_expiration" class="px" autocomplete="off" value="$trade['expiration']" onclick="showmobilecalendar(event, this, false)" /></div>
 	</li>
 	<li class="flex-box mli mtit"><div class="flex pl5">{lang threadsort_calendar}</div></li>
 	<!--{if $allowpostimg}-->

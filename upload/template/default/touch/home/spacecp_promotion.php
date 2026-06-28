@@ -4,7 +4,7 @@
 	<!--{hook/spacecp_promotion_top}-->
 	<!--{if $_G['setting']['creditspolicy']['promotion_visit'] || $_G['setting']['creditspolicy']['promotion_register']}-->
 		<div class="profile-form promotion-form">
-			<!-- �ƹ�˵�� -->
+			<!-- 推广说明 -->
 			<div class="promotion-info">
 				<!--{if $_G['setting']['creditspolicy']['promotion_visit']}-->
 					<div class="promotion-info-item">
@@ -22,7 +22,7 @@
 				<!--{/if}-->
 			</div>
 
-			<!-- ��ʽһ -->
+			<!-- 方式一 -->
 			<div class="form-section">
 				<div class="form-section-title">{lang mode_one}</div>
 				<div class="form-row promotion-row-block">
@@ -41,7 +41,7 @@
 				</div>
 			</div>
 
-			<!-- ��ʽ�� -->
+			<!-- 方式二 -->
 			<div class="form-section">
 				<div class="form-section-title">{lang mode_two}</div>
 				<div class="form-tip">

@@ -163,7 +163,7 @@
 (function($) {
 	'use strict';
 
-	// ���� DOM ���ã������ظ���ѯ
+	// 缓存 DOM 引用，避免重复查询
 	var btn = $('#postsubmit'),
 	    form = $('#postform'),
 	    needsubject = $('#needsubject'),
@@ -175,7 +175,7 @@
 		submitting: false
 	};
 
-	// ����ҳ�����ͳ�ʼ������״̬
+	// 根据页面类型初始化必填状态
 	<!--{if $_GET['action'] == 'reply'}-->
 	state.needsubject = true;
 	<!--{elseif $_GET['action'] == 'edit'}-->
@@ -183,7 +183,7 @@
 	state.needmessage = true;
 	<!--{/if}-->
 
-	// ͳһ��ť״̬����
+	// 统一按钮状态控制
 	function updateButton() {
 		if (state.submitting) {
 			btn.attr('data-disabled', 'true').removeClass('btn_pn_blue').addClass('btn_pn_grey');
@@ -200,7 +200,7 @@
 		return !el.length || $.trim(el.val() || '') === '';
 	}
 
-	// �������
+	// 输入防抖
 	var subjectTimer = null,
 	    messageTimer = null;
 
@@ -226,10 +226,10 @@
 		messageTimer = setTimeout(checkMessage, 150);
 	});
 
-	// ��ʼ����ť״̬
+	// 初始化按钮状态
 	updateButton();
 
-	// �ع������ύ����
+	// 重构数据提交流程
 	btn.on('click', function(e) {
 		e.preventDefault();
 
@@ -295,7 +295,7 @@
 
 			popup.open(msg);
 
-			// ҳ����ת���ƣ�������Ӧ�е� location.href ��ת�ű�
+			// 页面跳转控制：解析响应中的 location.href 跳转脚本
 			var redirectMatch = msg && msg.match(/location\.href\s*=\s*['"]([^'"]+)['"]/i);
 			if (redirectMatch && redirectMatch[1]) {
 				setTimeout(function() {

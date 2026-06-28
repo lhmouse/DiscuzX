@@ -853,3 +853,316 @@ function home_getgroup(gid) {
 _attachEvent(window, 'load', footlink, document);
 
 var mlast = getcookie('mfootlink');
+
+function showmobilecalendar(event, controlid1, addtime1, startdate1, enddate1, halfhour1, recall) {
+	event && event.preventDefault();
+	var controlid = controlid1;
+	var addtime = addtime1 ? true : false;
+	var startdate = startdate1 ? parsedate(startdate1) : false;
+	var enddate = enddate1 ? parsedate(enddate1) : false;
+	var today = new Date();
+	var currday = controlid.value ? parsedate(controlid.value) : today;
+	var hh = currday.getHours();
+	var ii = currday.getMinutes();
+	var halfhour = halfhour1 ? true : false;
+	var calendarrecall = recall ? recall : null;
+
+	var year = currday.getFullYear();
+	var month = currday.getMonth();
+	var day = currday.getDate();
+
+	var selectedYear = year;
+	var selectedMonth = month;
+	var selectedDay = day;
+	var selectedHour = hh;
+	var selectedMinute = ii;
+	var activeYear = year;
+	var activeMonth = month;
+	var activeDay = day;
+
+	var pickerId = 'mobilecalendar_picker';
+	var existing = document.getElementById(pickerId);
+	if(existing) existing.remove();
+
+	var mask = document.createElement('div');
+	mask.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99998;';
+
+	var container = document.createElement('div');
+	container.id = pickerId;
+	container.style.cssText = 'position:fixed;left:0;bottom:0;width:100%;background:#fff;z-index:99999;border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform 0.3s ease;max-height:70vh;overflow:hidden;display:flex;flex-direction:column;';
+
+	var header = document.createElement('div');
+	header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee;';
+
+	var cancelBtn = document.createElement('a');
+	cancelBtn.href = 'javascript:;';
+	cancelBtn.style.cssText = 'color:#999;font-size:14px;text-decoration:none;';
+	cancelBtn.textContent = $L('cancel') || '取消';
+	cancelBtn.onclick = function() {
+		container.style.transform = 'translateY(100%)';
+		setTimeout(function() {
+			container.remove();
+			mask.remove();
+		}, 300);
+	};
+
+	var title = document.createElement('span');
+	title.style.cssText = 'font-size:16px;font-weight:bold;color:#333;';
+	title.textContent = $L('select_datetime') || '选择日期时间';
+
+	var confirmBtn = document.createElement('a');
+	confirmBtn.href = 'javascript:;';
+	confirmBtn.style.cssText = 'color:var(--dz-FC-color, #2B7ACD);font-size:14px;text-decoration:none;font-weight:bold;';
+	confirmBtn.textContent = $L('confirm') || '确定';
+	confirmBtn.onclick = function() {
+		var result = selectedYear + '-' + zerofill(selectedMonth + 1) + '-' + zerofill(selectedDay);
+		if(addtime) {
+			result += ' ' + zerofill(selectedHour) + ':' + zerofill(selectedMinute);
+		}
+		controlid.value = result;
+		if(typeof calendarrecall == 'function') {
+			calendarrecall();
+		} else if(calendarrecall) {
+			eval(calendarrecall);
+		}
+		container.style.transform = 'translateY(100%)';
+		setTimeout(function() {
+			container.remove();
+			mask.remove();
+		}, 300);
+	};
+
+	header.appendChild(cancelBtn);
+	header.appendChild(title);
+	header.appendChild(confirmBtn);
+	container.appendChild(header);
+
+	var content = document.createElement('div');
+	content.style.cssText = 'flex:1;overflow-y:auto;padding:10px 16px;';
+
+	var dateSection = document.createElement('div');
+	dateSection.style.cssText = 'margin-bottom:16px;';
+
+	var yearRow = document.createElement('div');
+	yearRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';
+
+	var prevYear = document.createElement('a');
+	prevYear.href = 'javascript:;';
+	prevYear.style.cssText = 'color:#666;font-size:18px;text-decoration:none;padding:4px 8px;';
+	prevYear.innerHTML = '&lsaquo;';
+	prevYear.onclick = function() {
+		selectedYear--;
+		updateCalendar();
+	};
+
+	var yearDisplay = document.createElement('span');
+	yearDisplay.style.cssText = 'font-size:16px;color:#333;';
+	yearDisplay.textContent = selectedYear + $L('year') || selectedYear + '年';
+
+	var nextYear = document.createElement('a');
+	nextYear.href = 'javascript:;';
+	nextYear.style.cssText = 'color:#666;font-size:18px;text-decoration:none;padding:4px 8px;';
+	nextYear.innerHTML = '&rsaquo;';
+	nextYear.onclick = function() {
+		selectedYear++;
+		updateCalendar();
+	};
+
+	yearRow.appendChild(prevYear);
+	yearRow.appendChild(yearDisplay);
+	yearRow.appendChild(nextYear);
+	dateSection.appendChild(yearRow);
+
+	var monthRow = document.createElement('div');
+	monthRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';
+
+	var prevMonth = document.createElement('a');
+	prevMonth.href = 'javascript:;';
+	prevMonth.style.cssText = 'color:#666;font-size:18px;text-decoration:none;padding:4px 8px;';
+	prevMonth.innerHTML = '&lsaquo;';
+	prevMonth.onclick = function() {
+		selectedMonth--;
+		if(selectedMonth < 0) {
+			selectedMonth = 11;
+			selectedYear--;
+		}
+		updateCalendar();
+	};
+
+	var monthDisplay = document.createElement('span');
+	monthDisplay.style.cssText = 'font-size:16px;color:#333;';
+	monthDisplay.textContent = (selectedMonth + 1) + $L('month') || (selectedMonth + 1) + '月';
+
+	var nextMonth = document.createElement('a');
+	nextMonth.href = 'javascript:;';
+	nextMonth.style.cssText = 'color:#666;font-size:18px;text-decoration:none;padding:4px 8px;';
+	nextMonth.innerHTML = '&rsaquo;';
+	nextMonth.onclick = function() {
+		selectedMonth++;
+		if(selectedMonth > 11) {
+			selectedMonth = 0;
+			selectedYear++;
+		}
+		updateCalendar();
+	};
+
+	monthRow.appendChild(prevMonth);
+	monthRow.appendChild(monthDisplay);
+	monthRow.appendChild(nextMonth);
+	dateSection.appendChild(monthRow);
+
+	var weekHeader = document.createElement('div');
+	weekHeader.style.cssText = 'display:grid;grid-template-columns:repeat(7, 1fr);text-align:center;font-size:12px;color:#999;padding:4px 0;';
+	var weekDays = [$L('sun')||'日', $L('mon')||'一', $L('tue')||'二', $L('wed')||'三', $L('thu')||'四', $L('fri')||'五', $L('sat')||'六'];
+	for(var i = 0; i < 7; i++) {
+		var wd = document.createElement('span');
+		wd.textContent = weekDays[i];
+		weekHeader.appendChild(wd);
+	}
+	dateSection.appendChild(weekHeader);
+
+	var daysGrid = document.createElement('div');
+	daysGrid.style.cssText = 'display:grid;grid-template-columns:repeat(7, 1fr);gap:2px;';
+	daysGrid.id = 'mobilecalendar_days';
+	dateSection.appendChild(daysGrid);
+
+	content.appendChild(dateSection);
+
+	if(addtime) {
+		var timeSection = document.createElement('div');
+		timeSection.style.cssText = 'border-top:1px solid #eee;padding-top:12px;';
+
+		var timeLabel = document.createElement('div');
+		timeLabel.style.cssText = 'font-size:14px;color:#666;margin-bottom:8px;';
+		timeLabel.textContent = $L('select_time') || '选择时间';
+		timeSection.appendChild(timeLabel);
+
+		var timeRow = document.createElement('div');
+		timeRow.style.cssText = 'display:flex;gap:12px;align-items:center;';
+
+		var hourSelect = document.createElement('select');
+		hourSelect.style.cssText = 'flex:1;padding:8px;font-size:14px;border:1px solid #ddd;border-radius:4px;background:#fff;';
+		for(var h = 0; h < 24; h++) {
+			var opt = document.createElement('option');
+			opt.value = h;
+			opt.textContent = zerofill(h) + $L('hour') || zerofill(h) + '时';
+			if(h == selectedHour) opt.selected = true;
+			hourSelect.appendChild(opt);
+		}
+		hourSelect.onchange = function() {
+			selectedHour = parseInt(this.value);
+		};
+		timeRow.appendChild(hourSelect);
+
+		var minuteSelect = document.createElement('select');
+		minuteSelect.style.cssText = 'flex:1;padding:8px;font-size:14px;border:1px solid #ddd;border-radius:4px;background:#fff;';
+		for(var m = 0; m < 60; m += (halfhour ? 30 : 1)) {
+			var opt = document.createElement('option');
+			opt.value = m;
+			opt.textContent = zerofill(m) + $L('min') || zerofill(m) + '分';
+			if(m == selectedMinute) opt.selected = true;
+			minuteSelect.appendChild(opt);
+		}
+		minuteSelect.onchange = function() {
+			selectedMinute = parseInt(this.value);
+		};
+		timeRow.appendChild(minuteSelect);
+
+		timeSection.appendChild(timeRow);
+		content.appendChild(timeSection);
+	}
+
+	container.appendChild(content);
+	document.body.appendChild(mask);
+	document.body.appendChild(container);
+
+	setTimeout(function() {
+		container.style.transform = 'translateY(0)';
+	}, 10);
+
+	mask.onclick = function() {
+		container.style.transform = 'translateY(100%)';
+		setTimeout(function() {
+			container.remove();
+			mask.remove();
+		}, 300);
+	};
+
+	function updateCalendar() {
+		yearDisplay.textContent = selectedYear + $L('year') || selectedYear + '年';
+		monthDisplay.textContent = (selectedMonth + 1) + $L('month') || (selectedMonth + 1) + '月';
+
+		daysGrid.innerHTML = '';
+
+		var firstDay = new Date(selectedYear, selectedMonth, 1);
+		var startDay = firstDay.getDay();
+		var daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+		for(var i = 0; i < startDay; i++) {
+			var empty = document.createElement('div');
+			empty.style.cssText = 'height:36px;';
+			daysGrid.appendChild(empty);
+		}
+
+		for(var d = 1; d <= daysInMonth; d++) {
+			var dayCell = document.createElement('a');
+			dayCell.href = 'javascript:;';
+			dayCell.style.cssText = 'display:flex;align-items:center;justify-content:center;height:36px;font-size:14px;text-decoration:none;border-radius:50%;';
+			dayCell.textContent = d;
+
+			var currentDate = new Date(selectedYear, selectedMonth, d);
+			var isToday = (currentDate.getFullYear() === today.getFullYear() &&
+				currentDate.getMonth() === today.getMonth() &&
+				currentDate.getDate() === today.getDate());
+			var isSelected = (d === activeDay && selectedMonth === activeMonth && selectedYear === activeYear);
+			var isExpired = ((enddate && currentDate.getTime() > enddate.getTime()) ||
+				(startdate && currentDate.getTime() < startdate.getTime()));
+
+			if(isSelected) {
+				dayCell.style.background = 'var(--dz-FC-color, #2B7ACD)';
+				dayCell.style.color = '#fff';
+			} else if(isToday) {
+				dayCell.style.color = 'var(--dz-FC-color, #2B7ACD)';
+				dayCell.style.border = '1px solid var(--dz-FC-color, #2B7ACD)';
+			} else if(isExpired) {
+				dayCell.style.color = '#ccc';
+				dayCell.style.pointerEvents = 'none';
+			} else {
+				dayCell.style.color = '#333';
+			}
+
+			if(!isExpired || isSelected) {
+				dayCell.onclick = (function(dayVal) {
+					return function() {
+						selectedDay = dayVal;
+						activeYear = selectedYear;
+						activeMonth = selectedMonth;
+						activeDay = dayVal;
+						updateCalendar();
+					};
+				})(d);
+			}
+
+			daysGrid.appendChild(dayCell);
+		}
+	}
+
+	updateCalendar();
+}
+
+function parsedate(s) {
+	/(\d+)\-(\d+)\-(\d+)\s*(\d*):?(\d*)/.exec(s);
+	var m1 = (RegExp.$1 && RegExp.$1 > 1899 && RegExp.$1 < 2101) ? parseFloat(RegExp.$1) : (new Date()).getFullYear();
+	var m2 = (RegExp.$2 && (RegExp.$2 > 0 && RegExp.$2 < 13)) ? parseFloat(RegExp.$2) : (new Date()).getMonth() + 1;
+	var m3 = (RegExp.$3 && (RegExp.$3 > 0 && RegExp.$3 < 32)) ? parseFloat(RegExp.$3) : (new Date()).getDate();
+	var m4 = (RegExp.$4 && (RegExp.$4 > -1 && RegExp.$4 < 24)) ? parseFloat(RegExp.$4) : 0;
+	var m5 = (RegExp.$5 && (RegExp.$5 > -1 && RegExp.$5 < 60)) ? parseFloat(RegExp.$5) : 0;
+	/(\d+)\-(\d+)\-(\d+)\s*(\d*):?(\d*)/.exec("0000-00-00 00\:00");
+	return new Date(m1, m2 - 1, m3, m4, m5);
+}
+
+function zerofill(s) {
+	var s = parseFloat(s.toString().replace(/(^[\s0]+)|(\s+$)/g, ''));
+	s = isNaN(s) ? 0 : s;
+	return (s < 10 ? '0' : '') + s.toString();
+}

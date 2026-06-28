@@ -19,4 +19,8 @@
 	{cells forum/portal/threadlist threadlist}
 </div>
 
+<script>
+	ajaxupdateevents($('threadlist'));
+</script>
+
 <!--{template common/footer}-->

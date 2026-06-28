@@ -3,13 +3,13 @@
 <ul class="cl">
 	<li class="flex-box mli" id="certainstarttime" {if $activity['starttimeto']}style="display: none"{/if}>
 		<div class="flex pl5"><span class="z xg1">{lang post_event_time}</span></div>
-		<div class="flex-3"><input type="text" name="starttimefrom[0]" id="starttimefrom_0" class="px" autocomplete="off" value="$activity['starttimefrom']" placeholder="{lang post_event_time}" /></div>
+		<div class="flex-3"><input type="text" name="starttimefrom[0]" id="starttimefrom_0" class="px" autocomplete="off" value="$activity['starttimefrom']" placeholder="{lang post_event_time}" onclick="showmobilecalendar(event, this, true)" /></div>
 	</li>
 	<li class="flex-box mli" id="uncertainstarttime" {if !$activity['starttimeto']}style="display: none"{/if}>
 		<div class="flex-2 pl5"><span class="z xg1">{lang post_event_time}</span></div>
-		<div class="flex-3"><input type="text" name="starttimefrom[1]" id="starttimefrom_1" class="px" autocomplete="off" value="$activity['starttimefrom']" placeholder="{lang activity_starttime}" /></div>
+		<div class="flex-3"><input type="text" name="starttimefrom[1]" id="starttimefrom_1" class="px" autocomplete="off" value="$activity['starttimefrom']" placeholder="{lang activity_starttime}" onclick="showmobilecalendar(event, this, true)" /></div>
 		<div class="flex"><span class="z xg1"> ~ </span></div>
-		<div class="flex-3"><input type="text" autocomplete="off" id="starttimeto" name="starttimeto" class="px" value="{if $activity['starttimeto']}$activity['starttimeto']{/if}" placeholder="{lang endtime}" /></div>
+		<div class="flex-3"><input type="text" autocomplete="off" id="starttimeto" name="starttimeto" class="px" value="{if $activity['starttimeto']}$activity['starttimeto']{/if}" placeholder="{lang endtime}" onclick="showmobilecalendar(event, this, true)" /></div>
 	</li>
 	<li class="flex-box mli mtit"><div class="flex pl5"><span class="z xg1">{lang admin_close_expire_comment}</span></div></li>
 	<label for="activitytime">
@@ -87,7 +87,7 @@
 	</li>
 	<li class="flex-box mli">
 		<div class="flex pl5"><span class="z xg1">{lang post_closing}</span></div>
-		<div class="flex-3"><input type="text" name="activityexpiration" id="activityexpiration" class="px" autocomplete="off" value="$activity['expiration']" /></div>
+		<div class="flex-3"><input type="text" name="activityexpiration" id="activityexpiration" class="px" autocomplete="off" value="$activity['expiration']" onclick="showmobilecalendar(event, this, true)" /></div>
 	</li>
 	<li class="flex-box mli mtit"><div class="flex pl5"><span class="z xg1">{lang admin_close_expire_comment}</span></div></li>
 	<!--{if $allowpostimg}-->

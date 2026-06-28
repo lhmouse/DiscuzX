@@ -66,7 +66,7 @@
 				<!--{if $operation == 'stick'}-->
 				<!--{if $_G['group']['allowstickthread']}-->
 					<dt id="expirationstick">
-						<p><input type="text" autocomplete="off" id="expirationstick" name="expirationstick" class="px pxbg" value="$expirationstick" placeholder="{lang mobshezhi}{lang expire}" /></p>
+						<p><input type="text" autocomplete="off" id="expirationstick" name="expirationstick" class="px pxbg" value="$expirationstick" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 						<p>{lang admin_close_expire_comment}</p>
 					</dt>
 					<ul class="post_box cl">
@@ -106,7 +106,7 @@
 				<!--{elseif $operation == 'digest'}-->
 				<!--{if $_G['group']['allowdigestthread']}-->
 					<dt id="expirationdigest">
-						<p><input type="text" autocomplete="off" id="expirationdigest" name="expirationdigest" class="px pxbg" value="$expirationdigest" placeholder="{lang mobshezhi}{lang expire}" /></p>
+						<p><input type="text" autocomplete="off" id="expirationdigest" name="expirationdigest" class="px pxbg" value="$expirationdigest" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 						<p>{lang admin_close_expire_comment}</p>
 					</dt>
 					<ul class="post_box cl">
@@ -140,7 +140,7 @@
 				<!--{if $_G['group']['allowhighlightthread']}-->
 					<!--{eval $_G['forum_colorarray'] = array(1=>'#EE1B2E', 2=>'#EE5023', 3=>'#996600', 4=>'#3C9D40', 5=>'#2897C5', 6=>'#2B65B7', 7=>'#8F2A90', 8=>'#EC1282');}-->
 					<dt id="expirationhighlight">
-						<p><input type="text" autocomplete="off" id="expirationhighlight" name="expirationhighlight" class="px pxbg" value="$expirationhighlight" placeholder="{lang mobshezhi}{lang expire}" /></p>
+						<p><input type="text" autocomplete="off" id="expirationhighlight" name="expirationhighlight" class="px pxbg" value="$expirationhighlight" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 						<p>{lang admin_close_expire_comment}</p>
 					</dt>
 					<ul class="post_box cl">
@@ -178,7 +178,7 @@
 			<!--{if $_G['group']['allowrecommendthread'] && !empty($_G['forum']['modrecommend']['open']) && $_G['forum']['modrecommend']['sort'] != 1}-->
 				<!--{if $operation == 'recommend'}-->
 					<dt id="expirationrecommend">
-						<p><input type="text" autocomplete="off" id="expirationrecommend" name="expirationrecommend" class="px pxbg" value="$expirationrecommend" placeholder="{lang mobshezhi}{lang expire}" /></p>
+						<p><input type="text" autocomplete="off" id="expirationrecommend" name="expirationrecommend" class="px pxbg" value="$expirationrecommend" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 						<p>{lang admin_close_expire_comment}</p>
 					</dt>
 					<ul class="post_box cl">
@@ -337,7 +337,7 @@
 				<!--{/if}-->
 			<!--{elseif $operation == 'down' || $operation='bump'}-->
 				<dt id="bump_expirationli">
-					<p><input type="text" name="expirationbump" id="expirationbump" class="px pxbg" autocomplete="off" value="" placeholder="{lang mobshezhi}{lang expire}" /></p>
+					<p><input type="text" name="expirationbump" id="expirationbump" class="px pxbg" autocomplete="off" value="" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 					<p>{lang admin_close_expire_comment}</p>
 				</dt>
 				<ul class="post_box cl">
@@ -372,7 +372,7 @@
 			<!--{/if}-->
 		<!--{elseif $_GET['optgroup'] == 4}-->
 			<dt>
-				<p><input type="text" name="expirationclose" id="expirationclose" class="px pxbg" autocomplete="off" value="$expirationclose" placeholder="{lang mobshezhi}{lang expire}" /></p>
+				<p><input type="text" name="expirationclose" id="expirationclose" class="px pxbg" autocomplete="off" value="$expirationclose" placeholder="{lang mobshezhi}{lang expire}" onclick="showmobilecalendar(event, this, true)" /></p>
 				<p>{lang admin_close_expire_comment}</p>
 			</dt>
 			<ul class="post_box cl">

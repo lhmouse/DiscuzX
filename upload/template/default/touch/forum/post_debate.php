@@ -4,7 +4,7 @@
 	<label for="endtime">
 	<li class="flex-box mli">
 		<div class="flex pl5"><span class="z xg1">{lang endtime}</span></div>
-		<div class="flex-3"><input type="text" name="endtime" id="endtime" class="px" autocomplete="off" value="$debate['endtime']" /></div>
+		<div class="flex-3"><input type="text" name="endtime" id="endtime" class="px" autocomplete="off" value="$debate['endtime']" readonly onclick="showmobilecalendar(event, this, true)" /></div>
 	</li>
 	</label>
 	<li class="flex-box mli mtit"><div class="flex pl5"><span class="z xg1">{lang admin_close_expire_comment}</span></div></li>

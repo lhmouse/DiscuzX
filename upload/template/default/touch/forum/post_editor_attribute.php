@@ -145,11 +145,11 @@
 					<li class="mli"><label for="rushreply"><input type="checkbox" name="rushreply" id="rushreply" class="pc vm" value="1" {if $_GET['action'] == 'edit' && getstatus($thread['status'], 3)}disabled="disabled" checked="checked"{/if} /> {lang rushreply_change}</label></li>
 					<li class="flex-box mli">
 						<div class="tit">{lang thread_rushreply_start}</div>
-						<div class=""><input type="text" name="rushreplyfrom" id="rushreplyfrom" class="px" autocomplete="off" value="{$postinfo['rush']['starttimefrom'] or ''}" onkeyup="getID('rushreply').checked = true;" /></div>
+						<div class=""><input type="text" name="rushreplyfrom" id="rushreplyfrom" class="px" autocomplete="off" value="{$postinfo['rush']['starttimefrom'] or ''}" onkeyup="getID('rushreply').checked = true;" onclick="showmobilecalendar(event, this, true)" /></div>
 					</li>
 					<li class="flex-box mli">
 						<div class="tit">{lang thread_rushreply_over}</div>
-						<div class=""><input type="text" autocomplete="off" id="rushreplyto" name="rushreplyto" class="px" value="{$postinfo['rush']['starttimeto'] or ''}" onkeyup="getID('rushreply').checked = true;" /></div>
+						<div class=""><input type="text" autocomplete="off" id="rushreplyto" name="rushreplyto" class="px" value="{$postinfo['rush']['starttimeto'] or ''}" onkeyup="getID('rushreply').checked = true;" onclick="showmobilecalendar(event, this, true)" /></div>
 					</li>
 					<li class="flex-box mli">
 						<div class="tit">{lang rushreply_rewardfloor} </div>

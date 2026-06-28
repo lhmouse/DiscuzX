@@ -245,7 +245,7 @@
 		$permtype = array(0 => '{lang permission_menu_normaloptions}', 1 => '{lang permission_modoptions_name}');
 	}-->
 	<div class="profile-form usergroup-form">
-		<!-- ͷ����Ϣ��Ƭ -->
+		<!-- 头部信息卡片 -->
 		<div class="ug-header-cards">
 			<div class="ug-header-card">
 				<div class="ug-header-title">{lang my_main_usergroup}</div>
@@ -296,12 +296,12 @@
 			<!--{/if}-->
 		</div>
 
-		<!-- Ȩ�޶Աȱ�� - ������Ⱦ -->
+		<!-- 权限对比表格 - 按行渲染 -->
 		<div class="perm-compare-table">
-			<!-- ����Ȩ�� -->
+			<!-- 基础权限 -->
 			<div class="perm-compare-section">
 				<div class="perm-compare-section-title">{lang permission_menu_normaloptions}</div>
-				<!-- �û������� -->
+				<!-- 用户级别行 -->
 				<div class="perm-compare-row">
 					<div class="perm-compare-name">{lang user_level}</div>
 					<div class="perm-compare-val"><!--{echo showstars($_G['cache']['usergroups'][$maingroup['groupid']]['stars']);}--></div>
@@ -338,7 +338,7 @@
 				<!--{/loop}-->
 			</div>
 
-			<!-- ������� -->
+			<!-- 帖子相关 -->
 			<div class="perm-compare-section">
 				<div class="perm-compare-section-title">{lang permission_menu_post}</div>
 				<!--{loop $pperms $key $perm}-->
@@ -368,7 +368,7 @@
 				<!--{/loop}-->
 			</div>
 
-			<!-- �ռ���� -->
+			<!-- 空间相关 -->
 			<div class="perm-compare-section">
 				<div class="perm-compare-section-title">{lang about_space}</div>
 				<!--{loop $sperms $key $perm}-->
@@ -398,7 +398,7 @@
 				<!--{/loop}-->
 			</div>
 
-			<!-- ������� -->
+			<!-- 附件相关 -->
 			<div class="perm-compare-section">
 				<div class="perm-compare-section-title">{lang permission_menu_attachment}</div>
 				<!--{loop $aperms $key $perm}-->
