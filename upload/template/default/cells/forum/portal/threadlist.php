@@ -118,8 +118,8 @@ EOF;
 				{cell forum/threadlist/image}
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-eye-fill"></i>{cell forum/threadlist/views}</li>
-						<li><i class="dm-chat-s-fill"></i>{cell forum/threadlist/replies}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{cell forum/threadlist/views}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{cell forum/threadlist/replies}</li>
 					</ul>
 				</div>
 			</li>
