@@ -122,12 +122,10 @@
 		<!--{/if}-->
 		
 		<!--{if $_GET['action'] == 'edit' && $isorigauthor && ($isfirstpost && $thread['replies'] < 1 || !$isfirstpost) && !$rushreply && $_G['setting']['editperdel']}-->
-		<label>
-		<li class="flex-box mli">
-			<div class="flex-3 xg1"><span class="z">{lang post_delpost}</span></div>
-			<div class="flex"><span class="y"><input type="checkbox" name="delete" id="delete" class="pc" value="1"></span></div>
-		</li>
-		</label>
+	<li class="flex-box mli">
+		<div class="flex-3 xg1"><label for="delete"><span class="z">{lang post_delpost}</span></label></div>
+		<div class="flex"><span class="y"><input type="checkbox" name="delete" id="delete" class="pc" value="1"></span></div>
+	</li>
 		<!--{/if}-->
 		<!--{hook/post_middle_mobile}-->
 		<!--{subtemplate forum/post_editor_attribute}-->
@@ -140,7 +138,7 @@
 	<!--{hook/post_bottom_mobile}-->
 </div>
 <div class="post_btn">
-	<button id="postsubmit" class="btn_pn <!--{if $_GET['action'] == 'edit'}-->btn_pn_blue" disable="false"<!--{else}-->btn_pn_grey" disable="true"<!--{/if}-->>
+	<button id="postsubmit" class="btn_pn <!--{if $_GET['action'] == 'edit'}-->btn_pn_blue<!--{else}-->btn_pn_grey<!--{/if}-->" data-disabled="<!--{if $_GET['action'] == 'edit'}-->false<!--{else}-->true<!--{/if}-->" type="button">
 	<!--{if $_GET['action'] == 'newthread'}-->
 		<!--{if $special == 0}-->{lang send_thread}
 		<!--{elseif $special == 1}-->{lang post_newthreadpoll}
@@ -163,100 +161,157 @@
 </form>
 <script type="text/javascript">
 (function($) {
-	let needsubject = false;
-	let needmessage = false;
+	'use strict';
+
+	// ���� DOM ���ã������ظ���ѯ
+	var btn = $('#postsubmit'),
+	    form = $('#postform'),
+	    needsubject = $('#needsubject'),
+	    needmessage = $('#needmessage');
+
+	var state = {
+		needsubject: false,
+		needmessage: false,
+		submitting: false
+	};
+
+	// ����ҳ�����ͳ�ʼ������״̬
 	<!--{if $_GET['action'] == 'reply'}-->
-		needsubject = true;
+	state.needsubject = true;
 	<!--{elseif $_GET['action'] == 'edit'}-->
-		needsubject = needmessage = true;
+	state.needsubject = true;
+	state.needmessage = true;
 	<!--{/if}-->
+
+	// ͳһ��ť״̬����
+	function updateButton() {
+		if (state.submitting) {
+			btn.attr('data-disabled', 'true').removeClass('btn_pn_blue').addClass('btn_pn_grey');
+			return;
+		}
+		if (state.needsubject && state.needmessage) {
+			btn.attr('data-disabled', 'false').removeClass('btn_pn_grey').addClass('btn_pn_blue');
+		} else {
+			btn.attr('data-disabled', 'true').removeClass('btn_pn_blue').addClass('btn_pn_grey');
+		}
+	}
+
+	function isEmpty(el) {
+		return !el.length || $.trim(el.val() || '') === '';
+	}
+
+	// �������
+	var subjectTimer = null,
+	    messageTimer = null;
+
+	function checkSubject() {
+		state.needsubject = !isEmpty(needsubject);
+		updateButton();
+	}
+
+	function checkMessage() {
+		state.needmessage = !isEmpty(needmessage);
+		updateButton();
+	}
+
 	<!--{if $_GET['action'] == 'newthread' || ($_GET['action'] == 'edit' && $isfirstpost)}-->
-	$('#needsubject').on('keyup input', function() {
-		var obj = $(this);
-		if(obj.val()) {
-			needsubject = true;
-			if(needmessage == true) {
-				$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
-				$('.btn_pn').attr('disable', 'false');
-			}
-		} else {
-			needsubject = false;
-			$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
-			$('.btn_pn').attr('disable', 'true');
-		}
+	needsubject.on('keyup input', function() {
+		clearTimeout(subjectTimer);
+		subjectTimer = setTimeout(checkSubject, 150);
 	});
 	<!--{/if}-->
-	$('#needmessage').on('keyup input', function() {
-		var obj = $(this);
-		if(obj.val()) {
-			
-			if(needsubject == true) {
-				$('.btn_pn').removeClass('btn_pn_grey').addClass('btn_pn_blue');
-				$('.btn_pn').attr('disable', 'false');
-			}
-		} else {
-			needmessage = false;
-			$('.btn_pn').removeClass('btn_pn_blue').addClass('btn_pn_grey');
-			$('.btn_pn').attr('disable', 'true');
-		}
+
+	needmessage.on('keyup input', function() {
+		clearTimeout(messageTimer);
+		messageTimer = setTimeout(checkMessage, 150);
 	});
-})(jQuery);
-</script>
-<script type="text/javascript">
-	$('#postsubmit').on('click', function() {
-		var obj = $(this);
-		if(obj.attr('disable') == 'true') {
+
+	// ��ʼ����ť״̬
+	updateButton();
+
+	// �ع������ύ����
+	btn.on('click', function(e) {
+		e.preventDefault();
+
+		if (btn.attr('data-disabled') === 'true' || state.submitting) {
 			return false;
 		}
-		obj.attr('disable', 'true').removeClass('btn_pn_blue').addClass('btn_pn_grey');
-		popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
 
-		<!--{if (!empty($_G['setting']['editormodetype']) && $_GET[action] != 'edit') || ($_GET[action] == 'edit' && $isJsonContent)}-->
-		saveJsonContent();
+		<!--{if (!empty($_G['setting']['editormodetype']) && $_GET['action'] != 'edit') || ($_GET['action'] == 'edit' && $isJsonContent)}-->
+		if (typeof saveJsonContent === 'function') {
+			saveJsonContent();
+		}
 		var _needsubject = document.getElementById('needsubject');
 		var _content = document.getElementById('content');
 		var post_content = '';
-		<!--{if $_GET[action] == 'edit' && $isJsonContent}-->
+		<!--{if $_GET['action'] == 'edit' && $isJsonContent}-->
 		post_content = `{$postinfo['content']}`;
 		<!--{/if}-->
-		if (!post_content) {
-			post_content = _content;
+		if (_content && _content.value) {
+			post_content = _content.value;
 		}
 		<!--{if $postinfo['first']}-->
-		if(_needsubject.value.trim() === '' || _needsubject.value === null ||
-			post_content.trim() === '') {
+		if (!_needsubject || $.trim(_needsubject.value) === '' || $.trim(post_content) === '') {
 			popup.open('{lang post_sm_isnull}', 'alert');
 			return false;
 		}
 		<!--{/if}-->
 		<!--{/if}-->
 
+		state.submitting = true;
+		updateButton();
+		popup.open('<img src="' + IMGDIR + '/imageloading.gif">');
+
 		var postlocation = '';
-		if(typeof geo !== 'undefined' && geo.errmsg === '' && geo.loc) {
-			postlocation = geo.longitude + '|' + geo.latitude + '|' + geo.loc;
+		if (typeof geo !== 'undefined' && geo && geo.errmsg === '' && geo.loc) {
+			postlocation = encodeURIComponent(geo.longitude + '|' + geo.latitude + '|' + geo.loc);
 		}
+
 		var myform = document.getElementById('postform');
 		var formdata = new FormData(myform);
+		var actionUrl = form.attr('action');
+		if (!actionUrl) {
+			state.submitting = false;
+			updateButton();
+			popup.open('{lang networkerror}', 'alert');
+			return false;
+		}
+
 		$.ajax({
-			type:'POST',
-			url:form.attr('action') + '&geoloc=' + postlocation + '&handlekey='+form.attr('id')+'&inajax=1',
-			data:formdata,
-			cache:false,
-			contentType:false,
-			processData:false,
-			dataType:'xml'
+			type: 'POST',
+			url: actionUrl + '&geoloc=' + postlocation + '&handlekey=' + form.attr('id') + '&inajax=1',
+			data: formdata,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'xml',
+			timeout: 30000
 		})
-		.success(function(s) {
-			popup.open(s.lastChild.firstChild.nodeValue);
-			obj.attr('disable','false');
-			obj.removeClass('btn_pn_grey').addClass('btn_pn_blue');
+		.done(function(s) {
+			var msg = '';
+			if (s && s.lastChild && s.lastChild.firstChild) {
+				msg = s.lastChild.firstChild.nodeValue;
+			}
+
+			popup.open(msg);
+
+			// ҳ����ת���ƣ�������Ӧ�е� location.href ��ת�ű�
+			var redirectMatch = msg && msg.match(/location\.href\s*=\s*['"]([^'"]+)['"]/i);
+			if (redirectMatch && redirectMatch[1]) {
+				setTimeout(function() {
+					window.location.href = redirectMatch[1];
+				}, 1200);
+			}
 		})
-		.error(function() {
+		.fail(function(jqXHR, textStatus) {
+			state.submitting = false;
+			updateButton();
 			popup.open('{lang networkerror}', 'alert');
 		});
+
 		return false;
 	});
-	
+})(jQuery);
 </script>
 <!--{eval $nofooter = true;}-->
 <!--{template common/footer}-->

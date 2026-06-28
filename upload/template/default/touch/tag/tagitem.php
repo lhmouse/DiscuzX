@@ -80,8 +80,8 @@
 				<div class="threadlist_foot cl">
 					<ul>
 						<li class="mr"><a href="forum.php?mod=forumdisplay&fid=$thread['fid']" target="_blank">$thread['forumname']</a></li>
-						<li><i class="dm-eye-fill"></i>{$thread['views']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$thread['views']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
 					</ul>
 				</div>
 			</li>
@@ -141,8 +141,8 @@
 							<a href="home.php?mod=space&uid=$blog['uid']&do=blog&classid=$blog['classid']&view=me" target="_blank">{$blog['classname']}</a>
 						</li>
 						<!--{/if}-->
-						<li><i class="dm-eye-fill"></i>$blog['viewnum']</li>
-						<li><i class="dm-chat-s-fill"></i>$blog['replynum']</li>
+						<li class="stats"><i class="dm-eye-fill"></i>$blog['viewnum']</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>$blog['replynum']</li>
 					</ul>
 				</div>
 			</li>

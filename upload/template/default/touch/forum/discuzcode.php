@@ -100,9 +100,15 @@ $is_archive = $_G['forum_thread']['is_archived'] ? "&fid=".$_G['fid']."&archivei
 $pluginhook = !empty($_G['setting']['pluginhooks']['viewthread_attach_extra'][$attach['aid']]) ? $_G['setting']['pluginhooks']['viewthread_attach_extra'][$attach['aid']] : '';
 $guestviewthumb = !empty($_G['setting']['guestviewthumb']['flag']) && !$_G['uid'];
 $mobileguestviewthumburl = $guestviewthumb ? ($attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb)) ? getforumimg($attach['aid'], 0, $_G['setting']['guestviewthumb']['width'], $_G['setting']['guestviewthumb']['height'], 1) : '') : '';
+$noimagethumb = $attach['isimage'] == 2 ? attachlist($attach) : '';
 }
 <!--{block return}-->
-	<!--{if $attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
+	<!--{if $attach['isimage'] == 2}-->
+		{$noimagethumb}
+		<li><img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{else}{$attach['url']}{$attach['attachment']}.thumb.jpg{/if}" zoomfile="{$attach['url']}{$attach['attachment']}.thumb.jpg" alt="$attach['imgalt']" />
+			$pluginhook
+		</li>
+	<!--{elseif $attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
 		<!--{if $_G['setting']['mobile']['mobilesimpletype'] == 0}-->
 			<li><img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" zoomfile="{$attach['url']}{$attach['attachment']}" alt="$attach['imgalt']" />
 			$pluginhook
@@ -124,7 +130,7 @@ $guestviewthumb = !empty($_G['setting']['guestviewthumb']['flag']) && !$_G['uid'
 $mobileguestviewthumburl = $guestviewthumb ? ($attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb)) ? getforumimg($attach['aid'], 0, $_G['setting']['guestviewthumb']['width'], $_G['setting']['guestviewthumb']['height'], 1) : '') : '';
 }
 <!--{block return}-->
-	<!--{if $attach['attachimg'] && $_G['setting']['showimages'] && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
+	<!--{if $attach['attachimg'] && $_G['setting']['showimages'] && abs($attach['isimage']) == 1 && (((!$attach['price'] || $attach['payed']) && ($_G['group']['allowgetimage'] || $_G['uid'] == $attach['uid'])) || ($guestviewthumb))}-->
 		<!--{if $_G['setting']['mobile']['mobilesimpletype'] == 0}-->
 		<img id="aimg_$attach['aid']" src="{if $guestviewthumb}$mobileguestviewthumburl{elseif $attach['refcheck']}forum.php?mod=attachment{$is_archive}&aid=$aidencode&noupdate=yes&nothumb=yes{else}{$attach['url']}{$attach['attachment']}{/if}" zoomfile="{$attach['url']}{$attach['attachment']}" alt="$attach['imgalt']" />
 		<!--{/if}-->

@@ -19,9 +19,9 @@
 				</div>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-heart-fill"></i>{$group['threads']}</li>
-						<li><i class="dm-eye-fill"></i>{$group['membernum']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$group['commoncredits']}</li>
+						<li class="stats"><i class="dm-heart-fill"></i>{$group['threads']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$group['membernum']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$group['commoncredits']}</li>
 					</ul>
 				</div>
 			</li>
@@ -45,9 +45,9 @@
 				</div>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-heart-fill"></i>{$group['threads']}</li>
-						<li><i class="dm-eye-fill"></i>{$group['membernum']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$group['commoncredits']}</li>
+						<li class="stats"><i class="dm-heart-fill"></i>{$group['threads']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$group['membernum']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$group['commoncredits']}</li>
 					</ul>
 				</div>
 			</li>
@@ -99,9 +99,9 @@
 				<a href="forum.php?mod=viewthread&tid=$thread['tid']&extra=$extra&highlight=$index['keywords']"><div class="threadlist_mes cl">{$thread['message']}</div></a>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li class="mr"><a href="forum.php?mod=forumdisplay&fid={$thread['fid']}">#{$thread['forumname']}</a></li>
-						<li><i class="dm-eye-fill"></i>{$thread['views']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+						<li class="mr"><a href="forum.php?mod=forumdisplay&fid={$thread['fid']}">{$thread['forumname']}</a></li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$thread['views']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
 					</ul>
 				</div>
 			</li>

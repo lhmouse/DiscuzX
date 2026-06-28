@@ -57,7 +57,7 @@
                 <!--{loop $lastupdategroup[$groupid] $val}-->
                 <!--{if $i < 13}-->
                 <li>
-                    <a href="forum.php?mod=forumdisplay&action=list&fid={$val['fid']}">
+                    <a href="forum.php?mod=group&fid={$val['fid']}">
 						<span class="micon">
                         <!--{if strstr($val['icon'],'groupicon.gif')}-->
 						<svg width="48" height="44" alt="$val['name']"><path fill="#{if $val['folder']}fdc910{else}c9c9c9{/if}" d="M48 20C48 9 37.3 0 24 0S0 8.9 0 20s10.7 20 24 20c2.4 0 4.7-.3 6.8-.8L42 44l-2.8-8.5C44.6 31.8 48 26.2 48 20z"/></svg>

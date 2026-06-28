@@ -1,6 +1,7 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
-<div class="tip">
+<div class="tip loginbox loginpop p5 cl" id="floatlayout_favorite">
+	<h2 class="log_tit cl" id="return_rate"><a href="javascript:;" onclick="popup.close();"><span class="icon_close y">&nbsp;</span></a>{lang favorite}</h2>
 <!--{if $_GET['op'] == 'delete'}-->
 	<form id="favoriteform_{$favid}" name="favoriteform_{$favid}" method="post" autocomplete="off" action="home.php?mod=spacecp&ac=favorite&op=delete&favid=$favid&type=$_GET['type']&mobile=2">
 		<input type="hidden" name="referer" value="{eval echo dreferer();}" />

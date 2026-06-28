@@ -60,7 +60,7 @@
 			</li>
 			</label>
 		</ul>
-		<button type="submit" name="relaysubmit_btn" id="relaysubmit_btn" class="pn pnc formdialog" value="true"><strong>{lang determine}</strong></button>
+		<dd><button type="submit" name="relaysubmit_btn" id="relaysubmit_btn" class="pn pnc formdialog" value="true"><strong>{lang determine}</strong></button></dd>
 	</form>
 </div>
 	<!--{else}-->

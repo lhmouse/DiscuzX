@@ -11,7 +11,7 @@
 	<a href="home.php?mod=space&do=notice" class="flex mon">{lang my}{lang remind}<!--{if $_G['member']['newprompt']}--><strong>($_G['member']['newprompt'])</strong><!--{/if}--></a>
 </div>
 <!--{if empty($list)}-->
-<div class="threadlist_box mt10 cl">
+<div class="empty-box">
 	<!--{if $new == 1}-->
 		<h4>{lang no_new_notice}<a href="home.php?mod=space&do=notice&isread=1">{lang view_old_notice}</a></h4>
 	<!--{else}-->
@@ -20,25 +20,31 @@
 </div>
 <!--{/if}-->
 <!--{if $list}-->
-	<div id="notice_ul" class="imglist mt10 cl">
-		<ul>
-		<!--{loop $list $key $value}-->
-			<li class="cl" $value['rowid'] notice="$value['id']">		
-				<span class="mimg"><!--{if $value['authorid']}--><a href="home.php?mod=space&uid=$value['authorid']"><!--{avatar($value['authorid'],'small')}--></a><!--{else}--><img src="{IMGDIR}/systempm.png" alt="systempm" /><!--{/if}--></span>
-				<p class="mtit">
-					<a href="home.php?mod=spacecp&ac=common&op=ignore&authorid=$value['authorid']&type=$value['type']&handlekey=addfriendhk_{$value['authorid']}" id="a_note_$value['id']" class="dialog mico">{lang shield}</a>
-					<span><!--{date($value['dateline'], 'u')}--></span>
-				</p>
-				<p class="mbody" style="$value['style']">$value['note']</p>
+	<div id="notice_ul" class="notice-list">
+	<!--{loop $list $key $value}-->
+		<div class="notice-list-item" $value['rowid'] notice="$value['id']">
+			<div class="notice-list-avatar">
+			<!--{if $value['authorid']}-->
+				<a href="home.php?mod=space&uid=$value['authorid']"><!--{avatar($value['authorid'],'small')}--></a>
+			<!--{else}-->
+				<img src="{IMGDIR}/systempm.png" alt="systempm" />
+			<!--{/if}-->
+			</div>
+			<div class="notice-list-info">
+				<div class="notice-list-meta">
+					<span class="notice-list-time"><!--{date($value['dateline'], 'u')}--></span>
+					<a href="home.php?mod=spacecp&ac=common&op=ignore&authorid=$value['authorid']&type=$value['type']&handlekey=addfriendhk_{$value['authorid']}" id="a_note_$value['id']" class="dialog notice-list-shield">{lang shield}</a>
+				</div>
+				<div class="notice-list-body" style="$value['style']">$value['note']</div>
 				<!--{if $value['from_num']}-->
-				<p class="mbody">{lang ignore_same_notice_message}</p>
+				<div class="notice-list-from">{lang ignore_same_notice_message}</div>
 				<!--{/if}-->
-			</li>
-		<!--{/loop}-->
-		</ul>
+			</div>
+		</div>
+	<!--{/loop}-->
 	</div>
 	<!--{if $view!='userapp' && $space['notifications']}-->
-		<div class="notice_tip cl"><a href="home.php?mod=space&do=notice&ignore=all">{lang ignore_same_notice_message} <em>&rsaquo;</em></a></div>
+		<div class="notice-list-ignore"><a href="home.php?mod=space&do=notice&ignore=all">{lang ignore_same_notice_message} <em>&rsaquo;</em></a></div>
 	<!--{/if}-->
 	<!--{if $multi}--><div class="pgs cl">$multi</div><!--{/if}-->
 <!--{/if}-->

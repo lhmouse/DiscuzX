@@ -148,8 +148,8 @@
 						<!--{if $thread['typeid']}-->
 						<li class="mr"><a href="forum.php?mod=forumdisplay&fid=$thread['fid']&filter=typeid&typeid=$thread['typeid']">#{$_G['forum']['threadtypes']['types'][$thread['typeid']]}</a></li>
 						<!--{/if}-->
-						<li><i class="dm-eye-fill"></i>{$thread['views']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$thread['views']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
 					</ul>
 				</div>
 			</li>

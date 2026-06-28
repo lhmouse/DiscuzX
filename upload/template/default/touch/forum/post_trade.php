@@ -140,7 +140,6 @@ $(document).on('change', '#tradeimg', function() {
 			}
 		};
 		if(typeof FileReader != 'undefined' && this.files[0]) {//note 支持html5上传新特性
-			
 			$.buildfileupload({
 				uploadurl:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
 				files:this.files,
@@ -153,16 +152,7 @@ $(document).on('change', '#tradeimg', function() {
 				}
 			});
 		} else {
-			$.ajaxfileupload({
-				url:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
-				data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
-				dataType:'text',
-				fileElementId:'filedata',
-				success:uploadsuccess,
-				error: function() {
-					popup.open('{lang uploadpicfailed}', 'alert');
-				}
-			});
+			popup.open('{lang uploadpicfailed}', 'alert');
 		}
 });
 </script>

@@ -16,9 +16,9 @@
 				<a href="forum.php?mod=collection&action=view&ctid={$value['ctid']}"><div class="threadlist_mes cl">{$value['desc']}</div></a>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-heart-fill"></i>{$value['threadnum']}</li>
-						<li><i class="dm-eye-fill"></i>{$value['follownum']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$value['commentnum']}</li>
+						<li class="stat"><i class="dm-heart-fill"></i>{$value['threadnum']}</li>
+						<li class="stat"><i class="dm-eye-fill"></i>{$value['follownum']}</li>
+						<li class="stat"><i class="dm-chat-s-fill"></i>{$value['commentnum']}</li>
 					</ul>
 				</div>
 			</li>

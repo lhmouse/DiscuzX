@@ -59,24 +59,7 @@
 		</div>
 	</div>
 </div>
-<script>
-	if($("#dhnavs_li .mon").length > 0) {
-		var discuz_nav = $("#dhnavs_li .mon").offset().left + $("#dhnavs_li .mon").width() >= $(window).width() ? $("#dhnavs_li .mon").index() : 0;
-	}else{
-		var discuz_nav = 0;
-	}
-	new Swiper('#dhnavs_li', {
-		freeMode : true,
-		slidesPerView : 'auto',
-		initialSlide : discuz_nav,
-		onTouchMove: function(swiper){
-			Discuz_Touch_on = 0;
-		},
-		onTouchEnd: function(swiper){
-			Discuz_Touch_on = 1;
-		},
-	});
-</script>
+<script>initdhnav();</script>
 <!--{/if}-->
 <!--[diy=diy4]--><div id="diy4" class="area"></div><!--[/diy]-->
 <!--{if $subexists && $_G['page'] == 1}--><!--{template forum/forumdisplay_subforum}--><!--{/if}-->
@@ -176,10 +159,11 @@
 				<div class="threadlist_foot cl">
 					<ul>
 						<!--{if $thread['typeid']}-->
-						<li class="mr"><a href="forum.php?mod=forumdisplay&fid=$thread['fid']&filter=typeid&typeid=$thread['typeid']">#{$_G['forum']['threadtypes']['types'][$thread['typeid']]}</a></li>
+						<li class="mr"><a href="forum.php?mod=forumdisplay&fid=$thread['fid']&filter=typeid&typeid=$thread['typeid']">{$_G['forum']['threadtypes']['types'][$thread['typeid']]}</a></li>
 						<!--{/if}-->
-						<li><i class="dm-eye-fill"></i>{$thread['views']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$thread['views']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+						<li class="stats"><i class="dm-appreciate-fill"></i>{$thread['recommend_add']}</li>
 						<!--{hook/forumdisplay_thread_foot_mobile $key}-->
 					</ul>
 				</div>

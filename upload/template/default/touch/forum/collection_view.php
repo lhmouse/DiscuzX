@@ -97,8 +97,8 @@
                     </div>
                     <div class="threadlist_foot cl">
                         <ul>
-                            <li><i class="dm-eye-fill"></i>{$thread['views']}</li>
-                            <li><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
+                            <li class="stats"><i class="dm-eye-fill"></i>{$thread['views']}</li>
+                            <li class="stats"><i class="dm-chat-s-fill"></i>{$thread['replies']}</li>
                         </ul>
                     </div>
                 </li>

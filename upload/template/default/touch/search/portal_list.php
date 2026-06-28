@@ -24,8 +24,8 @@
 				<a href="{echo fetch_article_url($article);}"><div class="threadlist_mes cl">{$article['summary']}</div></a>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-eye-fill"></i>{$article['viewnum']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$article['commentnum']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$article['viewnum']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$article['commentnum']}</li>
 					</ul>
 				</div>
 			</li>

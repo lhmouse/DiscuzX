@@ -1,49 +1,54 @@
 <?php exit('Access Denied');?>
 <!--{template common/header}-->
-	<!--{subtemplate home/spacecp_header}-->
+	<!--{template home/spacecp_header}-->
 	<!--{hook/spacecp_promotion_top}-->
 	<!--{if $_G['setting']['creditspolicy']['promotion_visit'] || $_G['setting']['creditspolicy']['promotion_register']}-->
-		<div class="b_b pt10 pb10">
-			<!--{if $_G['setting']['creditspolicy']['promotion_visit']}--><p>
-				{lang post_promotion_url}
-			</p><!--{/if}-->
+		<div class="profile-form promotion-form">
+			<!-- �ƹ�˵�� -->
+			<div class="promotion-info">
+				<!--{if $_G['setting']['creditspolicy']['promotion_visit']}-->
+					<div class="promotion-info-item">
+						{lang post_promotion_url}
+					</div>
+				<!--{/if}-->
+				<!--{if $_G['setting']['creditspolicy']['promotion_register']}-->
+					<div class="promotion-info-item">
+						<!--{if $_G['setting']['creditspolicy']['promotion_visit']}-->
+							{lang post_promotion_reg}
+						<!--{else}-->
+							{lang post_promotion}
+						<!--{/if}-->
+					</div>
+				<!--{/if}-->
+			</div>
 
-			<!--{if $_G['setting']['creditspolicy']['promotion_register']}-->
-			<p>
-			<!--{if $_G['setting']['creditspolicy']['promotion_visit']}-->
-				{lang post_promotion_reg}
-			<!--{else}-->
-				{lang post_promotion}
-			<!--{/if}-->
-			</p>
-			<!--{/if}-->
+			<!-- ��ʽһ -->
+			<div class="form-section">
+				<div class="form-section-title">{lang mode_one}</div>
+				<div class="form-row promotion-row-block">
+					<div class="form-label">{lang post_promotion_url1}</div>
+					<div class="form-field">
+						<input type="text" class="px" onclick="this.select();setCopy('{$copystr}'+'\n'+this.value, '{lang promotion_url_copied}');" value="$_G[siteurl]?fromuid=$_G[uid]" readonly />
+						<button type="button" class="pn" onclick="setCopy('{$copystr}'+'\n'+'$_G[siteurl]?fromuid=$_G[uid]', '{lang promotion_url_copied}');"><em>{lang copy}</em></button>
+					</div>
+				</div>
+				<div class="form-row promotion-row-block">
+					<div class="form-label">{lang post_promotion_url2}</div>
+					<div class="form-field">
+						<input type="text" class="px" onclick="this.select();setCopy('{$copystr}'+'\n'+this.value, '{lang promotion_url_copied}');" value="$_G[siteurl]?fromuser={echo rawurlencode($_G[username])}" readonly />
+						<button type="button" class="pn" onclick="setCopy('{$copystr}'+'\n'+'$_G[siteurl]?fromuser={echo rawurlencode($_G[username])}', '{lang promotion_url_copied}');"><em>{lang copy}</em></button>
+					</div>
+				</div>
+			</div>
+
+			<!-- ��ʽ�� -->
+			<div class="form-section">
+				<div class="form-section-title">{lang mode_two}</div>
+				<div class="form-tip">
+					{lang mode_two_desc}
+				</div>
+			</div>
 		</div>
-		<table cellspacing="0" cellpadding="0" class="tfm">
-			<tr>
-				<th colspan="2" class="xs2 xw1">{lang mode_one}</th>
-			</tr>
-			<tr>
-				<th>{lang post_promotion_url1}</th>
-				<td>
-					<input type="text" class="px vm" onclick="this.select();setCopy('{$copystr}'+'\n'+this.value, '{lang promotion_url_copied}');" value="$_G[siteurl]?fromuid=$_G[uid]" size="50" />
-					<button type="submit" class="pn vm mt10" onclick="setCopy('{$copystr}'+'\n'+'$_G[siteurl]?fromuid=$_G[uid]', '{lang promotion_url_copied}');"><em>{lang copy}</em></button>
-				</td>
-			</tr>
-			<tr>
-				<th>{lang post_promotion_url2}</th>
-				<td>
-					<input type="text" class="px vm" onclick="this.select();setCopy('{$copystr}'+'\n'+this.value, '{lang promotion_url_copied}');" value="$_G[siteurl]?fromuser={echo rawurlencode($_G[username])}" size="50" />
-					<button type="submit" class="pn vm mt10" onclick="setCopy('{$copystr}'+'\n'+'$_G[siteurl]?fromuser={echo rawurlencode($_G[username])}', '{lang promotion_url_copied}');"><em>{lang copy}</em></button>
-				</td>
-			</tr>
-			<tr>
-				<th colspan="2" class="xs2 xw1 ptw">{lang mode_two}</th>
-			</tr>
-			<tr>
-				<th colspan="2">{lang mode_two_desc}</th>
-			</tr>
-		</table>
 	<!--{/if}-->
 	<!--{hook/spacecp_promotion_bottom}-->
-</div>
 <!--{template common/footer}-->

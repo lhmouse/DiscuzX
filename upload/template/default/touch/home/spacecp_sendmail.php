@@ -6,16 +6,16 @@
 				<input type="hidden" name="setsendemailsubmit" value="true" />
 				<input type="hidden" name="referer" value="{echo dreferer()}" />
 			<!--{if empty($space['emailstatus']) }-->
-				<div class="bm bml">
-					<div class="bm_h cl">
-						<h2 class="xs2">{lang activate_mailbox_first}</h2>
-					</div>
-					<div class="bm_c">
-						<p>{lang activate_mailbox_message}</p>
-						<p class="mtm">
-							<a href="home.php?mod=spacecp&ac=profile&op=password&resend=1&formhash={FORMHASH}" class="xs2 xi2">{lang click_activate_mailbox} <strong>$space[email]</strong></a>
-							(<a href="home.php?mod=spacecp&ac=profile&op=password&from=contact#contact" class="xi2">{lang modify_email}</a>)
-						</p>
+				<div class="profile-form sendmail-form">
+					<div class="form-section-title">{lang activate_mailbox_first}</div>
+					<div class="form-section">
+						<div class="form-tip">
+							<p>{lang activate_mailbox_message}</p>
+							<p class="mtm">
+								<a href="home.php?mod=spacecp&ac=profile&op=password&resend=1&formhash={FORMHASH}" class="xs2 xi2">{lang click_activate_mailbox} <strong>$space[email]</strong></a>
+								(<a href="home.php?mod=spacecp&ac=profile&op=password&from=contact#contact" class="xi2">{lang modify_email}</a>)
+							</p>
+						</div>
 					</div>
 				</div>
 			<!--{else}-->
@@ -35,7 +35,7 @@
 							'pusearticle' => '{lang mail_pusearticle}',
 							'wall' => '{lang mail_wall}',
 						),
-	
+
 						'mail_system' => array(
 							
 							'verify' => '{lang mail_system_verify}',
@@ -46,7 +46,7 @@
 							'report' => '{lang mail_system_report}',
 							'group' => '{lang mail_system_group}',
 							'task' => '{lang mail_system_task}',
-							'pmreport' => '{lang mail_system_pmreport}',							
+							'pmreport' => '{lang mail_system_pmreport}',
 							'mod_member' => '{lang mail_system_mod_member}',
 							'friend' => '{lang mail_system_friend}',
 							'show' => '{lang mail_system_show}',
@@ -54,41 +54,39 @@
 						)
 					);
 				}
-				<p class="bbda pbm mbm">{lang reminder_mail_message_1}$_G[setting][sendmailday]{lang reminder_mail_message_2}</p>
-				<table cellspacing="0" cellpadding="0" class="tfm">
-					<!--{loop $mailtype $group $types}-->
-						<tr>
-							<th><!--{eval echo lang('spacecp', $group)}--></th>
-							<td class="pcl">
-								<!--{loop $types $key $desc}-->
-									<label><input type="checkbox" name="sendmail[$key]" class="pc" value="1" {if $sendmail[$key]} checked="checked"{/if} />$desc</label>
-								<!--{/loop}-->
-							</td>
-						</tr>
-					<!--{/loop}-->
+				<div class="profile-form sendmail-form">
+					<p class="form-tip">{lang reminder_mail_message_1}$_G[setting][sendmailday]{lang reminder_mail_message_2}</p>
+					<div class="form-section">
+						<!--{loop $mailtype $group $types}-->
+							<div class="form-row form-row-checklist">
+								<div class="form-label"><!--{eval echo lang('spacecp', $group)}--></div>
+								<div class="form-field">
+									<!--{loop $types $key $desc}-->
+										<label class="check-item"><input type="checkbox" name="sendmail[$key]" class="pc" value="1" {if $sendmail[$key]} checked="checked"{/if} />$desc</label>
+									<!--{/loop}-->
+								</div>
+							</div>
+						<!--{/loop}-->
 
-					<tr>
-						<th>{lang mail_frequency}</th>
-						<td class="pcl">
-							<select name="sendmail[frequency]" class="ps">
-								<option value="0">{lang send_real_time}</option>
-								<option value="86400" $sendmail[frequency][86400]>{lang send_once_per_day}</option>
-								<option value="604800" $sendmail[frequency][604800]{if !$sendmail} selected="selected"{/if}>{lang send_once_per_week}</option>
-							</select>
-							<p class="d">
-								{lang mail_send_your_mail} $space[email] (<a href="home.php?mod=spacecp&ac=profile&op=password">{lang modify_mailbox}</a>)
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<th>&nbsp;</th>
-						<td>
-							<button type="submit" name="setsendemail" class="pn pnc"><em>{lang save}</em></button>
-						</td>
-					</tr>
-				</table>
+						<div class="form-row">
+							<div class="form-label">{lang mail_frequency}</div>
+							<div class="form-field">
+								<select name="sendmail[frequency]" class="ps">
+									<option value="0">{lang send_real_time}</option>
+									<option value="86400" $sendmail[frequency][86400]>{lang send_once_per_day}</option>
+									<option value="604800" $sendmail[frequency][604800]{if !$sendmail} selected="selected"{/if}>{lang send_once_per_week}</option>
+								</select>
+								<p class="d">
+									{lang mail_send_your_mail} $space[email] (<a href="home.php?mod=spacecp&ac=profile&op=password">{lang modify_mailbox}</a>)
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="form-submit">
+						<button type="submit" name="setsendemail" class="pn pnc"><strong>{lang save}</strong></button>
+					</div>
+				</div>
 			<!--{/if}-->
 
 			</form>
-</div>
 <!--{template common/footer}-->

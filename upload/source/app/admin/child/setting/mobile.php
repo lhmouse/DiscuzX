@@ -34,6 +34,7 @@ if(submitcheck('settingsubmit')) {
 
 	$settingnew['mobile_arr']['forum']['index'] = intval($settingnew['mobile']['forum']['index']);
 	$settingnew['mobile_arr']['forum']['statshow'] = intval($settingnew['mobile']['forum']['statshow']);
+	$settingnew['mobile_arr']['forum']['onlineshow'] = intval($settingnew['mobile']['forum']['onlineshow']);
 	$settingnew['mobile_arr']['forum']['displayorder3'] = intval($settingnew['mobile']['forum']['displayorder3']);
 	$settingnew['mobile_arr']['forum']['topicperpage'] = intval($settingnew['mobile']['forum']['topicperpage']) > 0 ? intval($settingnew['mobile']['forum']['topicperpage']) : 1;
 	$settingnew['mobile_arr']['forum']['postperpage'] = intval($settingnew['mobile']['forum']['postperpage']) > 0 ? intval($settingnew['mobile']['forum']['postperpage']) : 1;
@@ -92,6 +93,7 @@ if(submitcheck('settingsubmit')) {
 		[3, $lang['setting_mobile_forum_forumindex_forumgrid']],
 	]], $setting['mobile']['forum']['index'] ? $setting['mobile']['forum']['index'] : 0, 'mradio');
 	showsetting('setting_mobile_forum_statshow', 'settingnew[mobile][forum][statshow]', $setting['mobile']['forum']['statshow'], 'radio');
+	showsetting('setting_mobile_forum_onlineshow', 'settingnew[mobile][forum][onlineshow]', $setting['mobile']['forum']['onlineshow'], 'radio');
 	showsetting('setting_mobile_forum_displayorder3', 'settingnew[mobile][forum][displayorder3]', $setting['mobile']['forum']['displayorder3'], 'radio');
 	showsetting('setting_mobile_forum_topicperpage', 'settingnew[mobile][forum][topicperpage]', $setting['mobile']['forum']['topicperpage'] ? $setting['mobile']['forum']['topicperpage'] : 10, 'text');
 	showsetting('setting_mobile_forum_postperpage', 'settingnew[mobile][forum][postperpage]', $setting['mobile']['forum']['postperpage'] ? $setting['mobile']['forum']['postperpage'] : 5, 'text');

@@ -21,37 +21,546 @@ text-transform: none;
 -moz-osx-font-smoothing: grayscale;
 }
 
-.dm-camera:before { content: '\f100'; }
-.dm-camera-fill:before { content: '\f101'; }
-.dm-chat-s:before { content: '\f102'; }
-.dm-chat-s-fill:before { content: '\f103'; }
-.dm-chat-t:before { content: '\f104'; }
-.dm-chat-t-fill:before { content: '\f105'; }
-.dm-c-up:before { content: '\f106'; }
-.dm-c-down:before { content: '\f107'; }
-.dm-c-left:before { content: '\f108'; }
-.dm-c-right:before { content: '\f109'; }
-.dm-edit:before { content: '\f10a'; }
-.dm-emoji:before { content: '\f10b'; }
-.dm-error:before { content: '\f10c'; }
-.dm-explore:before { content: '\f10d'; }
-.dm-eye:before { content: '\f10e'; }
-.dm-eye-fill:before { content: '\f10f'; }
-.dm-heart:before { content: '\f110'; }
-.dm-heart-fill:before { content: '\f111'; }
-.dm-house:before { content: '\f112'; }
-.dm-house-fill:before { content: '\f113'; }
-.dm-image:before { content: '\f114'; }
-.dm-minus-c:before { content: '\f115'; }
-.dm-plus-c:before { content: '\f116'; }
-.dm-person:before { content: '\f117'; }
-.dm-person-fill:before { content: '\f118'; }
-.dm-search:before { content: '\f119'; }
-.dm-sofa:before { content: '\f11a'; }
-.dm-star:before { content: '\f11b'; }
-.dm-star-fill:before { content: '\f11c'; }
-.dm-tag:before { content: '\f11d'; }
-.dm-trash:before { content: '\f11e'; }
-.dm-warn:before { content: '\f11f'; }
-.dm-x:before { content: '\f120'; }
-.dm-delete:before { content: '\f11e'; }
+.dm-location-fill:before {
+    content: "\e650";
+}
+
+.dm-location:before {
+    content: "\e651";
+}
+
+.dm-time-fill:before {
+    content: "\e65e";
+}
+
+.dm-time:before {
+    content: "\e65f";
+}
+
+.dm-warn-fill:before {
+    content: "\e662";
+}
+
+.dm-notification-fill:before {
+    content: "\e66a";
+}
+
+.dm-notification:before {
+    content: "\e66b";
+}
+
+.dm-order:before {
+    content: "\e66c";
+}
+
+.dm-list:before {
+    content: "\e682";
+}
+
+.dm-more:before {
+    content: "\e684";
+}
+
+.dm-scan:before {
+    content: "\e689";
+}
+
+.dm-settings:before {
+    content: "\e68a";
+}
+
+.dm-question-fill:before {
+    content: "\e690";
+}
+
+.dm-question:before {
+    content: "\e691";
+}
+
+.dm-filter:before {
+    content: "\e69c";
+}
+
+.dm-top:before {
+    content: "\e69e";
+}
+
+.dm-refresh:before {
+    content: "\e6a4";
+}
+
+.dm-moreandroid:before {
+    content: "\e6a5";
+}
+
+.dm-delete-fill:before {
+    content: "\e6a6";
+}
+
+.dm-qrcode:before {
+    content: "\e6b0";
+}
+
+.dm-delete:before {
+    content: "\e6b4";
+}
+
+.dm-profile:before {
+    content: "\e6b7";
+}
+
+.dm-link:before {
+    content: "\e6c0";
+}
+
+.dm-lock:before {
+    content: "\e6c1";
+}
+
+.dm-unlock:before {
+    content: "\e6c2";
+}
+
+.dm-activity:before {
+    content: "\e6c5";
+}
+
+.dm-friendadd-fill:before {
+    content: "\e6c9";
+}
+
+.dm-friendadd:before {
+    content: "\e6ca";
+}
+
+.dm-friendfamous:before {
+    content: "\e6cb";
+}
+
+.dm-friend:before {
+    content: "\e6cc";
+}
+
+.dm-redpacket:before {
+    content: "\e6e0";
+}
+
+.dm-info-fill:before {
+    content: "\e6e4";
+}
+
+.dm-info:before {
+    content: "\e6e5";
+}
+
+.dm-recharge-fill:before {
+    content: "\e6ec";
+}
+
+.dm-recharge:before {
+    content: "\e6ed";
+}
+
+.dm-voice:before {
+    content: "\e6ef";
+}
+
+.dm-voice-fill:before {
+    content: "\e6f0";
+}
+
+.dm-share:before {
+    content: "\e6f3";
+}
+
+.dm-we-fill:before {
+    content: "\e6f4";
+}
+
+.dm-we:before {
+    content: "\e6f5";
+}
+
+.dm-searchlist:before {
+    content: "\e6fe";
+}
+
+.dm-sort:before {
+    content: "\e700";
+}
+
+.dm-down:before {
+    content: "\e703";
+}
+
+.dm-mobile:before {
+    content: "\e704";
+}
+
+.dm-mobile-fill:before {
+    content: "\e705";
+}
+
+.dm-copy:before {
+    content: "\e706";
+}
+
+.dm-notice-fill:before {
+    content: "\e709";
+}
+
+.dm-notice:before {
+    content: "\e70a";
+}
+
+.dm-qiang:before {
+    content: "\e70b";
+}
+
+.dm-female:before {
+    content: "\e71a";
+}
+
+.dm-keyboard:before {
+    content: "\e71b";
+}
+
+.dm-male:before {
+    content: "\e71c";
+}
+
+.dm-new-fill:before {
+    content: "\e71d";
+}
+
+.dm-new:before {
+    content: "\e71e";
+}
+
+.dm-rank-fill:before {
+    content: "\e721";
+}
+
+.dm-rank:before {
+    content: "\e722";
+}
+
+.dm-image-fill:before {
+    content: "\e72c";
+}
+
+.dm-file:before {
+    content: "\e739";
+}
+
+.dm-community-fill:before {
+    content: "\e740";
+}
+
+.dm-community:before {
+    content: "\e741";
+}
+
+.dm-play:before {
+    content: "\e74f";
+}
+
+.dm-stop:before {
+    content: "\e753";
+}
+
+.dm-hot-fill:before {
+    content: "\e757";
+}
+
+.dm-hot:before {
+    content: "\e758";
+}
+
+.dm-upload:before {
+    content: "\e75f";
+}
+
+.dm-add:before {
+    content: "\e767";
+}
+
+.dm-move:before {
+    content: "\e768";
+}
+
+.dm-safe:before {
+    content: "\e769";
+}
+
+.dm-activity-fill:before {
+    content: "\e776";
+}
+
+.dm-crown-fill:before {
+    content: "\e777";
+}
+
+.dm-crown:before {
+    content: "\e778";
+}
+
+.dm-profile-fill:before {
+    content: "\e77a";
+}
+
+.dm-music:before {
+    content: "\e795";
+}
+
+.dm-record-fill:before {
+    content: "\e7a4";
+}
+
+.dm-record:before {
+    content: "\e7a6";
+}
+
+.dm-full:before {
+    content: "\e7bc";
+}
+
+.dm-peoplelist:before {
+    content: "\e7be";
+}
+
+.dm-medal-fill:before {
+    content: "\e7c1";
+}
+
+.dm-medal:before {
+    content: "\e7c2";
+}
+
+.dm-ask-fill:before {
+    content: "\e7c9";
+}
+
+.dm-ask:before {
+    content: "\e7ca";
+}
+
+.dm-skin-fill:before {
+    content: "\e7cc";
+}
+
+.dm-skin:before {
+    content: "\e7cd";
+}
+
+.dm-moneybag-fill:before {
+    content: "\e7ce";
+}
+
+.dm-moneybag:before {
+    content: "\e7d1";
+}
+
+.dm-redpacket-fill:before {
+    content: "\e7d3";
+}
+
+.dm-subscription:before {
+    content: "\e7d4";
+}
+
+.dm-oppose-fill:before {
+    content: "\e814";
+}
+
+.dm-oppose:before {
+    content: "\e815";
+}
+
+.dm-return:before {
+    content: "\e81a";
+}
+
+.dm-at:before {
+    content: "\e81e";
+}
+
+.dm-apps:before {
+    content: "\e729";
+}
+
+.dm-appreciate:before {
+    content: "\e644";
+}
+
+.dm-appreciate-fill:before {
+    content: "\e6e3";
+}
+
+.dm-invalid:before {
+    content: "\f129";
+}
+
+.dm-checkbox:before {
+    content: "\f12e";
+}
+
+.dm-valid:before {
+    content: "\f128";
+}
+
+.dm-collection:before {
+    content: "\f112";
+}
+
+.dm-checked:before {
+    content: "\f12f";
+}
+
+.dm-sofa:before {
+    content: "\e727";
+}
+
+.dm-camera-fill:before {
+    content: "\e665";
+}
+
+.dm-camera:before {
+    content: "\e666";
+}
+
+.dm-image:before {
+    content: "\e69b";
+}
+
+.dm-c-right:before {
+    content: "\e775";
+}
+
+.dm-error:before {
+    content: "\e647";
+}
+
+.dm-c-left:before {
+    content: "\e779";
+}
+
+.dm-c-up:before {
+    content: "\e76e";
+}
+
+.dm-c-down:before {
+    content: "\e772";
+}
+
+.dm-explore:before {
+    content: "\e60b";
+}
+
+.dm-edit:before {
+    content: "\e6bf";
+}
+
+.dm-emoji:before {
+    content: "\e64a";
+}
+
+.dm-star-fill:before {
+    content: "\e64b";
+}
+
+.dm-star:before {
+    content: "\e64c";
+}
+
+.dm-warn:before {
+    content: "\e663";
+}
+
+.dm-eye-fill:before {
+    content: "\e73c";
+}
+
+.dm-chat-t-fill:before {
+    content: "\e730";
+}
+
+.dm-chat-t:before {
+    content: "\e731";
+}
+
+.dm-eye:before {
+    content: "\e73d";
+}
+
+.dm-plus-c:before {
+    content: "\e664";
+}
+
+.dm-minus-c:before {
+    content: "\e677";
+}
+
+.dm-x:before {
+    content: "\e723";
+}
+
+.dm-chat-s-fill:before {
+    content: "\e743";
+}
+
+.dm-chat-s:before {
+    content: "\e744";
+}
+
+.dm-trash:before {
+    content: "\e74b";
+}
+
+.dm-house-fill:before {
+    content: "\e750";
+}
+
+.dm-house:before {
+    content: "\e751";
+}
+
+.dm-search:before {
+    content: "\e752";
+}
+
+.dm-my-fill:before {
+    content: "\e75d";
+}
+
+.dm-my:before {
+    content: "\e75e";
+}
+
+.dm-heart-fill:before {
+    content: "\e760";
+}
+
+.dm-heart:before {
+    content: "\e761";
+}
+
+.dm-chat-m-fill:before {
+    content: "\e762";
+}
+
+.dm-chat-m:before {
+    content: "\e763";
+}
+
+.dm-person-fill:before {
+    content: "\e787";
+}
+
+.dm-person:before {
+    content: "\e788";
+}
+
+.dm-tag:before {
+    content: "\e78b";
+}

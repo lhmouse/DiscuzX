@@ -39,3 +39,4 @@
 <body id="{$_G['basescript']}" class="pg_{CURMODULE} discuz_diy">
 <!--{hook/global_header_mobile}-->
 <div id="append_parent"></div>
+<div id="ajaxwaitid"></div>

@@ -50,7 +50,6 @@
 	</div>
 </li>
 
-<script type="text/javascript" src="{STATICURL}js/mobile/ajaxfileupload.js?{VERHASH}"></script>
 <script type="text/javascript" src="{STATICURL}js/mobile/buildfileupload.js?{VERHASH}"></script>
 <script type="text/javascript">
 	jqueryProperty();
@@ -150,16 +149,7 @@
 					});
 				}
 			} else {
-				$.ajaxfileupload({
-					url:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
-					data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
-					dataType:'text',
-					fileElementId:'filedata',
-					success:uploadsuccess,
-					error: function() {
-						popup.open('{lang uploadpicfailed}', 'alert');
-					}
-				});
+				popup.open('{lang uploadpicfailed}', 'alert');
 			}
 	});
 	$(document).on('change', '#filedata', function() {
@@ -201,16 +191,7 @@
 					});
 				}
 			} else {
-				$.ajaxfileupload({
-					url:'misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2',
-					data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
-					dataType:'text',
-					fileElementId:'filedata',
-					success:uploadsuccess,
-					error: function() {
-						popup.open('{lang uploadpicfailed}', 'alert');
-					}
-				});
+				popup.open('{lang uploadpicfailed}', 'alert');
 			}
 	});
 	$(document).on('change', '#attfiledata', function() {
@@ -306,31 +287,7 @@
 					}
 				}
 			} else {
-				if (file.type.startsWith('video/')) {
-					getFirstFrame(file, function(base64Image) {
-					});
-					$.ajaxfileupload({
-						url:'misc.php?mod=swfupload&operation=upload&fid={$_G['fid']}&inajax=yes&infloat=yes&simple=2',
-						data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->",thumbbase64: base64Image},
-						dataType:'text',
-						fileElementId:'attfiledata',
-						success:uploadsuccess,
-						error: function() {
-							popup.open('{lang uploadpicfailed}', 'alert');
-						}
-					});
-				}else{
-					$.ajaxfileupload({
-						url:'misc.php?mod=swfupload&operation=upload&fid={$_G['fid']}&inajax=yes&infloat=yes&simple=2',
-						data:{uid:"$_G['uid']", hash:"<!--{eval echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}-->"},
-						dataType:'text',
-						fileElementId:'attfiledata',
-						success:uploadsuccess,
-						error: function() {
-							popup.open('{lang uploadpicfailed}', 'alert');
-						}
-					});
-				}
+				popup.open('{lang uploadpicfailed}', 'alert');
 			}
 	});
 	$(document).on('click', '.del', function() {

@@ -23,9 +23,9 @@
 				<a href="home.php?mod=space&uid={$blog['uid']}&do=blog&id={$blog['blogid']}"><div class="threadlist_mes cl">{$blog['message']}</div></a>
 				<div class="threadlist_foot cl">
 					<ul>
-						<li><i class="dm-heart-fill"></i>{$blog['hot']}</li>
-						<li><i class="dm-eye-fill"></i>{$blog['viewnum']}</li>
-						<li><i class="dm-chat-s-fill"></i>{$blog['replynum']}</li>
+						<li class="stats"><i class="dm-heart-fill"></i>{$blog['hot']}</li>
+						<li class="stats"><i class="dm-eye-fill"></i>{$blog['viewnum']}</li>
+						<li class="stats"><i class="dm-chat-s-fill"></i>{$blog['replynum']}</li>
 					</ul>
 				</div>
 			</li>

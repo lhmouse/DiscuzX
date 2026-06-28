@@ -134,6 +134,7 @@ function showforum_moderators($forum) {
 }
 
 function getthreadclasses_html($fid) {
+	global $_G;
 	$threadtypes = table_forum_forumfield::t()->fetch($fid);
 	$threadtypes = dunserialize($threadtypes['threadtypes']);
 

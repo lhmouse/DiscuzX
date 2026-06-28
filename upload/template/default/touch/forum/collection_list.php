@@ -36,7 +36,7 @@
 			<!--{if $collectionvalues['arraykeyword']}-->
 			<!--{eval $keycount=0;}-->
 			<!--{loop $collectionvalues['arraykeyword'] $unique_keyword}-->
-				<li class="mr"><a href="search.php?mod={if $_G['setting']['search']['collection']['status']}collection{else}forum{/if}&srchtxt={echo rawurlencode($unique_keyword)}&formhash={FORMHASH}&searchsubmit=true&source=collectionsearch">#$unique_keyword</a></li>
+				<li class="mr"><a href="search.php?mod={if $_G['setting']['search']['collection']['status']}collection{else}forum{/if}&srchtxt={echo rawurlencode($unique_keyword)}&formhash={FORMHASH}&searchsubmit=true&source=collectionsearch">$unique_keyword</a></li>
 			<!--{eval $keycount++;}-->
 			<!--{/loop}-->
 			<!--{/if}-->
@@ -45,9 +45,9 @@
 		<!--{/if}-->
 		<div class="threadlist_foot cl">
 			<ul>
-				<li><i class="dm-star-fill"></i>{$collectionvalues['follownum']}</li>
-				<li><i class="dm-explore"></i>{$collectionvalues['follownum']}</li>
-				<li><i class="dm-chat-s-fill"></i>{$collectionvalues['commentnum']}</li>
+				<li class="stats"><i class="dm-star-fill"></i>{$collectionvalues['follownum']}</li>
+				<li class="stats"><i class="dm-explore"></i>{$collectionvalues['follownum']}</li>
+				<li class="stats"><i class="dm-chat-s-fill"></i>{$collectionvalues['commentnum']}</li>
 			</ul>
 		</div>
 	</li>

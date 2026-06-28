@@ -17,7 +17,7 @@
 			<img src="$_G['forum']['icon']" />
 			<!--{/if}-->
 			<!--{if helper_access::check_module('group') && $status != 'isgroupuser'}-->
-				<!--{if $status != 2 && $status != 3 && $status != 5}-->
+				<!--{if $status != 3 && $status != 5}-->
 				<form action="forum.php?mod=group&action=join&fid=$_G['fid']" id="groupjoinform_$_G['fid']" method="post" autocomplete="off">
 					<input type="hidden" name="formhash" value="{FORMHASH}">
 					<input type="hidden" name="groupjoin" value="1">

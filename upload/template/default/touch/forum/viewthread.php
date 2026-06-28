@@ -385,36 +385,42 @@
 				<div id="post_rate_div_{$post['pid']}"></div>
 			<!--{/if}-->
 		</div>
+		<div class="threadlist cl">
 		<div class="threadlist_foot cl">
 			<ul>
 			<!--{if $_G['uid'] && $allowpostreply && !$post['first']}-->
-				<li><a href="forum.php?mod=post&action=reply&fid={$_G['fid']}&tid={$_G['tid']}&repquote={$post['pid']}&extra={$_GET['extra']}&page={$page}"><i class="dm-chat-s"></i>{lang reply}</a></li>
+				<li class="mr"><a href="forum.php?mod=post&action=reply&fid={$_G['fid']}&tid={$_G['tid']}&repquote={$post['pid']}&extra={$_GET['extra']}&page={$page}"><i class="dm-chat-s"></i>{lang reply}</a></li>
 			<!--{/if}-->
 			<!--{if $_G['group']['raterange'] && $post['authorid']}-->
-				<li><a href="forum.php?mod=misc&action=rate&tid={$_G['tid']}&pid={$post['pid']}" class="dialog"><i class="dm-heart"></i>{lang rate}</a></li>
+				<li class="mr"><a href="forum.php?mod=misc&action=rate&tid={$_G['tid']}&pid={$post['pid']}" class="dialog"><i class="dm-heart"></i>{lang rate}</a></li>
 			<!--{/if}-->
 			<!--{if $post['invisible'] == 0}-->
-				<!--{if $allowpostreply && $post['allowcomment'] && (!$thread['closed'] || $_G['forum']['ismoderator'])}--><li><a href="forum.php?mod=misc&action=comment&tid={$post['tid']}&pid={$post['pid']}&extra={$_GET['extra']}&page={$page}{if $_G['forum_thread']['special'] == 127}&special={$specialextra}{/if}" class="dialog"><i class="dm-chat-t"></i>{lang comments}</a></li><!--{/if}-->
+				<!--{if $allowpostreply && $post['allowcomment'] && (!$thread['closed'] || $_G['forum']['ismoderator'])}--><li class="mr"><a href="forum.php?mod=misc&action=comment&tid={$post['tid']}&pid={$post['pid']}&extra={$_GET['extra']}&page={$page}{if $_G['forum_thread']['special'] == 127}&special={$specialextra}{/if}" class="dialog"><i class="dm-chat-t"></i>{lang comments}</a></li><!--{/if}-->
 			<!--{/if}-->
-			<!--{if !$_G['forum_thread']['special'] && !$rushreply && !$hiddenreplies && $_G['setting']['repliesrank'] && !$post['first'] && !($post['isWater'] && $_G['setting']['filterednovote'])}-->
-				<li><a href="forum.php?mod=misc&action=postreview&do=support&tid={$_G['tid']}&pid={$post['pid']}&hash={FORMHASH}" class="dialog"><i class="dm-c-up"></i>{lang support_reply} <span id="review_support_{$post['pid']}">{$post['postreview']['support']}</span></a></li>
-				<li><a href="forum.php?mod=misc&action=postreview&do=against&tid={$_G['tid']}&pid={$post['pid']}&hash={FORMHASH}" class="dialog"><i class="dm-c-down"></i>{lang against_reply} <span id="review_against_{$post['pid']}">{$post['postreview']['against']}</span></a></li>
+			<!--{if $_G['uid'] == $post['authorid']}-->
+				<li class="mr"><a href="forum.php?mod=misc&action=postdelete&tid={$_G['tid']}&pid={$post['pid']}" class="dialog"><i class="dm-delete"></i>{lang delete}</a></li>
+			<!--{/if}-->
+			<!--{if !empty($_G['setting']['recommendthread']['status']) && !$_G['forum_thread']['special'] && !$rushreply && !$hiddenreplies && $_G['setting']['repliesrank'] && !$post['first'] && !($post['isWater'] && $_G['setting']['filterednovote'])}-->
+				<!--{if !empty($_G['setting']['recommendthread']['addtext'])}-->
+				<li class="stats"><a href="forum.php?mod=misc&action=postreview&do=support&tid={$_G['tid']}&pid={$post['pid']}&hash={FORMHASH}" class="dialog"><i class="dm-appreciate-fill"></i><!--{if empty($post['postreview']['support'])}-->{$_G['setting']['recommendthread'][addtext]}<!--{/if}--> <span id="review_support_{$post['pid']}"><!--{if !empty($post['postreview']['support'])}-->{$post['postreview']['support']}<!--{/if}--></span></a></li>
+				<!--{/if}-->
+				<!--{if !empty($_G['setting']['recommendthread']['subtracttext'])}-->
+				<li class="stats"><a href="forum.php?mod=misc&action=postreview&do=against&tid={$_G['tid']}&pid={$post['pid']}&hash={FORMHASH}" class="dialog"><i class="dm-oppose-fill"></i><!--{if empty($post['postreview']['against'])}-->{$_G['setting']['recommendthread'][subtracttext]}<!--{/if}--> <span id="review_against_{$post['pid']}"><!--{if !empty($post['postreview']['against'])}-->{$post['postreview']['against']}<!--{/if}--></span></a></li>
+				<!--{/if}-->
 			<!--{/if}-->
 			<!--{if $post['first']}-->
 				<!--{if ($_G['group']['allowrecommend'] || !$_G['uid']) && !empty($_G['setting']['recommendthread']['status'])}-->
 					<!--{if !empty($_G['setting']['recommendthread']['addtext'])}-->
-					<li><a href="forum.php?mod=misc&action=recommend&do=add&tid={$_G['tid']}&hash={FORMHASH}" class="dialog"><i></i><i class="dm-c-up"></i>{$_G['setting']['recommendthread']['addtext']}<span id="recommendv_add"{if !$_G['forum_thread']['recommend_add']} style="display:none"{/if}>{$_G['forum_thread']['recommend_add']}</span></a></li>
+					<li class="stats"><a href="forum.php?mod=misc&action=recommend&do=add&tid={$_G['tid']}&hash={FORMHASH}" class="dialog"><i class="dm-appreciate-fill"></i><!--{if empty($_G['forum_thread']['recommend_add'])}-->{$_G['setting']['recommendthread']['addtext']}<!--{/if}--><span id="recommendv_add"{if !$_G['forum_thread']['recommend_add']} style="display:none"{/if}><!--{if !empty($_G['forum_thread']['recommend_add'])}-->{$_G['forum_thread']['recommend_add']}<!--{/if}--></span></a></li>
 					<!--{/if}-->
 					<!--{if !empty($_G['setting']['recommendthread']['subtracttext'])}-->
-					<li><a href="forum.php?mod=misc&action=recommend&do=subtract&tid={$_G['tid']}&hash={FORMHASH}" class="dialog"><i></i><i class="dm-c-down"></i>{$_G['setting']['recommendthread']['subtracttext']}<span id="recommendv_subtract"{if !$_G['forum_thread']['recommend_sub']} style="display:none"{/if}>{$_G['forum_thread']['recommend_sub']}</span></a></li>
+					<li class="stats"><a href="forum.php?mod=misc&action=recommend&do=subtract&tid={$_G['tid']}&hash={FORMHASH}" class="dialog"><i class="dm-oppose-fill"></i><!--{if empty($_G['forum_thread']['recommend_sub'])}-->{$_G['setting']['recommendthread']['subtracttext']}<!--{/if}--><span id="recommendv_subtract"{if !$_G['forum_thread']['recommend_sub']} style="display:none"{/if}><!--{if !empty($_G['forum_thread']['recommend_sub'])}-->{$_G['forum_thread']['recommend_sub']}<!--{/if}--></span></a></li>
 					<!--{/if}-->
 				<!--{/if}-->
 			<!--{/if}-->
-			<!--{if $_G['uid'] == $post['authorid']}-->
-				<li><a href="forum.php?mod=misc&action=postdelete&tid={$_G['tid']}&pid={$post['pid']}" class="dialog"><i class="dm-delete"></i>{lang delete}</a></li>
-			<!--{/if}-->
 			<!--{hook/viewthread_postfooter_mobile $postcount}-->
 			</ul>
+		</div>
 		</div>
 	</div>
 	<!--{hook/viewthread_postbottom_mobile $postcount}-->
@@ -453,13 +459,13 @@ $multipage
 		<a href="home.php?mod=spacecp&ac=favorite&type=thread&id={$_G['tid']}" class="dialog flex mx"><i class="dm-star"></i><!--{if $_G['forum_thread']['favtimes']}-->{$_G['forum_thread']['favtimes']}<!--{/if}-->{lang favorite}</a>
 	<!--{/if}-->
 	<!--{if helper_access::check_module('follow')}-->
-		<a href="home.php?mod=spacecp&ac=follow&op=relay&tid={$_G['tid']}&from=forum" class="dialog flex mx"><i class="fico-launch"></i><!--{if $_G['forum_thread']['relay']}-->{$_G['forum_thread']['relay']}<!--{/if}-->{lang thread_realy}</a>
+		<a href="home.php?mod=spacecp&ac=follow&op=relay&tid={$_G['tid']}&from=forum" class="dialog flex mx"><i class="dm-chat-s"></i><!--{if $_G['forum_thread']['relay']}-->{$_G['forum_thread']['relay']}<!--{/if}-->{lang thread_realy}</a>
 	<!--{/if}-->
 	<!--{if helper_access::check_module('doing')}-->
-		<a href="home.php?mod=spacecp&ac=doing&type=thread&id={$_G['tid']}" class="dialog flex mx"><i class="dm-star"></i><!--{if $_G['forum_thread']['sharetimes']}-->{$_G['forum_thread']['sharetimes']}<!--{/if}-->{lang thread_share}</a>
+		<a href="home.php?mod=spacecp&ac=doing&type=thread&id={$_G['tid']}" class="dialog flex mx"><i class="dm-share"></i><!--{if $_G['forum_thread']['sharetimes']}-->{$_G['forum_thread']['sharetimes']}<!--{/if}-->{lang thread_share}</a>
 	<!--{/if}-->
 	<!--{if !$_G['forum']['disablecollect'] && helper_access::check_module('collection')}-->
-		<a href="forum.php?mod=collection&action=edit&op=addthread&tid={$_G['tid']}" class="dialog flex mx"><i class="fico-collection"></i><!--{if $post['releatcollectionnum']}-->{$post['releatcollectionnum']}<!--{/if}-->{lang collection}</a>
+		<a href="forum.php?mod=collection&action=edit&op=addthread&tid={$_G['tid']}" class="dialog flex mx"><i class="dm-collection"></i><!--{if $post['releatcollectionnum']}-->{$post['releatcollectionnum']}<!--{/if}-->{lang collection}</a>
 	<!--{/if}-->
 </div>
 <div class="foot_height_view"></div>

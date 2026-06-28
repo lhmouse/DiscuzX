@@ -12,32 +12,38 @@
 		<a href="home.php?mod=space&do=pm" class="flex mon">{lang mypm}<!--{if $newpmcount}--><strong>($newpmcount)</strong><!--{/if}--></a>
 		<a href="home.php?mod=space&do=notice" class="flex">{lang my}{lang remind}<!--{if $_G['member']['newprompt']}--><strong>($_G['member']['newprompt'])</strong><!--{/if}--></a>
 	</div>
-	<div id="pmlist" class="imglist mt10 cl">
-		<ul>
-			<!--{loop $list $key $value}-->
-			<li>
-				<span class="mimg"><a href="{if $value['touid']}home.php?mod=space&do=pm&subop=view&touid=$value['touid']{else}home.php?mod=space&do=pm&subop=view&plid={$value['plid']}&type=1{/if}"><!--{if $value['pmtype'] == 2}--><img src="{STATICURL}image/common/grouppm.png" /><!--{else}--><!--{avatar($value['touid'] ? $value['touid'] : ($value['lastauthorid'] ? $value['lastauthorid'] : $value['authorid']), 'small')}--><!--{/if}--></a></span>
-				<a href="{if $value['touid']}home.php?mod=space&do=pm&subop=view&touid=$value['touid']{else}home.php?mod=space&do=pm&subop=view&plid={$value['plid']}&type=1{/if}">
-					<p class="mtit">
-						<span class="mtime"><!--{date($value['dateline'], 'u')}--></span>
-						<!--{if $value['new']}--><span class="mnum">$value['pmnum']</span><!--{/if}-->
-						<!--{if $value['touid']}-->
-							<!--{if $value['msgfromid'] == $_G['uid']}-->
-								{lang me}{lang you_to} {$value['tousername']} {lang say}:
-							<!--{else}-->
-								{$value['tousername']} {lang you_to}{lang me} {lang say}:
-							<!--{/if}-->
-						<!--{elseif $value['pmtype'] == 2}-->
-							{lang chatpm_author}:$value['firstauthor']
+	<div id="pmlist" class="pm-list">
+		<!--{loop $list $key $value}-->
+		<a href="{if $value['touid']}home.php?mod=space&do=pm&subop=view&touid=$value['touid']{else}home.php?mod=space&do=pm&subop=view&plid={$value['plid']}&type=1{/if}" class="pm-list-item">
+			<div class="pm-list-avatar">
+				<!--{if $value['pmtype'] == 2}-->
+				<img src="{STATICURL}image/common/grouppm.png" alt="" />
+				<!--{else}-->
+				<!--{avatar($value['touid'] ? $value['touid'] : ($value['lastauthorid'] ? $value['lastauthorid'] : $value['authorid']), 'small')}-->
+				<!--{/if}-->
+				<!--{if $value['new']}--><span class="pm-list-badge">$value['pmnum']</span><!--{/if}-->
+			</div>
+			<div class="pm-list-info">
+				<div class="pm-list-meta">
+					<span class="pm-list-name">
+					<!--{if $value['touid']}-->
+						<!--{if $value['msgfromid'] == $_G['uid']}-->
+							{lang me}{lang you_to} {$value['tousername']}
+						<!--{else}-->
+							{$value['tousername']}
 						<!--{/if}-->
-					</p>
-					<p class="mtxt">
-						<!--{if $value['pmtype'] == 2}-->[{lang chatpm}]<!--{if $value['subject']}-->$value['subject']<br><!--{/if}--><!--{/if}--><!--{if $value['pmtype'] == 2 && $value['lastauthor']}-->$value['lastauthor'] : $value['message']<!--{else}-->$value['message']<!--{/if}-->
-					</p>
-				</a>
-			</li>
-			<!--{/loop}-->
-		</ul>
+					<!--{elseif $value['pmtype'] == 2}-->
+						{lang chatpm_author}: $value['firstauthor']
+					<!--{/if}-->
+					</span>
+					<span class="pm-list-time"><!--{date($value['dateline'], 'u')}--></span>
+				</div>
+				<div class="pm-list-preview">
+					<!--{if $value['pmtype'] == 2}-->[{lang chatpm}]<!--{if $value['subject']}-->$value['subject']<!--{/if}--><!--{/if}--><!--{if $value['pmtype'] == 2 && $value['lastauthor']}-->$value['lastauthor'] : $value['message']<!--{else}-->$value['message']<!--{/if}-->
+				</div>
+			</div>
+		</a>
+		<!--{/loop}-->
 	</div>
 	<!--{elseif in_array($_GET['subop'], array('view'))}-->
 		<!--{eval $msguser = $tousername;}-->
@@ -48,7 +54,7 @@
 		</div>
 		<div class="msgbox b_m">
 			<!--{if !$list}-->
-				<div class="threadlist_box mt10 cl">
+				<div class="empty-box">
 					<h4>{lang no_corresponding_pm}</h4>
 				</div>
 			<!--{else}-->
@@ -75,10 +81,8 @@
 		<!--{eval $nofooter = true;}-->
 	<!--{/if}-->
 <!--{else}-->
-	<div class="threadlist_box mt10 cl">
-		<div class="threadlist cl">
-			<h4>{lang user_mobile_pm_error}</h4>
-		</div>
+	<div class="empty-box">
+		<h4>{lang user_mobile_pm_error}</h4>
 	</div>
 <!--{/if}-->
 <!--{template common/footer}-->

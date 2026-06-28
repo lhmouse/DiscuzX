@@ -37,24 +37,7 @@
 		</div>
 	</div>
 </div>
-<script>
-	if($("#dhnavs_li .mon").length > 0) {
-		var discuz_nav = $("#dhnavs_li .mon").offset().left + $("#dhnavs_li .mon").width() >= $(window).width() ? $("#dhnavs_li .mon").index() : 0;
-	}else{
-		var discuz_nav = 0;
-	}	
-	new Swiper('#dhnavs_li', {
-		freeMode : true,
-		slidesPerView : 'auto',
-		initialSlide : discuz_nav,
-		onTouchMove: function(swiper){
-			Discuz_Touch_on = 0;
-		},
-		onTouchEnd: function(swiper){
-			Discuz_Touch_on = 1;
-		},
-	});
-</script>
+<script>initdhnav();</script>
 <!--{/if}-->
 
 <!--{if $_GET['view'] == 'me' && $classarr}-->
@@ -69,24 +52,7 @@
 		</div>
 	</div>
 </div>
-<script>
-	if($("#dhnavs_li .mon").length > 0) {
-		var discuz_nav = $("#dhnavs_li .mon").offset().left + $("#dhnavs_li .mon").width() >= $(window).width() ? $("#dhnavs_li .mon").index() : 0;
-	}else{
-		var discuz_nav = 0;
-	}	
-	new Swiper('#dhnavs_li', {
-		freeMode : true,
-		slidesPerView : 'auto',
-		initialSlide : discuz_nav,
-		onTouchMove: function(swiper){
-			Discuz_Touch_on = 0;
-		},
-		onTouchEnd: function(swiper){
-			Discuz_Touch_on = 1;
-		},
-	});
-</script>
+<script>initdhnav();</script>
 <!--{/if}-->
 <!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->
 <div class="threadlist_box cl">

@@ -187,6 +187,14 @@
 			<!--{/loop}-->
 		</div>
 		<!--{hook/index_middle_mobile}-->
+		<!--{if empty($gid) && $_G['setting']['mobile']['forum']['onlineshow']}-->
+		<div class="onlinestat cl">
+			<a href="home.php?mod=space&do=friend&view=online&type=member" class="onlinestat-link flex-box">
+				<span class="onlinestat-tit"><i class="fico-person"></i>{lang onlinemember}</span>
+				<span class="onlinestat-num flex">{lang total} <strong>$onlinenum</strong> {lang onlines}</span>
+			</a>
+		</div>
+		<!--{/if}-->
 		<script type="text/javascript">
 			(function() {
 				<!--{if !$_G['setting']['mobile']['forum']['forumview']}-->

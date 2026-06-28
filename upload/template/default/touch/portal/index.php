@@ -28,18 +28,7 @@ foreach($cates as $cate){
 		</div>
 	</div>
 </div>
-<script>
-	new Swiper('#dhnavs_li', {
-		freeMode : true,
-		slidesPerView : 'auto',
-		onTouchMove: function(swiper){
-			Discuz_Touch_on = 0;
-		},
-		onTouchEnd: function(swiper){
-			Discuz_Touch_on = 1;
-		},
-	});
-</script>
+<script>initdhnav();</script>
 <!--{/if}-->
 <!--[diy=diy2]--><div id="diy2" class="area"></div><!--[/diy]-->
 <!--{hook/portal_index_top_mobile}-->

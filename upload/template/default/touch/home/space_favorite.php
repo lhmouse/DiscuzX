@@ -27,24 +27,7 @@
 		<!--{hook/space_favorite_nav_extra_mobile}-->
 	</ul>
 </div>
-<script>
-	if($("#dhnav_li .mon").length > 0) {
-		var discuz_nav = $("#dhnav_li .mon").offset().left + $("#dhnav_li .mon").width() >= $(window).width() ? $("#dhnav_li .mon").index() : 0;
-	}else{
-		var discuz_nav = 0;
-	}	
-	new Swiper('#dhnav_li', {
-		freeMode : true,
-		slidesPerView : 'auto',
-		initialSlide : discuz_nav,
-		onTouchMove: function(swiper){
-			Discuz_Touch_on = 0;
-		},
-		onTouchEnd: function(swiper){
-			Discuz_Touch_on = 1;
-		},
-	});
-</script>
+<script>initdhnav('#dhnav_li');</script>
 <!--{if $_GET['type'] == 'forum'}-->
 	<!--{if $list}-->
 		<div class="findbox mt10 cl">

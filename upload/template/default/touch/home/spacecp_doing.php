@@ -42,7 +42,10 @@
 	<h2>{lang doing}</h2>
 </div>
 <!--{/if}-->
-<!--{if $_G[inajax]}--><div class="tip loginbox loginpop p5"><!--{/if}-->
+<!--{if $_G[inajax]}-->
+<div class="tip loginbox loginpop p5">
+	<h2 class="log_tit" id="return_rate"><a href="javascript:;" onclick="popup.close();"><span class="icon_close y">&nbsp;</span></a>{lang share}</h2>
+<!--{/if}-->
 <div id="content">
 	<!--{if helper_access::check_module('doing')}-->
 	<!--{template home/space_doing_form}-->

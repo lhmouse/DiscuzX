@@ -69,7 +69,7 @@
 								const imgWrapper = document.createElement('div');
 								imgWrapper.className = 'previewbigpic z';
 								imgWrapper.setAttribute('data-file-index', index);
-                                const removeDiv = document.createElement('i');
+								const removeDiv = document.createElement('i');
 								removeDiv.className = 'fico-error';
 								removeDiv.onclick = function() {
 									MultiPicDel(this);
@@ -123,5 +123,5 @@
 		var hlthumb = obj.parentNode.childNodes[0];
 		zoom(hlthumb, hlthumb.src);
 	}
-	<!--{/if}-->
+<!--{/if}-->
 </script>
