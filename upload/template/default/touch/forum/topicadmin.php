@@ -244,7 +244,7 @@
 					<li class="flex-box mli">
 						<div class="flex tit"><span class="z">{lang admin_target}</span></div>
 						<div class="flex-2">
-							<select name="moveto" id="moveto" class="sort_sel" onchange="ajaxget('forum.php?mod=ajax&action=getthreadtypes&fid=' + this.value + '&selectclass=sort_sel', 'threadtypes');if(this.value) {getID('moveext').style.display='';} else {getID('moveext').style.display='none';}">
+							<select name="moveto" id="moveto" class="sort_sel" onchange="ajaxget('forum.php?mod=ajax&action=getthreadtypes&fid=' + this.value + '&selectclass=sort_sel', 'threadtypes', null, null, null, function(){if(typeof window.initAllSortSel === 'function') window.initAllSortSel();});if(this.value) {getID('moveext').style.display='';} else {getID('moveext').style.display='none';}">
 								$forumselect
 							</select>
 						</div>
