@@ -42,7 +42,7 @@
 			<li class="mli flex-box cl">
 				<div class="tit">{lang privacy_settings}</div>
 				<div class="flex">
-					<select name="friend" onchange="home_passwordShow(this.value);" class="sort_sel">
+					<select name="friend" onchange="home_passwordShow(this.value);" class="sort_sel" data-title="{lang privacy_settings}">
 						<option value="0"$friendarr[0]>{lang friendname_0}</option>
 						<option value="1"$friendarr[1]>{lang friendname_1}</option>
 						<option value="2"$friendarr[2]>{lang friendname_2}</option>
@@ -59,7 +59,7 @@
 				<li class="mli flex-box cl">
 					<div class="tit">{lang specified_friends}</div>
 					<div class="flex-3">
-						<select name="selectgroup" onchange="home_getgroup(this.value);" class="sort_sel">
+						<select name="selectgroup" onchange="home_getgroup(this.value);" class="sort_sel" data-title="{lang specified_friends}">
 							<option value="">{lang from_friends_group}</option>
 							<!--{loop $groups $key $value}-->
 							<option value="$key">$value</option>
@@ -123,7 +123,7 @@
 				<li class="mli p10 flex-box">
 					<div class="flex"><button type="submit" name="editpicsubmit" value="true" class="flex pns" onclick="this.form.action+='&subop=move';return ischeck('theform', 'ids')"><strong>{lang move_to}</strong></button></div>
 					<div class="flex">
-						<select name="newalbumid" class="sort_sel">
+						<select name="newalbumid" class="sort_sel" data-title="{lang move_to}">
 							<!--{loop $albumlist $key $value}-->
 							<!--{if $albumid != $value['albumid']}--><option value="$value['albumid']">$value['albumname']</option><!--{/if}-->
 							<!--{/loop}-->

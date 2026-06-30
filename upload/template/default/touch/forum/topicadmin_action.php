@@ -32,7 +32,7 @@
 			<li class="flex-box mli">
 				<div class="flex"><span class="z">{lang admin_target}</span></div>
 				<div class="flex-2">
-					<select name="copyto" id="copyto" class="sort_sel" onchange="ajaxget('forum.php?mod=ajax&action=getthreadtypes&fid=' + this.value + '&selectclass=sort_sel', 'threadtypes')">
+					<select name="copyto" id="copyto" class="sort_sel" onchange="ajaxget('forum.php?mod=ajax&action=getthreadtypes&fid=' + this.value + '&selectclass=sort_sel', 'threadtypes')" data-title="{lang admin_target}">
 						$forumselect
 					</select>
 				</div>
@@ -40,7 +40,7 @@
 			<li class="flex-box mli b0">
 				<div class="flex"><span class="z">{lang admin_targettype}</span></div>
 				<div class="flex-2">
-					<span id="threadtypes"><select name="threadtypeid" class="sort_sel vm"><option value="0" /></option></select></span>
+					<span id="threadtypes"><select name="threadtypeid" class="sort_sel" data-title="{lang admin_targettype}"><option value="0" /></option></select></span>
 				</div>
 			</li>
 		</ul>
@@ -174,7 +174,7 @@
 		<ul class="post_box cl">
 			<li class="flex-box mli b0">
 				<div class="flex">
-					<select name="stamp" id="stamp" class="sort_sel" onchange="updatestampimg()">
+					<select name="stamp" id="stamp" class="sort_sel" onchange="updatestampimg()" data-title="{lang admin_stamp_select}">
 						<option value="">{lang admin_stamp_none}</option>
 					<!--{loop $_G['cache']['stamps'] $stampid $stamp}-->
 						<!--{if $stamp['type'] == 'stamp'}-->
@@ -204,7 +204,7 @@
 		<ul class="post_box cl">
 			<li class="flex-box mli b0">
 				<div class="flex-3">
-					<select name="stamplist" id="stamplist" class="sort_sel" onchange="updatestamplistimg()">
+					<select name="stamplist" id="stamplist" class="sort_sel" onchange="updatestamplistimg()" data-title="{lang admin_stamplist_select}">
 					<!--{if $thread[icon] >= 0}--><option value="$thread[icon]">{lang admin_stamplist_current}</option><!--{/if}-->
 					<option value="">{lang admin_stamplist_none}</option>
 					<!--{loop $_G['cache']['stamps'] $stampid $stamp}-->

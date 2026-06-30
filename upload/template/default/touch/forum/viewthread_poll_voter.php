@@ -5,7 +5,7 @@
 	<ul class="post_box cl">
 		<li class="flex-box mli">
 			<div class="flex">
-				<select id="polloptionid" class="sort_sel" onchange="changepolloptionid(this.value);">
+				<select id="polloptionid" class="sort_sel" onchange="changepolloptionid(this.value);" data-title="{lang post_poll_options}">
 				<!--{loop $polloptions $options}-->
 					<option value="$options['polloptionid']"{if $options['polloptionid'] == $polloptionid} selected="selected"{/if}>$options['polloption']</option>
 				<!--{/loop}-->

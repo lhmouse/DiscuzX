@@ -5,7 +5,7 @@
 <!--{if !$isfirstpost && $thread['special'] == 5 && empty($firststand) && $_GET['action'] != 'edit'}-->
 <ul class="cl">
 	<li class="mli">
-		<select name="stand" id="stand" class="sort_sel pl5">
+		<select name="stand" id="stand" class="sort_sel" data-title="{lang debate_viewpoint}">
 			<option value="">{lang debate_viewpoint}</option>
 			<option value="0">{lang debate_neutral}</option>
 			<option value="1"{if $stand == 1} selected="selected"{/if}>{lang debate_square}</option>

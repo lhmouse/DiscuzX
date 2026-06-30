@@ -7,7 +7,7 @@
 			<li id="collectionlist" class="flex-box mli" {if $reamincreatenum > 0 && count($allowcollections) <= 0}style="display:none;"{/if}>
 				<div class="flex tit xs2">{lang collection_select}</div>
 				<div class="flex-2">
-					<select name="ctid" id="selectCollection" class="sort_sel">
+					<select name="ctid" id="selectCollection" class="sort_sel" data-title="{lang collection_select}">
 					<!--{loop $collections $collection}-->
 						<!--{if !is_array($tidcollections) || !in_array($collection['ctid'], $tidcollections)}-->
 							<option value="$collection['ctid']">$collection['name']</option>

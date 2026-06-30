@@ -91,7 +91,7 @@
 			</li>
 			<!--{/if}-->
 			<li class="mli">
-				<select name="classid" id="classid" onchange="addSort(this)" class="sort_sel" >
+				<select name="classid" id="classid" onchange="addSort(this)" class="sort_sel" data-title="{lang personal_category}">
 					<option value="0">{lang personal_category}</option>
 					<!--{loop $classarr $value}-->
 					<!--{if $value['classid'] == $blog['classid']}-->
@@ -110,7 +110,7 @@
 			<li class="flex-box mli">
 				<div class="tit">{lang privacy_settings}:</div>
 				<div class="flex input">
-					<select name="friend" onchange="passwordShow(this.value);" class="sort_sel">
+					<select name="friend" onchange="passwordShow(this.value);" class="sort_sel" data-title="{lang privacy_settings}">
 						<option value="0"$friendarr[0]>{lang friendname_0}</option>
 						<option value="1"$friendarr[1]>{lang friendname_1}</option>
 						<option value="2"$friendarr[2]>{lang friendname_2}</option>
@@ -148,7 +148,7 @@
 				<li class="flex-box mli">
 					<div class="tit">{lang specified_friends}:</div>
 					<div class="flex input">
-						<select name="selectgroup" onchange="getgroup(this.value);" class="sort_sel">
+						<select name="selectgroup" onchange="getgroup(this.value);" class="sort_sel" data-title="{lang specified_friends}">
 							<option value="">{lang from_friends_group}</option>
 							<!--{loop $groups $key $value}-->
 							<option value="$key">$value</option>

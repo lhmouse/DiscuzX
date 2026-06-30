@@ -19,7 +19,7 @@
 			<li class="flex-box mli">
 				<div class="tit">{lang group_category}<span class="f_g">*</span></div>
 				<div class="flex">
-					<select name="parentid" id="parentid" onchange="group_ajaxget('forum.php?mod=ajax&action=secondgroup&fupid='+ this.value);" class="sort_sel">
+					<select name="parentid" id="parentid" onchange="group_ajaxget('forum.php?mod=ajax&action=secondgroup&fupid='+ this.value);" class="sort_sel" data-title="{lang group_category}">
 						<option value="">{lang choose_please}</option>
 						$groupselect[first]
 					</select>
@@ -28,7 +28,7 @@
 			<li class="flex-box mli" id="secondgroup" style="display:none;">
 				<div class="tit">{lang group_category}<span class="f_g">*</span></div>
 				<div id="linkage" class="flex">
-					<select name="fup" id="fup" class="sort_sel">
+					<select name="fup" id="fup" class="sort_sel" data-title="{lang group_category}">
 						<option value="">{lang choose_please}</option>
 						{$groupselect['second']}
 					</select>
@@ -41,7 +41,7 @@
 			<li class="flex-box mli">
 				<div class="tit">{lang group_perm_visit} :</div>
 				<div class="flex">
-					<select name="gviewperm" id="gviewperm" class="sort_sel">
+					<select name="gviewperm" id="gviewperm" class="sort_sel" data-title="{lang group_perm_visit}">
 						<option value="1" selected="selected" >{lang group_perm_all_user}</option>
 						<option value="0" >{lang group_perm_member_only}</option>
 					</select>
@@ -50,7 +50,7 @@
 			<li class="flex-box mli">
 				<div class="tit">{lang group_join_type} :</div>
 				<div class="flex">
-					<select name="jointype" id="jointype" class="sort_sel">
+					<select name="jointype" id="jointype" class="sort_sel" data-title="{lang group_join_type}">
 						<option value="0" selected="selected" >{lang group_join_type_free}</option>
 						<option value="2" >{lang group_join_type_moderate}</option>
 						<option value="1" >{lang group_join_type_invite}</option>
@@ -88,6 +88,7 @@
 		var sencondgroup = s.lastChild.firstChild.nodeValue.replace("class=\"ps\"", "class=\"sort_sel\"");
 		$('#linkage').html(sencondgroup);
 		$('#secondgroup').css('display', '');
+		initAllSortSel();
 		return;
     });
   }

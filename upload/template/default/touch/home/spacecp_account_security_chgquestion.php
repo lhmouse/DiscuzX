@@ -12,7 +12,7 @@
             <tr>
                 <th><span class="rq">*</span><label for="questionidnew">{lang security_question}</th>
                 <td>
-                    <select name="questionidnew" id="questionidnew">
+                    <select name="questionidnew" id="questionidnew" class="sort_sel" data-title="{lang security_question}">
                         <option value="" selected>{lang memcp_profile_security_keep}</option>
                         <option value="0">{lang security_question_0}</option>
                         <option value="1">{lang security_question_1}</option>

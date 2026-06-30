@@ -14,7 +14,7 @@
 		<li class="flex-box mli cl">
 			<div class="flex"><span class="z">{lang debate_bestdebater}</span></div>
 			<div class="flex-3">
-						<select onchange="getID('bestdebater').value=this.options[this.options.selectedIndex].value" class="sort_sel">
+						<select onchange="getID('bestdebater').value=this.options[this.options.selectedIndex].value" class="sort_sel" data-title="{lang debate_bestdebater}">
 							<option value=""><strong>{lang debate_recommend_list}</strong></option>
 							<option value="">------------------------------</option>
 							<!--{loop $candidates $candidate}-->

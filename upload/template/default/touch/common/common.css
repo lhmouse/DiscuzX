@@ -532,7 +532,7 @@ select {-moz-appearance:none;}
 .profile-form .form-field {flex:1;min-width:0;}
 .profile-form .form-field .px {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;}
 .profile-form .form-field .px:focus {border-color:var(--dz-BG-color);box-shadow:0 0 0 2px rgba(0,122,255,0.08);}
-.profile-form .form-field select {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('{STATICURL}image/mobile/touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
+.profile-form .form-field select, .profile-form .form-field .sort-sel-show {width:100%;height:36px;line-height:36px;padding:0 10px;font-size:14px;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url('{STATICURL}image/mobile/touch/arrow.svg');background-repeat:no-repeat;background-position:right 8px center;background-size:14px 14px;padding-right:28px;}
 .profile-form .form-field textarea.pt {width:100%;min-height:80px;padding:8px 10px;font-size:14px;line-height:1.6;border:1px solid var(--dz-BOR-ed);border-radius:var(--dz-radius-sm);background:var(--dz-BG-0);color:var(--dz-FC-333);box-sizing:border-box;resize:vertical;}
 .profile-form .form-field textarea.pt:focus {border-color:var(--dz-BG-color);box-shadow:0 0 0 2px rgba(0,122,255,0.08);}
 .profile-form .form-field .d {margin-top:4px;font-size:12px;color:var(--dz-FC-999);line-height:1.5;}
@@ -2276,7 +2276,7 @@ a.icon_up:hover { background:var(--dz-BG-0) url({STATICURL}image/common/arrow_up
 .sort-sel-show {
     width: 100%;
     box-sizing: border-box;
-    padding: 0 14px 0 14px;
+    padding: 0 18px 0 14px;
     height: 30px;
     line-height: 30px;
     border: none;
