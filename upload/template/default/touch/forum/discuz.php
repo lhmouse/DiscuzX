@@ -4,7 +4,7 @@
 	<!--{template forum/find}-->
 <!--{else}-->
 	<!--{if $_G['setting']['mobile']['forum']['index'] == 1 && empty($_G['cache']['heats']['message']) && $_GET['forumlist'] != 1}-->
-		<!--{eval dheader('Location:forum.php?mod=guide&view=newthread');exit;}-->
+		<!--{eval dheader('Location:forum.php?mod=guide&view=newthread'.(!empty($_GET['mobilediy']) ? '&mobilediy=yes' : ''));exit;}-->
 	<!--{else}-->	
 	<!--{if ($_G['setting']['mobile']['forum']['index'] && $_GET['forumlist'] != 1) || !$_G['setting']['mobile']['forum']['index']}-->
 		<div class="header cl">
