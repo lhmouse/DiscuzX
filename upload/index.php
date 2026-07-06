@@ -6,7 +6,7 @@
  * https://license.discuz.vip
  */
 
-if(!empty($_GET['app'])) {
+if(!empty($_GET['app']) && is_string($_GET['app'])) {
 	define('MITFRAME_APP', $_app = $_GET['app']);
 } else {
 	$_app = 'index';
