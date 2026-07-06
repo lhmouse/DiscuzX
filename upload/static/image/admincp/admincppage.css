@@ -1684,6 +1684,10 @@ div.todo>em { width: 25%; }
 	flex-shrink: 0;
 }
 
+.ss-resource-value.ss-resource-error {
+	color: var(--admincp-red);
+}
+
 .ss-resource-value small {
 	font-size: 11px;
 	color: var(--admincp-fc);

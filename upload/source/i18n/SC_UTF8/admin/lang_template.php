@@ -108,6 +108,7 @@ $lang = [
 	'sitestatus_backup_normal' => '正常',
 	'sitestatus_backup_warning' => '需备份',
 	'sitestatus_disk_full' => '磁盘空间不足',
+	'sitestatus_disk_error' => '磁盘异常',
 	'sitestatus_memory_high' => '内存使用率过高',
 	'widget_reset' => '恢复默认布局',
 	'widget_reset_confirm' => '确定要恢复默认布局吗？',

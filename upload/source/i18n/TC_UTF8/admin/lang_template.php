@@ -108,6 +108,7 @@ $lang = [
 	'sitestatus_backup_normal' => '正常',
 	'sitestatus_backup_warning' => '需備份',
 	'sitestatus_disk_full' => '磁碟空間不足',
+	'sitestatus_disk_error' => '磁碟異常',
 	'sitestatus_memory_high' => '記憶體使用率過高',
 	'widget_reset' => '恢復默認佈局',
 	'widget_reset_confirm' => '確定要恢復默認佈局嗎？',

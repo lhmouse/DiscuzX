@@ -61,11 +61,17 @@
 				<div class="ss-resource-item">
 					<div class="ss-resource-info">
 						<span class="ss-resource-name">{lang sitestatus_disk}</span>
+						<!--{if $sitestatus['disk_supported']}-->
 						<span class="ss-resource-value">$sitestatus[disk]% <small>($sitestatus[disk_used] / $sitestatus[disk_total])</small></span>
+						<!--{else}-->
+						<span class="ss-resource-value ss-resource-error">{lang sitestatus_disk_error}</span>
+						<!--{/if}-->
 					</div>
+					<!--{if $sitestatus['disk_supported']}-->
 					<div class="ss-progress-bar">
 						<div class="ss-progress-fill ss-progress-disk" style="width: $sitestatus[disk]%"></div>
 					</div>
+					<!--{/if}-->
 				</div>
 				<!-- 数据库尺寸 -->
 				<div class="ss-resource-item">
