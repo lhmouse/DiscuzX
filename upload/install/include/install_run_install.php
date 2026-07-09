@@ -411,6 +411,8 @@ if($method == 'show_license') {
 
 	rundatasql('lang_'.$install_sqlfile);
 
+	sleep(2);
+
 	!VIEW_OFF && showjsmessage(lang('initdbresult_succ')."\n");
 
 	$onlineip = $_SERVER['REMOTE_ADDR'];
@@ -525,6 +527,8 @@ if($method == 'show_license') {
 	sleep(2);
 
 	rundatasql('lang_'.$upgrade_sqlfile, true);
+
+	sleep(2);
 
 	$db->query("REPLACE INTO {$tablepre}common_setting (skey, svalue) VALUES ('sitevipkey', '".SITEVIP_KEY."')");
 
