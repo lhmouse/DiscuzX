@@ -232,7 +232,7 @@ function threadTypeAddRow(id) {
 			list($s, $l) = explode(',', $mask);
 			if($s > 0 && $l > 0) {
 				$e = substr($value, intval($s) + intval($l));
-				$value = component_list.phpsubstr($value, 0, $s).str_repeat('*', $l).$e;
+				$value = substr($value, 0, $s).str_repeat('*', $l).$e;
 			}
 		}
 		return $value;
