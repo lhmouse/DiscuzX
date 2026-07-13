@@ -148,7 +148,7 @@
 			<div class="todo-items">
 				<!--{if $medalsmod}-->
 				<div class="todo-item">
-					<a href="{ADMINSCRIPT}?action=medals&operation=mods" class="todo-link">
+					<a href="{ADMINSCRIPT}?action=medals&operation=mod" class="todo-link">
 						<span class="todo-text">{lang home_mod_medals}</span>
 						<span class="todo-count">$medalsmod</span>
 					</a>
