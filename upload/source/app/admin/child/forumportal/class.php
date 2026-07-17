@@ -273,6 +273,29 @@ class fp {
 		];
 		table_common_setting::t()->update_batch($settings);
 
+		if(!table_common_nav::t()->fetch_by_type_identifier(0, 16)) {
+			table_common_nav::t()->insert([
+				'parentid' => '0',
+				'name' => cplang('nav_index'),
+				'title' => 'Index',
+				'url' => 'forum.php?mod=forumdisplay&fid=0',
+				'identifier' => '16',
+				'target' => '0',
+				'type' => '0',
+				'available' => '0',
+				'displayorder' => '0',
+				'highlight' => '0',
+				'level' => '0',
+				'subtype' => '0',
+				'subcols' => '0',
+				'icon' => '',
+				'subname' => '',
+				'suburl' => '',
+				'navtype' => '0',
+				'logo' => '',
+			]);
+		}
+
 		require_once libfile('function/cache');
 		updatecache('setting');
 	}
