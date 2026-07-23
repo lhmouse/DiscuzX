@@ -8,7 +8,7 @@
 ![Fork](https://gitee.com/Discuz/DiscuzX/badge/fork.svg?theme=dark)
 
 ### 简介
-Discuz! X5 官方 Git (https://gitee.com/Discuz/DiscuzX/tree/MitFrame) 中文版
+Discuz! X5 官方中文版 Git 仓库 https://gitee.com/Discuz/DiscuzX，镜像仓库 https://github.com/DiscuzTeam/DiscuzX
 
 ### 关于 X5
 - 从 X5.0 起 Discuz! 默认不再包含 UCenter 服务端，如需站群方式部署请自行下载 [UCenter](https://gitee.com/Discuz/UCenter)
