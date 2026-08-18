@@ -115,7 +115,7 @@ class seccode {
 				$colorindex = imagecolorat($imwm, 1, 0);
 				imagesetpixel($imwm, 0, 0, $colorindex);
 				$c[0] = $c['red'];$c[1] = $c['green'];$c[2] = $c['blue'];
-				imagecopymerge($this->im, $imwm, 0, 0, mt_rand(0, 200 - $this->width), mt_rand(0, 80 - $this->height), imageSX($imwm), imageSY($imwm), 100);
+				imagecopymerge($this->im, $imwm, 0, 0, mt_rand(0, max(0, 200 - $this->width)), mt_rand(0, max(0, 80 - $this->height)), imageSX($imwm), imageSY($imwm), 100);
 				imagedestroy($imwm);
 			}
 		}
@@ -175,7 +175,9 @@ class seccode {
 		$text_color = imagecolorallocate($this->im, $this->fontcolor[0], $this->fontcolor[1], $this->fontcolor[2]);
 		for($i = 0; $i <= 3; $i++) {
 			$adulteratecode = $seccodeunits[mt_rand(0, 23)];
-			imagechar($this->im, 5, $x * $i + mt_rand(0, $x - 10), mt_rand($y, $this->height - 10 - $y), $adulteratecode, $text_color);
+			$ymax = $this->height - 10 - $y;
+			$cy = $ymax > $y ? mt_rand($y, $ymax) : $y;
+			imagechar($this->im, 5, $x * $i + mt_rand(0, max(0, $x - 10)), $cy, $adulteratecode, $text_color);
 		}
 	}
 
@@ -218,7 +220,9 @@ class seccode {
 			$font[$i]['width'] = $font[$i]['width'] > $this->width / $seccodelength ? $this->width / $seccodelength : $font[$i]['width'];
 			$widthtotal += $font[$i]['width'];
 		}
-		$x = mt_rand($font[0]['angle'] > 0 ? cos(deg2rad(90 - $font[0]['angle'])) * $font[0]['zheight'] : 1, $this->width - $widthtotal);
+		$xmin = $font[0]['angle'] > 0 ? intval(cos(deg2rad(90 - $font[0]['angle'])) * $font[0]['zheight']) : 1;
+		$xmax = $this->width - $widthtotal;
+		$x = $xmax > $xmin ? mt_rand($xmin, $xmax) : $xmin;
 		!$this->color && $text_color = imagecolorallocate($this->im, $this->fontcolor[0], $this->fontcolor[1], $this->fontcolor[2]);
 		for($i = 0; $i < $seccodelength; $i++) {
 			if($this->color) {
@@ -228,7 +232,9 @@ class seccode {
 			} elseif($this->shadow) {
 				$text_shadowcolor = imagecolorallocate($this->im, 0, 0, 0);
 			}
-			$y = $font[0]['angle'] > 0 ? mt_rand($font[$i]['height'], $this->height) : mt_rand($font[$i]['height'] - $font[$i]['hd'], $this->height - $font[$i]['hd']);
+			$ymin = $font[0]['angle'] > 0 ? $font[$i]['height'] : $font[$i]['height'] - $font[$i]['hd'];
+			$ymax = $font[0]['angle'] > 0 ? $this->height : $this->height - $font[$i]['hd'];
+			$y = $ymax > $ymin ? mt_rand($ymin, $ymax) : $ymin;
 			$this->shadow && imagettftext($this->im, $font[$i]['size'], $font[$i]['angle'], $x + 1, $y + 1, $text_shadowcolor, $font[$i]['font'], $seccode[$i]);
 			imagettftext($this->im, $font[$i]['size'], $font[$i]['angle'], $x, $y, $text_color, $font[$i]['font'], $seccode[$i]);
 			$x += $font[$i]['width'];
@@ -293,11 +299,11 @@ class seccode {
 				$widthtotal += $font[$i]['width'];
 			} else {
 				$font[$i]['file'] = '';
-				$font[$i]['width'] = 8 + mt_rand(0, $this->width / 5 - 5);
+				$font[$i]['width'] = 8 + mt_rand(0, max(0, $this->width / 5 - 5));
 				$widthtotal += $font[$i]['width'];
 			}
 		}
-		$x = mt_rand(1, $this->width - $widthtotal);
+		$x = $this->width > $widthtotal ? mt_rand(1, $this->width - $widthtotal) : 1;
 		for($i = 0; $i <= 3; $i++) {
 			$this->color && $this->fontcolor = array(mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
 			if($font[$i]['file']) {
@@ -315,7 +321,7 @@ class seccode {
 				imagecolorset($this->imcode, 0 , $this->fontcolor[0], $this->fontcolor[1], $this->fontcolor[2]);
 				imagecopyresized($this->im, $this->imcode, $x, $y, 0, 0, $font[$i]['width'], $font[$i]['height'], $font[$i]['data'][0], $font[$i]['data'][1]);
 			} else {
-				$y = mt_rand(0, $this->height - 20);
+				$y = mt_rand(0, max(0, $this->height - 20));
 				if($this->shadow) {
 					$text_shadowcolor = imagecolorallocate($this->im, 0, 0, 0);
 					imagechar($this->im, 5, $x + 1, $y + 1, $seccode[$i], $text_shadowcolor);
